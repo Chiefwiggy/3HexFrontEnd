@@ -17,10 +17,9 @@ const CharacterSelectView = () => {
     const {loggedIn} = useUser();
 
 
-
     useEffect(() => {
         if (loggedIn) {
-            (async() => {
+            (async () => {
                 setAllCharacters(await CharacterAPI.GetMyCharacters());
             })()
         } else {
@@ -45,19 +44,25 @@ const CharacterSelectView = () => {
             >
                 <Box></Box>
                 <Typography variant="h3" component="div" textAlign={"center"}>My Characters</Typography>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        alignItems: "center",
-                        paddingLeft: "20px",
-                        flexDirection: "row-reverse"
-                    }}
-                >
-                    <Button
-                        variant={"contained"}
-                        onClick={handleGotoNewCharacter}
-                    ><AddOutlined /> New Character</Button>
-                </Box>
+                {
+                    loggedIn ?
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignItems: "center",
+                                paddingLeft: "20px",
+                                flexDirection: "row-reverse"
+                            }}
+                        >
+                            <Button
+                                variant={"contained"}
+                                onClick={handleGotoNewCharacter}
+                            ><AddOutlined/> New Character</Button>
+                        </Box>
+                        :
+                        <Box></Box>
+                }
+
             </Box>
             <Box
                 sx={{
@@ -68,8 +73,8 @@ const CharacterSelectView = () => {
                 }}
             >
                 {
-                    allCharacters.map((character : ICharacterBaseData) => {
-                        return <CharacterSelectCard characterData={character} key={character.characterName} />
+                    allCharacters.map((character: ICharacterBaseData) => {
+                        return <CharacterSelectCard characterData={character} key={character.characterName}/>
                     })
                 }
             </Box>
