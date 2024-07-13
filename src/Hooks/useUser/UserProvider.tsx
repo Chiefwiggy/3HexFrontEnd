@@ -4,6 +4,7 @@ import UserContext from "./UserContext";
 import Axios from 'axios'
 
 export interface IUserContext {
+    SignupUser: (email: string, password: string) => Promise<void>
     LoginUser: (email: string, password: string) => Promise<void>,
     LogoutUser: () => void,
     loggedIn: boolean,
@@ -66,6 +67,17 @@ const UserProvider = ({children}: any) => {
         })
     }
 
+    const SignupUser = async(email: string, password: string) => {
+        const data = {
+            email,
+            password
+        }
+        await Axios.post(process.env.REACT_APP_API_URL+"/auth/signup", data).then(async(resp) => {
+            await LoginUser(email, password);
+        })
+
+    }
+
     const LoginWithToken = async (email: string | null, refresh_token: string | null) => {
 
         const data = {
@@ -82,6 +94,7 @@ const UserProvider = ({children}: any) => {
 
     return (
         <UserContext.Provider value={{
+            SignupUser,
             LoginUser,
             LogoutUser,
             loggedIn,

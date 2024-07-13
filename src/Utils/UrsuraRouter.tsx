@@ -11,6 +11,7 @@ import CreateCharacterPage from "../Pages/CreateCharacterPage";
 import CreateUserPage from "../Pages/CreateUserPage";
 import ClassCompendiumPage from "../Pages/ClassCompendiumPage";
 import AffinityCompendiumPage from "../Pages/AffinityCompendiumPage";
+import SignupPage from "../Pages/SignupPage";
 
 
 
@@ -56,6 +57,10 @@ const UrsuraRouter = createBrowserRouter([
             {
                 path: "/login",
                 element: <LoggedInRoute element={<LoginPage />} reverse={true}/>
+            },
+            {
+                path: "/signup",
+                element: <LoggedInRoute element={<SignupPage />} reverse={true}/>
             }
         ]
     }

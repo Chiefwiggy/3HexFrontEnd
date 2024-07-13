@@ -46,7 +46,12 @@ const NavigationBar = () => {
                     {loggedIn ? (
                         <Button variant="contained" onClick={handleLogout}>Logout</Button>
                     ) : (
-                        <Button variant="contained" onClick={handleNavigate("/login")}>Login</Button>
+                        <Box>
+                            <Button sx={{margin: 2}} variant="contained" onClick={handleNavigate("/login")}>Login</Button>
+
+                            <Button sx={{margin: 2}} variant="contained" onClick={handleNavigate("/signup")}>Sign up</Button>
+                        </Box>
+
                     )}
                 </Toolbar>
             </Container>
