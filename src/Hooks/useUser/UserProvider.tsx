@@ -59,7 +59,7 @@ const UserProvider = ({children}: any) => {
             email,
             password
         }
-        await Axios.post("http://localhost:3001"+"/auth/signin", data).then((resp) => {
+        await Axios.post(process.env.REACT_APP_API_URL+"/auth/signin", data).then((resp) => {
             __SetLoginData(resp.data);
         }).catch((e) => {
             console.error(e);
@@ -73,7 +73,7 @@ const UserProvider = ({children}: any) => {
             token: refresh_token
         }
 
-        await Axios.post("http://localhost:3001"+"/auth/refresh/signin", data).then((resp) => {
+        await Axios.post(process.env.REACT_APP_API_URL+"/auth/refresh/signin", data).then((resp) => {
             __SetLoginData(resp.data);
         }).catch((e) => {
             console.error(e);
