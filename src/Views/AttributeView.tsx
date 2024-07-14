@@ -6,6 +6,7 @@ import SimpleClosableDialog from "../Components/Generic/SimpleClosableDialog";
 import useCharacter from "../Hooks/useCharacter/useCharacter";
 import useEventHistory from "../Hooks/useEventHistory/useEventHistory";
 import {AttributeBarType, DamageType} from "../Data/CharacterSheet";
+import {UDamageType} from "../Data/ICardData";
 
 interface IAttributeViewInput {
     pivot: boolean
@@ -39,6 +40,7 @@ const AttributeView = ({pivot}: IAttributeViewInput) => {
     }
 
     useEffect(() => {
+        console.log("pinged: ", healthPing);
         if (currentSheet) {
             setProgressHealth(Math.min(100, 100 * currentSheet.getBarCurrent("health") / currentSheet.getMaxBar("health")));
             setCurrentHealth(currentSheet.getBarCurrent("health"));
@@ -71,9 +73,9 @@ const AttributeView = ({pivot}: IAttributeViewInput) => {
         }
     }
 
-    const handleDamage = (bar: AttributeBarType, damageType: DamageType, amount: number) => {
+    const handleDamage = (bar: AttributeBarType, damageType: UDamageType, amount: number, crit: number) => {
         if (currentSheet) {
-            currentSheet.damageCharacter(bar, damageType, amount);
+            currentSheet.damageCharacter(bar, damageType, amount, crit);
         }
     }
 

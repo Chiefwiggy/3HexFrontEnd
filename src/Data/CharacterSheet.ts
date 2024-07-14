@@ -39,7 +39,7 @@ import affinitiesPanel from "../Components/ClassSelect/Affinities/AffinitiesPane
 import AbstractSheet from "./AbstractSheet";
 
 export type AttributeBarType = "tether" | "stamina" | "health"
-export type DamageType = "physical" | "magical" | "raw"
+export type DamageType = "physical" | "magical" | "raw" | "resistant"
 
 
 
@@ -58,6 +58,7 @@ interface IAllCardsData {
 
 
 class CharacterSheet extends AbstractSheet {
+
     public data: ICharacterBaseData
     private dataBackup: ICharacterBaseData;
     public currentAttack: any
@@ -757,6 +758,10 @@ class CharacterSheet extends AbstractSheet {
         await this.API.CharacterAPI.UpdateCharacter(this.data._id, this.data);
         this.sendReadyFn(false);
         await this.initializeAsync();
+    }
+
+    public async healthPingExecute(): Promise<void> {
+        Promise.resolve(this.API.CharacterAPI.SetBars(this.data._id,this.data.attributeBars)).then().catch();
     }
 
 

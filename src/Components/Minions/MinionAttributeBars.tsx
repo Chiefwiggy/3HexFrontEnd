@@ -4,6 +4,7 @@ import {IMinionData} from "../../Data/IMinionData";
 import AttributeBar from "../Sheet/AttributeBar";
 import { AttributeBarType, DamageType } from '../../Data/CharacterSheet';
 import MinionSheet from "../../Data/MinionSheet";
+import {UDamageType} from "../../Data/ICardData";
 
 interface IMinionAttributeBarsInput {
     minionData: MinionSheet
@@ -61,9 +62,9 @@ const MinionAttributeBars = ({
         }
     }
 
-    const handleDamage = (bar: AttributeBarType, damageType: DamageType, amount: number) => {
+    const handleDamage = (bar: AttributeBarType, damageType: UDamageType, amount: number, crit: number) => {
         if (minionData) {
-            minionData.damageCharacter(bar, damageType, amount);
+            minionData.damageCharacter(bar, damageType, amount, crit);
             triggerUpdate()
         }
     }

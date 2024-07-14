@@ -5,6 +5,7 @@ import {UStance} from "./ICharacterData";
 
 
 class MinionSheet extends AbstractSheet {
+
     public getEvadePDEF(): number {
         let evadeArmorBonus = 0;
         if (this.data.currentArmor) {
@@ -75,6 +76,9 @@ class MinionSheet extends AbstractSheet {
         this.data = minionData;
     }
 
+    public async healthPingExecute(): Promise<void> {
+
+    }
 
 
 

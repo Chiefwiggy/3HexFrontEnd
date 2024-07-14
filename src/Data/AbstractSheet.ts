@@ -1,6 +1,8 @@
 import {AttributeBarType, DamageType} from "./CharacterSheet";
 import React, {SetStateAction} from "react";
 import {UStance} from "./ICharacterData";
+import {IAPIContext} from "../Hooks/useAPI/APIProvider";
+import {UDamageType} from "./ICardData";
 
 
 abstract class AbstractSheet {
@@ -32,6 +34,7 @@ abstract class AbstractSheet {
     public abstract setHealth(amount: number): void;
     public abstract setStamina(amount: number): void;
     public abstract setTether(amount: number): void;
+    public abstract healthPingExecute(): Promise<void>;
 
     public abstract getEvadePDEF(): number;
     public abstract getBlockPDEF(): number;
@@ -72,26 +75,37 @@ abstract class AbstractSheet {
         }
     }
 
-    public damageCharacter(bar: AttributeBarType, damageType: DamageType, amount: number) {
+    public damageCharacter(bar: AttributeBarType, damageType: UDamageType, amount: number, crit: number) {
+        let willPing = false;
         let damageMitigator = 0;
         if (damageType === "physical") {
             damageMitigator = this.getPDEF();
         } else if (damageType === "magical") {
             damageMitigator = this.getMDEF();
+        } else if (damageType === "resistant") {
+            damageMitigator = this.getPDEF() + this.getMDEF();
         }
         let damageAmount = Math.max(0, amount - damageMitigator);
         if (damageAmount > 0) {
             if (bar === "stamina") {
                 if (this.getStamina() < damageAmount) {
-                    let remainder = amount - this.getStamina();
+                    let remainder = damageAmount - this.getStamina();
                     this.setStamina(0);
-                    this.damageCharacter("health", "raw", remainder);
+                    this.damageCharacter("health", "raw", remainder, 0);
                 } else {
                     this.setStamina(this.getStamina() - damageAmount);
+                    willPing = true;
                 }
             } else if (bar === "health") {
                 this.setHealth(Math.max(this.getHealth() - damageAmount, 0));
+                willPing = true;
             }
+        }
+        if (crit > 0) {
+            this.setHealth(Math.max(this.getHealth() - crit, 0));
+            willPing = true;
+        }
+        if (willPing) {
             this._hping();
         }
     }
@@ -126,8 +140,10 @@ abstract class AbstractSheet {
             this.localHealth = !this.localHealth;
         }
 
+        Promise.resolve(this.healthPingExecute()).then(() => {
+            // nothing;
+        })
 
-        // Promise.resolve(this.API.CharacterAPI.SetBars(this.data._id,this.data.attributeBars)).then().catch();
     }
 
     protected _sping() {

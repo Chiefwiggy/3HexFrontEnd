@@ -90,7 +90,7 @@ export interface ISpecialistData {
     power?: IDataModifiers;
 }
 
-export type UDamageType = "physical" | "magical" | "raw" | "none";
+export type UDamageType = "physical" | "magical" | "raw" | "resistant" | "none";
 
 
 export interface ICommonCardData {

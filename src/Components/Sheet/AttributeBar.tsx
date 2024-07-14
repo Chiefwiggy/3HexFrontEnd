@@ -20,16 +20,17 @@ import ChangeBarDataDialog from "./ChangeBarDataDialog";
 import useEventHistory from "../../Hooks/useEventHistory/useEventHistory";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
 import {AttributeBarType, DamageType} from "../../Data/CharacterSheet";
+import {UDamageType} from "../../Data/ICardData";
 
 
 export type BarDialogActionTypes = "heal" | "damage" | "recover" | "use" | null;
-export type AttributeActionTypes = BarDialogActionTypes | "raw" | "physical" | "magical" | "cancel";
+export type AttributeActionTypes = BarDialogActionTypes | "crit" | "cancel";
 
 interface IAttributeBarInput {
     barName: string,
     barColor: AttributeBarType | any,
     healFunction: (barColor: AttributeBarType, value: number) => void,
-    damageFunction: (barColor: AttributeBarType, type: DamageType, value: number) => void,
+    damageFunction: (barColor: AttributeBarType, type: UDamageType, value: number, crit: number) => void,
     takeFunction: (barColor: AttributeBarType, value: number) => void,
     currentAttr: number,
     currentMaxAttr: number,
@@ -112,7 +113,7 @@ const AttributeBar = ({
     const {LogEvent} = useEventHistory();
     // const {currentSheet, healthPing, statPing} = useCharacter();
 
-    const handleEditClose = (value: number, type: AttributeActionTypes) => () => {
+    const handleEditClose = (value: number, crit: number, type: AttributeActionTypes, damageType: UDamageType) => () => {
         setEditMenuOpen(false);
         switch (type) {
             case "heal":
@@ -127,11 +128,9 @@ const AttributeBar = ({
                 LogEvent(`Used ${value} ${barName}`)
                 takeFunction(barColor, value);
                 break;
-            case "raw":
-            case "magical":
-            case "physical":
+            case "damage":
                 LogEvent(`Character took ${value} ${barName} damage (${type}).`)
-                damageFunction(barColor, type, value);
+                damageFunction(barColor, damageType, value, crit);
                 break;
         }
     }
