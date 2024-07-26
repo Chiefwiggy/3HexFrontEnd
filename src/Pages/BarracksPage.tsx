@@ -17,7 +17,8 @@ const BarracksPage = ({}: IBarracksPageInput) => {
             <Box
                 sx={{
                     display: 'grid',
-                    gridTemplateColumns: "repeat(5, 1fr)"
+                    gridTemplateColumns: "repeat( auto-fill , max(264px, 19vw))",
+                    gridGap: "10px"
                 }}
             >
                 {
