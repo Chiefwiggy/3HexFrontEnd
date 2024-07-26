@@ -162,7 +162,11 @@ const BarracksWeapon = ({
                         }}
                     >
                         {
-                                charactersOwned.map(char => {
+                                charactersOwned.filter(char => {
+                                    const r = char.knownWeapons.findIndex(w => w.baseId === weaponData._id && currentScaling === w.enchantmentLevel);
+                                    return r < 0;
+
+                                }).map(char => {
                                     return (
                                         <MenuItem key={char._id} value={char._id}>{char.characterName}</MenuItem>
                                     )
