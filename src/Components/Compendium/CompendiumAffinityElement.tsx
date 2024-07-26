@@ -4,7 +4,7 @@ import {IAffinities, IAffinitiesArray, IArcanaKeys} from "../../Data/ICharacterD
 import usePreloadedContent from "../../Hooks/usePreloadedContent/usePreloadedContent";
 import {
     ICommanderCardData,
-    ICommonCardData,
+    ICommonCardData, IScaledWeaponBaseData,
     ISpellBaseCardData,
     ISpellModifierCardData,
     ISpellTargetCardData,
@@ -59,11 +59,9 @@ const CompendiumAffinityElement = ({
         }
     }, [elemName, isLoaded]);
 
-    useEffect(() => {
-        console.log(AffinityData.getAffinityCardsByLevel(elemName as keyof IAffinities));
-        console.log(allCards);
-        console.log(isArcana);
-    }, [allCards]);
+    // useEffect(() => {
+    //
+    // }, [allCards]);
 
     return isLoaded ? (
         <Box>
@@ -108,7 +106,7 @@ const CompendiumAffinityElement = ({
                                             }
                                         } else if (card.cardType == "weapon") {
                                             if (card.cardSubtype == "base") {
-                                                return <WeaponBaseCard cardData={card as IWeaponBaseData}
+                                                return <WeaponBaseCard cardData={card as IScaledWeaponBaseData}
                                                                        key={card.cardName} sendBack={() => {
                                                 }} {...compendiumProps} />
                                             } else {

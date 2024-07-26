@@ -1,4 +1,5 @@
 import {
+    IScaledWeaponBaseData,
     ISpellBaseCardData,
     ISpellModifierCardData,
     ISpellTargetCardData,
@@ -92,7 +93,7 @@ export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: IS
 
 }
 
-export const GetFinalWeaponData = (weaponBase: IWeaponBaseData, allCards: Array<IWeaponCommonData | null>, char: ICharacterBaseData): ITotalWeaponStats => {
+export const GetFinalWeaponData = (weaponBase: IScaledWeaponBaseData, allCards: Array<IWeaponCommonData | null>, char: ICharacterBaseData): ITotalWeaponStats => {
 
     let finalBasePower = StatChain(weaponBase.basePower, allCards.map(c => c?.basePowerMod));
     let finalPotencyPower = Math.floor(StatChain(weaponBase.potency, allCards.map(c => c?.potencyMod), false) * char.characterStats.might.value);

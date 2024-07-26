@@ -35,11 +35,19 @@ abstract class AbstractSheet {
     public abstract setStamina(amount: number): void;
     public abstract setTether(amount: number): void;
     public abstract healthPingExecute(): Promise<void>;
+    public abstract getStaminaRefresh(): number;
+    public abstract getTetherRefresh(): number;
 
     public abstract getEvadePDEF(): number;
     public abstract getBlockPDEF(): number;
     public abstract getEvadeMDEF(): number;
     public abstract getBlockMDEF(): number;
+
+    public refresh() {
+        this.healCharacter("stamina", this.getStaminaRefresh(), false);
+        this.healCharacter("tether", this.getTetherRefresh(), false);
+        this._hping();
+    }
 
 
     public getMaxBar(bar: AttributeBarType) {
@@ -117,6 +125,13 @@ abstract class AbstractSheet {
                  this._hping();
              }
         }
+    }
+
+    public rest() {
+        this.healCharacter("health", 999, false);
+        this.healCharacter("stamina", 999, false);
+        this.healCharacter("tether", 999, false);
+        this._hping();
     }
 
     public useBar(bar: AttributeBarType, amount: number) {

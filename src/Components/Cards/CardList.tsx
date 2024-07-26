@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-    ICommonCardData,
+    ICommonCardData, IScaledWeaponBaseData,
     ISpellBaseCardData,
     ISpellModifierCardData,
     ISpellTargetCardData,
@@ -13,6 +13,7 @@ import SpellModifierCard from "./SpellModifierCard";
 import {ICardSendbackData} from "../../Layouts/GenericCardLayout";
 import WeaponBaseCard from "./WeaponBaseCard";
 import WeaponModCard from "./WeaponModCard";
+import {ConstructFinalWeapon} from "../../Utils/ConstructFinalWeapon";
 
 
 interface ICardListInput {
@@ -73,7 +74,7 @@ const CardList = ({
                             case 'base':
                                 return (
                                     <Grid item key={val.cardName}>
-                                        <WeaponBaseCard cardData={val as IWeaponBaseData} sendBack={onClickButton}
+                                        <WeaponBaseCard cardData={ConstructFinalWeapon(val as IWeaponBaseData, 0)} sendBack={onClickButton}
                                                         isExpanded={isExpanded} canToggleExpand={canToggleExpand}
                                                         isAdd={isAdd} canFavorite={canFavorite}/>
                                     </Grid>

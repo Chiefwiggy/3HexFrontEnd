@@ -4,7 +4,7 @@ import {IClassMetaData} from "../../Data/IClassMetaData";
 import useAPI from "../../Hooks/useAPI/useAPI";
 import {
     ICommanderCardData,
-    ICommonCardData,
+    ICommonCardData, IScaledWeaponBaseData,
     ISpellBaseCardData,
     ISpellModifierCardData,
     ISpellTargetCardData,
@@ -79,7 +79,7 @@ const CompendiumClassElement = ({
                             }
                         } else if (card.cardType == "weapon") {
                             if (card.cardSubtype == "base") {
-                                return <WeaponBaseCard cardData={card as IWeaponBaseData}  key={card.cardName} sendBack={() => {}} {...compendiumProps} />
+                                return <WeaponBaseCard cardData={card as IScaledWeaponBaseData}  key={card.cardName} sendBack={() => {}} {...compendiumProps} />
                             } else {
                                 return <WeaponModCard cardData={card} sendBack={() => {}} key={card.cardName}  {...compendiumProps} />
                             }

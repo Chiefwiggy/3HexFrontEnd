@@ -70,6 +70,15 @@ class CardConnection {
         })
     }
 
+    public async GetStandardBaseWeapons() {
+        return await Axios.get(`${this._cardURL}weapons/base/getAll`, this._getConfig()).then((resp) => {
+            return resp.data
+        }).catch((e) => {
+            console.error(e)
+            return []
+        })
+    }
+
 
 
 

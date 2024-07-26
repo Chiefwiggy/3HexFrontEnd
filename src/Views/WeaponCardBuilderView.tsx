@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
-import {ICommonCardData} from "../Data/ICardData";
+import {ICommonCardData, IScaledWeaponBaseData, IWeaponBaseData} from "../Data/ICardData";
 import CardBuilder, {ICardBuilderType} from "../Layouts/CardBuilder";
 import SpellBaseCard from "../Components/Cards/SpellBaseCard";
 import SpellTargetCard from "../Components/Cards/SpellTargetCard";
@@ -12,6 +12,7 @@ import WeaponCardCalculator from "../Data/Card Calculators/WeaponCardCalculator"
 import WeaponModCard from "../Components/Cards/WeaponModCard";
 import WeaponBaseCard from "../Components/Cards/WeaponBaseCard";
 import {ICalculatedWeapon} from "../Data/ICharacterData";
+import usePreloadedContent from "../Hooks/usePreloadedContent/usePreloadedContent";
 
 interface IWeaponCardBuilderViewInput {
     closeSelf: (event: any) => void
@@ -21,6 +22,7 @@ const WeaponCardBuilderView = ({closeSelf}: IWeaponCardBuilderViewInput) => {
 
     const {CardAPI, CharacterAPI} = useAPI();
     const {currentSheet} = useCharacter();
+    const {WeaponData} = usePreloadedContent();
 
     const [standbyCards, setStandbyCards] = useState<ICalculatedWeapon|null>(null);
 
@@ -36,18 +38,21 @@ const WeaponCardBuilderView = ({closeSelf}: IWeaponCardBuilderViewInput) => {
 
     const GetAllCards = async(): Promise<Array<ICommonCardData>> => {
         if (currentSheet) {
-            return await CardAPI.GetCharacterPreparedWeapons(currentSheet.data._id);
+            return [...currentSheet.getPreparedWeaponCards(), ...WeaponData.GetCardPreparedStruct(currentSheet.data.knownWeapons)];
         }
         return []
     }
 
     const handleReceiveSaveCards = async(sentCards: Array<ICommonCardData|null>, spellCopy: React.ReactNode) => {
         const cards: Array<ICommonCardData> = sentCards.filter(c => c !== null && c !== undefined) as ICommonCardData[];
-        const base = cards.find(e => e.cardSubtype == "base");
+        const base = cards.find(e => e.cardSubtype == "base") as IScaledWeaponBaseData;
         const rest = cards.filter(e => e.cardSubtype != "base");
         if (base && rest && currentSheet) {
             const weaponCalcData: ICalculatedWeapon = {
-                weaponBaseId: base._id,
+                weaponBaseData: {
+                    baseId: base._id,
+                    enchantmentLevel: base.enchantmentLevel
+                },
                 weaponCardsIds: rest.map(e => e._id)
             };
             setStandbyCards(weaponCalcData);
@@ -62,7 +67,11 @@ const WeaponCardBuilderView = ({closeSelf}: IWeaponCardBuilderViewInput) => {
         const rest = cards.filter(e => e.cardSubtype != "base");
         if (base && rest && currentSheet) {
             const weaponCalcData: ICalculatedWeapon = {
-                weaponBaseId: base._id,
+                // weaponBaseId: base._id,
+                weaponBaseData: {
+                    baseId: base._id,
+                    enchantmentLevel: 0
+                },
                 weaponCardsIds: rest.map(e => e._id)
             };
             await handleFinalEquip(weaponCalcData);

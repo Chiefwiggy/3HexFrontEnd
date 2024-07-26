@@ -18,7 +18,6 @@ const SelectAffinitiesDialog = ({
 }: ISelectAffinitiesDialogInput) => {
 
     const handleClose = (cancel: boolean) => (event: React.MouseEvent) => {
-        console.log("GAME");
         sendClose(true, cancel, baseChoices)(event);
     }
 

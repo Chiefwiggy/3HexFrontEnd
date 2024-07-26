@@ -28,15 +28,11 @@ const CardPreparationView = ({closeSelf}: ICardPreparationViewInput) => {
         if (currentSheet) {
             (async() => {
                 const apiData = currentSheet.allButDefaultCards;
-                console.log(apiData);
                 if (apiData) {
-                    const allPlayerCards = [...apiData.spells.bases, ...apiData.spells.targets, ...apiData.spells.modifiers, ...apiData.weapons.forms, ...apiData.weapons.skills, ...apiData.weapons.bases.filter(e => !currentSheet.data.knownWeapons.includes(e._id))];
-                    console.log(currentSheet.data.knownWeapons);
-                    console.log(...apiData.weapons.bases);
+                    const allPlayerCards = [...apiData.spells.bases, ...apiData.spells.targets, ...apiData.spells.modifiers, ...apiData.weapons.forms, ...apiData.weapons.skills, ...apiData.weapons.bases.filter(e => !currentSheet.data.knownWeapons.map(e => e.baseId).includes(e._id))];
                     setAllCards(allPlayerCards);
-                    console.log(allPlayerCards.filter(c => !currentSheet.data.preparedCards.includes(c._id)));
-                    setNotPreparedCards(allPlayerCards.filter(c => !currentSheet.data.preparedCards.includes(c._id)));
-                    setCurrentPreparedCards(allPlayerCards.filter(c => currentSheet.data.preparedCards.includes(c._id)));
+                    setNotPreparedCards(allPlayerCards.filter(c => !currentSheet.getPreparedCardsIdList().includes(c._id)));
+                    setCurrentPreparedCards(allPlayerCards.filter(c => currentSheet.getPreparedCardsIdList().includes(c._id)));
                 }
             })();
         }
@@ -55,10 +51,15 @@ const CardPreparationView = ({closeSelf}: ICardPreparationViewInput) => {
 
     const handleSubmitSaveCards = async (e: React.MouseEvent) => {
         const idsList: Array<string> = currentPreparedCards.map(e => e._id);
-        console.log(idsList);
+        const preparedList = idsList.map(e => {
+            return {
+                cardId: e,
+                additionalData: 0
+            }
+        })
         if (currentSheet) {
-            await CharacterAPI.SetPreparedSpells(currentSheet?.data._id, idsList);
-            currentSheet.setPreparedCards(idsList);
+            await CharacterAPI.SetPreparedSpells(currentSheet?.data._id, preparedList);
+            currentSheet.setPreparedCards(preparedList);
             closeSelf(e);
         }
     }

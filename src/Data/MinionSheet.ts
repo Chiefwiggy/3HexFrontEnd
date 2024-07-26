@@ -6,6 +6,7 @@ import {UStance} from "./ICharacterData";
 
 class MinionSheet extends AbstractSheet {
 
+
     public getEvadePDEF(): number {
         let evadeArmorBonus = 0;
         if (this.data.currentArmor) {
@@ -78,6 +79,14 @@ class MinionSheet extends AbstractSheet {
 
     public async healthPingExecute(): Promise<void> {
 
+    }
+
+    public getStaminaRefresh(): number {
+        return this.data.minionStats.endurance.value + (this.data.bonuses?.staminaRefresh ?? 0);
+    }
+
+    public getTetherRefresh(): number {
+        return Math.floor(this.data.minionStats.mind.value / 2) + (this.data.bonuses?.tetherRefresh ?? 0);
     }
 
 

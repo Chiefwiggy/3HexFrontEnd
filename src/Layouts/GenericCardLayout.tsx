@@ -35,7 +35,8 @@ interface IGenericCardLayoutInput {
     canFavorite?: boolean,
     children: ReactNode,
     overrideSubtitle?: string | null,
-    showPrerequisites?: boolean
+    showPrerequisites?: boolean,
+    titleExtra?: string
 }
 
 export interface ICardSendbackData {
@@ -51,7 +52,8 @@ const GenericCardLayout = ({
     canFavorite = true,
     children,
     overrideSubtitle,
-    showPrerequisites=false
+    showPrerequisites=false,
+    titleExtra = ""
 }: IGenericCardLayoutInput) => {
 
     const [expanded, setExpanded] = useState(isExpanded)
@@ -111,7 +113,7 @@ const GenericCardLayout = ({
         >
 
             <CardHeader
-                title={cardData.cardName}
+                title={(cardData.cardName + " " + titleExtra).trim()}
                 subheader={
                     <>
                         {cardData.cardType.toUpperCase()} {overrideSubtitle ? `• ${overrideSubtitle}` : (cardData.cardSubtype == "commander" ? "" : `• ${cardData.cardSubtype.toUpperCase()}`)} {cardData.isUltimate ? " • ULTIMATE" : ""}

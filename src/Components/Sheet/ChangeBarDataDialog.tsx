@@ -153,7 +153,7 @@ const ChangeBarDataDialog = ({
                     </Box>
                     <br/>
                     {
-                        actionType == "damage"
+                        actionType == "damage" && barName == "Stamina"
                             ?
                             <Box>
                                 <TextField

@@ -1,6 +1,6 @@
 import {
     ICommanderCardData,
-    ICommonCardData,
+    ICommonCardData, IScaledWeaponBaseData,
     ISpellModifierCardData,
     ISpellTargetCardData,
     IWeaponBaseData,
@@ -75,7 +75,7 @@ export const default_spell_cards: Array<ISpellTargetCardData|ISpellModifierCardD
     },
 ]
 
-export const default_weapon_cards: Array<IWeaponCommonData|IWeaponBaseData> = [
+export const default_weapon_cards: Array<IWeaponCommonData|IScaledWeaponBaseData> = [
     {
         cardName: "Fists",
         cardType: "weapon",
@@ -104,7 +104,8 @@ export const default_weapon_cards: Array<IWeaponCommonData|IWeaponBaseData> = [
             isMelee: true
         },
         skillRequirement: 0,
-        _id: "___defaultBaseWeapon"
+        _id: "___defaultBaseWeapon",
+        enchantmentLevel: 0
     },
     {
         cardName: "Standard Attack",

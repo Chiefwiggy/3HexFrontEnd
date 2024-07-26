@@ -24,6 +24,7 @@ const CalculatedCard = ({
     overrideWidth
 }: ICalculatedCardInput) => {
 
+
     const [effectArray, setEffectArray] = useState<Array<IEffectData>>([]);
 
     const {currentSheet, isReady, charPing, statPing, cancelPing} = useCharacter();

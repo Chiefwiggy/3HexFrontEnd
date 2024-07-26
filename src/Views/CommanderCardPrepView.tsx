@@ -42,7 +42,6 @@ const CommanderCardPrepView = ({
 
     const handleSubmitSaveCards = async (e: React.MouseEvent) => {
         const idsList: Array<string> = currentPreparedCards.map(e => e._id);
-        console.log(idsList);
         if (currentSheet) {
             await CharacterAPI.SetPreparedCommanderCards(currentSheet?.data._id, idsList);
             currentSheet.setPreparedCommanderCards(idsList);

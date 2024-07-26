@@ -13,7 +13,7 @@ import PrebuiltSpellCardWrapper from "../Components/CardBuilder/PrebuiltSpellCar
 import PrebuiltWeaponCardWrapper from "../Components/CardBuilder/PrebuiltWeaponCardWrapper";
 import MainContentView from "./MainContentView";
 import {
-    AddCircleOutlined, AddCircleSharp, AddCircleTwoTone,
+    AddCircleOutlined, AddCircleSharp, AddCircleTwoTone, BedOutlined, BedtimeOutlined,
     CancelOutlined,
     ModeEditOutlined,
     RemoveCircleOutlined, RemoveCircleSharp, RemoveCircleTwoTone,
@@ -44,6 +44,13 @@ const CharacterSheetView = () => {
             } else {
                 currentSheet.EnterEditMode();
             }
+        }
+    }
+
+    const handleFullHeal = () => {
+        if (currentSheet) {
+
+            currentSheet.rest();
         }
     }
 
@@ -93,10 +100,17 @@ const CharacterSheetView = () => {
             <Box
                 sx={{
                     display: "grid",
-                    gridTemplateColumns: "3fr 2fr 2fr 1fr"
+                    gridTemplateColumns: "1fr 2fr 2fr 2fr 1fr"
                 }}
             >
                 <Box></Box>
+                <Box>
+                    <IconButton
+                        onClick={handleFullHeal}
+                    >
+                        <BedOutlined sx={{fontSize: 20}} />
+                    </IconButton>
+                </Box>
 
 
                 <Box

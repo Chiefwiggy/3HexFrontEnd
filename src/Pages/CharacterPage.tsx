@@ -24,7 +24,6 @@ const CharacterPage = ({}: ICharacterPageInput) => {
     useEffect(() => {
         (async () => {
             SetCurrentSheet(await CharacterAPI.GetCharacter(query.get("id") ?? ""));
-            console.log("GOT");
         })();
     }, []);
 

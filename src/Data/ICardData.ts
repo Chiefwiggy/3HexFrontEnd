@@ -118,7 +118,14 @@ export interface IWeaponCommonData extends ICommonCardData {
     weaponClassOverride?: UWeaponClass,
 }
 
-export interface IWeaponBaseData extends IWeaponCommonData {
+export interface IScalingData<T> {
+    baseValue: T,
+    scalingPer?: number,
+    breakpoints: Array<number>,
+    breakpointBonuses: Array<T>
+}
+
+export interface IScaledWeaponBaseData extends IWeaponCommonData {
     baseHit: number,
     basePower: number,
     potency: number,
@@ -133,8 +140,8 @@ export interface IWeaponBaseData extends IWeaponCommonData {
         d3: UCritDie,
         d4: UCritDie,
         d5: UCritDie,
-        d6: UCritDie
-    }
+        d6: UCritDie,
+    },
     baseRange: {
         min: number,
         max: number,
@@ -150,6 +157,40 @@ export interface IWeaponBaseData extends IWeaponCommonData {
     staminaCost: number,
     skillRequirement: number
     enchantmentLevel: number
+    weaponTags: Array<string>
+}
+
+export interface IWeaponBaseData extends IWeaponCommonData {
+    baseHit: IScalingData<number>,
+    basePower: IScalingData<number>,
+    potency: IScalingData<number>,
+    weaponClass: UWeaponClass,
+    weaponType: UWeaponType,
+    baseCrit: IScalingData<number>,
+    damageType: string,
+    damageSubtype: string,
+    specialCrit: IScalingData<{
+        d1: UCritDie,
+        d2: UCritDie,
+        d3: UCritDie,
+        d4: UCritDie,
+        d5: UCritDie,
+        d6: UCritDie
+    }>,
+    baseRange: {
+        min: IScalingData<number>,
+        max: IScalingData<number>,
+        isMelee: boolean
+    },
+    canThrow: IScalingData<boolean>,
+    thrownRange: {
+        min: IScalingData<number>,
+        max: IScalingData<number>,
+        isMelee: boolean
+    }
+    tetherCost: IScalingData<number>,
+    staminaCost: IScalingData<number>,
+    skillRequirement: IScalingData<number>
     weaponTags: Array<string>
 }
 

@@ -1,4 +1,4 @@
-import {IEffectData, IWeaponBaseData, UDamageType} from "../ICardData";
+import {IEffectData, IScaledWeaponBaseData, IWeaponBaseData, UDamageType} from "../ICardData";
 import AbstractCardCalculator, {INumericIconData} from "./AbstractCardCalculator";
 import {ICardBuilderType} from "../../Layouts/CardBuilder";
 import {AdsClickOutlined, CrisisAlertOutlined, WaterDropOutlined} from "@mui/icons-material";
@@ -32,7 +32,7 @@ class WeaponCardCalculator extends AbstractCardCalculator {
     protected invokeRecalculateData(char: ICharacterBaseData): void {
         if (this.cards.length > 0 && this.cards[0] != undefined) {
             const finalWeaponStats = GetFinalWeaponData(
-                this.getCardOfType("weapon.base") as IWeaponBaseData,
+                this.getCardOfType("weapon.base") as IScaledWeaponBaseData,
                 this.cards,
                 char
             )
@@ -49,7 +49,8 @@ class WeaponCardCalculator extends AbstractCardCalculator {
     getTitle(): string {
         const adj = this.getCardOfType("weapon.form")?.cardName.split(" ")[0] ?? "";
         const weapon = this.getCardOfType("weapon.base")?.cardName ?? "Unarmed";
-        return adj + " " + weapon;
+        const enchantment = (this.getCardOfType("weapon.base") as IScaledWeaponBaseData).enchantmentLevel;
+        return adj + " " + weapon + (enchantment > 0 ? ` +${enchantment}` : "")
     }
 
     getType(): string {
@@ -57,7 +58,7 @@ class WeaponCardCalculator extends AbstractCardCalculator {
     }
 
     public getCrit() {
-        return (this.getCardOfType("weapon.base") as IWeaponBaseData)?.specialCrit ?? null;
+        return (this.getCardOfType("weapon.base") as IScaledWeaponBaseData)?.specialCrit ?? null;
     }
 
     getFinalTopColor(): string {

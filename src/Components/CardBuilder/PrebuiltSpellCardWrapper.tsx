@@ -24,7 +24,6 @@ const PrebuiltSpellCardWrapper = ({
 
     useEffect(() => {
         if (spellCalc) {
-            console.log("FUCK YOU");
             _setSpellData(spellCalc);
         }
     }, [spellData]);

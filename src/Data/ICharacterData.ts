@@ -21,6 +21,11 @@ export interface ICharacterStats {
     endurance: IModifiable
 }
 
+export interface IPreparedCard {
+    cardId: string,
+    additionalData?: number
+}
+
 export interface ICharacterBaseData {
     characterName: string,
     characterLevel: number,
@@ -44,7 +49,7 @@ export interface ICharacterBaseData {
         hitBonus?: number,
         critBonus?: number,
     },
-    preparedCards: Array<string>,
+    preparedCards: Array<IPreparedCard>,
     preparedCommanderCards: Array<string>,
     createdSpells: Array<ICalculatedSpell>,
     createdWeapons: Array<ICalculatedWeapon>,
@@ -52,7 +57,10 @@ export interface ICharacterBaseData {
     currentWeapon: ICalculatedWeapon | null,
     currentArmor: IArmor | null,
     knownBaseSpells: Array<string>,
-    knownWeapons: Array<string>,
+    knownWeapons: Array<{
+        baseId: string,
+        enchantmentLevel: number
+    }>,
     skillPoints: ISkillPointObject,
     minionsKnownMetadata: Array<IMinionData>,
     minionsEquippedIds: Array<string>,
@@ -156,7 +164,10 @@ export interface ICalculatedSpell {
 
 export interface ICalculatedWeapon {
     customName?: string,
-    weaponBaseId: string,
+    weaponBaseData: {
+        baseId: string,
+        enchantmentLevel: number
+    },
     weaponCardsIds: Array<string>
 }
 

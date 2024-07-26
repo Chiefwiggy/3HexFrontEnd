@@ -40,7 +40,6 @@ const AttributeView = ({pivot}: IAttributeViewInput) => {
     }
 
     useEffect(() => {
-        console.log("pinged: ", healthPing);
         if (currentSheet) {
             setProgressHealth(Math.min(100, 100 * currentSheet.getBarCurrent("health") / currentSheet.getMaxBar("health")));
             setCurrentHealth(currentSheet.getBarCurrent("health"));
@@ -91,6 +90,7 @@ const AttributeView = ({pivot}: IAttributeViewInput) => {
                 <AttributeBar barName={"Health"} barColor={"health"} healFunction={handleHealAndUse(true)} damageFunction={handleDamage} takeFunction={handleHealAndUse(false)} currentAttr={currentHealth} currentMaxAttr={currentMaxHealth} progress={progressHealth} />
                 <AttributeBar barName={"Stamina"} barColor={"stamina"}  healFunction={handleHealAndUse(true)} damageFunction={handleDamage} takeFunction={handleHealAndUse(false)} currentAttr={currentStamina} currentMaxAttr={currentMaxStamina} progress={progressStamina} />
                 <AttributeBar barName={"Tether"} barColor={"tether"} healFunction={handleHealAndUse(true)} damageFunction={handleDamage} takeFunction={handleHealAndUse(false)} currentAttr={currentTether} currentMaxAttr={currentMaxTether} progress={progressTether} />
+
                 <Box
                     sx={{
                         display: 'flex',

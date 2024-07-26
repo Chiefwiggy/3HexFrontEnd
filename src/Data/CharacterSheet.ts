@@ -2,7 +2,7 @@ import {
     IAffinities, IArcanaKeys,
     ICalculatedSpell,
     ICalculatedWeapon,
-    ICharacterBaseData, ICharacterStats, IClassData,
+    ICharacterBaseData, ICharacterStats, IClassData, IPreparedCard,
     ISkillPointObject,
     UStance
 } from "./ICharacterData";
@@ -10,10 +10,10 @@ import {getSkillFormat, UStat} from "../Utils/Shorthand";
 import {StatChain} from "../Utils/GetFinalSpellData";
 import {
     ICommanderCardData,
-    ICommonCardData,
+    ICommonCardData, IScaledWeaponBaseData,
     ISpellBaseCardData,
     ISpellModifierCardData,
-    ISpellTargetCardData,
+    ISpellTargetCardData, IWeaponBaseData,
     UAffinity,
     UCharacterStat
 } from "./ICardData";
@@ -37,6 +37,7 @@ import AttributeBar from "../Components/Sheet/AttributeBar";
 import {waitFor} from "@testing-library/react";
 import affinitiesPanel from "../Components/ClassSelect/Affinities/AffinitiesPanel";
 import AbstractSheet from "./AbstractSheet";
+import {ConstructFinalWeapon} from "../Utils/ConstructFinalWeapon";
 
 export type AttributeBarType = "tether" | "stamina" | "health"
 export type DamageType = "physical" | "magical" | "raw" | "resistant"
@@ -142,14 +143,18 @@ class CharacterSheet extends AbstractSheet {
         this._ping();
     }
 
-    public setPreparedCards = (data: Array<string>) => {
-        this.data.preparedCards = data;
+    public setPreparedCards = (data: Array<IPreparedCard>) => {
+        this.data.preparedCards = data
         this._ping();
     }
 
     public setPreparedCommanderCards = (data: Array<string>) => {
         this.data.preparedCommanderCards = data;
         this._ping();
+    }
+
+    public getPreparedCardsIdList = () => {
+        return this.data.preparedCards.map(e => e.cardId);
     }
 
     public getPreparedCommanderCards = () => {
@@ -180,7 +185,7 @@ class CharacterSheet extends AbstractSheet {
         return data.reduce((pv, cv) => {
             if (!pv) return pv;
             if (cv != null) {
-                 return [...this.data.preparedCards, ...this.data.knownWeapons, ...this.data.knownBaseSpells, ...default_weapon_cards.map(e => e._id), ...default_spell_cards.map(e => e._id)].includes(cv._id);
+                 return [...this.data.preparedCards.map(e => e.cardId), ...this.data.knownWeapons.map(e => e.baseId), ...this.data.knownBaseSpells, ...default_weapon_cards.map(e => e._id), ...default_spell_cards.map(e => e._id)].includes(cv._id);
             }
             return pv;
         }, true)
@@ -341,10 +346,39 @@ class CharacterSheet extends AbstractSheet {
         }, 0)
         return this.data.classes.filter(e => e.classTier == highestTier).map(e => e.className).join(" • ")
     }
+    public getPreparedWeaponCards = () => {
+        if (this.allButDefaultCards) {
+            const weaponCards: Array<ICommonCardData> = [...this.allButDefaultCards.weapons.forms, ...this.allButDefaultCards.weapons.skills, ...this.allButDefaultCards.weapons.bases];
+            const filteredCards = weaponCards.filter(card => {
+                return this.getPreparedCardsIdList().includes(card._id)
+            })
+            return filteredCards.map(e => {
+                if (e.cardSubtype == "base") {
+                    const preparedStruct = this.data.preparedCards.find(prep => prep.cardId === e._id);
+                    console.log(preparedStruct);
+                    return ConstructFinalWeapon(e as IWeaponBaseData, preparedStruct?.additionalData ?? 0)
+                } else {
+                    return e;
+                }
+            })
+        }
+        return [];
+    }
 
-    // public hasClass(className: string) {
-    //     return this.data.classes.filter(clz => clz.className.toLowerCase() == className.toLowerCase()).length > 0;
-    // }
+    public GetPreparedWeaponBases = (): Array<IScaledWeaponBaseData> => {
+        if (this.allCards) {
+            return this.allCards.weapons.bases.map(base => {
+                const prepData = this.data.preparedCards.find(e => e.cardId === base._id);
+                try {
+                    return ConstructFinalWeapon(base, prepData?.additionalData ?? 0);
+                } catch (e) {
+                    return base as IScaledWeaponBaseData
+                }
+            })
+        }
+        return [];
+
+    }
 
 
     constructor(charData: ICharacterBaseData, api: IAPIContext, sendReady: React.Dispatch<React.SetStateAction<boolean>>, ping: React.Dispatch<React.SetStateAction<boolean>>, hping: React.Dispatch<React.SetStateAction<boolean>>, sping: React.Dispatch<SetStateAction<boolean>>) {
@@ -398,7 +432,6 @@ class CharacterSheet extends AbstractSheet {
     private _setAllCards = async() => {
         try {
             const gotCards = await this.API.CardAPI.GetCharacterCards(this.data._id);
-            console.log(gotCards);
             const apiCards: IAllCardsData = {spells: gotCards.spells, weapons: gotCards.weapons};
             this.allCards = apiCards;
             this.allButDefaultCards = JSON.parse(JSON.stringify(apiCards));
@@ -528,18 +561,14 @@ class CharacterSheet extends AbstractSheet {
     }
 
 
-    public refresh() {
-        this.healCharacter("stamina", this.getStaminaRefresh(), false);
-        this.healCharacter("tether", this.getTetherRefresh(), false);
-        this._hping();
-    }
+
 
     public getStaminaRefresh(): number {
         return this.data.characterStats.endurance.value + (this.data.bonuses?.staminaRefresh ?? 0);
     }
 
     public getTetherRefresh(): number {
-        return Math.floor(this.data.characterStats.mind.value / 4) + (this.data.bonuses?.tetherRefresh ?? 0);
+        return Math.floor(this.data.characterStats.mind.value / 2) + (this.data.bonuses?.tetherRefresh ?? 0);
     }
 
     public getEvadePDEF(): number {

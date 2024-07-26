@@ -1,5 +1,5 @@
 import React from 'react';
-import {ISpellBaseCardData, IWeaponBaseData, UDamageType} from "../../Data/ICardData";
+import {IScaledWeaponBaseData, ISpellBaseCardData, IWeaponBaseData, UDamageType} from "../../Data/ICardData";
 import GenericCardLayout, {ICardSendbackData} from "../../Layouts/GenericCardLayout";
 import {Box} from "@mui/material";
 import NumericIcon from "./NumericIcon";
@@ -15,7 +15,7 @@ import CritNumberBox from "../SmallComponents/CritNumberBox";
 import {createRangeString} from "../../Utils/helper_functions";
 
 interface IWeaponBaseCardInput {
-    cardData: IWeaponBaseData,
+    cardData: IScaledWeaponBaseData,
     sendBack: (cardData: ICardSendbackData) => void,
     isExpanded?: boolean,
     canToggleExpand?: boolean,
@@ -32,9 +32,9 @@ const WeaponBaseCard = ({
     canFavorite = true,
     showPrerequisites=false
 }: IWeaponBaseCardInput) => {
-
     return (
-        <GenericCardLayout cardData={cardData} sendBack={sendBack} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} canFavorite={canFavorite} overrideSubtitle={cardData.weaponType.toUpperCase()} showPrerequisites={showPrerequisites}>
+        <GenericCardLayout cardData={cardData} sendBack={sendBack} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} canFavorite={canFavorite} overrideSubtitle={cardData.weaponType.toUpperCase()} showPrerequisites={showPrerequisites}
+                           titleExtra={cardData.enchantmentLevel ? ("+" + cardData.enchantmentLevel) : ""}>
             <Box
                 sx={{
                     display: "grid",

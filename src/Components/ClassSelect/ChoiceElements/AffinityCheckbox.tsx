@@ -62,7 +62,6 @@ const AffinityCheckbox = ({
     //         e2.target.name = `cb-${choiceNo}`
     //         e2.target.checked = true;
     //         handleChangeOuter("deft")(e2);
-    //         console.log("banchan");
     //     }
     // }, []);
 
