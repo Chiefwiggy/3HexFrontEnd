@@ -18,8 +18,6 @@ const LoginPage: React.FC = () => {
   };
 
   const handleLogin = (): void => {
-    // Dummy function for handling login
-    console.log('Logging in with', { email, password });
     // Implement your login functionality here
       LoginUser(email, password);
   };
