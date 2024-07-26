@@ -57,14 +57,16 @@ export interface ICharacterBaseData {
     currentWeapon: ICalculatedWeapon | null,
     currentArmor: IArmor | null,
     knownBaseSpells: Array<string>,
-    knownWeapons: Array<{
-        baseId: string,
-        enchantmentLevel: number
-    }>,
+    knownWeapons: Array<IWeaponEnchantmentData>,
     skillPoints: ISkillPointObject,
     minionsKnownMetadata: Array<IMinionData>,
     minionsEquippedIds: Array<string>,
     _id: string
+}
+
+export interface IWeaponEnchantmentData {
+    baseId: string,
+    enchantmentLevel: number
 }
 
 export interface ISkillPointObject {

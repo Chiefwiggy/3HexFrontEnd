@@ -41,6 +41,9 @@ const NavigationBar = () => {
                     <Button onClick={handleNavigate("/compendium/affinities")}>
                         Affinities
                     </Button>
+                    <Button onClick={handleNavigate("/barracks")}>
+                        Barracks
+                    </Button>
 
                     <Box sx={{flexGrow: 1}}/>
                     {loggedIn ? (

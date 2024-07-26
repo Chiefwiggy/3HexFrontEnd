@@ -1,5 +1,6 @@
 import {createContext} from "react";
 import {IUserContext} from "./UserProvider";
+import {ICharacterBaseData} from "../../Data/ICharacterData";
 
 const UserContext = createContext<IUserContext>({
     SignupUser: (email: string, string: string) => {},
@@ -7,7 +8,7 @@ const UserContext = createContext<IUserContext>({
     LogoutUser: () => {},
     loggedIn: false,
     userPermissions: [""],
-    charactersOwned: [""]
+    charactersOwned: [] as Array<ICharacterBaseData>,
 } as IUserContext);
 
 export default UserContext;

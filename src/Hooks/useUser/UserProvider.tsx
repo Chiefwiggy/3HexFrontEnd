@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import {IUserData} from "../../Data/IUserData";
 import UserContext from "./UserContext";
-import Axios from 'axios'
+import Axios, {AxiosRequestConfig} from 'axios'
+import {ICharacterBaseData} from "../../Data/ICharacterData";
 
 export interface IUserContext {
     SignupUser: (email: string, password: string) => Promise<void>
@@ -9,7 +10,7 @@ export interface IUserContext {
     LogoutUser: () => void,
     loggedIn: boolean,
     userPermissions: Array<string>,
-    charactersOwned: Array<string>
+    charactersOwned: Array<ICharacterBaseData>
 }
 
 export interface IUserResponse {
@@ -27,10 +28,23 @@ export interface IUserResponse {
 
 const UserProvider = ({children}: any) => {
 
+    const GetAPIConfig = (): AxiosRequestConfig => {
+        return {
+            headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem("token")}`,
+                'Content-Type': 'application/json'
+            }
+        }
+    }
+
+    const apiUrl = process.env.REACT_APP_API_URL ?? 'http://localhost:3001';
+
     const [loggedIn, setLoggedIn] = useState(false);
     const [userPermissions, setUserPermissions] = useState<Array<string>>([]);
 
-    const [charactersOwned, setCharactersOwned] = useState<Array<string>>([]);
+    const [charactersOwnedIds, setCharactersOwnedIds] = useState<Array<string>>([]);
+
+    const [charactersOwned, setCharactersOwned] = useState<Array<ICharacterBaseData>>([]);
 
     useEffect(() => {
         if (sessionStorage.getItem("refresh") && sessionStorage.getItem("email")) {
@@ -42,16 +56,23 @@ const UserProvider = ({children}: any) => {
         sessionStorage.clear();
         setUserPermissions([]);
         setLoggedIn(false);
+        setCharactersOwnedIds([]);
         setCharactersOwned([]);
     }
 
-    const __SetLoginData = (data: IUserResponse) => {
+    const __SetLoginData = async(data: IUserResponse) => {
         sessionStorage.setItem("refresh", data.refresh);
         sessionStorage.setItem("email", data.response.email);
-        setCharactersOwned(data.response.characters_owned);
+        setCharactersOwnedIds(data.response.characters_owned);
         setUserPermissions(data.response.userPermissions);
         sessionStorage.setItem("token", data.token);
         setLoggedIn(true);
+        await Axios.get(apiUrl+"characters/getMine", GetAPIConfig()).then((resp) => {
+            setCharactersOwned(resp.data);
+        }).catch((e) => {
+            console.error(e);
+            return [];
+        })
     }
 
     const LoginUser = async (email: string, password: string) => {
@@ -60,8 +81,8 @@ const UserProvider = ({children}: any) => {
             email,
             password
         }
-        await Axios.post(process.env.REACT_APP_API_URL+"/auth/signin", data).then((resp) => {
-            __SetLoginData(resp.data);
+        await Axios.post(process.env.REACT_APP_API_URL+"/auth/signin", data).then(async(resp) => {
+            await __SetLoginData(resp.data);
         }).catch((e) => {
             console.error(e);
         })

@@ -18,7 +18,7 @@ export const ConstructFinalWeapon = (baseWeaponData: IWeaponBaseData, enchantmen
         damageType: baseWeaponData.damageType,
         effects: baseWeaponData.effects,
         enchantmentLevel: enchantment,
-        potency: ScaleChainNumeric(baseWeaponData.potency, enchantment),
+        potency: ScaleChainNumeric(baseWeaponData.potency, enchantment, false),
         prerequisites: baseWeaponData.prerequisites,
         skillRequirement: ScaleChainNumeric(baseWeaponData.skillRequirement, enchantment),
         specialCrit: ScaleChainNonNumeric(baseWeaponData.specialCrit, enchantment),
@@ -34,7 +34,7 @@ export const ConstructFinalWeapon = (baseWeaponData: IWeaponBaseData, enchantmen
 
 }
 
-export const ScaleChainNumeric = (scaleData: IScalingData<number>, enchantment: number) => {
+export const ScaleChainNumeric = (scaleData: IScalingData<number>, enchantment: number, doFloor = true) => {
     let finalValue = scaleData.baseValue;
     if (scaleData.scalingPer) {
         finalValue += scaleData.scalingPer * enchantment;
@@ -45,6 +45,9 @@ export const ScaleChainNumeric = (scaleData: IScalingData<number>, enchantment: 
                 finalValue += scaleData.breakpointBonuses[index]
             }
         })
+    }
+    if (doFloor) {
+        return Math.floor(finalValue);
     }
     return finalValue;
 }

@@ -3,7 +3,7 @@ import {
     IAttributeBars,
     ICalculatedSpell,
     ICalculatedWeapon,
-    ICharacterBaseData, ICharacterStats, IPreparedCard
+    ICharacterBaseData, ICharacterStats, IPreparedCard, IWeaponEnchantmentData
 } from "../Data/ICharacterData";
 import Axios, { AxiosRequestConfig } from 'axios'
 
@@ -108,6 +108,14 @@ class CharacterConnection {
             preparedCards: newData.preparedCards,
             currentSpell: newData.currentSpell,
             currentWeapon: newData.currentWeapon
+        }, this._getConfig()).then((resp) => {
+            console.log(resp);
+        })
+    }
+
+    public async UpdateWeaponsList(charID: string, weapons: Array<IWeaponEnchantmentData>) {
+        await Axios.put(this.GetRouteURL(`update/${charID}`), {
+            knownWeapons: weapons
         }, this._getConfig()).then((resp) => {
             console.log(resp);
         })

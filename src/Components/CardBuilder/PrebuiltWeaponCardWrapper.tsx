@@ -18,7 +18,7 @@ const PrebuiltWeaponCardWrapper = ({
     overrideWidth
 }: IPrebuiltWeaponCardWrapperInput) => {
 
-     const {currentSheet, isReady} = useCharacter();
+     const {currentSheet, isReady, charPing} = useCharacter();
 
     const [weaponCalc, setWeaponCalc] = useState<WeaponCardCalculator|null>(null);
 
@@ -39,7 +39,7 @@ const PrebuiltWeaponCardWrapper = ({
         if (currentSheet && weaponCalc) {
             _setWeaponData(weaponCalc);
         }
-    }, [isReady, weaponData]);
+    }, [isReady, weaponData, charPing]);
 
     const _setWeaponData = (calc: WeaponCardCalculator, timeout = 0) => {
         if (currentSheet && weaponData) {

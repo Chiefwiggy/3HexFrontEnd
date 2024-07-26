@@ -14,18 +14,16 @@ const CharacterSelectView = () => {
     const [allCharacters, setAllCharacters] = useState<Array<ICharacterBaseData>>([]);
 
     const {CharacterAPI} = useAPI();
-    const {loggedIn} = useUser();
+    const {loggedIn, charactersOwned} = useUser();
 
 
     useEffect(() => {
         if (loggedIn) {
-            (async () => {
-                setAllCharacters(await CharacterAPI.GetMyCharacters());
-            })()
+            setAllCharacters(charactersOwned)
         } else {
             setAllCharacters([]);
         }
-    }, [loggedIn]);
+    }, [charactersOwned]);
 
     const navigate = useNavigate();
 

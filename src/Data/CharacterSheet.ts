@@ -793,6 +793,10 @@ class CharacterSheet extends AbstractSheet {
         Promise.resolve(this.API.CharacterAPI.SetBars(this.data._id,this.data.attributeBars)).then().catch();
     }
 
+    public manualCharPing = () => {
+        this._ping();
+    }
+
 
 }
 

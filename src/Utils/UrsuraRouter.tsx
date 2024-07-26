@@ -12,6 +12,7 @@ import CreateUserPage from "../Pages/CreateUserPage";
 import ClassCompendiumPage from "../Pages/ClassCompendiumPage";
 import AffinityCompendiumPage from "../Pages/AffinityCompendiumPage";
 import SignupPage from "../Pages/SignupPage";
+import BarracksPage from "../Pages/BarracksPage";
 
 
 
@@ -53,6 +54,10 @@ const UrsuraRouter = createBrowserRouter([
             {
                 path: "/characters",
                 element: <CharacterPage />
+            },
+            {
+                path: "/barracks",
+                element: <BarracksPage />
             },
             {
                 path: "/login",

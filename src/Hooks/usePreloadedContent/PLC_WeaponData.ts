@@ -19,10 +19,15 @@ class PLC_WeaponData {
         return this.baseWeaponCards.find(e => e._id === cardId);
     }
 
+    public GetAllStandardWeapons() {
+        return this.baseWeaponCards.filter(weapon => weapon.prerequisites.length == 0)
+    }
+
     public GetCardPreparedStruct(prepStruct: Array<{
         baseId: string,
         enchantmentLevel: number
     }>): Array<IScaledWeaponBaseData> {
+        console.log(prepStruct);
         return prepStruct.map(({baseId, enchantmentLevel}) => {
             const card = this.GetCardById(baseId);
             if (card) {
