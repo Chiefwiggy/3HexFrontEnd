@@ -34,14 +34,14 @@ const CalculatedCard = ({
     const [validCard, setValidCard] = useState<boolean>(true);
 
     useEffect(() => {
-        if (currentSheet) {
+        if (currentSheet && isReady) {
             cardCalculator.sendCurrentCards(depArray, currentSheet.data);
             setCardTitle(overrideName != "" ? overrideName : cardCalculator.getTitle())
             setEffectArray(cardCalculator.getEffectList());
             setValidCard(currentSheet.areAllCardsPrepared(cardCalculator.getCards()))
 
         }
-    }, [depArray, charPing, statPing, cancelPing]);
+    }, [depArray, charPing, statPing, cancelPing, isReady]);
 
     return isReady ? (
         <Card
