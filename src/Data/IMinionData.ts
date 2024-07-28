@@ -1,9 +1,11 @@
 import {IAttributeBar, ICalculatedSpell, ICalculatedWeapon} from "./ICharacterData";
 import {IModifiable} from "./GenericData";
 import {IArmor} from "./IArmorData";
+import {ICommonCardData} from "./ICardData";
 
 
 export interface IMinionData {
+    _id: string,
     minionName: string,
     leadershipRequirement: number,
     attributeBars: {
@@ -34,8 +36,14 @@ export interface IMinionData {
     currentWeapon: ICalculatedWeapon|null,
     isAdjutant: boolean,
     currentArmor: IArmor|null,
+    cardData: Array<ICommonCardData>
     bonuses: {
         staminaRefresh?: number,
-        tetherRefresh?: number
+        tetherRefresh?: number,
+        maxHealth?: number,
+        maxStamina?: number,
+        maxTether?: number,
+        hitBonus?: number,
+        critBonus?: number
     }
 }

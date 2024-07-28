@@ -91,6 +91,17 @@ class CharacterConnection {
         })
     }
 
+    public async UpdateMinionsPrepared(charID: string, minionData: Array<{
+        minionId: string,
+        isEquipped: boolean
+    }>) {
+        await Axios.put(this.GetRouteURL(`update/${charID}`), {
+            minionsOwned: minionData
+        }, this._getConfig()).then((resp) => {
+            console.log(resp);
+        })
+    }
+
     public async SaveStats(charID: string, newStats: ICharacterStats) {
         await Axios.put(this.GetRouteURL(`update/${charID}`), {
             characterStats: newStats

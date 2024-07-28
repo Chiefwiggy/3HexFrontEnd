@@ -29,6 +29,10 @@ class WeaponCardCalculator extends AbstractCardCalculator {
         ]));
     }
 
+    public canThrow(): boolean {
+        return (this.getCardOfType("weapon.base") as IScaledWeaponBaseData)?.canThrow ?? false;
+    }
+
     protected invokeRecalculateData(char: ICharacterBaseData): void {
         if (this.cards.length > 0 && this.cards[0] != undefined) {
             const finalWeaponStats = GetFinalWeaponData(
@@ -38,6 +42,8 @@ class WeaponCardCalculator extends AbstractCardCalculator {
             )
             this.currentPower = finalWeaponStats.totalPower;
             this.currentRange = finalWeaponStats.range;
+            this.thrownRange = finalWeaponStats.thrownRange;
+
             this.updateVal("toHit", getSkillFormat(finalWeaponStats.toHit));
             this.updateVal("critDamage", finalWeaponStats.crit.toString());
         }

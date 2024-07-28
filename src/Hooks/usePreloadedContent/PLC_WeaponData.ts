@@ -27,7 +27,6 @@ class PLC_WeaponData {
         baseId: string,
         enchantmentLevel: number
     }>): Array<IScaledWeaponBaseData> {
-        console.log(prepStruct);
         return prepStruct.map(({baseId, enchantmentLevel}) => {
             const card = this.GetCardById(baseId);
             if (card) {

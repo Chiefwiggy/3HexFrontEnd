@@ -291,7 +291,13 @@ const AttributeBar = ({
             >
                 <Typography variant={isSmall ? "body1" : "h6"} component="div">{barName}</Typography>
 
-                <Typography>{currentAttr} / {currentMaxAttr} </Typography>
+                <Typography sx={
+                    isSmall ?
+                    {
+                        fontSize: "14px"
+                    } : {}
+                }>
+                    {currentAttr} / {currentMaxAttr} </Typography>
             </Box>
 
             <ChangeBarDataDialog

@@ -8,6 +8,7 @@ import EquipmentConnection from "../../Connections/EquipmentConnection";
 import AbilityConnection from "../../Connections/AbilityConnection";
 import UserConnection from "../../Connections/UserConnection";
 import ClassConnection from "../../Connections/ClassConnection";
+import MinionConnection from "../../Connections/MinionConnection";
 
 interface IAPIProviderInput {
     children: any
@@ -20,6 +21,7 @@ export interface IAPIContext {
     AbilityAPI: AbilityConnection,
     UserAPI: UserConnection,
     ClassAPI: ClassConnection,
+    MinionAPI: MinionConnection
 }
 
 const APIProvider = ({children}: IAPIProviderInput) => {
@@ -48,6 +50,8 @@ const APIProvider = ({children}: IAPIProviderInput) => {
 
     const [ClassAPI, setClassAPI] = useState<ClassConnection>(new ClassConnection(apiURL, GetAPIConfig));
 
+    const [MinionAPI, setMinionAPI] = useState<MinionConnection>(new MinionConnection(apiURL, GetAPIConfig));
+
     return (
         <APIContext.Provider value={{
             CharacterAPI,
@@ -55,7 +59,8 @@ const APIProvider = ({children}: IAPIProviderInput) => {
             EquipmentAPI,
             AbilityAPI,
             UserAPI,
-            ClassAPI
+            ClassAPI,
+            MinionAPI,
         }}>
             {children}
         </APIContext.Provider>

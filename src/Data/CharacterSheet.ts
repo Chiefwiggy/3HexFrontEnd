@@ -38,6 +38,8 @@ import {waitFor} from "@testing-library/react";
 import affinitiesPanel from "../Components/ClassSelect/Affinities/AffinitiesPanel";
 import AbstractSheet from "./AbstractSheet";
 import {ConstructFinalWeapon} from "../Utils/ConstructFinalWeapon";
+import MinionSheet from "./MinionSheet";
+import {IMinionData} from "./IMinionData";
 
 export type AttributeBarType = "tether" | "stamina" | "health"
 export type DamageType = "physical" | "magical" | "raw" | "resistant"
@@ -65,13 +67,14 @@ class CharacterSheet extends AbstractSheet {
     public currentAttack: any
     public currentAffinities: IAffinities
     public currentArcana: IArcanaKeys
-    private API: IAPIContext
+
     public currentArmor: IArmor | null = null;
-    public weightPenalty: number = 0;
+
     public allCards: IAllCardsData | null = null;
     public allButDefaultCards: IAllCardsData | null = null;
     public actionPoints = 3;
     public commanderCards: Array<ICommanderCardData> = [];
+    public minionData: Array<MinionSheet> = [];
 
     public spellCalculatorTypes: Array<ICardBuilderType> = [
         {
@@ -177,7 +180,10 @@ class CharacterSheet extends AbstractSheet {
                 return card.effects
             }),
             prerequisites: [],
-            _id: ""
+            _id: "",
+            minionSlots: this.getPreparedCommanderCards().reduce((pv, card) => {
+                return pv + (card.minionSlots ?? 0);
+            }, 0)
         }
     }
 
@@ -268,11 +274,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public isSkillCapped = (skillName: string, atCapReturnFalse = false) => {
-        const config = skill_config[skillName.toLowerCase() as keyof ISkillConfig] as ISkillItemConfig;
-
-        const total = config.attr.reduce((pv, cv) => {
-            return pv + this.getStat(cv as UStat);
-        }, 0)
+        const total = this.getCap(skillName);
 
         const pts = this.data.skillPoints[skillName.toLowerCase() as keyof ISkillPointObject] as number;
 
@@ -280,6 +282,14 @@ class CharacterSheet extends AbstractSheet {
             return pts > total;
         }
         return pts >= total;
+    }
+
+    public getCap = (skillName: string) => {
+        const config = skill_config[skillName.toLowerCase() as keyof ISkillConfig] as ISkillItemConfig;
+
+        return config.attr.reduce((pv, cv) => {
+            return pv + this.getStat(cv as UStat);
+        }, 0)
     }
 
     public getSkillBreakdown = (skillName: string): IDefenseBreakdown => {
@@ -382,7 +392,7 @@ class CharacterSheet extends AbstractSheet {
 
 
     constructor(charData: ICharacterBaseData, api: IAPIContext, sendReady: React.Dispatch<React.SetStateAction<boolean>>, ping: React.Dispatch<React.SetStateAction<boolean>>, hping: React.Dispatch<React.SetStateAction<boolean>>, sping: React.Dispatch<SetStateAction<boolean>>) {
-        super(ping, hping, sping);
+        super(api, ping, hping, sping);
         this.sendReadyFn = sendReady;
         sendReady(false);
         this.data = charData;
@@ -420,7 +430,8 @@ class CharacterSheet extends AbstractSheet {
         try {
             await this._setAllAbilities();
             await this._setAllCards();
-            if (this.allCards != null) {
+            await this._setAllMinions();
+            if (this.allCards != null && this.minionData.length === this.data.minionsOwned.length) {
                 this.sendReadyFn(true);
             }
         } catch (error) {
@@ -445,6 +456,27 @@ class CharacterSheet extends AbstractSheet {
         } catch (error) {
             console.error('Error setting all cards:', error);
         }
+    }
+
+    private _setAllMinions = async() => {
+        try {
+            if (this.data.minionsOwned.length > 0) {
+                const minionRawData = await this.API.MinionAPI.GetMinionData(this.data.minionsOwned.map(e => e.minionId));
+                this.minionData = minionRawData.map((md: IMinionData, index: number) => {
+                    return new MinionSheet(md, this.API, this.data.minionsOwned[index].isEquipped)
+                })
+            }
+
+        } catch (e) {
+            console.error("minion set error", e);
+        }
+    }
+
+    public refresh() {
+        for (const minion of this.minionData) {
+            minion.refresh();
+        }
+        super.refresh();
     }
 
     private _setAllAbilities = async() => {
@@ -794,6 +826,21 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public manualCharPing = () => {
+        this._ping();
+    }
+
+    public async InvokeUpdateMinionPreparation() {
+        const minionMetadata: Array<{
+            isEquipped: boolean,
+            minionId: string
+        }> = this.minionData.map(minionDatum => {
+            return {
+                isEquipped: minionDatum.isPrepared,
+                minionId: minionDatum.data._id
+            }
+        })
+        this.data.minionsOwned = minionMetadata;
+        await this.API.CharacterAPI.UpdateMinionsPrepared(this.data._id, minionMetadata);
         this._ping();
     }
 

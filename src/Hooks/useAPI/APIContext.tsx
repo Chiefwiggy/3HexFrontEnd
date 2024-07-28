@@ -6,6 +6,7 @@ import EquipmentConnection from "../../Connections/EquipmentConnection";
 import AbilityConnection from "../../Connections/AbilityConnection";
 import UserConnection from "../../Connections/UserConnection";
 import ClassConnection from "../../Connections/ClassConnection";
+import MinionConnection from "../../Connections/MinionConnection";
 
 export const APIContext = createContext<IAPIContext>({
     CharacterAPI: new CharacterConnection("", () => {
@@ -24,6 +25,9 @@ export const APIContext = createContext<IAPIContext>({
         return {}
     }),
     ClassAPI: new ClassConnection("", () =>{
+        return {}
+    }),
+    MinionAPI: new MinionConnection("", () => {
         return {}
     })
 })

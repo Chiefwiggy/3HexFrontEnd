@@ -128,8 +128,20 @@ const AttributeView = ({pivot}: IAttributeViewInput) => {
                         content={
                             <Box>
                                 <Typography>Would you like to refresh? You will regain the following: </Typography>
+                                <Typography variant={"h6"}>{currentSheet.data.characterName}</Typography>
                                 <Typography> Regain {currentSheet.getStaminaRefresh()} Stamina. </Typography>
                                 <Typography> Regain {currentSheet.getTetherRefresh()} Tether. </Typography>
+                                {
+                                    currentSheet.minionData.map(minion => {
+                                        return (
+                                            <Box key={minion.data._id}>
+                                                <Typography variant={"h6"}>{minion.data.minionName}</Typography>
+                                                <Typography> Regain {minion.getStaminaRefresh()} Stamina. </Typography>
+                                                <Typography> Regain {minion.getTetherRefresh()} Tether. </Typography>
+                                            </Box>
+                                        )
+                                    })
+                                }
                             </Box>
                         }
                     />

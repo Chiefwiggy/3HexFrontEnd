@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Alert, Box, Button} from "@mui/material";
+import {Alert, Box, Button, useMediaQuery} from "@mui/material";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
 import usePreloadedContent from "../../Hooks/usePreloadedContent/usePreloadedContent";
 import WeaponEnchantmentCard from "../Equipment/WeaponEnchantmentCard";
@@ -37,6 +37,8 @@ const EquipmentTab = ({}: IEquipmentTabInput) => {
     }
 
     const {CharacterAPI} = useAPI();
+
+    const isTablet = useMediaQuery("(max-width: 1400px)");
 
     const saveData = async() => {
         if (currentSheet) {
@@ -79,7 +81,7 @@ const EquipmentTab = ({}: IEquipmentTabInput) => {
             <Box
                 sx={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(2, 1fr)",
+                    gridTemplateColumns: isTablet ? "1fr" : "repeat(2, 1fr)",
                     gap: "12px"
                 }}
             >

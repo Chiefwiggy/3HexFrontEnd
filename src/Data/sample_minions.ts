@@ -3,6 +3,7 @@ import {IMinionData} from "./IMinionData";
 
 export const sample_minions: Array<IMinionData> = [
     {
+        _id: "___sampleMinion",
         minionName: "Frog Brute",
         leadershipRequirement: 1,
         attributeBars: {
@@ -66,12 +67,21 @@ export const sample_minions: Array<IMinionData> = [
             }
         },
         currentSpell: null,
-        currentWeapon: null,
+        currentWeapon: {
+            weaponBaseData: {
+              baseId: "66943f29d0853b84ce4a3f4e",
+              enchantmentLevel: 0
+            },
+            weaponCardsIds: [
+              "___defaultWeaponForm"
+            ],
+        },
         bonuses: {
             staminaRefresh: 0,
             tetherRefresh: 0
         },
         currentArmor: null,
+        cardData: [],
         isAdjutant: false
     }
 ]

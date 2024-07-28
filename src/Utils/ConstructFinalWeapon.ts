@@ -9,7 +9,7 @@ export const ConstructFinalWeapon = (baseWeaponData: IWeaponBaseData, enchantmen
         baseCrit: ScaleChainNumeric(baseWeaponData.baseCrit, enchantment),
         baseHit: ScaleChainNumeric(baseWeaponData.baseHit, enchantment),
         basePower: ScaleChainNumeric(baseWeaponData.basePower, enchantment),
-        baseRange: {isMelee: false, max: ScaleChainNumeric(baseWeaponData.baseRange.max, enchantment), min: ScaleChainNumeric(baseWeaponData.baseRange.min, enchantment)},
+        baseRange: {isMelee: baseWeaponData.baseRange.isMelee, max: ScaleChainNumeric(baseWeaponData.baseRange.max, enchantment), min: ScaleChainNumeric(baseWeaponData.baseRange.min, enchantment)},
         canThrow: ScaleChainNonNumeric(baseWeaponData.canThrow, enchantment),
         cardName: baseWeaponData.cardName,
         cardSubtype: baseWeaponData.cardSubtype,
@@ -24,12 +24,11 @@ export const ConstructFinalWeapon = (baseWeaponData: IWeaponBaseData, enchantmen
         specialCrit: ScaleChainNonNumeric(baseWeaponData.specialCrit, enchantment),
         staminaCost: ScaleChainNumeric(baseWeaponData.staminaCost, enchantment),
         tetherCost: ScaleChainNumeric(baseWeaponData.tetherCost, enchantment),
-        thrownRange: {isMelee: false, max: ScaleChainNumeric(baseWeaponData.thrownRange.max, enchantment), min: ScaleChainNumeric(baseWeaponData.thrownRange.min, enchantment)},
+        thrownRange: {isMelee: baseWeaponData.thrownRange.isMelee, max: ScaleChainNumeric(baseWeaponData.thrownRange.max, enchantment), min: ScaleChainNumeric(baseWeaponData.thrownRange.min, enchantment)},
         weaponClass: baseWeaponData.weaponClass,
         weaponTags: baseWeaponData.weaponTags,
         weaponType: baseWeaponData.weaponType
     }
-    console.log(a);
     return a;
 
 }

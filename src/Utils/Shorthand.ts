@@ -2,7 +2,7 @@ import {UDamageType} from "../Data/ICardData";
 
 
 export type UStat = "might" | "agility" | "skill" | "awareness" | "vitality" | "knowledge" | "mind" | "presence" | "authority" | "endurance"
-export const getStatShorthand = (stat: UStat | "none" | "luck"): string => {
+export const getStatShorthand = (stat: UStat | "none" | "luck" | "command"): string => {
     switch (stat) {
         case "might":
             return "mht"
@@ -22,6 +22,8 @@ export const getStatShorthand = (stat: UStat | "none" | "luck"): string => {
             return "pre"
         case "authority":
             return "aut"
+        case "command":
+            return "cmd";
         case "endurance":
             return "end"
         case "luck":

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Box, IconButton, TableCell, Typography} from "@mui/material";
+import {Box, IconButton, TableCell, Typography, useMediaQuery} from "@mui/material";
 import {getSkillFormat} from "../../Utils/Shorthand";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
 import DefensiveStatPopover from "../Defenses/DefensiveStatPopover";
@@ -19,6 +19,8 @@ const SkillCell = ({
 }: ISkillCellInput) => {
 
     const {currentSheet, charPing, cancelPing, isInEditMode, statPing} = useCharacter();
+
+    const showPoints = useMediaQuery("(min-width: 1360px)");
 
     useEffect(() => {
         if (currentSheet) {
@@ -91,7 +93,7 @@ const SkillCell = ({
                                     <AddCircleOutlined />
                                 </IconButton>
 
-                                <Typography>{currentSheet.data.skillPoints[skillName.toLowerCase() as keyof ISkillPointObject]} pts.</Typography>
+                                <Typography variant={"body2"}>{currentSheet.data.skillPoints[skillName.toLowerCase() as keyof ISkillPointObject]} / {currentSheet.getCap(skillName.toLowerCase() as keyof ISkillPointObject)} {showPoints ? "pts." : ""}</Typography>
                             </Box>
                         </>
                         :

@@ -1,7 +1,7 @@
 import React from 'react';
 import {IScaledWeaponBaseData, ISpellBaseCardData, IWeaponBaseData, UDamageType} from "../../Data/ICardData";
 import GenericCardLayout, {ICardSendbackData} from "../../Layouts/GenericCardLayout";
-import {Box} from "@mui/material";
+import {Box, Typography} from "@mui/material";
 import NumericIcon from "./NumericIcon";
 import {
     AdsClickOutlined, BackHandOutlined,
@@ -62,6 +62,13 @@ const WeaponBaseCard = ({
                 <CritNumberBox value={cardData.specialCrit.d5}/>
                 <CritNumberBox value={cardData.specialCrit.d6}/>
             </Box>
+            {
+                cardData.canThrow ?
+                    <Box>
+                        <Typography variant="body2" color="textSecondary">throw: {createRangeString(cardData.thrownRange)}</Typography>
+                    </Box>
+                    :<></>
+            }
         </GenericCardLayout>
     )
 }

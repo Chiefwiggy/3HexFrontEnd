@@ -31,6 +31,11 @@ export interface ITotalWeaponStats {
         min: number,
         max: number,
         isMelee: boolean
+    },
+    thrownRange: {
+        min: number,
+        max: number,
+        isMelee: boolean
     }
 
 }
@@ -103,7 +108,14 @@ export const GetFinalWeaponData = (weaponBase: IScaledWeaponBaseData, allCards: 
     const minRangeFinal = StatChain(minRange, allCards.map(c => c?.fullRangeMod));
     const maxRangeFinal = StatChain(maxRange, allCards.map(c => c?.fullRangeMod));
 
+    const minThrownRange = StatChain(weaponBase.thrownRange.min, allCards.map(c => c?.minRangeMod));
+    const maxThrownRange = StatChain(weaponBase.thrownRange.max, allCards.map(c => c?.maxRangeMod));
+    const minThrownRangeFinal = StatChain(minThrownRange, allCards.map(c => c?.fullRangeMod));
+    const maxThrownRangeFinal = StatChain(maxThrownRange, allCards.map(c => c?.fullRangeMod));
+
     const isMelee = weaponBase.baseRange.isMelee;
+
+    const isThrownMelee = weaponBase.thrownRange.isMelee
 
     const finalBaseCrit = StatChain(weaponBase.baseCrit, allCards.map(c => c?.baseCritMod));
     const finalCrit = StatChain(char.characterStats.skill.value + finalBaseCrit + (char.bonuses?.critBonus ?? 0), allCards.map(c => c?.critMod));
@@ -119,6 +131,11 @@ export const GetFinalWeaponData = (weaponBase: IScaledWeaponBaseData, allCards: 
             isMelee: isMelee,
             max: maxRangeFinal,
             min: minRangeFinal
+        },
+        thrownRange: {
+            max: maxThrownRangeFinal,
+            min: minThrownRangeFinal,
+            isMelee: isThrownMelee
         },
         toHit: finalHitMod,
         totalPower: finalPower

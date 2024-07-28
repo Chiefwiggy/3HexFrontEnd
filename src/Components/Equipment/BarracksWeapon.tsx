@@ -53,7 +53,6 @@ const BarracksWeapon = ({
     const handleSendback = (cardData: ICardSendbackData) => {
         if (loggedIn) {
             setDialogOpen(true);
-            console.log(cardData);
         }
     }
 

@@ -3,6 +3,7 @@ import React, {SetStateAction} from "react";
 import {UStance} from "./ICharacterData";
 import {IAPIContext} from "../Hooks/useAPI/APIProvider";
 import {UDamageType} from "./ICardData";
+import {IDefenseBreakdown} from "./IDefenses";
 
 
 abstract class AbstractSheet {
@@ -14,14 +15,17 @@ abstract class AbstractSheet {
     private readonly updateCharacter: React.Dispatch<React.SetStateAction<boolean>>|undefined;
     private readonly updateHealth: React.Dispatch<React.SetStateAction<boolean>>|undefined
     private readonly updateStat: React.Dispatch<React.SetStateAction<boolean>>|undefined;
+    protected API: IAPIContext
+    public weightPenalty: number = 0;
 
     public currentStance: UStance
 
-    protected constructor( ping: React.Dispatch<React.SetStateAction<boolean>>|undefined, hping: React.Dispatch<React.SetStateAction<boolean>>|undefined, sping: React.Dispatch<SetStateAction<boolean>>|undefined) {
+    protected constructor( api: IAPIContext, ping: React.Dispatch<React.SetStateAction<boolean>>|undefined, hping: React.Dispatch<React.SetStateAction<boolean>>|undefined, sping: React.Dispatch<SetStateAction<boolean>>|undefined) {
         this.updateCharacter = ping;
         this.updateHealth = hping;
         this.updateStat = sping;
         this.currentStance = "evade";
+        this.API = api;
     }
 
 
@@ -42,6 +46,17 @@ abstract class AbstractSheet {
     public abstract getBlockPDEF(): number;
     public abstract getEvadeMDEF(): number;
     public abstract getBlockMDEF(): number;
+    public abstract getEvadeDodge(): number;
+    public abstract getBlockDodge(): number;
+
+    public abstract getEvadePDEFBreakdown(): IDefenseBreakdown;
+    public abstract getEvadeMDEFBreakdown(): IDefenseBreakdown;
+    public abstract getBlockPDEFBreakdown(): IDefenseBreakdown;
+    public abstract getBlockMDEFBreakdown(): IDefenseBreakdown;
+    public abstract getEvadeDodgeBreakdown(): IDefenseBreakdown;
+    public abstract getBlockDodgeBreakdown(): IDefenseBreakdown;
+
+    public abstract getLevel(): number
 
     public refresh() {
         this.healCharacter("stamina", this.getStaminaRefresh(), false);
@@ -181,6 +196,10 @@ abstract class AbstractSheet {
     }
     public getMDEF(): number {
         return this.currentStance == 'evade' ? this.getEvadeMDEF() : this.getBlockMDEF();
+    }
+
+    public getDodge(): number {
+        return this.currentStance == "evade" ? this.getEvadeDodge() : this.getBlockDodge();
     }
 
 

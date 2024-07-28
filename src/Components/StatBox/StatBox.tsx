@@ -80,7 +80,7 @@ const StatBox = ({
                     flexDirection: "column",
                     justifyContent: "start",
                     alignItems: "center",
-                    padding: 2,
+                    padding: 0.5,
                 }}
             >
                 <Typography variant={"h6"}>{capitalize(stat)}</Typography>

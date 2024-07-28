@@ -59,8 +59,10 @@ export interface ICharacterBaseData {
     knownBaseSpells: Array<string>,
     knownWeapons: Array<IWeaponEnchantmentData>,
     skillPoints: ISkillPointObject,
-    minionsKnownMetadata: Array<IMinionData>,
-    minionsEquippedIds: Array<string>,
+    minionsOwned: Array<{
+        minionId: string,
+        isEquipped: boolean
+    }>
     _id: string
 }
 

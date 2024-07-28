@@ -8,15 +8,17 @@ import DefensiveStatPopover from "../Components/Defenses/DefensiveStatPopover";
 import DefenseWidget from "../Components/Defenses/DefenseWidget";
 
 const DefensesView = () => {
-    return (
+
+    const {currentSheet} = useCharacter();
+    return currentSheet ? (
         <Box
             sx={{
                 paddingTop: 2
             }}
         >
-            <DefenseWidget />
+            <DefenseWidget sheet={currentSheet}/>
         </Box>
-    )
+    ) : <></>
 }
 
 export default DefensesView;

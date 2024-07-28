@@ -1,25 +1,32 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Box, Tab, Tabs} from "@mui/material";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
 import ClickPopup from "../Generic/ClickPopup";
 import DefensiveStatPopover from "./DefensiveStatPopover";
 import {getSkillFormat} from "../../Utils/Shorthand";
 import GrayBox from "./GrayBox";
+import AbstractSheet from "../../Data/AbstractSheet";
 
-const DefenseWidget = () => {
+interface IDefenseWidgetInput {
+    sheet: AbstractSheet
+}
+const DefenseWidget = ({
+    sheet
+}: IDefenseWidgetInput) => {
 
-    const {currentSheet} = useCharacter();
 
-    const [currentTab, setCurrentTab] = React.useState(currentSheet?.getStanceIndex() ?? 0);
+    useEffect(() => {
+        setCurrentTab(sheet.getStanceIndex() ?? 0)
+    }, [sheet]);
+
+    const [currentTab, setCurrentTab] = React.useState(sheet.getStanceIndex() ?? 0);
 
     const handleTabChange = (event: React.SyntheticEvent, value: number) => {
         setCurrentTab(value);
-        if (currentSheet) {
-            currentSheet.setStance(value);
-        }
+        sheet.setStance(value);
     }
 
-    return currentSheet ? (
+    return sheet ? (
         <Box
             sx={{
                 display: 'flex',
@@ -50,7 +57,7 @@ const DefenseWidget = () => {
                 <ClickPopup
                     clickElement={
                         <DefensiveStatPopover
-                            breakdown={currentSheet.getEvadePDEFBreakdown()}
+                            breakdown={sheet.getEvadePDEFBreakdown()}
                         />
                     }
                     anchorOrigin={{
@@ -63,13 +70,13 @@ const DefenseWidget = () => {
                     }}
                 >
                     <GrayBox index={0} currentTab={currentTab}>
-                        {currentSheet.getEvadePDEF()}
+                        {sheet.getEvadePDEF()}
                     </GrayBox>
                 </ClickPopup>
                 <ClickPopup
                     clickElement={
                         <DefensiveStatPopover
-                            breakdown={currentSheet.getBlockPDEFBreakdown()}
+                            breakdown={sheet.getBlockPDEFBreakdown()}
                         />
                     }
                     anchorOrigin={{
@@ -82,7 +89,7 @@ const DefenseWidget = () => {
                     }}
                 >
                     <GrayBox index={1} currentTab={currentTab}>
-                        {currentSheet.getBlockPDEF()}
+                        {sheet.getBlockPDEF()}
                     </GrayBox>
                 </ClickPopup>
             </Box>
@@ -99,7 +106,7 @@ const DefenseWidget = () => {
                 <ClickPopup
                     clickElement={
                         <DefensiveStatPopover
-                            breakdown={currentSheet.getEvadeMDEFBreakdown()}
+                            breakdown={sheet.getEvadeMDEFBreakdown()}
                         />
                     }
                     anchorOrigin={{
@@ -112,13 +119,13 @@ const DefenseWidget = () => {
                     }}
                 >
                     <GrayBox index={0} currentTab={currentTab}>
-                        {currentSheet.getEvadeMDEF()}
+                        {sheet.getEvadeMDEF()}
                     </GrayBox>
                 </ClickPopup>
                 <ClickPopup
                     clickElement={
                         <DefensiveStatPopover
-                            breakdown={currentSheet.getBlockMDEFBreakdown()}
+                            breakdown={sheet.getBlockMDEFBreakdown()}
                         />
                     }
                     anchorOrigin={{
@@ -131,7 +138,7 @@ const DefenseWidget = () => {
                     }}
                 >
                     <GrayBox index={1} currentTab={currentTab}>
-                        {currentSheet.getBlockMDEF()}
+                        {sheet.getBlockMDEF()}
                     </GrayBox>
                 </ClickPopup>
             </Box>
@@ -148,7 +155,7 @@ const DefenseWidget = () => {
                 <ClickPopup
                     clickElement={
                         <DefensiveStatPopover
-                            breakdown={currentSheet.getEvadeDodgeBreakdown()}
+                            breakdown={sheet.getEvadeDodgeBreakdown()}
                         />
                     }
                     anchorOrigin={{
@@ -161,13 +168,13 @@ const DefenseWidget = () => {
                     }}
                 >
                     <GrayBox index={0} currentTab={currentTab}>
-                        {getSkillFormat(currentSheet.getEvadeDodge(), false)}
+                        {getSkillFormat(sheet.getEvadeDodge(), false)}
                     </GrayBox>
                 </ClickPopup>
                 <ClickPopup
                     clickElement={
                         <DefensiveStatPopover
-                            breakdown={currentSheet.getBlockDodgeBreakdown()}
+                            breakdown={sheet.getBlockDodgeBreakdown()}
                         />
                     }
                     anchorOrigin={{
@@ -180,7 +187,7 @@ const DefenseWidget = () => {
                     }}
                 >
                     <GrayBox index={1} currentTab={currentTab}>
-                        {getSkillFormat(currentSheet.getBlockDodge(), false)}
+                        {getSkillFormat(sheet.getBlockDodge(), false)}
                     </GrayBox>
                 </ClickPopup>
             </Box>

@@ -25,6 +25,7 @@ abstract class AbstractCardCalculator {
     protected cards: Array<ICommonCardData|null>
     protected cardTypes: Array<ICardBuilderType>
     protected currentRange: IRangeData;
+    protected thrownRange: IRangeData;
     protected currentIcons: Map<string, INumericIconData>;
 
     protected currentPower;
@@ -35,6 +36,11 @@ abstract class AbstractCardCalculator {
             min: 0,
             max: 1,
             isMelee: true
+        }
+        this.thrownRange = {
+            min: 0,
+            max: 1,
+            isMelee: false
         }
         this.currentIcons = initialIcons;
         this.currentPower = 0;
@@ -60,6 +66,9 @@ abstract class AbstractCardCalculator {
         d5: UCritDie,
         d6: UCritDie
     } | null;
+    public canThrow(): boolean {
+        return false
+    }
 
     protected abstract sortEffects(a: IEffectData, b: IEffectData): number;
 
@@ -80,6 +89,10 @@ abstract class AbstractCardCalculator {
 
     public getFinalRange(): IRangeData  {
         return this.currentRange;
+    }
+
+    public getThrownRange(): IRangeData {
+        return this.thrownRange;
     }
 
     public getFinalIcons(): Array<INumericIconExport> {

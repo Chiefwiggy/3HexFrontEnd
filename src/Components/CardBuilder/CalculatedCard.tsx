@@ -115,6 +115,13 @@ const CalculatedCard = ({
                         :
                         <></>
                 }
+                {
+                    cardCalculator.canThrow() ?
+                    <Box>
+                        <Typography variant="body2" color="textSecondary">throw: {createRangeString(cardCalculator.getThrownRange())}</Typography>
+                    </Box>
+                    :<></>
+                }
 
                 <br/>
                 <Box
