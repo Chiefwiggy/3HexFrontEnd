@@ -19,6 +19,7 @@ import SpellTargetCard from "../Cards/SpellTargetCard";
 import SpellModifierCard from "../Cards/SpellModifierCard";
 import usePreloadedContent from "../../Hooks/usePreloadedContent/usePreloadedContent"
 import CommanderCard from '../Cards/CommanderCard'
+import {ConstructFinalWeapon} from "../../Utils/ConstructFinalWeapon";
 
 interface ICompendiumClassElementInput {
     data: IClassMetaData
@@ -79,7 +80,7 @@ const CompendiumClassElement = ({
                             }
                         } else if (card.cardType == "weapon") {
                             if (card.cardSubtype == "base") {
-                                return <WeaponBaseCard cardData={card as IScaledWeaponBaseData}  key={card.cardName} sendBack={() => {}} {...compendiumProps} />
+                                return <WeaponBaseCard cardData={ConstructFinalWeapon(card as IWeaponBaseData, 0)}  key={card.cardName} sendBack={() => {}} {...compendiumProps} />
                             } else {
                                 return <WeaponModCard cardData={card} sendBack={() => {}} key={card.cardName}  {...compendiumProps} />
                             }
