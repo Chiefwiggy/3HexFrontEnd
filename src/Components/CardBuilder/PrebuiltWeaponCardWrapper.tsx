@@ -53,7 +53,16 @@ const PrebuiltWeaponCardWrapper = ({
                 const cards = weaponData.weaponCardsIds.map(skill => {
                     return allWeapons.skills.find(b => b._id == skill) ?? allWeapons.forms.find(b => b._id == skill);
                 })
-                setCurrentWeaponData([base, ...cards]);
+                if (!base) {
+                    if (timeout < 10) {
+                        setTimeout(() => {
+                            _setWeaponData(calc, timeout+1)
+                        }, 20+(40*timeout))
+                    }
+                } else {
+                    setCurrentWeaponData([base, ...cards]);
+                }
+
             }
         }
     }

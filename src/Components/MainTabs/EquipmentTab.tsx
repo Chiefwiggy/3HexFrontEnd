@@ -93,7 +93,7 @@ const EquipmentTab = ({}: IEquipmentTabInput) => {
                                 <WeaponEnchantmentCard weaponData={weapon} index={index} callback={handleChangeData} weaponMetadata={weaponStruct} key={weapon._id}/>
                             )
                         } else {
-                            return <></>
+                            return <Box key={index}></Box>
                         }
                     }))
                 }
