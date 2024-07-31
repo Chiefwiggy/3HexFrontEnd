@@ -15,20 +15,30 @@ const ArmorElement = ({armor, enchantmentLevel}: IArmorElementInput) => {
         <Paper elevation={2} sx={{
             minWidth: "264px",
             width: "18vw",
-            padding: "6px"
+            padding: "6px",
+            borderRadius: "12px"
         }}>
-            <Box sx={{
-                textAlign: "center",
-                paddingBottom: "4px"
-            }}>
-                <Typography variant={"h6"}>{armor.armorName} +{enchantmentLevel}</Typography>
-                <Typography variant={"body2"} sx={{color: "darkgray"}}>VIT {armor.vitalityRequirement} {getArmorAffinityRequirement(armor.armorClass, enchantmentLevel)} </Typography>
+            <Box
+                sx={{
+                    margin: "12px"
+                }}
+            >
+
+                <Box sx={{
+                    textAlign: "center",
+                    paddingBottom: "4px"
+                }}>
+                    <Typography variant={"h6"}>{armor.armorName} +{enchantmentLevel}</Typography>
+                    <Typography variant={"body2"} sx={{color: "darkgray"}}>VIT {armor.vitalityRequirement} {getArmorAffinityRequirement(armor.armorClass, enchantmentLevel)} </Typography>
+                </Box>
+                <Divider />
+                <Box>
+                    <Typography variant={"h6"}>pDEF {armor.pDEFBonus} <em>(+{armor.blockPDEFBonus})</em></Typography>
+                    <Typography variant={"h6"}>mDEF {armor.mDEFBonus} <em>(+{armor.blockMDEFBonus})</em></Typography>
+                </Box>
+
             </Box>
-            <Divider />
-            <Box>
-                <Typography variant={"h6"}>pDEF {armor.pDEFBonus} <em>(+{armor.blockPDEFBonus})</em></Typography>
-                <Typography variant={"h6"}>mDEF {armor.mDEFBonus} <em>(+{armor.blockMDEFBonus})</em></Typography>
-            </Box>
+
 
         </Paper>
     )

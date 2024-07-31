@@ -473,6 +473,11 @@ class CharacterSheet extends AbstractSheet {
 
     }
 
+    public rest() {
+        this.data.currentActionPoints = this.getActionPointsMax();
+        super.rest();
+    }
+
     private _setAllAbilities = async() => {
         try {
             this.allAbilities = await this.API.AbilityAPI.GetAbilitiesForCharacter(this.data._id);

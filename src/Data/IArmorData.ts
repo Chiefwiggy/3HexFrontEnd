@@ -13,7 +13,8 @@ export interface IArmor {
     pDEFBonus: number,
     mDEFBonus: number,
     blockPDEFBonus: number,
-    blockMDEFBonus: number
+    blockMDEFBonus: number,
+    enchantmentLevel: number
 }
 
 export interface IBaseArmorData {

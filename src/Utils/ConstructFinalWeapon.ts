@@ -46,6 +46,7 @@ export const ConstructFinalArmor = (baseArmorData: IBaseArmorData, enchantment: 
         mDEFBonus: ScaleChainNumeric(baseArmorData.mDEFBonus, enchantment),
         blockPDEFBonus: ScaleChainNumeric(baseArmorData.blockPDEFBonus, enchantment),
         blockMDEFBonus: ScaleChainNumeric(baseArmorData.blockMDEFBonus, enchantment),
+        enchantmentLevel: enchantment
 
     }
 }
