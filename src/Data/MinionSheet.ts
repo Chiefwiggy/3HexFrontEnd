@@ -1,6 +1,6 @@
 import {IMinionData} from "./IMinionData";
 import AbstractSheet from "./AbstractSheet";
-import { AttributeBarType, DamageType } from "./CharacterSheet";
+import CharacterSheet, { AttributeBarType, DamageType } from "./CharacterSheet";
 import {UStance} from "./ICharacterData";
 import {ICardBuilderType} from "../Layouts/CardBuilder";
 import SpellBaseCard from "../Components/Cards/SpellBaseCard";
@@ -96,17 +96,28 @@ class MinionSheet extends AbstractSheet {
 
     public data: IMinionData;
     public isPrepared: boolean;
+    private owner: CharacterSheet
 
-    constructor(minionData: IMinionData, api: IAPIContext, isPrepared: boolean) {
+    constructor(minionData: IMinionData, api: IAPIContext, isPrepared: boolean, owner: CharacterSheet) {
         super(api,undefined, undefined, undefined);
         this.data = minionData;
         this.data.cardData.push(...default_spell_cards)
         this.data.cardData.push(...default_weapon_cards);
         this.isPrepared = isPrepared
+        this.owner = owner;
     }
 
     public async healthPingExecute(): Promise<void> {
         Promise.resolve(this.API.MinionAPI.SetBars(this.data._id,this.data.attributeBars)).then().catch();
+        this.owner.manualHealthPing(false);
+    }
+
+    charPingExecute(): Promise<void> {
+        return Promise.resolve(undefined);
+    }
+
+    statPingExecute(): Promise<void> {
+        return Promise.resolve(undefined);
     }
 
     public getStaminaRefresh(): number {

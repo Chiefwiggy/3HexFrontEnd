@@ -24,9 +24,9 @@ class PLC_ArcanaData {
         }
     }
 
-    public async Initialize(api: IAPIContext) {
-        this.arcanaCards = await api.CardAPI.GetArcanaCards("all");
-        this.arcanaAbilities = await api.AbilityAPI.GetArcanaAbilities("all");
+    public async Initialize(arcanaCards: IArcanaArray<ICommonCardData>, arcanaAbilities: IArcanaArray<IAbility>) {
+        this.arcanaCards = arcanaCards
+        this.arcanaAbilities = arcanaAbilities
     }
 
     public getArcanaCards(arcanaName: keyof IArcanaArray<ICommonCardData>) {

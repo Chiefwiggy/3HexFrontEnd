@@ -31,6 +31,7 @@ export interface ICharacterBaseData {
     characterLevel: number,
     classes: Array<IClassData>,
     attributeBars: IAttributeBars,
+    currentActionPoints: number,
     characterStats: ICharacterStats,
     movement: {
         stepSpeed: IModifiable,
@@ -56,9 +57,10 @@ export interface ICharacterBaseData {
     currentSpell: ICalculatedSpell | null,
     currentWeapon: ICalculatedWeapon | null,
     counterWeapon: ICalculatedWeapon | null,
-    currentArmor: IArmor | null,
+    currentArmor: IEnchantmentData | null,
+    knownArmor: Array<IEnchantmentData>,
     knownBaseSpells: Array<string>,
-    knownWeapons: Array<IWeaponEnchantmentData>,
+    knownWeapons: Array<IEnchantmentData>,
     skillPoints: ISkillPointObject,
     minionsOwned: Array<{
         minionId: string,
@@ -67,7 +69,7 @@ export interface ICharacterBaseData {
     _id: string
 }
 
-export interface IWeaponEnchantmentData {
+export interface IEnchantmentData {
     baseId: string,
     enchantmentLevel: number
 }
@@ -165,6 +167,11 @@ export interface ICalculatedSpell {
     spellBaseId: string,
     spellTargetId: string,
     spellSkillsIds: Array<string>
+}
+
+export interface ICalculatedArmor {
+    baseId: string,
+    enchantmentLevel: 0
 }
 
 export interface ICalculatedWeapon {

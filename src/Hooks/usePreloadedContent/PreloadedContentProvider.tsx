@@ -5,6 +5,11 @@ import useAPI from "../useAPI/useAPI";
 import PLC_AffinityData from "./PLC_AffinityData";
 import PLC_ArcanaData from "./PLC_ArcanaData";
 import PLC_WeaponData from "./PLC_WeaponData";
+import PLC_ArmorData from "./PLC_ArmorData";
+import Axios from "axios";
+import {IAffinitiesArray, IArcanaArray} from "../../Data/ICharacterData";
+import {ICommonCardData} from "../../Data/ICardData";
+import {IAbility} from "../../Data/IAbilities";
 
 interface IPreloadedContentProviderInput {
     children: any
@@ -14,7 +19,8 @@ export interface IPreloadedContentContextInput {
     ClassData: PLC_ClassData,
     AffinityData: PLC_AffinityData,
     ArcanaData: PLC_ArcanaData,
-    WeaponData: PLC_WeaponData
+    WeaponData: PLC_WeaponData,
+    ArmorData: PLC_ArmorData,
     isLoaded: boolean
 }
 const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) => {
@@ -27,16 +33,24 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
 
     const [WeaponData, setWeaponData] = useState(new PLC_WeaponData());
 
+    const [ArmorData, setArmorData] = useState(new PLC_ArmorData());
+
     const [isLoaded, setIsLoaded] = useState(false);
 
     const API = useAPI();
 
     useEffect(() => {
         (async() => {
-            await ClassData.Initialize(API);
-            await AffinityData.Initialize(API);
-            await ArcanaData.Initialize(API);
-            await WeaponData.Initialize(API);
+
+            const data = await API.PreloadedAPI.GetPreloadedData();
+            const classData = await API.ClassAPI.GetAllClassesOfTier(1);
+
+
+            await ClassData.Initialize(data.class.cards, data.class.abilities, classData);
+            await AffinityData.Initialize(data.affinity.cards as IAffinitiesArray<ICommonCardData>, data.affinity.abilities as IAffinitiesArray<IAbility>);
+            await ArcanaData.Initialize(data.arcana.cards as IArcanaArray<ICommonCardData>, data.arcana.abilities as IArcanaArray<IAbility>);
+            await WeaponData.Initialize(data.weaponData);
+            await ArmorData.Initialize(data.armorData);
             setIsLoaded(true);
         })();
     }, []);
@@ -48,6 +62,7 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
                 ArcanaData,
                 AffinityData,
                 WeaponData,
+                ArmorData,
                 isLoaded
             }}
         >

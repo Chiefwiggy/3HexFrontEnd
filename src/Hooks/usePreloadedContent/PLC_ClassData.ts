@@ -13,10 +13,10 @@ class PLC_ClassData {
         this.classAbilities = {};
     }
 
-    public async Initialize(api: IAPIContext) {
-        this.classCards = await api.CardAPI.GetClassCards("all");
-        this.classAbilities = await api.AbilityAPI.GetAbilitiesForClass("all");
-        this.classData = await api.ClassAPI.GetAllClassesOfTier(1);
+    public async Initialize(classCards: Object, classAbilities: Object, classData: Array<IClassMetaData>) {
+        this.classCards = classCards;
+        this.classAbilities = classAbilities
+        this.classData = classData
     }
 
     public getClassCards(className: string): Array<any> {

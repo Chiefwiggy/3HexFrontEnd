@@ -9,7 +9,7 @@ import DefenseWidget from "../Components/Defenses/DefenseWidget";
 
 const DefensesView = () => {
 
-    const {currentSheet} = useCharacter();
+    const {currentSheet, statPing} = useCharacter();
     return currentSheet ? (
         <Box
             sx={{

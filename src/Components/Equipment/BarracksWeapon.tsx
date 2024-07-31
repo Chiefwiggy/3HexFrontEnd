@@ -23,7 +23,7 @@ import {
 } from "@mui/icons-material";
 import useUser from "../../Hooks/useUser/useUser";
 import useAPI from "../../Hooks/useAPI/useAPI";
-import {IWeaponEnchantmentData} from "../../Data/ICharacterData";
+import {IEnchantmentData} from "../../Data/ICharacterData";
 import {useNavigate} from "react-router-dom";
 
 interface IBarracksWeaponInput {

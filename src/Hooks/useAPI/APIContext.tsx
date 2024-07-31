@@ -7,6 +7,7 @@ import AbilityConnection from "../../Connections/AbilityConnection";
 import UserConnection from "../../Connections/UserConnection";
 import ClassConnection from "../../Connections/ClassConnection";
 import MinionConnection from "../../Connections/MinionConnection";
+import PreloadedConnection from "../../Connections/PreloadedConnection";
 
 export const APIContext = createContext<IAPIContext>({
     CharacterAPI: new CharacterConnection("", () => {
@@ -28,6 +29,9 @@ export const APIContext = createContext<IAPIContext>({
         return {}
     }),
     MinionAPI: new MinionConnection("", () => {
+        return {}
+    }),
+    PreloadedAPI: new PreloadedConnection("", () =>{
         return {}
     })
 })

@@ -45,7 +45,9 @@ abstract class AbstractSheet {
     public abstract setHealth(amount: number): void;
     public abstract setStamina(amount: number): void;
     public abstract setTether(amount: number): void;
-    public abstract healthPingExecute(): Promise<void>;
+    public abstract healthPingExecute(doSend: boolean): Promise<void>;
+    public abstract statPingExecute(): Promise<void>;
+    public abstract charPingExecute(): Promise<void>;
     public abstract getStaminaRefresh(): number;
     public abstract getTetherRefresh(): number;
 
@@ -169,15 +171,19 @@ abstract class AbstractSheet {
             this.localState = !this.localState;
         }
 
+        Promise.resolve(this.charPingExecute()).then(() => {
+            // nothing;
+        })
+
     }
 
-    protected _hping() {
+    protected _hping(doSend: boolean=true) {
         if (this.updateHealth) {
             this.updateHealth(!this.localHealth);
             this.localHealth = !this.localHealth;
         }
 
-        Promise.resolve(this.healthPingExecute()).then(() => {
+        Promise.resolve(this.healthPingExecute(doSend)).then(() => {
             // nothing;
         })
 
@@ -188,6 +194,10 @@ abstract class AbstractSheet {
             this.updateStat(!this.localStat);
             this.localStat = !this.localStat;
         }
+
+        Promise.resolve(this.statPingExecute()).then(() => {
+            // nothing;
+        })
     }
 
     public setStance(stanceIndex: number) {

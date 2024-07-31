@@ -4,12 +4,12 @@ import {IWeaponBaseData} from "../../Data/ICardData";
 import {AddCircleOutlined, BackHandOutlined, RemoveCircleOutlined} from "@mui/icons-material";
 import {ConstructFinalWeapon, ScaleChainNumeric} from "../../Utils/ConstructFinalWeapon";
 import useAPI from "../../Hooks/useAPI/useAPI";
-import {IWeaponEnchantmentData} from "../../Data/ICharacterData";
+import {IEnchantmentData} from "../../Data/ICharacterData";
 import {getSkillFormat} from "../../Utils/Shorthand";
 
 interface IWeaponEnchantmentCardInput {
     weaponData: IWeaponBaseData,
-    weaponMetadata: IWeaponEnchantmentData,
+    weaponMetadata: IEnchantmentData,
     index: number
     callback: (delta: number, index: number) => void
 }

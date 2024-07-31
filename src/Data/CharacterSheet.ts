@@ -37,9 +37,11 @@ import AttributeBar from "../Components/Sheet/AttributeBar";
 import {waitFor} from "@testing-library/react";
 import affinitiesPanel from "../Components/ClassSelect/Affinities/AffinitiesPanel";
 import AbstractSheet from "./AbstractSheet";
-import {ConstructFinalWeapon} from "../Utils/ConstructFinalWeapon";
+import {ConstructFinalArmor, ConstructFinalWeapon} from "../Utils/ConstructFinalWeapon";
 import MinionSheet from "./MinionSheet";
 import {IMinionData} from "./IMinionData";
+import PLC_ArmorData from "../Hooks/usePreloadedContent/PLC_ArmorData";
+import {IPreloadedContentContextInput} from "../Hooks/usePreloadedContent/PreloadedContentProvider";
 
 export type AttributeBarType = "tether" | "stamina" | "health"
 export type DamageType = "physical" | "magical" | "raw" | "resistant"
@@ -68,11 +70,9 @@ class CharacterSheet extends AbstractSheet {
     public currentAffinities: IAffinities
     public currentArcana: IArcanaKeys
 
-    public currentArmor: IArmor | null = null;
-
+    public currentArmor: IArmor | undefined = undefined;
     public allCards: IAllCardsData | null = null;
     public allButDefaultCards: IAllCardsData | null = null;
-    public actionPoints = 3;
     public commanderCards: Array<ICommanderCardData> = [];
     public minionData: Array<MinionSheet> = [];
 
@@ -84,6 +84,7 @@ class CharacterSheet extends AbstractSheet {
 
     public allAbilities: Array<IAbility> = [];
     private sendReadyFn: React.Dispatch<SetStateAction<boolean>>;
+    private preloadedData: IPreloadedContentContextInput
 
 
 
@@ -153,6 +154,15 @@ class CharacterSheet extends AbstractSheet {
             }
             return pv;
         }, true)
+    }
+
+    public useActionPoint() {
+        this.data.currentActionPoints -= 1;
+        this._hping();
+    }
+
+    public regainActionPoints(amount: number) {
+        this.data.currentActionPoints = Math.min(this.data.currentActionPoints + amount, this.getActionPointsMax())
     }
 
     public getAbilityBonuses = (bonusType: string) => {
@@ -362,7 +372,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
 
-    constructor(charData: ICharacterBaseData, api: IAPIContext, sendReady: React.Dispatch<React.SetStateAction<boolean>>, ping: React.Dispatch<React.SetStateAction<boolean>>, hping: React.Dispatch<React.SetStateAction<boolean>>, sping: React.Dispatch<SetStateAction<boolean>>) {
+    constructor(charData: ICharacterBaseData, api: IAPIContext, sendReady: React.Dispatch<React.SetStateAction<boolean>>, ping: React.Dispatch<React.SetStateAction<boolean>>, hping: React.Dispatch<React.SetStateAction<boolean>>, sping: React.Dispatch<SetStateAction<boolean>>, preloadedData: IPreloadedContentContextInput) {
         super(api, ping, hping, sping);
         this.sendReadyFn = sendReady;
         sendReady(false);
@@ -391,10 +401,13 @@ class CharacterSheet extends AbstractSheet {
             hacker: 0
         }
         this._setAffinities()
-        this.currentArmor = this.data.currentArmor;
-        this._setWeightPenalty()
+        this.preloadedData = preloadedData;
+        this.setArmor();
 
-        this.initializeAsync().then(r => {});
+
+        this.initializeAsync().then(r => {
+
+        });
      }
 
      private async initializeAsync() {
@@ -408,6 +421,14 @@ class CharacterSheet extends AbstractSheet {
         } catch (error) {
             console.error('Initialization error:', error);
             this.sendReadyFn(false);
+        }
+     }
+
+     private setArmor(timeout = 0) {
+        console.log(this.preloadedData.ArmorData.hasData());
+        if (this.data.currentArmor) {
+            this.currentArmor = this.preloadedData.ArmorData.GetConstructedArmorById(this.data.currentArmor.baseId, this.data.currentArmor.enchantmentLevel);
+            this._setWeightPenalty()
         }
      }
 
@@ -434,7 +455,7 @@ class CharacterSheet extends AbstractSheet {
             if (this.data.minionsOwned.length > 0) {
                 const minionRawData = await this.API.MinionAPI.GetMinionData(this.data.minionsOwned.map(e => e.minionId));
                 this.minionData = minionRawData.map((md: IMinionData, index: number) => {
-                    return new MinionSheet(md, this.API, this.data.minionsOwned[index].isEquipped)
+                    return new MinionSheet(md, this.API, this.data.minionsOwned[index].isEquipped, this)
                 })
             }
 
@@ -444,10 +465,12 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public refresh() {
+        this.regainActionPoints(1);
         for (const minion of this.minionData) {
             minion.refresh();
         }
         super.refresh();
+
     }
 
     private _setAllAbilities = async() => {
@@ -459,8 +482,11 @@ class CharacterSheet extends AbstractSheet {
     }
 
     private _setWeightPenalty() {
+        console.log(this.currentArmor?.vitalityRequirement);
         if (this.currentArmor && this.data.characterStats.vitality.value < this.currentArmor.vitalityRequirement) {
+
             this.weightPenalty = -(this.data.characterStats.vitality.value - this.currentArmor.vitalityRequirement);
+            console.log(this.weightPenalty)
         } else {
             this.weightPenalty = 0;
         }
@@ -817,12 +843,27 @@ class CharacterSheet extends AbstractSheet {
         await this.initializeAsync();
     }
 
-    public async healthPingExecute(): Promise<void> {
-        Promise.resolve(this.API.CharacterAPI.SetBars(this.data._id,this.data.attributeBars)).then().catch();
+    public async healthPingExecute(doSend: boolean): Promise<void> {
+        if (doSend) {
+            Promise.resolve(this.API.CharacterAPI.SetBars(this.data._id,this.data.attributeBars, this.data.currentActionPoints)).then().catch();
+        }
+
+    }
+
+    public async charPingExecute(): Promise<void> {
+
+    }
+
+    public async statPingExecute(): Promise<void> {
+        this._setWeightPenalty()
     }
 
     public manualCharPing = () => {
         this._ping();
+    }
+
+    public manualHealthPing = (doSend: boolean = true) => {
+        this._hping(doSend);
     }
 
     public async InvokeUpdateMinionPreparation() {

@@ -15,14 +15,17 @@ const MinionOverviewPanel = ({currentMinions, displayMinions}: IMinionOverviewPa
 
     const [localPing, setLocalPing] = useState(false);
 
-    const {currentSheet} = useCharacter();
+    const {currentSheet, healthPing} = useCharacter();
 
     const [currentPrep, setCurrentPrep] = useState(0)
     const [currentIndices, setCurrentIndices] = useState<Array<boolean>>([]);
 
     const [showStatus, setShowStatus] = useState(false);
 
+    const [retrigger, setRetrigger] = useState(false);
+
     const [displayUnpreparedMinions, setDisplayUnpreparedMinions] = useState<boolean>(true);
+
 
     useEffect(() => {
         setCurrentPrep(currentMinions.reduce((pv, min) => pv + (min.isPrepared ? 1 : 0), 0));
@@ -32,6 +35,10 @@ const MinionOverviewPanel = ({currentMinions, displayMinions}: IMinionOverviewPa
     const handleDisplayUnpreparedMinionsCheckbox = (event: ChangeEvent<HTMLInputElement>) => {
         setDisplayUnpreparedMinions(event.target.checked);
     }
+
+    useEffect(() => {
+        setRetrigger(!retrigger);
+    }, [healthPing]);
 
     const handleCheckboxChange = (minionIndex: number, delta: number) => (event: ChangeEvent) => {
         setHasBeenEdited(true);

@@ -1,6 +1,7 @@
 import {UDamageType} from "../Data/ICardData";
 import AbstractSheet from "../Data/AbstractSheet";
 import {ICharacterBaseData} from "../Data/ICharacterData";
+import {UArmorClass} from "../Data/IArmorData";
 
 
 export type UStat = "might" | "agility" | "skill" | "awareness" | "vitality" | "knowledge" | "mind" | "presence" | "authority" | "endurance"
@@ -77,5 +78,23 @@ export const getHandedness = (sheet: ICharacterBaseData|null, handednessValue: n
         return "Versatile"
     } else {
         return "One-Handed"
+    }
+}
+
+export const getArmorAffinityRequirement = (armorClass: UArmorClass, enchantmentLevel: number, showBullet = true): string => {
+    if (enchantmentLevel == 0) {
+        if (armorClass != "heavy") {
+            return "";
+        } else {
+            return "• Guardian 1"
+        }
+    }
+    switch (armorClass) {
+        case "light":
+            return `• Deft ${enchantmentLevel}`
+        case "standard":
+            return `• Infantry ${enchantmentLevel}`
+        case "heavy":
+            return `• Guardian ${enchantmentLevel}`
     }
 }

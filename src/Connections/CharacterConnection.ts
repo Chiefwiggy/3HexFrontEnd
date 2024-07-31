@@ -3,9 +3,10 @@ import {
     IAttributeBars,
     ICalculatedSpell,
     ICalculatedWeapon,
-    ICharacterBaseData, ICharacterStats, IPreparedCard, IWeaponEnchantmentData
+    ICharacterBaseData, ICharacterStats, IPreparedCard, IEnchantmentData
 } from "../Data/ICharacterData";
 import Axios, { AxiosRequestConfig } from 'axios'
+import {IBaseArmorData} from "../Data/IArmorData";
 
 class CharacterConnection {
 
@@ -91,9 +92,10 @@ class CharacterConnection {
         })
     }
 
-    public async SetBars(charID: string, healthData: IAttributeBars) {
+    public async SetBars(charID: string, healthData: IAttributeBars, currentAP: number) {
         await Axios.put(this.GetRouteURL(`update/${charID}`), {
-            attributeBars: healthData
+            attributeBars: healthData,
+            currentActionPoints: currentAP
         }, this._getConfig()).then((resp) => {
             console.log(resp);
         })
@@ -132,9 +134,17 @@ class CharacterConnection {
         })
     }
 
-    public async UpdateWeaponsList(charID: string, weapons: Array<IWeaponEnchantmentData>) {
+    public async UpdateWeaponsList(charID: string, weapons: Array<IEnchantmentData>) {
         await Axios.put(this.GetRouteURL(`update/${charID}`), {
             knownWeapons: weapons
+        }, this._getConfig()).then((resp) => {
+            console.log(resp);
+        })
+    }
+
+    public async UpdateArmor(charID: string, armor: IEnchantmentData) {
+        await Axios.put(this.GetRouteURL(`update/${charID}`), {
+            currentArmor: armor
         }, this._getConfig()).then((resp) => {
             console.log(resp);
         })

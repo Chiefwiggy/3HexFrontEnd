@@ -41,9 +41,9 @@ class PLC_AffinityData {
         };
     }
 
-    public async Initialize(api: IAPIContext) {
-        this.affinityCards = await api.CardAPI.GetAffinityCards("all")
-        this.affinityAbilities = await api.AbilityAPI.GetAffinityAbilities("all")
+    public async Initialize(affinityCards: IAffinitiesArray<ICommonCardData>, affinityAbilities: IAffinitiesArray<IAbility>) {
+        this.affinityCards = affinityCards
+        this.affinityAbilities = affinityAbilities
     }
 
     private getRequiredLevel = (prereq: Array<IPrerequisite>, arcanaName: keyof IAffinities) => {

@@ -3,7 +3,7 @@ import {Alert, Box, Button, useMediaQuery} from "@mui/material";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
 import usePreloadedContent from "../../Hooks/usePreloadedContent/usePreloadedContent";
 import WeaponEnchantmentCard from "../Equipment/WeaponEnchantmentCard";
-import {IWeaponEnchantmentData} from "../../Data/ICharacterData";
+import {IEnchantmentData} from "../../Data/ICharacterData";
 import useAPI from "../../Hooks/useAPI/useAPI";
 
 interface IEquipmentTabInput {
@@ -16,7 +16,7 @@ const EquipmentTab = ({}: IEquipmentTabInput) => {
 
     const {WeaponData} = usePreloadedContent();
 
-    const [currentWeaponMetadata, setCurrentWeaponMetadata] = useState<Array<IWeaponEnchantmentData>>([])
+    const [currentWeaponMetadata, setCurrentWeaponMetadata] = useState<Array<IEnchantmentData>>([])
 
     const [justUpdated, setJustUpdated] = useState(true);
     const [showStatus, setShowStatus] = useState(false);
@@ -31,7 +31,7 @@ const EquipmentTab = ({}: IEquipmentTabInput) => {
 
     const handleChangeData = (delta: number, index: number) => {
         setJustUpdated(false);
-        const nData: Array<IWeaponEnchantmentData> = [...currentWeaponMetadata]
+        const nData: Array<IEnchantmentData> = [...currentWeaponMetadata]
         nData[index].enchantmentLevel += delta;
         setCurrentWeaponMetadata(nData);
     }

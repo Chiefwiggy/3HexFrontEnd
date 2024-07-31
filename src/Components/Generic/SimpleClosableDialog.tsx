@@ -25,13 +25,15 @@ interface ISimpleCloseableDialogInput {
     buttons: Array<IDialogButton>,
     isOpen: boolean,
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
+    fullWidth?: boolean
 }
 const SimpleClosableDialog = ({
     title,
     content,
     buttons,
     isOpen,
-    setIsOpen
+    setIsOpen,
+    fullWidth=false
 }: ISimpleCloseableDialogInput) => {
 
     const handleClose = () => {
@@ -42,6 +44,7 @@ const SimpleClosableDialog = ({
     return (
         <Dialog
             open={isOpen}
+            fullWidth={fullWidth}
         >
             <DialogTitle>{title}</DialogTitle>
             <IconButton

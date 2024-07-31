@@ -11,8 +11,8 @@ class PLC_WeaponData {
         this.baseWeaponCards = [];
     }
 
-    public async Initialize(api: IAPIContext) {
-        this.baseWeaponCards = await api.CardAPI.GetStandardBaseWeapons();
+    public async Initialize(weaponCards: Array<IWeaponBaseData>) {
+        this.baseWeaponCards = weaponCards;
     }
 
     public GetCardById(cardId: string) {

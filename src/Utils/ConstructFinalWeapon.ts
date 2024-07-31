@@ -1,4 +1,5 @@
 import {IScaledWeaponBaseData, IScalingData, IWeaponBaseData} from "../Data/ICardData";
+import {IArmor, IBaseArmorData} from "../Data/IArmorData";
 
 
 export const ConstructFinalWeapon = (baseWeaponData: IWeaponBaseData, enchantment: number): IScaledWeaponBaseData => {
@@ -29,6 +30,23 @@ export const ConstructFinalWeapon = (baseWeaponData: IWeaponBaseData, enchantmen
         weaponTags: baseWeaponData.weaponTags,
         weaponType: baseWeaponData.weaponType,
         handedness: baseWeaponData.handedness
+    }
+}
+
+export const ConstructFinalArmor = (baseArmorData: IBaseArmorData, enchantment: number): IArmor => {
+
+    return {
+        ...baseArmorData,
+        _id: baseArmorData._id,
+        armorName: baseArmorData.armorName,
+        armorClass: baseArmorData.armorClass,
+        vitalityRequirement: ScaleChainNumeric(baseArmorData.vitalityRequirement, enchantment),
+        additionalPrerequisites: ScaleChainNonNumeric(baseArmorData.additionalPrerequisites, enchantment),
+        pDEFBonus: ScaleChainNumeric(baseArmorData.pDEFBonus, enchantment),
+        mDEFBonus: ScaleChainNumeric(baseArmorData.mDEFBonus, enchantment),
+        blockPDEFBonus: ScaleChainNumeric(baseArmorData.blockPDEFBonus, enchantment),
+        blockMDEFBonus: ScaleChainNumeric(baseArmorData.blockMDEFBonus, enchantment),
+
     }
 }
 

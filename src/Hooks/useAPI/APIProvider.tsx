@@ -9,6 +9,7 @@ import AbilityConnection from "../../Connections/AbilityConnection";
 import UserConnection from "../../Connections/UserConnection";
 import ClassConnection from "../../Connections/ClassConnection";
 import MinionConnection from "../../Connections/MinionConnection";
+import PreloadedConnection from "../../Connections/PreloadedConnection";
 
 interface IAPIProviderInput {
     children: any
@@ -21,7 +22,8 @@ export interface IAPIContext {
     AbilityAPI: AbilityConnection,
     UserAPI: UserConnection,
     ClassAPI: ClassConnection,
-    MinionAPI: MinionConnection
+    MinionAPI: MinionConnection,
+    PreloadedAPI: PreloadedConnection,
 }
 
 const APIProvider = ({children}: IAPIProviderInput) => {
@@ -52,6 +54,8 @@ const APIProvider = ({children}: IAPIProviderInput) => {
 
     const [MinionAPI, setMinionAPI] = useState<MinionConnection>(new MinionConnection(apiURL, GetAPIConfig));
 
+    const [PreloadedAPI, setPreloadedAPI] = useState<PreloadedConnection>(new PreloadedConnection(apiURL, GetAPIConfig));
+
     return (
         <APIContext.Provider value={{
             CharacterAPI,
@@ -61,6 +65,7 @@ const APIProvider = ({children}: IAPIProviderInput) => {
             UserAPI,
             ClassAPI,
             MinionAPI,
+            PreloadedAPI
         }}>
             {children}
         </APIContext.Provider>

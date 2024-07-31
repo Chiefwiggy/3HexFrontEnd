@@ -4,6 +4,7 @@ import {ICharacterBaseData} from "../../Data/ICharacterData";
 import AttributeBar from "../../Components/Sheet/AttributeBar";
 import CharacterSheet from "../../Data/CharacterSheet";
 import useAPI from "../useAPI/useAPI";
+import usePreloadedContent from "../usePreloadedContent/usePreloadedContent";
 
 interface ICharacterProvider {
     children: any
@@ -38,6 +39,8 @@ const CharacterProvider = ({children}: ICharacterProvider) => {
     const [cancelPing, setCancelPing] = useState<boolean>(false);
     const [statPing, setStatPing] = useState<boolean>(false);
 
+    const preload = usePreloadedContent();
+
     const invokeCancel = () => {
         if (currentSheet) {
             currentSheet.CancelSaveMode();
@@ -70,12 +73,19 @@ const CharacterProvider = ({children}: ICharacterProvider) => {
 
 
 
-    const SetCurrentSheet = (sheet: ICharacterBaseData | undefined) => {
-        if (sheet) {
-            setCurrentSheet(new CharacterSheet(sheet, APIData, sendIsReady, setCharPing, setHealthPing, setStatPing));
+    const SetCurrentSheet = (sheet: ICharacterBaseData | undefined, timeout = 0) => {
+        if (preload.ArmorData.hasData()) {
+            if (sheet) {
+                setCurrentSheet(new CharacterSheet(sheet, APIData, sendIsReady, setCharPing, setHealthPing, setStatPing, preload));
+            } else {
+                setCurrentSheet(undefined);
+            }
         } else {
-            setCurrentSheet(undefined);
+            setTimeout(() => {
+                SetCurrentSheet(sheet, timeout+1);
+            }, 20+timeout*50)
         }
+
     }
 
     return (

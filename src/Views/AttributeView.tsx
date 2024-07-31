@@ -7,6 +7,7 @@ import useCharacter from "../Hooks/useCharacter/useCharacter";
 import useEventHistory from "../Hooks/useEventHistory/useEventHistory";
 import {AttributeBarType, DamageType} from "../Data/CharacterSheet";
 import {UDamageType} from "../Data/ICardData";
+import ActionPointsPanel from "../Components/Sheet/ActionPointsPanel";
 
 interface IAttributeViewInput {
     pivot: boolean
@@ -108,6 +109,7 @@ const AttributeView = ({pivot}: IAttributeViewInput) => {
                         <Typography>Refresh </Typography>
                         <RefreshOutlined />
                     </Button>
+                    <ActionPointsPanel />
                     <SimpleClosableDialog
                         title={"Refresh"}
                         buttons={[

@@ -5,6 +5,7 @@ import MinionSheet from "../../Data/MinionSheet";
 import MinionDefenses from "./MinionDefenses";
 import MinionAttributeBars from './MinionAttributeBars';
 import {getSkillFormat} from "../../Utils/Shorthand";
+import useCharacter from "../../Hooks/useCharacter/useCharacter";
 
 interface IMinionSimplePanelInput {
     minionData: MinionSheet,
@@ -22,6 +23,7 @@ const MinionSimplePanel = ({
 
 
     const [isMinionPrepared, setIsMinionPrepared] = useState(false);
+    const {healthPing} = useCharacter()
 
     useEffect(() => {
         setIsMinionPrepared(minionData.isPrepared);
