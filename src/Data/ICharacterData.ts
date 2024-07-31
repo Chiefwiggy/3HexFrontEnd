@@ -55,6 +55,7 @@ export interface ICharacterBaseData {
     createdWeapons: Array<ICalculatedWeapon>,
     currentSpell: ICalculatedSpell | null,
     currentWeapon: ICalculatedWeapon | null,
+    counterWeapon: ICalculatedWeapon | null,
     currentArmor: IArmor | null,
     knownBaseSpells: Array<string>,
     knownWeapons: Array<IWeaponEnchantmentData>,

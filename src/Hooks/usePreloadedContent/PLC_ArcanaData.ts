@@ -71,7 +71,9 @@ class PLC_ArcanaData {
         try {
             const allAb = this.getArcanaAbilities(arcanaName).map(e => this.getRequiredLevel(e.prerequisites, arcanaName));
             const allCd = this.getArcanaCards(arcanaName).map(e => this.getRequiredLevel(e.prerequisites, arcanaName));
-            return Array.from(new Set([...allAb, ...allCd]));
+            const a = Array.from(new Set([...allAb, ...allCd])).sort((n1, n2) => n1 - n2);
+            console.log(a);
+            return a;
         } catch(e) {
             return [];
         }

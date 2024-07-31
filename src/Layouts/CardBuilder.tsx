@@ -18,7 +18,9 @@ export interface ICardBuilderType {
     name: string,
     display: string,
     component: React.FC<any>,
-    required?: boolean
+    required?: boolean,
+    counterRequired?: boolean,
+    counterInvalid?: boolean
 }
 interface ICardBuilderInput {
     GetAllCards: () => Promise<Array<ICommonCardData>>
@@ -28,6 +30,8 @@ interface ICardBuilderInput {
     closeSelf: (event: any) => void
     sendSaveData: (cards: Array<ICommonCardData|null>, spellCopy: React.ReactNode) => Promise<void>,
     sendEquipData: (cards: Array<ICommonCardData|null>) => Promise<void>
+    sendCounterData: (cards: Array<ICommonCardData|null>) => Promise<void>
+    canCounter: boolean
 }
 const CardBuilder = ({
     GetAllCards,
@@ -36,7 +40,9 @@ const CardBuilder = ({
     cardCalculator,
     closeSelf,
     sendSaveData,
-    sendEquipData
+    sendEquipData,
+    sendCounterData,
+    canCounter
 }: ICardBuilderInput) => {
 
     const [cardData, setCardData] = useState<Array<ICommonCardData|null>>(new Array(cardTypes.length).fill(null));
@@ -63,10 +69,18 @@ const CardBuilder = ({
     }
 
     const handleSaveCard = async(event: React.MouseEvent): Promise<void> => {
-        await sendSaveData(cardData, <CalculatedCard
+        if (currentSheet) {
+            await sendSaveData(cardData, <CalculatedCard
                             cardCalculator={cardCalculator}
                             depArray={cardData}
+                            owner={currentSheet}
                         />);
+        }
+
+    }
+
+    const handleCounterCard = async(event:React.MouseEvent): Promise<void> => {
+        await sendCounterData(cardData)
     }
 
     const [currentFilter, setCurrentFilter] = useState<number|null>(null);
@@ -76,6 +90,7 @@ const CardBuilder = ({
     const [currentCards, setCurrentCards] = useState<Array<ICommonCardData>>([]);
 
     const [isComplete, setIsComplete] = useState<boolean>(false);
+    const [isCounterValid, setIsCounterValid] = useState<boolean>(false);
 
     useEffect(() => {
         (async() => {
@@ -106,10 +121,25 @@ const CardBuilder = ({
             }
             return previousValue;
         }, true);
+        if (canCounter) {
+            const isCounterValidLocal = cardTypes.reduce((previousValue, currentValue, currentIndex) => {
+                if (!previousValue) return false;
+                if (currentValue.counterRequired && cardData[currentIndex] == null) {
+                    return false;
+                } else if (currentValue.counterInvalid && cardData[currentIndex] != null) {
+                    return false;
+                }
+                return previousValue;
+
+            }, true);
+            setIsCounterValid(isCounterValidLocal);
+        }
+
         if (isCompleteLocal && currentSheet) {
             cardCalculator.sendCurrentCards(cardData, currentSheet.data);
         }
         setIsComplete(isCompleteLocal);
+
     }, [cardData, cardTypes])
 
     return (
@@ -148,10 +178,11 @@ const CardBuilder = ({
                     })
                 }
                 {
-                    isComplete ?
+                    isComplete && currentSheet ?
                         <CalculatedCard
                             cardCalculator={cardCalculator}
                             depArray={cardData}
+                            owner={currentSheet}
                         />
                         :
                         <Paper elevation={1} sx={{
@@ -192,6 +223,19 @@ const CardBuilder = ({
                 >
                     Save
                 </Button>
+                {
+                    canCounter ?
+                        <Button
+                            variant={"contained"}
+                            color={"secondary"}
+                            onClick={handleCounterCard}
+                            disabled={!isCounterValid}
+                        >
+                            Counter
+                        </Button>
+                        :<></>
+                }
+
                 <Button
                     variant={"contained"}
                     color={"secondary"}

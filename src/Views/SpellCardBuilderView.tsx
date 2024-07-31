@@ -35,7 +35,8 @@ const SpellCardBuilderView = ({closeSelf}: ISpellCardBuilderView) => {
 
     const GetAllCards = async(): Promise<Array<ICommonCardData>> => {
         if (currentSheet) {
-            return await CardAPI.GetCharacterPreparedSpells(currentSheet.data._id);
+            return [...currentSheet.getPreparedSpellCards()]
+
         }
         return []
     }
@@ -70,6 +71,10 @@ const SpellCardBuilderView = ({closeSelf}: ISpellCardBuilderView) => {
             }
             await handleFinalEquip(spellCalcData);
         }
+    }
+
+    const handleCounter = async(sentCards: Array<ICommonCardData|null>) => {
+
     }
 
 
@@ -114,6 +119,8 @@ const SpellCardBuilderView = ({closeSelf}: ISpellCardBuilderView) => {
                 closeSelf={closeSelf}
                 sendSaveData={handleReceiveSaveCards}
                 sendEquipData={handleEquip}
+                sendCounterData={handleCounter}
+                canCounter={false}
             />
             <Dialog
                 open={saveSpellDialog}

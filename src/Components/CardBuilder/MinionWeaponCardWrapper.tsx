@@ -62,7 +62,7 @@ const MinionWeaponCardWrapper = ({
     }
 
     return minionData && weaponCalc ? (
-        <CalculatedCard cardCalculator={weaponCalc} depArray={currentWeaponData} overrideName={weaponData?.customName ?? ""} overrideWidth={overrideWidth}/>
+        <CalculatedCard cardCalculator={weaponCalc} depArray={currentWeaponData} overrideName={weaponData?.customName ?? ""} overrideWidth={overrideWidth} owner={minionData}/>
     ) : <></>
 }
 

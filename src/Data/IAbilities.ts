@@ -33,10 +33,23 @@ export interface IAbility {
         }
         pDEF?: number,
         mDEF?: number,
+        pDEFBlock?: number,
+        mDEFBlock?: number,
+        pDEFEvade?: number,
+        mDEFEvade?: number,
         maxStamina?: number,
         maxHealth?: number,
         maxTether?: number,
+        dodge?: number,
+        dodgeEvade?: number,
+        dodgeBlock?: number,
         cardSlots?: number,
+        critDamage?: number,
+        expertiseDice?: number,
+        weaponRequirement?: number,
+        weaponPrestigeRequirement?: number,
+        quickSlots?: number,
+        maxGlyphs?: number
     },
     unlocks: {
         unarmoredDefense?: boolean

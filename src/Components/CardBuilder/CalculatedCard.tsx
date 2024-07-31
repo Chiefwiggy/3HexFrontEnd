@@ -10,36 +10,41 @@ import {createRangeString} from "../../Utils/helper_functions";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
 import {ICardBuilderType} from "../../Layouts/CardBuilder";
 import {getDamageShorthand} from "../../Utils/Shorthand";
+import AbstractSheet from "../../Data/AbstractSheet";
+import MinionSheet from "../../Data/MinionSheet";
+import CharacterSheet from "../../Data/CharacterSheet";
 
 interface ICalculatedCardInput {
     cardCalculator: AbstractCardCalculator
     depArray: Array<any>,
     overrideName?: string,
-    overrideWidth?: number
+    overrideWidth?: number,
+    owner: CharacterSheet | MinionSheet
 }
 const CalculatedCard = ({
     cardCalculator,
     depArray,
     overrideName = "",
-    overrideWidth
+    overrideWidth,
+    owner
 }: ICalculatedCardInput) => {
 
 
     const [effectArray, setEffectArray] = useState<Array<IEffectData>>([]);
 
-    const {currentSheet, isReady, charPing, statPing, cancelPing} = useCharacter();
+    const { isReady, charPing, statPing, cancelPing} = useCharacter();
 
     const [cardTitle, setCardTitle] = useState<string>("");
 
     const [validCard, setValidCard] = useState<boolean>(true);
 
     useEffect(() => {
-        if (currentSheet && isReady) {
-            console.log(depArray, currentSheet.data);
-            cardCalculator.sendCurrentCards(depArray, currentSheet.data);
+        if (isReady) {
+            console.log(depArray, owner.data);
+            cardCalculator.sendCurrentCards(depArray, owner.data);
             setCardTitle(overrideName != "" ? overrideName : cardCalculator.getTitle())
             setEffectArray(cardCalculator.getEffectList());
-            setValidCard(currentSheet.areAllCardsPrepared(cardCalculator.getCards()))
+            setValidCard(owner.areAllCardsPrepared(cardCalculator.getCards()))
 
         }
     }, [depArray, charPing, statPing, cancelPing, isReady]);
@@ -116,13 +121,7 @@ const CalculatedCard = ({
                         :
                         <></>
                 }
-                {
-                    cardCalculator.canThrow() ?
-                    <Box>
-                        <Typography variant="body2" color="textSecondary">throw: {createRangeString(cardCalculator.getThrownRange())}</Typography>
-                    </Box>
-                    :<></>
-                }
+
 
                 <br/>
                 <Box

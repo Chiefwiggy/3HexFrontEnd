@@ -2,6 +2,7 @@ import {ICommonCardData, IEffectData, UCritDie, UDamageType} from "../ICardData"
 import {ICardBuilderType} from "../../Layouts/CardBuilder";
 import {ElementType} from 'react';
 import {ICharacterBaseData} from "../ICharacterData";
+import {IMinionData} from "../IMinionData";
 
 export interface IRangeData {
     min: number,
@@ -50,12 +51,12 @@ abstract class AbstractCardCalculator {
         return this.cards[this.cardTypes.findIndex((type) => type.name == inputType)];
     }
 
-    public sendCurrentCards(cards: Array<ICommonCardData|null>, char: ICharacterBaseData) {
+    public sendCurrentCards(cards: Array<ICommonCardData|null>, char: ICharacterBaseData | IMinionData) {
         this.cards = cards;
         this.invokeRecalculateData(char);
     }
 
-    protected abstract invokeRecalculateData(char: ICharacterBaseData): void;
+    protected abstract invokeRecalculateData(char: ICharacterBaseData|IMinionData): void;
     public abstract getTitle(): string;
     public abstract getType(): string;
     public abstract getCrit(): {

@@ -17,10 +17,6 @@ const AffinityCompendiumPage = ({}: IAffinityCompendiumPageInput) => {
 
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const [affinityData, setAffinityData] = useState([]);
-
-    const [arcanaData, setArcanaData] = useState([]);
-
     const [isArcana, setIsArcana] = useState<boolean>(true);
 
     const [currentName, setCurrentName] = useState<keyof IArcanaKeys | keyof IAffinities | "_">((searchParams.get("arcana") ?? searchParams.get("affinity") ?? "warrior") as keyof IArcanaKeys | keyof IAffinities | "_");

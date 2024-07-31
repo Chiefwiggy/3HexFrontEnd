@@ -76,7 +76,7 @@ class MinionSheet extends AbstractSheet {
         return 12 + ((this.data.attributeBars.stamina.scaling.value ?? 3)*this.data.minionStats.endurance.value);
     }
     public getMaxTether(): number {
-        return ((this.data.attributeBars.tether.scaling.value ?? 2)*this.data.minionStats.mind.value);
+        return ((this.data.attributeBars.tether.scaling.value ?? 3)*this.data.minionStats.mind.value);
     }
 
      public getEvadeDodge(): number {
@@ -116,55 +116,6 @@ class MinionSheet extends AbstractSheet {
     public getTetherRefresh(): number {
         return Math.floor(this.data.minionStats.mind.value / 2) + (this.data.bonuses?.tetherRefresh ?? 0);
     }
-
-    public spellCalculatorTypes: Array<ICardBuilderType> = [
-        {
-            name: "spell.base",
-            display: "base",
-            component: SpellBaseCard,
-            required: true
-        },
-        {
-            name: "spell.target",
-            display: "target",
-            component: SpellTargetCard,
-            required: true
-        },
-        {
-            name: "spell.skill",
-            display: "skill",
-            component: SpellModifierCard,
-            required: true
-        },
-        {
-            name: "spell.edict",
-            display: "edict",
-            component: SpellModifierCard,
-            required: false
-        }
-    ]
-
-    public weaponCalculatorTypes: Array<ICardBuilderType> = [
-        {
-            name: "weapon.base",
-            display: "base",
-            component: WeaponBaseCard,
-            required: true
-        },
-        {
-            name: "weapon.form",
-            display: "form",
-            component: WeaponModCard,
-            required: true
-        },
-
-        {
-            name: "weapon.skill",
-            display: "skill",
-            component: WeaponModCard,
-            required: false
-        }
-    ]
 
     public getEvadePDEFBreakdown(): IDefenseBreakdown {
         return {

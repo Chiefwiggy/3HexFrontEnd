@@ -119,7 +119,7 @@ const GenericCardLayout = ({
                         {cardData.cardType.toUpperCase()} {overrideSubtitle ? `• ${overrideSubtitle}` : (cardData.cardSubtype == "commander" ? "" : `• ${cardData.cardSubtype.toUpperCase()}`)} {cardData.isUltimate ? " • ULTIMATE" : ""}
                     </>
                 }
-                sx={{padding: "14px 0 0 0"}}
+                sx={{padding: "14px 0 0 0", userSelect: "none"}}
                 titleTypographyProps={{
                     fontSize: 22
                 }}

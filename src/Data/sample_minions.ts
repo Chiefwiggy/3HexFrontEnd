@@ -22,7 +22,7 @@ export const sample_minions: Array<IMinionData> = [
             tether: {
                 current: 0,
                 scaling: {
-                    value: 2
+                    value: 3
                 }
             }
         },

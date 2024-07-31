@@ -20,6 +20,7 @@ import SpellModifierCard from "../Cards/SpellModifierCard";
 import usePreloadedContent from "../../Hooks/usePreloadedContent/usePreloadedContent"
 import CommanderCard from '../Cards/CommanderCard'
 import {ConstructFinalWeapon} from "../../Utils/ConstructFinalWeapon";
+import {disambiguateCard} from "../../Utils/DisambiguateCardType";
 
 interface ICompendiumClassElementInput {
     data: IClassMetaData
@@ -40,8 +41,8 @@ const CompendiumClassElement = ({
     }, [data, isLoaded]);
 
     const compendiumProps = {
-        isExpanded: true,
-        canToggleExpand: false,
+        isExpanded: false,
+        canToggleExpand: true,
         canFavorite: false,
         isAdd: true,
         showPrerequisites: true
@@ -53,44 +54,21 @@ const CompendiumClassElement = ({
             <Typography variant={"body2"}>{data.description}</Typography>
             <Typography variant={"h4"}> Class Abilities </Typography>
             {
-                allAbilities.map(ability => {
-                    return (
-                        <AbilityItem abilityData={ability} key={ability.abilityName} showPrerequisites={true}/>
-                    )
+                allAbilities.map((ability,index) => {
+                    return <AbilityItem abilityData={ability} showPrerequisites={true} key={index} />
+
                 })
             }
             <Typography variant={"h4"}> Class Cards </Typography>
             <Box
                 sx={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(5, 1fr)"
+                    display: 'grid',
+                    gridTemplateColumns: "repeat( auto-fill , max(264px, 19vw))",
+                    gridGap: "10px"
                 }}
             >
                 {
-                    allCards.map(card => {
-                        if (card.cardType == "spell") {
-                            switch (card.cardSubtype) {
-                                case "base":
-                                    return <SpellBaseCard cardData={card as ISpellBaseCardData}  key={card.cardName} sendBack={() => {}} {...compendiumProps}/>
-                                case "target":
-                                    return <SpellTargetCard cardData={card as ISpellTargetCardData} key={card.cardName}  sendBack={() => {}} {...compendiumProps} />
-                                default:
-                                    return <SpellModifierCard cardData={card as ISpellModifierCardData} key={card.cardName}  sendBack={() => {}} {...compendiumProps} />
-
-                            }
-                        } else if (card.cardType == "weapon") {
-                            if (card.cardSubtype == "base") {
-                                return <WeaponBaseCard cardData={ConstructFinalWeapon(card as IWeaponBaseData, 0)}  key={card.cardName} sendBack={() => {}} {...compendiumProps} />
-                            } else {
-                                return <WeaponModCard cardData={card} sendBack={() => {}} key={card.cardName}  {...compendiumProps} />
-                            }
-                        } else if (card.cardType == "commander") {
-                            return <CommanderCard cardData={card as ICommanderCardData} sendBack={()=>{}} key={card.cardName} {...compendiumProps}/>
-
-                        } else {
-                            return <>test</>
-                        }
-                    })
+                    disambiguateCard(allCards, compendiumProps)
                 }
             </Box>
 

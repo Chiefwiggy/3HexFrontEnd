@@ -104,6 +104,31 @@ const WeaponCardBuilderView = ({closeSelf}: IWeaponCardBuilderViewInput) => {
         setStandbyCards(null);
     }
 
+    const handleCounter = async(sentCards: Array<ICommonCardData|null>) => {
+        const cards: Array<ICommonCardData> = sentCards.filter(c => c !== null && c !== undefined) as ICommonCardData[];
+        const base = cards.find(e => e.cardSubtype == "base");
+        const rest = cards.filter(e => e.cardSubtype != "base");
+        if (base && rest && currentSheet) {
+            const weaponCalcData: ICalculatedWeapon = {
+                // weaponBaseId: base._id,
+                weaponBaseData: {
+                    baseId: base._id,
+                    enchantmentLevel: 0
+                },
+                weaponCardsIds: rest.map(e => e._id)
+            };
+            await handleFinalCounter(weaponCalcData);
+        }
+    }
+
+    const handleFinalCounter = async(weaponData: ICalculatedWeapon) => {
+        if (currentSheet) {
+            await CharacterAPI.SetCounterWeapon(currentSheet.data._id, weaponData);
+            currentSheet.setCurrentCounter(weaponData);
+            closeSelf(null);
+        }
+    }
+
 
     return currentSheet ? (
         <>
@@ -115,6 +140,8 @@ const WeaponCardBuilderView = ({closeSelf}: IWeaponCardBuilderViewInput) => {
                 closeSelf={closeSelf}
                 sendSaveData={handleReceiveSaveCards}
                 sendEquipData={handleReceiveEquipCards}
+                sendCounterData={handleCounter}
+                canCounter={true}
             />
             <Dialog
                 open={saveWeaponDialog}

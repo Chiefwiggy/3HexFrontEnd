@@ -18,6 +18,7 @@ import SpellModifierCard from "../Cards/SpellModifierCard";
 import WeaponBaseCard from "../Cards/WeaponBaseCard";
 import WeaponModCard from "../Cards/WeaponModCard";
 import CommanderCard from "../Cards/CommanderCard";
+import {disambiguateCard} from "../../Utils/DisambiguateCardType";
 
 interface ICompendiumAffinityElementInput {
     elemName: keyof IAffinities | keyof IArcanaKeys | "_"
@@ -40,8 +41,8 @@ const CompendiumAffinityElement = ({
     const [levelArray, setLevelArray] = useState<Array<number>>([]);
 
     const compendiumProps = {
-        isExpanded: true,
-        canToggleExpand: false,
+        isExpanded: false,
+        canToggleExpand: true,
         canFavorite: false,
         isAdd: true,
         showPrerequisites: true
@@ -59,10 +60,6 @@ const CompendiumAffinityElement = ({
         }
     }, [elemName, isLoaded]);
 
-    // useEffect(() => {
-    //
-    // }, [allCards]);
-
     return isLoaded ? (
         <Box>
             <Typography variant={"h3"} component={"div"}>{capitalize(elemName)}</Typography>
@@ -75,53 +72,22 @@ const CompendiumAffinityElement = ({
                             {
                                 (allAbilities?.get(e) ?? []).map(ability => {
                                     return (
-                                        <AbilityItem abilityData={ability} key={ability.abilityName}
+                                        <AbilityItem abilityData={ability} key={ability._id}
                                                      showPrerequisites={true}/>
                                     )
                                 })
                             }
                             <Box
                                 sx={{
-                                    display: "grid",
-                                    gridTemplateColumns: "repeat(5, 1fr)"
+                                    display: 'grid',
+                                    gridTemplateColumns: "repeat( auto-fill , max(264px, 19vw))",
+                                    gridGap: "10px"
                                 }}
                             >
                                 {
-                                    (allCards?.get(e) ?? []).map(card => {
-                                        if (card.cardType == "spell") {
-                                            switch (card.cardSubtype) {
-                                                case "base":
-                                                    return <SpellBaseCard cardData={card as ISpellBaseCardData}
-                                                                          key={card.cardName} sendBack={() => {
-                                                    }} {...compendiumProps}/>
-                                                case "target":
-                                                    return <SpellTargetCard cardData={card as ISpellTargetCardData}
-                                                                            key={card.cardName} sendBack={() => {
-                                                    }} {...compendiumProps} />
-                                                default:
-                                                    return <SpellModifierCard cardData={card as ISpellModifierCardData}
-                                                                              key={card.cardName} sendBack={() => {
-                                                    }} {...compendiumProps} />
-
-                                            }
-                                        } else if (card.cardType == "weapon") {
-                                            if (card.cardSubtype == "base") {
-                                                return <WeaponBaseCard cardData={card as IScaledWeaponBaseData}
-                                                                       key={card.cardName} sendBack={() => {
-                                                }} {...compendiumProps} />
-                                            } else {
-                                                return <WeaponModCard cardData={card} sendBack={() => {
-                                                }} key={card.cardName}  {...compendiumProps} />
-                                            }
-                                        } else if (card.cardType == "commander") {
-                                            return <CommanderCard cardData={card as ICommanderCardData}
-                                                                  sendBack={() => {
-                                                                  }} key={card.cardName} {...compendiumProps}/>
-
-                                        } else {
-                                            return <>test</>
-                                        }
-                                    })
+                                    allCards ?
+                                    disambiguateCard((allCards.get(e) ?? []), compendiumProps)
+                                        : <></>
                                 }
                             </Box>
 

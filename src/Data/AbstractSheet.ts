@@ -2,8 +2,15 @@ import {AttributeBarType, DamageType} from "./CharacterSheet";
 import React, {SetStateAction} from "react";
 import {UStance} from "./ICharacterData";
 import {IAPIContext} from "../Hooks/useAPI/APIProvider";
-import {UDamageType} from "./ICardData";
+import {ICommonCardData, UDamageType} from "./ICardData";
 import {IDefenseBreakdown} from "./IDefenses";
+import {ICardBuilderType} from "../Layouts/CardBuilder";
+import SpellBaseCard from "../Components/Cards/SpellBaseCard";
+import SpellTargetCard from "../Components/Cards/SpellTargetCard";
+import SpellModifierCard from "../Components/Cards/SpellModifierCard";
+import WeaponBaseCard from "../Components/Cards/WeaponBaseCard";
+import WeaponModCard from "../Components/Cards/WeaponModCard";
+import {default_spell_cards, default_weapon_cards} from "./default_cards";
 
 
 abstract class AbstractSheet {
@@ -200,6 +207,66 @@ abstract class AbstractSheet {
 
     public getDodge(): number {
         return this.currentStance == "evade" ? this.getEvadeDodge() : this.getBlockDodge();
+    }
+
+
+        public spellCalculatorTypes: Array<ICardBuilderType> = [
+        {
+            name: "spell.base",
+            display: "base",
+            component: SpellBaseCard,
+            required: true
+        },
+        {
+            name: "spell.target",
+            display: "target",
+            component: SpellTargetCard,
+            required: true
+        },
+        {
+            name: "spell.skill",
+            display: "skill",
+            component: SpellModifierCard,
+            required: true
+        },
+        {
+            name: "spell.edict",
+            display: "edict",
+            component: SpellModifierCard,
+            required: false
+        }
+    ]
+
+    public weaponCalculatorTypes: Array<ICardBuilderType> = [
+        {
+            name: "weapon.base",
+            display: "base",
+            component: WeaponBaseCard,
+            required: true,
+            counterRequired: true,
+            counterInvalid: false
+        },
+        {
+            name: "weapon.form",
+            display: "form",
+            component: WeaponModCard,
+            required: true,
+            counterRequired: true,
+            counterInvalid: false
+        },
+
+        {
+            name: "weapon.skill",
+            display: "skill",
+            component: WeaponModCard,
+            required: false,
+            counterRequired: false,
+            counterInvalid: true
+        }
+    ]
+
+    public areAllCardsPrepared = (data: Array<ICommonCardData|null>): boolean => {
+        return true;
     }
 
 

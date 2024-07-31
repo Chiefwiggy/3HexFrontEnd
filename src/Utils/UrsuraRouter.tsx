@@ -13,6 +13,9 @@ import ClassCompendiumPage from "../Pages/ClassCompendiumPage";
 import AffinityCompendiumPage from "../Pages/AffinityCompendiumPage";
 import SignupPage from "../Pages/SignupPage";
 import BarracksPage from "../Pages/BarracksPage";
+import WeaponCompendium from "../Pages/WeaponCompendium";
+import ArmorCompendium from "../Pages/ArmorCompendium";
+import SourceCompendium from "../Pages/SourceCompendium";
 
 
 
@@ -57,7 +60,25 @@ const UrsuraRouter = createBrowserRouter([
             },
             {
                 path: "/barracks",
-                element: <BarracksPage />
+                children: [
+                    {
+                        path: "weapons",
+                        element: <WeaponCompendium />
+                    },
+                    {
+                        path: "armor",
+                        element: <ArmorCompendium />
+                    },
+                    {
+                        path: "sources",
+                        element: <SourceCompendium />
+                    },
+                    {
+                        path: "",
+                        element: <BarracksPage />
+                    }
+                ],
+
             },
             {
                 path: "/login",

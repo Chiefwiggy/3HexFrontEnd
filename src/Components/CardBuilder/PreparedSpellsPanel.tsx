@@ -19,6 +19,7 @@ const PreparedSpellsPanel = ({}: IPreparedSpellsPanelInput) => {
     const [currentSpell, setCurrentSpell] = useState<null | ICalculatedSpell>(null);
     const [currentWeapon, setCurrentWeapon] = useState<null | ICalculatedWeapon>(null);
     const [currentCommander, setCurrentCommander] = useState<null| ICommanderCardData>(null);
+    const [currentCounter, setCurrentCounter] = useState<null|ICalculatedWeapon>(null);
 
     const [tabIndex, setTabIndex] = useState(0);
 
@@ -32,6 +33,7 @@ const PreparedSpellsPanel = ({}: IPreparedSpellsPanelInput) => {
             setCurrentSpell(currentSheet.data.currentSpell);
             setCurrentWeapon(currentSheet.data.currentWeapon);
             setCurrentCommander(currentSheet.getCumulativeCommanderCard())
+            setCurrentCounter(currentSheet.data.counterWeapon);
         }
     }, [charPing, isReady]);
 
@@ -42,6 +44,7 @@ const PreparedSpellsPanel = ({}: IPreparedSpellsPanelInput) => {
                 <Tab label={"Weapon"} value={0}/>
                 <Tab label={"Spell"} value={1}/>
                 <Tab label={"Commander"} value={2} />
+                <Tab label={"Counter"} value={3} />
             </Tabs>
             <br />
                     <CustomTabPanel index={tabIndex} value={0}>
@@ -68,6 +71,14 @@ const PreparedSpellsPanel = ({}: IPreparedSpellsPanelInput) => {
                                 <CommanderCard cardData={currentCommander} sendBack={() => {}} canFavorite={false} canToggleExpand={false} isExpanded={true} />
                                 :
                                 <Typography>Sorry, no commander cards</Typography>
+                        }
+                    </CustomTabPanel>
+                    <CustomTabPanel index={tabIndex} value={3}>
+                        {
+                        currentWeapon ?
+                            <PrebuiltWeaponCardWrapper weaponData={currentCounter} overrideWidth={28}/>
+                            :
+                            <Typography>Sorry, no counterattack loaded.</Typography>
                         }
                     </CustomTabPanel>
         </Box>

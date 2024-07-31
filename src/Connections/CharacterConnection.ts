@@ -77,6 +77,14 @@ class CharacterConnection {
         })
     }
 
+    public async SetCounterWeapon(charID: string, weaponData: ICalculatedWeapon) {
+        await Axios.put(this.GetRouteURL(`update/${charID}`), {
+            counterWeapon: weaponData
+        }, this._getConfig()).then((resp) => {
+            console.log(resp);
+        })
+    }
+
     public async AddPrepWeapon(charID: string, spellData: ICalculatedWeapon) {
         await Axios.post(this.GetRouteURL(`prep/${charID}/weapon/add`), spellData, this._getConfig()).then((resp) => {
             console.log(resp);

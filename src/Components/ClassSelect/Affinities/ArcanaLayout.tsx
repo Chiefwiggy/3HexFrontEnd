@@ -46,6 +46,9 @@ const ArcanaLayout = ({
         }
     }, [myClasses]);
 
+
+
+
     return currentSheet ? (
         <Box
                 sx={{

@@ -4,13 +4,14 @@ import GenericCardLayout, {ICardSendbackData} from "../../Layouts/GenericCardLay
 import {Box, Typography} from "@mui/material";
 import NumericIcon from "./NumericIcon";
 import {
+    Accessibility, AccessibilityNewOutlined,
     AdsClickOutlined, BackHandOutlined,
     CrisisAlertOutlined,
     FitnessCenterOutlined,
-    LooksOutlined,
+    LooksOutlined, SportsHandballOutlined,
     SportsMmaOutlined
 } from "@mui/icons-material";
-import {getDamageShorthand, getSkillFormat} from "../../Utils/Shorthand";
+import {getDamageShorthand, getHandedness, getSkillFormat} from "../../Utils/Shorthand";
 import CritNumberBox from "../SmallComponents/CritNumberBox";
 import {createRangeString} from "../../Utils/helper_functions";
 
@@ -47,6 +48,12 @@ const WeaponBaseCard = ({
                 <NumericIcon val={`${createRangeString(cardData.baseRange)}`} icon={LooksOutlined} />
                 <NumericIcon val={getSkillFormat(cardData.baseHit)} icon={AdsClickOutlined} />
                 <NumericIcon val={cardData.baseCrit} icon={CrisisAlertOutlined} />
+                <NumericIcon val={getHandedness(null, cardData.handedness)} icon={AccessibilityNewOutlined} />
+                {
+                    cardData.canThrow ?
+                        <NumericIcon val={createRangeString(cardData.thrownRange)} icon={SportsHandballOutlined} />
+                        : <NumericIcon val={"-"} icon={SportsHandballOutlined} />
+                }
             </Box>
             <Box
                 sx={{
@@ -62,13 +69,7 @@ const WeaponBaseCard = ({
                 <CritNumberBox value={cardData.specialCrit.d5}/>
                 <CritNumberBox value={cardData.specialCrit.d6}/>
             </Box>
-            {
-                cardData.canThrow ?
-                    <Box>
-                        <Typography variant="body2" color="textSecondary">throw: {createRangeString(cardData.thrownRange)}</Typography>
-                    </Box>
-                    :<></>
-            }
+
         </GenericCardLayout>
     )
 }

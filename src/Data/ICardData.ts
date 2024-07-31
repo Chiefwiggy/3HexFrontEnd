@@ -134,6 +134,7 @@ export interface IScaledWeaponBaseData extends IWeaponCommonData {
     baseCrit: number,
     damageType: string,
     damageSubtype: string,
+    handedness: number,
     specialCrit: {
         d1: UCritDie,
         d2: UCritDie,
@@ -169,6 +170,7 @@ export interface IWeaponBaseData extends IWeaponCommonData {
     baseCrit: IScalingData<number>,
     damageType: string,
     damageSubtype: string,
+    handedness: number,
     specialCrit: IScalingData<{
         d1: UCritDie,
         d2: UCritDie,

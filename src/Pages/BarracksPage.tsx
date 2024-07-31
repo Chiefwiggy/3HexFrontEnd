@@ -1,7 +1,11 @@
 import React from 'react';
-import {Box, Typography} from "@mui/material";
+import {Box, Button, Typography} from "@mui/material";
 import usePreloadedContent from "../Hooks/usePreloadedContent/usePreloadedContent";
 import BarracksWeapon from "../Components/Equipment/BarracksWeapon";
+import {AddOutlined} from "@mui/icons-material";
+import {ICharacterBaseData} from "../Data/ICharacterData";
+import CharacterSelectCard from "../Components/Character Select/CharacterSelectCard";
+import CompendiumSelect from "../Components/Character Select/CompendiumSelect";
 
 interface IBarracksPageInput {
 
@@ -9,25 +13,31 @@ interface IBarracksPageInput {
 
 const BarracksPage = ({}: IBarracksPageInput) => {
 
-    const {WeaponData} = usePreloadedContent();
-
     return (
         <Box>
-            <Typography variant={"h4"}>Weapons</Typography>
+            <Box
+                sx={{
+                    padding: "12px",
+                    display: 'grid',
+                    gridTemplateColumns: "repeat(3, 1fr)"
+                }}
+            >
+                <Box></Box>
+                <Typography variant="h3" component="div" textAlign={"center"}>Barracks</Typography>
+                <Box></Box>
+
+            </Box>
             <Box
                 sx={{
                     display: 'grid',
-                    gridTemplateColumns: "repeat( auto-fill , max(264px, 19vw))",
-                    gridGap: "10px"
+                    gridTemplateColumns: 'repeat(3, 1fr)',
+                    gap: 1,
+                    margin: 4
                 }}
             >
-                {
-                    WeaponData.GetAllStandardWeapons().map(e => {
-                        return (
-                            <BarracksWeapon weaponData={e} key={e._id} />
-                        )
-                    })
-                }
+                <CompendiumSelect text={"Weapons"} linkTo={"weapons"} />
+                <CompendiumSelect text={"Armor"} linkTo={"armor"} />
+                <CompendiumSelect text={"Sources"} linkTo={"sources"} />
             </Box>
         </Box>
     )

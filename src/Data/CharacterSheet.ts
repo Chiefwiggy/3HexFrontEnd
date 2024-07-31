@@ -76,54 +76,7 @@ class CharacterSheet extends AbstractSheet {
     public commanderCards: Array<ICommanderCardData> = [];
     public minionData: Array<MinionSheet> = [];
 
-    public spellCalculatorTypes: Array<ICardBuilderType> = [
-        {
-            name: "spell.base",
-            display: "base",
-            component: SpellBaseCard,
-            required: true
-        },
-        {
-            name: "spell.target",
-            display: "target",
-            component: SpellTargetCard,
-            required: true
-        },
-        {
-            name: "spell.skill",
-            display: "skill",
-            component: SpellModifierCard,
-            required: true
-        },
-        {
-            name: "spell.edict",
-            display: "edict",
-            component: SpellModifierCard,
-            required: false
-        }
-    ]
 
-    public weaponCalculatorTypes: Array<ICardBuilderType> = [
-        {
-            name: "weapon.base",
-            display: "base",
-            component: WeaponBaseCard,
-            required: true
-        },
-        {
-            name: "weapon.form",
-            display: "form",
-            component: WeaponModCard,
-            required: true
-        },
-
-        {
-            name: "weapon.skill",
-            display: "skill",
-            component: WeaponModCard,
-            required: false
-        }
-    ]
 
     public spellCalculator = new SpellCardCalculator(this.spellCalculatorTypes);
     public weaponCalculator = new WeaponCardCalculator(this.weaponCalculatorTypes);
@@ -143,6 +96,11 @@ class CharacterSheet extends AbstractSheet {
 
     public setCurrentWeapon = (data: ICalculatedWeapon) => {
         this.data.currentWeapon = data;
+        this._ping();
+    }
+
+    public setCurrentCounter = (data: ICalculatedWeapon) => {
+        this.data.counterWeapon = data;
         this._ping();
     }
 
@@ -375,6 +333,19 @@ class CharacterSheet extends AbstractSheet {
         return [];
     }
 
+    public getPreparedSpellCards = (): Array<ICommonCardData> => {
+        if (this.allButDefaultCards) {
+            const spellCards: Array<ICommonCardData> = [...this.allButDefaultCards.spells.bases, ...this.allButDefaultCards.spells.targets, ...this.allButDefaultCards.spells.modifiers];
+            const filteredCards = spellCards.filter(card => {
+                return this.getPreparedCardsIdList().includes(card._id)
+            })
+            return filteredCards.map(e => {
+                return e;
+            })
+        }
+        return [];
+    }
+
     public GetPreparedWeaponBases = (): Array<IScaledWeaponBaseData> => {
         if (this.allCards) {
             return this.allCards.weapons.bases.map(base => {
@@ -524,7 +495,7 @@ class CharacterSheet extends AbstractSheet {
             abjuration: 0,
             machinery: 0
         }
-        const currentArcana = {
+        let currentArcana = {
             arcane: 0,
             warrior: 0,
             support: 0,
@@ -535,16 +506,17 @@ class CharacterSheet extends AbstractSheet {
                 currentAffinities[key as keyof IAffinities] += value;
             })
         })
-        this.currentArcana = {
+        currentArcana = {
             arcane: currentAffinities.hex + currentAffinities.soul + currentAffinities.rune,
             warrior: currentAffinities.infantry + currentAffinities.guardian + currentAffinities.deft,
             support: currentAffinities.leadership + currentAffinities.erudite + currentAffinities.supply,
             hacker: currentAffinities.biohacking + currentAffinities.abjuration + currentAffinities.machinery
         }
-        return {
+        const a = {
             arcana: currentArcana,
             affinities: currentAffinities
         }
+        return a;
     }
 
     public getMaxHealth() {
@@ -653,6 +625,10 @@ class CharacterSheet extends AbstractSheet {
                 {
                     reason: "Armor",
                     value: this.currentArmor?.pDEFBonus ?? 0
+                },
+                {
+                    reason: "Other Bonuses",
+                    value: this.getAbilityBonuses("pDEF") + this.getAbilityBonuses("pDEFEvade")
                 }
             ]
         }
@@ -677,6 +653,10 @@ class CharacterSheet extends AbstractSheet {
                 {
                     reason: "Armor",
                     value: this.currentArmor?.mDEFBonus ?? 0
+                },
+                {
+                    reason: "Other Bonuses",
+                    value: this.getAbilityBonuses("mDEF") + this.getAbilityBonuses("mDEFEvade")
                 }
             ]
         }
@@ -701,6 +681,10 @@ class CharacterSheet extends AbstractSheet {
                 {
                     reason: "Armor",
                     value: this.currentArmor ? this.currentArmor.pDEFBonus + this.currentArmor.blockPDEFBonus : 0
+                },
+                {
+                    reason: "Other Bonuses",
+                    value: this.getAbilityBonuses("pDEF") + this.getAbilityBonuses("pDEFBlock")
                 }
             ]
         }
@@ -725,6 +709,10 @@ class CharacterSheet extends AbstractSheet {
                 {
                     reason: "Armor",
                     value: this.currentArmor ? this.currentArmor.mDEFBonus + this.currentArmor.blockMDEFBonus : 0
+                },
+                {
+                    reason: "Other Bonuses",
+                    value: this.getAbilityBonuses("mDEF") + this.getAbilityBonuses("mDEFBlock")
                 }
             ]
         }
@@ -732,11 +720,11 @@ class CharacterSheet extends AbstractSheet {
 
 
     public getEvadeDodge(): number {
-        return 25+(2*this.data.characterStats.agility.value)+this.data.characterStats.awareness.value-(this.weightPenalty*3);
+        return 25+(2*this.data.characterStats.agility.value)+this.data.characterStats.awareness.value-(this.weightPenalty*3) + this.getAbilityBonuses("dodgeEvade") + this.getAbilityBonuses("dodge");
     }
 
     public getBlockDodge(): number {
-        return 15+(this.data.characterStats.agility.value)+this.data.characterStats.awareness.value-(this.weightPenalty*3);
+        return 15+(this.data.characterStats.agility.value)+this.data.characterStats.awareness.value-(this.weightPenalty*3) + this.getAbilityBonuses("dodgeBlock") + this.getAbilityBonuses("dodge");
     }
 
     public getEvadeDodgeBreakdown(): IDefenseBreakdown {
@@ -754,6 +742,10 @@ class CharacterSheet extends AbstractSheet {
                 {
                     reason: "Awareness",
                     value: getSkillFormat(this.data.characterStats.awareness.value)
+                },
+                {
+                    reason: "Other Bonuses",
+                    value: this.getAbilityBonuses("dodge") + this.getAbilityBonuses("dodgeEvade")
                 }
             ]
         }
@@ -781,6 +773,10 @@ class CharacterSheet extends AbstractSheet {
                 {
                     reason: "Awareness",
                     value: getSkillFormat(this.data.characterStats.awareness.value)
+                },
+                {
+                    reason: "Other Bonuses",
+                    value: this.getAbilityBonuses("dodge") + this.getAbilityBonuses("dodgeBlock")
                 }
             ]
         }

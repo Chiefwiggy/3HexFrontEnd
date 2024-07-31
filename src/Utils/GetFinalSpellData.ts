@@ -9,6 +9,7 @@ import {
 import spellModifierCard from "../Components/Cards/SpellModifierCard";
 import {IDataModifiers} from "../Data/GenericData";
 import {ICharacterBaseData} from "../Data/ICharacterData";
+import {IMinionData} from "../Data/IMinionData";
 
 export interface ITotalSpellStats {
     tetherCost: number,
@@ -98,10 +99,27 @@ export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: IS
 
 }
 
-export const GetFinalWeaponData = (weaponBase: IScaledWeaponBaseData, allCards: Array<IWeaponCommonData | null>, char: ICharacterBaseData): ITotalWeaponStats => {
+
+
+export const GetFinalWeaponData = (weaponBase: IScaledWeaponBaseData, allCards: Array<IWeaponCommonData | null>, char: ICharacterBaseData|IMinionData): ITotalWeaponStats => {
+
+    let might = 0;
+    let skill = 0;
+    let awareness = 0;
+    if ((char as ICharacterBaseData).characterStats == undefined) {
+        const ms: IMinionData = (char as IMinionData);
+        might = ms.minionStats.might.value;
+        skill = ms.minionStats.skill.value;
+        awareness = ms.minionStats.awareness.value;
+    } else {
+        const cs = char as ICharacterBaseData;
+        might = cs.characterStats.might.value;
+        skill = cs.characterStats.skill.value;
+        awareness = cs.characterStats.awareness.value;
+    }
 
     let finalBasePower = StatChain(weaponBase.basePower, allCards.map(c => c?.basePowerMod));
-    let finalPotencyPower = Math.floor(StatChain(weaponBase.potency, allCards.map(c => c?.potencyMod), false) * char.characterStats.might.value);
+    let finalPotencyPower = Math.floor(StatChain(weaponBase.potency, allCards.map(c => c?.potencyMod), false) * might);
     const finalPower = StatChain(finalBasePower + finalPotencyPower, allCards.map(c => c?.powerMod));
     const minRange = StatChain(weaponBase.baseRange.min, allCards.map(c => c?.minRangeMod));
     const maxRange = StatChain(weaponBase.baseRange.max, allCards.map(c => c?.maxRangeMod));
@@ -118,11 +136,11 @@ export const GetFinalWeaponData = (weaponBase: IScaledWeaponBaseData, allCards: 
     const isThrownMelee = weaponBase.thrownRange.isMelee
 
     const finalBaseCrit = StatChain(weaponBase.baseCrit, allCards.map(c => c?.baseCritMod));
-    const finalCrit = StatChain(char.characterStats.skill.value + finalBaseCrit + (char.bonuses?.critBonus ?? 0), allCards.map(c => c?.critMod));
+    const finalCrit = StatChain(skill + finalBaseCrit + (char.bonuses?.critBonus ?? 0), allCards.map(c => c?.critMod));
 
     const finalBaseHit = StatChain(weaponBase.baseHit, allCards.map(c => c?.baseHitMod));
 
-    const finalHitMod = StatChain(finalBaseHit + (char.characterStats.awareness.value*2) + char.characterStats.skill.value + (char.bonuses?.hitBonus ?? 0), allCards.map(c => c?.hitMod));
+    const finalHitMod = StatChain(finalBaseHit + (awareness*2) + skill + (char.bonuses?.hitBonus ?? 0), allCards.map(c => c?.hitMod));
 
 
     return {

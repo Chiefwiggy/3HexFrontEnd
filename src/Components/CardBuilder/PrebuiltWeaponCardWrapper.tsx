@@ -68,7 +68,7 @@ const PrebuiltWeaponCardWrapper = ({
     }
 
     return currentSheet && weaponCalc ? (
-        <CalculatedCard cardCalculator={weaponCalc} depArray={currentWeaponData} overrideName={weaponData?.customName ?? ""} overrideWidth={overrideWidth}/>
+        <CalculatedCard cardCalculator={weaponCalc} depArray={currentWeaponData} overrideName={weaponData?.customName ?? ""} overrideWidth={overrideWidth} owner={currentSheet}/>
     ) : <></>
 }
 

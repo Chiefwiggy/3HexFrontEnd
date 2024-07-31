@@ -1,10 +1,17 @@
 import {IEffectData, IScaledWeaponBaseData, IWeaponBaseData, UDamageType} from "../ICardData";
 import AbstractCardCalculator, {INumericIconData} from "./AbstractCardCalculator";
 import {ICardBuilderType} from "../../Layouts/CardBuilder";
-import {AdsClickOutlined, CrisisAlertOutlined, WaterDropOutlined} from "@mui/icons-material";
+import {
+    AccessibilityNewOutlined,
+    AdsClickOutlined,
+    CrisisAlertOutlined,
+    SportsHandballOutlined,
+    WaterDropOutlined
+} from "@mui/icons-material";
 import {ICharacterBaseData} from "../ICharacterData";
 import {GetFinalWeaponData} from "../../Utils/GetFinalSpellData";
-import {getSkillFormat} from "../../Utils/Shorthand";
+import {getHandedness, getSkillFormat} from "../../Utils/Shorthand";
+import {createRangeString} from "../../Utils/helper_functions";
 
 
 class WeaponCardCalculator extends AbstractCardCalculator {
@@ -25,6 +32,20 @@ class WeaponCardCalculator extends AbstractCardCalculator {
                     val: "0",
                     icon: CrisisAlertOutlined
                 }
+            ],
+            [
+                "handedness",
+                {
+                    val: "One-Handed",
+                    icon: AccessibilityNewOutlined
+                }
+            ],
+            [
+                "thrownDistance",
+                {
+                    val: "-",
+                    icon: SportsHandballOutlined
+                }
             ]
         ]));
     }
@@ -44,8 +65,12 @@ class WeaponCardCalculator extends AbstractCardCalculator {
             this.currentRange = finalWeaponStats.range;
             this.thrownRange = finalWeaponStats.thrownRange;
 
+            const baseCard = this.getCardOfType("weapon.base") as IScaledWeaponBaseData;
+
             this.updateVal("toHit", getSkillFormat(finalWeaponStats.toHit));
             this.updateVal("critDamage", finalWeaponStats.crit.toString());
+            this.updateVal("handedness", getHandedness(char, baseCard.handedness));
+            this.updateVal("thrownDistance", (baseCard.canThrow) ? createRangeString(finalWeaponStats.thrownRange) : "-");
         }
     }
     protected sortEffects(a: IEffectData, b: IEffectData): number {

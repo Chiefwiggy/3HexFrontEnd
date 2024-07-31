@@ -103,7 +103,9 @@ class PLC_AffinityData {
         try {
             const allAb = this.getAffinityAbilities(affinityName).map(e => this.getRequiredLevel(e.prerequisites, affinityName));
             const allCd = this.getAffinityCards(affinityName).map(e => this.getRequiredLevel(e.prerequisites, affinityName));
-            return Array.from(new Set([...allAb, ...allCd]));
+            const a = Array.from(new Set([...allAb, ...allCd])).sort((n1, n2) => n1 - n2);
+            console.log(a);
+            return a;
         } catch(e) {
             return [];
         }

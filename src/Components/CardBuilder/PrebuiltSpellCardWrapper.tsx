@@ -59,7 +59,7 @@ const PrebuiltSpellCardWrapper = ({
     }
 
     return currentSheet && spellCalc ? (
-        <CalculatedCard cardCalculator={spellCalc} depArray={currentSpellData} overrideName={spellData?.customName ?? ""} overrideWidth={overrideWidth}/>
+        <CalculatedCard cardCalculator={spellCalc} depArray={currentSpellData} overrideName={spellData?.customName ?? ""} overrideWidth={overrideWidth} owner={currentSheet}/>
     ) : <></>
 }
 

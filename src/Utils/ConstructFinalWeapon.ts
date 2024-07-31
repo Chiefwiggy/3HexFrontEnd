@@ -3,7 +3,7 @@ import {IScaledWeaponBaseData, IScalingData, IWeaponBaseData} from "../Data/ICar
 
 export const ConstructFinalWeapon = (baseWeaponData: IWeaponBaseData, enchantment: number): IScaledWeaponBaseData => {
 
-    const a = {
+    return {
         ...baseWeaponData,
         _id: baseWeaponData._id,
         baseCrit: ScaleChainNumeric(baseWeaponData.baseCrit, enchantment),
@@ -27,10 +27,9 @@ export const ConstructFinalWeapon = (baseWeaponData: IWeaponBaseData, enchantmen
         thrownRange: {isMelee: baseWeaponData.thrownRange.isMelee, max: ScaleChainNumeric(baseWeaponData.thrownRange.max, enchantment), min: ScaleChainNumeric(baseWeaponData.thrownRange.min, enchantment)},
         weaponClass: baseWeaponData.weaponClass,
         weaponTags: baseWeaponData.weaponTags,
-        weaponType: baseWeaponData.weaponType
+        weaponType: baseWeaponData.weaponType,
+        handedness: baseWeaponData.handedness
     }
-    return a;
-
 }
 
 export const ScaleChainNumeric = (scaleData: IScalingData<number>, enchantment: number, doFloor = true) => {
