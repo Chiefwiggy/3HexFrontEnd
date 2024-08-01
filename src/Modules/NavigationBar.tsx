@@ -44,6 +44,9 @@ const NavigationBar = () => {
                     <Button onClick={handleNavigate("/barracks")}>
                         Barracks
                     </Button>
+                    <Button onClick={handleNavigate("/minions")}>
+                        Minions
+                    </Button>
 
                     <Box sx={{flexGrow: 1}}/>
                     {loggedIn ? (

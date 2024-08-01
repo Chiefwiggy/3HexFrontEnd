@@ -16,6 +16,9 @@ import BarracksPage from "../Pages/BarracksPage";
 import WeaponCompendium from "../Pages/WeaponCompendium";
 import ArmorCompendium from "../Pages/ArmorCompendium";
 import SourceCompendium from "../Pages/SourceCompendium";
+import MinionCreationPage from '../Pages/MinionCreationPage';
+import MinionCompendiumPage from "../Pages/MinionCompendiumPage";
+import MinionLandingPage from "../Pages/MinionLandingPage";
 
 
 
@@ -78,6 +81,24 @@ const UrsuraRouter = createBrowserRouter([
                         element: <BarracksPage />
                     }
                 ],
+
+            },
+            {
+              path: "minions",
+                children: [
+                    {
+                        path: "create",
+                        element: <MinionCreationPage />
+                    },
+                    {
+                        path: "templates",
+                        element: <MinionCompendiumPage />
+                    },
+                    {
+                        path: "",
+                        element: <MinionLandingPage />
+                    }
+                ]
 
             },
             {

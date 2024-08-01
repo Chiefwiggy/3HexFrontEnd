@@ -17,7 +17,13 @@ const AbilityTab = ({
 
 
     return currentSheet ? (
-        <Box>
+        <Box
+            sx={{
+                display: 'grid',
+                gridTemplateColumns: "repeat( auto-fill , max(264px, 19vw))",
+                gridGap: "10px"
+            }}
+        >
             {currentSheet.allAbilities.map(ability => {
                 return (
                     <AbilityItem abilityData={ability} key={ability._id}  />

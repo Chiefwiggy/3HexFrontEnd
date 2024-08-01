@@ -1,6 +1,8 @@
-import React, {useEffect} from 'react';
-import {Box, capitalize, Typography} from "@mui/material";
+import React, {useEffect, useState} from 'react';
+import {Box, capitalize, IconButton, Paper, Typography} from "@mui/material";
 import {IAbility} from "../../Data/IAbilities";
+import {ExpandMoreOutlined} from "@mui/icons-material";
+import {ExpandMore} from "../../Elements/ExpandMore";
 
 interface IAbilityItemInput {
     abilityData: IAbility,
@@ -9,7 +11,9 @@ interface IAbilityItemInput {
 
 const AbilityItem = ({abilityData, showPrerequisites = false}: IAbilityItemInput) => {
 
-    const [prereqString, setPrereqString] = React.useState<string>("None.")
+    const [prereqString, setPrereqString] = useState<string>("None.")
+
+    const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
         const str = abilityData.prerequisites.map(prereq => {
@@ -18,29 +22,76 @@ const AbilityItem = ({abilityData, showPrerequisites = false}: IAbilityItemInput
         if (str != "") {
             setPrereqString(str);
         }
-    }, []);
+    }, [abilityData]);
+
+
 
     return (
-        <Box>
-            <Typography variant={"h5"}>{abilityData.abilityName}</Typography>
-            {
-                showPrerequisites ?
-                    <Typography
-                        variant={"body2"}
+        <Box
+            sx={{
+                margin: "2px"
+            }}
+        >
+            <Paper elevation={2} sx={{
+                borderRadius: "12px",
+                maxWidth: '18vw',
+                padding: '12px',
+                textAlign: "center"
+            }}>
+                {/*Header*/}
+                <Box>
+                    <Typography variant={"h5"}>{abilityData.abilityName}</Typography>
+                    {
+                        showPrerequisites ?
+                            <Typography
+                                variant={"body2"}
+                                sx={{
+                                    color: "darkgray",
+                                    fontSize: "12px"
+                                }}
+                            >
+                                Requirements: {prereqString}
+                            </Typography>
+                            : <></>
+                    }
+                </Box>
+
+                <Box
+                    sx={{
+                        display: isOpen ? "box" : "none",
+                        padding: "12px"
+                    }}
+                >
+                    <Paper
+                        elevation={3}
                         sx={{
-                            color: "darkgray",
-                            fontSize: "12px"
+                            padding: "12px"
                         }}
                     >
-                        Requirements: {prereqString}
-                    </Typography>
-                    : <></>
-            }
-            {
-                abilityData.description.map((desc, index) => {
-                    return <Typography variant={"body2"} key={index}>{desc}</Typography>
-                })
-            }
+                        {
+                            abilityData.description.map((desc, index) => {
+                                return <Typography variant={"body2"} key={index}>{desc}</Typography>
+                            })
+                        }
+                    </Paper>
+
+                </Box>
+                <Box
+                    sx={{
+                        display: "flex"
+                    }}
+                >
+                    <ExpandMore
+                      expand={isOpen}
+                      onClick={() => setIsOpen(!isOpen)}
+                      aria-expanded={isOpen}
+                      aria-label="show more"
+                    >
+                        <ExpandMoreOutlined />
+                    </ExpandMore>
+                </Box>
+
+            </Paper>
         </Box>
     )
 }
