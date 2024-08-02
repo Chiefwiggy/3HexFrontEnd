@@ -11,6 +11,7 @@ import SpellModifierCard from "../Components/Cards/SpellModifierCard";
 import WeaponBaseCard from "../Components/Cards/WeaponBaseCard";
 import WeaponModCard from "../Components/Cards/WeaponModCard";
 import {default_spell_cards, default_weapon_cards} from "./default_cards";
+import {IArmor} from "./IArmorData";
 
 
 abstract class AbstractSheet {
@@ -66,6 +67,7 @@ abstract class AbstractSheet {
     public abstract getBlockDodgeBreakdown(): IDefenseBreakdown;
 
     public abstract getLevel(): number
+    public currentArmor: IArmor | undefined = undefined;
 
     public refresh() {
         this.healCharacter("stamina", this.getStaminaRefresh(), false);

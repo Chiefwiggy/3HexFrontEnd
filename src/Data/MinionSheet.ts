@@ -12,6 +12,7 @@ import {default_spell_cards, default_weapon_cards} from "./default_cards";
 import {IAPIContext} from "../Hooks/useAPI/APIProvider";
 import {IDefenseBreakdown} from "./IDefenses";
 import {getSkillFormat} from "../Utils/Shorthand";
+import {IArmor} from "./IArmorData";
 
 
 class MinionSheet extends AbstractSheet {
@@ -19,8 +20,8 @@ class MinionSheet extends AbstractSheet {
 
     public getEvadePDEF(): number {
         let evadeArmorBonus = 0;
-        if (this.data.currentArmor) {
-            evadeArmorBonus = this.data.currentArmor.blockPDEFBonus;
+        if (this.currentArmor) {
+            evadeArmorBonus = this.currentArmor.pDEFBonus;
         }
         //commander cards
         //final
@@ -29,15 +30,15 @@ class MinionSheet extends AbstractSheet {
 
     public getBlockPDEF(): number {
         let blockArmorBonus = 0;
-        if (this.data.currentArmor) {
-            blockArmorBonus = this.data.currentArmor.blockPDEFBonus;
+        if (this.currentArmor) {
+            blockArmorBonus = this.currentArmor.blockPDEFBonus;
         }
         return this.getEvadePDEF()+3+blockArmorBonus;
     }
     public getEvadeMDEF(): number {
         let evadeArmorBonus = 0;
-        if (this.data.currentArmor) {
-            evadeArmorBonus = this.data.currentArmor.blockMDEFBonus;
+        if (this.currentArmor) {
+            evadeArmorBonus = this.currentArmor.mDEFBonus;
         }
         //commander cards
         //final
@@ -45,8 +46,8 @@ class MinionSheet extends AbstractSheet {
     }
     public getBlockMDEF(): number {
         let blockArmorBonus = 0;
-        if (this.data.currentArmor) {
-            blockArmorBonus = this.data.currentArmor.blockMDEFBonus;
+        if (this.currentArmor) {
+            blockArmorBonus = this.currentArmor.blockMDEFBonus;
         }
         return this.getEvadeMDEF()+3+blockArmorBonus;
     }
@@ -105,8 +106,26 @@ class MinionSheet extends AbstractSheet {
         this.data.cardData.push(...default_weapon_cards);
         this.isPrepared = isPrepared
         this.owner = owner;
+        this.setArmor();
     }
 
+    private setArmor() {
+        if (this.data.currentArmor) {
+            this.currentArmor = this.owner.preloadedData.ArmorData.GetConstructedArmorById(this.data.currentArmor.baseId, this.data.currentArmor.enchantmentLevel);
+            this._setWeightPenalty()
+        }
+    }
+
+    private _setWeightPenalty() {
+        console.log(this.currentArmor?.vitalityRequirement);
+        if (this.currentArmor && this.data.minionStats.vitality.value < this.currentArmor.vitalityRequirement) {
+
+            this.weightPenalty = -(this.data.minionStats.vitality.value - this.currentArmor.vitalityRequirement);
+            console.log(this.weightPenalty)
+        } else {
+            this.weightPenalty = 0;
+        }
+    }
     public async healthPingExecute(): Promise<void> {
         Promise.resolve(this.API.MinionAPI.SetBars(this.data._id,this.data.attributeBars)).then().catch();
         this.owner.manualHealthPing(false);
@@ -142,7 +161,7 @@ class MinionSheet extends AbstractSheet {
                 },
                 {
                     reason: "Armor",
-                    value: this.data.currentArmor?.pDEFBonus ?? 0
+                    value: this.currentArmor?.pDEFBonus ?? 0
                 }
             ]
         }
@@ -162,7 +181,7 @@ class MinionSheet extends AbstractSheet {
                 },
                 {
                     reason: "Armor",
-                    value: this.data.currentArmor?.mDEFBonus ?? 0
+                    value: this.currentArmor?.mDEFBonus ?? 0
                 }
             ]
         }
@@ -186,7 +205,7 @@ class MinionSheet extends AbstractSheet {
                 },
                 {
                     reason: "Armor",
-                    value: this.data.currentArmor ? this.data.currentArmor.pDEFBonus + this.data.currentArmor.blockPDEFBonus : 0
+                    value: this.currentArmor ? this.currentArmor.pDEFBonus + this.currentArmor.blockPDEFBonus : 0
                 }
             ]
         }
@@ -210,7 +229,7 @@ class MinionSheet extends AbstractSheet {
                 },
                 {
                     reason: "Armor",
-                    value: this.data.currentArmor ? this.data.currentArmor.mDEFBonus + this.data.currentArmor.blockMDEFBonus : 0
+                    value: this.currentArmor ? this.currentArmor.mDEFBonus + this.currentArmor.blockMDEFBonus : 0
                 }
             ]
         }

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Box, Tab, Tabs} from "@mui/material";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
 import ClickPopup from "../Generic/ClickPopup";

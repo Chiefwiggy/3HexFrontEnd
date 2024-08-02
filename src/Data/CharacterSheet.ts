@@ -70,7 +70,7 @@ class CharacterSheet extends AbstractSheet {
     public currentAffinities: IAffinities
     public currentArcana: IArcanaKeys
 
-    public currentArmor: IArmor | undefined = undefined;
+
     public allCards: IAllCardsData | null = null;
     public allButDefaultCards: IAllCardsData | null = null;
     public commanderCards: Array<ICommanderCardData> = [];
@@ -84,7 +84,7 @@ class CharacterSheet extends AbstractSheet {
 
     public allAbilities: Array<IAbility> = [];
     private sendReadyFn: React.Dispatch<SetStateAction<boolean>>;
-    private preloadedData: IPreloadedContentContextInput
+    public preloadedData: IPreloadedContentContextInput
 
 
 

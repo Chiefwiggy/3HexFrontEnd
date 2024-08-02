@@ -1,4 +1,4 @@
-import {IAttributeBar, ICalculatedSpell, ICalculatedWeapon} from "./ICharacterData";
+import {IAttributeBar, ICalculatedSpell, ICalculatedWeapon, IEnchantmentData} from "./ICharacterData";
 import {IModifiable} from "./GenericData";
 import {IArmor} from "./IArmorData";
 import {ICommonCardData} from "./ICardData";
@@ -35,7 +35,7 @@ export interface IMinionData {
     currentSpell: ICalculatedSpell|null,
     currentWeapon: ICalculatedWeapon|null,
     isAdjutant: boolean,
-    currentArmor: IArmor|null,
+    currentArmor: IEnchantmentData | null,
     cardData: Array<ICommonCardData>
     bonuses: {
         staminaRefresh?: number,
