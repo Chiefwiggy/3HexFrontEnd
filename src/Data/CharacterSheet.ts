@@ -620,6 +620,7 @@ class CharacterSheet extends AbstractSheet {
         if (this.currentArmor) {
             blockArmorBonus = this.currentArmor.blockPDEFBonus;
         }
+        blockArmorBonus += this.getAbilityBonuses("pDEFBlock")
         return this.getEvadePDEF()+3+blockArmorBonus;
     }
 
@@ -638,6 +639,7 @@ class CharacterSheet extends AbstractSheet {
         if (this.currentArmor) {
             blockArmorBonus = this.currentArmor.blockMDEFBonus;
         }
+        blockArmorBonus += this.getAbilityBonuses("mDEFBlock");
         return this.getEvadeMDEF()+3+blockArmorBonus;
     }
 
