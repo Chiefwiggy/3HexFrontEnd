@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Box, capitalize, IconButton, Paper, Typography} from "@mui/material";
+import {Box, capitalize, Collapse, IconButton, Paper, Typography} from "@mui/material";
 import {IAbility} from "../../Data/IAbilities";
 import {ExpandMoreOutlined} from "@mui/icons-material";
 import {ExpandMore} from "../../Elements/ExpandMore";
@@ -32,9 +32,10 @@ const AbilityItem = ({abilityData, showPrerequisites = false}: IAbilityItemInput
                 margin: "2px"
             }}
         >
-            <Paper elevation={2} sx={{
+            <Paper elevation={1} sx={{
                 borderRadius: "12px",
-                maxWidth: '18vw',
+                width: "16vw",
+                minWidth: "264px",
                 padding: '12px',
                 textAlign: "center"
             }}>
@@ -56,9 +57,8 @@ const AbilityItem = ({abilityData, showPrerequisites = false}: IAbilityItemInput
                     }
                 </Box>
 
-                <Box
+                <Collapse in={isOpen} timeout={"auto"} unmountOnExit
                     sx={{
-                        display: isOpen ? "box" : "none",
                         padding: "12px"
                     }}
                 >
@@ -70,12 +70,16 @@ const AbilityItem = ({abilityData, showPrerequisites = false}: IAbilityItemInput
                     >
                         {
                             abilityData.description.map((desc, index) => {
-                                return <Typography variant={"body2"} key={index}>{desc}</Typography>
+                                return <Typography variant={"body2"} sx={{
+                                    fontSize: "14px",
+                                    textAlign: "left",
+                                    paddingBottom: "2px"
+                                }} key={index}>{desc}</Typography>
                             })
                         }
                     </Paper>
 
-                </Box>
+                </Collapse>
                 <Box
                     sx={{
                         display: "flex"
