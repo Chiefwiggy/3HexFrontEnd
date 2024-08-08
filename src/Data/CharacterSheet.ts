@@ -42,6 +42,7 @@ import MinionSheet from "./MinionSheet";
 import {IMinionData} from "./IMinionData";
 import PLC_ArmorData from "../Hooks/usePreloadedContent/PLC_ArmorData";
 import {IPreloadedContentContextInput} from "../Hooks/usePreloadedContent/PreloadedContentProvider";
+import {Utils} from "../Utils/LanguageLacking";
 
 export type AttributeBarType = "tether" | "stamina" | "health"
 export type DamageType = "physical" | "magical" | "raw" | "resistant"
@@ -85,6 +86,9 @@ class CharacterSheet extends AbstractSheet {
     public allAbilities: Array<IAbility> = [];
     private sendReadyFn: React.Dispatch<SetStateAction<boolean>>;
     public preloadedData: IPreloadedContentContextInput
+
+    private delayPing: boolean = false;
+    private currentTimeout: any = null;
 
 
 
@@ -156,13 +160,24 @@ class CharacterSheet extends AbstractSheet {
         }, true)
     }
 
-    public useActionPoint() {
-        this.data.currentActionPoints -= 1;
-        this._hping();
-    }
 
-    public regainActionPoints(amount: number) {
-        this.data.currentActionPoints = Math.min(this.data.currentActionPoints + amount, this.getActionPointsMax())
+    public changeActionPoints(amount: number) {
+        const prev = this.data.currentActionPoints;
+        this.data.currentActionPoints = Utils.Clamp(this.data.currentActionPoints+amount, 0, this.getActionPointsMax())
+        if (prev != this.data.currentActionPoints) {
+            if (!this.delayPing) {
+                this.delayPing = true;
+            } else {
+                if (this.currentTimeout) {
+                    window.clearTimeout(this.currentTimeout);
+                }
+            }
+            this.currentTimeout = setTimeout(() => {
+                this.delayPing = false;
+                this._hping()
+            }, 5000);
+        }
+
     }
 
     public getAbilityBonuses = (bonusType: string) => {
@@ -306,7 +321,7 @@ class CharacterSheet extends AbstractSheet {
     public editStat(mod: number, statName: string) {
         this.data.characterStats[statName as UStat].value += mod;
         if (statName === "endurance") {
-            this.data.attributeBars.stamina.current = Math.max(this.getStamina() + this.data.attributeBars.stamina.scaling.value*mod, 0);
+            this.data.attributeBars.stamina.current = Math.max(this.getStamina() + 4*mod, 0);
         } else if (statName === "vitality") {
             this.data.attributeBars.health.current = Math.max(this.getHealth() + this.data.attributeBars.health.scaling.value*mod, 0);
         } else if (statName === "mind") {
@@ -465,7 +480,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public refresh() {
-        this.regainActionPoints(1);
+        this.changeActionPoints(1);
         for (const minion of this.minionData) {
             minion.refresh();
         }

@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Button, IconButton, Typography} from "@mui/material";
+import {Box, Button, IconButton, LinearProgress, Typography} from "@mui/material";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
-import {Diamond, DiamondOutlined, RefreshOutlined} from "@mui/icons-material";
+import {AddCircleOutlined, Diamond, DiamondOutlined, RefreshOutlined, RemoveCircleOutlined} from "@mui/icons-material";
+import {Utils} from "../../Utils/LanguageLacking";
 
 interface IActionPointsPanelInput {
 
@@ -20,31 +21,49 @@ const ActionPointsPanel = ({}: IActionPointsPanelInput) => {
 
     }, [healthPing]);
 
-    const handleUseActionPoint = () => {
+    const handleActionPointChange = (delta: number) => (event: React.MouseEvent) => {
         if (currentSheet) {
-            currentSheet?.useActionPoint()
-            setCurrentAP(currentAP-1);
+            currentSheet.changeActionPoints(delta);
+            setCurrentAP(currentAP+delta);
         }
     }
 
     return currentSheet ? (
         <Box>
-            <Box>
-                <Button
-                    variant="contained"
-                    color={"secondary"}
-                    onClick={handleUseActionPoint}
+            <Typography textAlign={"center"}>Action Points</Typography>
+            <Box
+                sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 2
+                }}
+            >
+                <IconButton onClick={handleActionPointChange(-1)}><RemoveCircleOutlined/></IconButton>
+                <Box
                     sx={{
-                        marginBottom: 2
+                        display: "flex",
+                        justifyContent: "center",
+                        gap: "4px"
                     }}
                 >
-                    <Typography> Use AP </Typography>
-                    <DiamondOutlined/>
-                </Button>
+                    {
+                        Array(currentSheet.getActionPointsMax()).fill(0).map((_, index) => {
+                            return (
+                                <LinearProgress key={index} value={ Utils.Clamp((currentSheet.data.currentActionPoints)-(index), 0, 1)*100} variant={"determinate"} sx={{
+                                    height: 14,
+                                    width: 14,
+                                    borderRadius: 10
+                                }} />
+                            )
+                        })
+                    }
+
+
+                    {/*<Typography>AP: {currentAP} / {currentSheet.getActionPointsMax()}</Typography>*/}
+                </Box>
+                <IconButton onClick={handleActionPointChange(1)}> <AddCircleOutlined /></IconButton>
             </Box>
-            <Box>
-                <Typography>AP: {currentAP} / {currentSheet.getActionPointsMax()}</Typography>
-            </Box>
+
 
 
         </Box>
