@@ -21,11 +21,14 @@ const EquipmentTab = ({}: IEquipmentTabInput) => {
     const [justUpdated, setJustUpdated] = useState(true);
     const [showStatus, setShowStatus] = useState(false);
 
+    const [primedToDelete, setPrimedToDelete] = useState<Array<boolean>>([]);
+
 
     useEffect(() => {
         if (currentSheet) {
             const weaponDataCopy = currentSheet.data.knownWeapons.map(weapon => ({ ...weapon }));
             setCurrentWeaponMetadata(weaponDataCopy);
+            setPrimedToDelete(Array(weaponDataCopy.length).fill(false));
         }
     }, []);
 
@@ -36,14 +39,31 @@ const EquipmentTab = ({}: IEquipmentTabInput) => {
         setCurrentWeaponMetadata(nData);
     }
 
+    const handleDeleteData = (doDelete: boolean, index: number) => {
+        setJustUpdated(false);
+        const nData: Array<boolean> = [...primedToDelete];
+
+        nData[index] = doDelete;
+        console.log(nData);
+        setPrimedToDelete(nData);
+    }
+
     const {CharacterAPI} = useAPI();
 
     const isTablet = useMediaQuery("(max-width: 1400px)");
 
     const saveData = async() => {
         if (currentSheet) {
-            currentSheet.data.knownWeapons = currentWeaponMetadata.map(weapon => ({...weapon}));
-            await CharacterAPI.UpdateWeaponsList(currentSheet.data._id, currentWeaponMetadata);
+            const newWeaponArray: Array<IEnchantmentData> = [];
+            primedToDelete.forEach((value, index) => {
+                if (!value) {
+                    newWeaponArray.push(currentWeaponMetadata[index]);
+                }
+            })
+            currentSheet.data.knownWeapons = newWeaponArray
+            await CharacterAPI.UpdateWeaponsList(currentSheet.data._id, newWeaponArray);
+            setCurrentWeaponMetadata(newWeaponArray);
+            setPrimedToDelete(Array(newWeaponArray.length).fill(false));
             currentSheet.manualCharPing()
             setJustUpdated(true);
             setShowStatus(true);
@@ -58,6 +78,7 @@ const EquipmentTab = ({}: IEquipmentTabInput) => {
             setJustUpdated(true);
             const weaponDataCopy = currentSheet.data.knownWeapons.map(weapon => ({ ...weapon }));
             setCurrentWeaponMetadata(weaponDataCopy);
+            setPrimedToDelete(Array(weaponDataCopy.length).fill(false));
         }
     }
 
@@ -90,7 +111,7 @@ const EquipmentTab = ({}: IEquipmentTabInput) => {
                         const weapon = WeaponData.GetCardById(weaponStruct.baseId);
                         if (weapon) {
                             return (
-                                <WeaponEnchantmentCard weaponData={weapon} index={index} callback={handleChangeData} weaponMetadata={weaponStruct} key={weapon._id}/>
+                                <WeaponEnchantmentCard weaponData={weapon} index={index} callback={handleChangeData} weaponMetadata={weaponStruct} key={weapon._id} primedToDelete={primedToDelete[index]} deleteCallback={handleDeleteData} />
                             )
                         } else {
                             return <Box key={index}></Box>

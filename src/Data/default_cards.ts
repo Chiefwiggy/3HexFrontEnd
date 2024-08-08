@@ -103,6 +103,12 @@ export const default_weapon_cards: Array<IWeaponCommonData|IScaledWeaponBaseData
             max: 0,
             isMelee: true
         },
+        thrownRange: {
+            min: 0,
+            max: 0,
+            isMelee: true
+        },
+        canThrow: false,
         skillRequirement: 0,
         _id: "___defaultBaseWeapon",
         enchantmentLevel: 0

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import AttributeBar from "../Components/Sheet/AttributeBar";
-import {Box, Button, Typography} from "@mui/material";
-import {RefreshOutlined} from "@mui/icons-material";
+import {Box, Button, IconButton, Typography} from "@mui/material";
+import {RefreshOutlined, SelfImprovementOutlined, SelfImprovementRounded} from "@mui/icons-material";
 import SimpleClosableDialog from "../Components/Generic/SimpleClosableDialog";
 import useCharacter from "../Hooks/useCharacter/useCharacter";
 import useEventHistory from "../Hooks/useEventHistory/useEventHistory";
@@ -19,6 +19,7 @@ const AttributeView = ({pivot}: IAttributeViewInput) => {
     const [pingValue, setPingValue] = useState<boolean>(false);
 
     const [refreshPanelOpen, setRefreshPanelOpen] = useState<boolean>(false);
+    const [breatherPanelOpen, setBreatherPanelOpen] = useState<boolean>(false);
 
     const [progressHealth, setProgressHealth] = useState(99);
     const [currentHealth, setCurrentHealth] = useState(0);
@@ -34,6 +35,10 @@ const AttributeView = ({pivot}: IAttributeViewInput) => {
 
     const handleRefreshPanel = (open: boolean) => () => {
         setRefreshPanelOpen(open);
+    }
+
+    const handleBreatherPanel = (open: boolean) => () => {
+        setBreatherPanelOpen(open);
     }
 
     const ping = () => {
@@ -61,6 +66,15 @@ const AttributeView = ({pivot}: IAttributeViewInput) => {
             ping();
         }
         handleRefreshPanel(false)();
+    }
+
+    const handleBreathe = () => {
+        if (currentSheet) {
+            currentSheet.breather();
+            LogEvent("Took a breather.");
+            ping();
+        }
+        handleBreatherPanel(false)();
     }
 
     const handleHealAndUse = (isHeal: boolean) => (bar: AttributeBarType, amount: number) => {
@@ -99,17 +113,47 @@ const AttributeView = ({pivot}: IAttributeViewInput) => {
                         justifyContent: 'center'
                     }}
                 >
-                    <Button
-                        variant="contained"
-                        onClick={handleRefreshPanel(true)}
+                    <Box
                         sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: 2,
                             marginBottom: 2
                         }}
                     >
-                        <Typography>Refresh </Typography>
-                        <RefreshOutlined />
-                    </Button>
+                        <Button
+                            variant="contained"
+                            onClick={handleRefreshPanel(true)}
+                        >
+                            <RefreshOutlined />
+                        </Button>
+                        <IconButton
+                            onClick={handleBreatherPanel(true)}
+                        ><SelfImprovementOutlined /></IconButton>
+                    </Box>
+
                     <ActionPointsPanel />
+                    <SimpleClosableDialog title={"Take a Breather"} buttons={[
+                        {
+                            label: "Cancel",
+                            variant: "contained",
+                            color: "error",
+                            action: () => setBreatherPanelOpen(false)
+                        },
+                        {
+                            label: "Breathe",
+                            variant: "contained",
+                            action: handleBreathe
+                        }
+                    ]} isOpen={breatherPanelOpen} setIsOpen={setBreatherPanelOpen}
+                        content={
+                            <Box>
+                                Would you like to take a breather and regain:
+                                <Typography> Regain {currentSheet.getStaminaBreather()} Stamina. </Typography>
+                            </Box>
+                        } fullWidth={true}
+                    />
                     <SimpleClosableDialog
                         title={"Refresh"}
                         buttons={[

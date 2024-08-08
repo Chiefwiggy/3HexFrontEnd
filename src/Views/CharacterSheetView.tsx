@@ -51,9 +51,7 @@ const CharacterSheetView = () => {
         if (currentSheet) {
 
             currentSheet.rest();
-            currentSheet.minionData.forEach((minion) => {
-                minion.rest();
-            })
+
         }
     }
 

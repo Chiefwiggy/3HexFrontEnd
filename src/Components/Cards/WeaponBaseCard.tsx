@@ -33,6 +33,7 @@ const WeaponBaseCard = ({
     canFavorite = true,
     showPrerequisites=false
 }: IWeaponBaseCardInput) => {
+
     return (
         <GenericCardLayout cardData={cardData} sendBack={sendBack} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} canFavorite={canFavorite} overrideSubtitle={cardData.weaponType.toUpperCase() + " • " + cardData.weaponClass.toUpperCase()} showPrerequisites={showPrerequisites}
                            titleExtra={cardData.enchantmentLevel ? ("+" + cardData.enchantmentLevel) : ""}>

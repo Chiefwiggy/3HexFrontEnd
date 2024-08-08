@@ -18,7 +18,7 @@ abstract class AbstractSheet {
 
 
     private localState = false;
-    private localHealth = false;
+    private static localHealth = false;
     private localStat = false;
     private readonly updateCharacter: React.Dispatch<React.SetStateAction<boolean>>|undefined;
     private readonly updateHealth: React.Dispatch<React.SetStateAction<boolean>>|undefined
@@ -68,6 +68,8 @@ abstract class AbstractSheet {
 
     public abstract getLevel(): number
     public currentArmor: IArmor | undefined = undefined;
+
+    public static canPingHealth = true;
 
     public refresh() {
         this.healCharacter("stamina", this.getStaminaRefresh(), false);
@@ -157,7 +159,8 @@ abstract class AbstractSheet {
         this.healCharacter("health", 999, false);
         this.healCharacter("stamina", 999, false);
         this.healCharacter("tether", 999, false);
-        this._hping();
+        console.log("REST");
+
     }
 
     public useBar(bar: AttributeBarType, amount: number) {
@@ -180,10 +183,18 @@ abstract class AbstractSheet {
     }
 
     protected _hping(doSend: boolean=true) {
-        if (this.updateHealth) {
-            this.updateHealth(!this.localHealth);
-            this.localHealth = !this.localHealth;
+        if (AbstractSheet.canPingHealth) {
+            if (this.updateHealth) {
+                this.updateHealth(!AbstractSheet.localHealth);
+                AbstractSheet.localHealth = !AbstractSheet.localHealth;
+            }
+
+            AbstractSheet.canPingHealth = false;
+            setTimeout(() => {
+                AbstractSheet.canPingHealth = true;
+            }, 1000)
         }
+
 
         Promise.resolve(this.healthPingExecute(doSend)).then(() => {
             // nothing;

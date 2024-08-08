@@ -15,7 +15,7 @@ import {
     ISpellModifierCardData,
     ISpellTargetCardData, IWeaponBaseData,
     UAffinity,
-    UCharacterStat
+    UCharacterStat, UWeaponClass
 } from "./ICardData";
 import {IAPIContext} from "../Hooks/useAPI/APIProvider";
 import {IArmor} from "./IArmorData";
@@ -37,7 +37,7 @@ import AttributeBar from "../Components/Sheet/AttributeBar";
 import {waitFor} from "@testing-library/react";
 import affinitiesPanel from "../Components/ClassSelect/Affinities/AffinitiesPanel";
 import AbstractSheet from "./AbstractSheet";
-import {ConstructFinalArmor, ConstructFinalWeapon} from "../Utils/ConstructFinalWeapon";
+import {ConstructFinalArmor, ConstructFinalWeapon, ScaleChainNumeric} from "../Utils/ConstructFinalWeapon";
 import MinionSheet from "./MinionSheet";
 import {IMinionData} from "./IMinionData";
 import PLC_ArmorData from "../Hooks/usePreloadedContent/PLC_ArmorData";
@@ -196,6 +196,21 @@ class CharacterSheet extends AbstractSheet {
                 return pv;
             }
         }, 0)
+    }
+
+    public isUnlocked = (unlockType: string) => {
+        return this.allAbilities.reduce((pv, cv) => {
+            if (pv) return pv;
+            const strSplit = unlockType.split(".");
+            let ability: any = cv.unlocks;
+            strSplit.forEach(str => {
+                ability = ability[str];
+            })
+            if (ability) {
+                return ability;
+            }
+            return pv;
+        }, false)
     }
 
     public getCommanderBonus = (bonusType: string, whoFor: "commander" | "adjutant" | "minion" = "commander") => {
@@ -488,9 +503,18 @@ class CharacterSheet extends AbstractSheet {
 
     }
 
-    public rest() {
+    public breather() {
+        this.healCharacter("stamina", this.getStaminaBreather(), true);
+    }
+
+    public async rest() {
         this.data.currentActionPoints = this.getActionPointsMax();
+        this.minionData.forEach((minion) => {
+            minion.rest();
+            minion.healthPingExecute();
+        })
         super.rest();
+        this._hping()
     }
 
     private _setAllAbilities = async() => {
@@ -617,6 +641,62 @@ class CharacterSheet extends AbstractSheet {
     public getStaminaRefresh(): number {
         return this.data.characterStats.endurance.value + (this.data.bonuses?.staminaRefresh ?? 0);
     }
+
+    public getStaminaBreather(): number {
+        return this.getStaminaRefresh() + this.getAbilityBonuses("staminaBreather") + (this.isUnlocked("mindBreathing") ? Math.floor(this.data.characterStats.mind.value * 0.5): 0);
+
+    }
+
+    public getWeaponClassAffinity(weaponClass: UWeaponClass) {
+        switch (weaponClass){
+            case "light":
+                return this.currentAffinities.deft;
+            case "standard":
+                return this.currentAffinities.infantry;
+            case "heavy":
+                return this.currentAffinities.guardian;
+        }
+    }
+
+    public getMaxWeaponForClass(weaponClass: UWeaponClass, handedness: number) {
+        let affTotal = this.getWeaponClassAffinity(weaponClass);
+        if (handedness == 1.5 && this.isUnlocked("ironGrasp")) {
+            return affTotal + 1;
+        }
+        return affTotal;
+    }
+
+    public getHandedness(weaponClass: UWeaponClass, handedness: number, currentEnchant: number) {
+        if (handedness <= 1) {
+            return "One-Handed"
+        } else if (handedness >= 2) {
+            return "Two-Handed"
+        }
+        let affTotal = this.getWeaponClassAffinity(weaponClass);
+        if (this.isUnlocked("ironGrasp") && currentEnchant > affTotal) {
+            return "Two-Handed"
+        } else {
+            return "Versatile"
+        }
+    }
+
+    public getSkillRequirementString(weaponData: IWeaponBaseData, enchantmentLevel: number) {
+        const normal = ScaleChainNumeric(weaponData.skillRequirement, enchantmentLevel)
+        let upped = 0
+        if (weaponData.handedness == 1.5 && this.isUnlocked("ironGrasp") && enchantmentLevel) {
+            upped = ScaleChainNumeric(weaponData.skillRequirement, Math.max(enchantmentLevel-1, 0))
+        }
+        if (this.getWeaponClassAffinity(weaponData.weaponClass) < enchantmentLevel) {
+            return `${upped}`
+        }
+        if (upped > 0 && upped < normal) {
+            return `${normal} / ${upped}`
+        }
+        return `${normal}`
+    }
+
+
+
 
     public getTetherRefresh(): number {
         return Math.floor(this.data.characterStats.mind.value / 2) + (this.data.bonuses?.tetherRefresh ?? 0);
