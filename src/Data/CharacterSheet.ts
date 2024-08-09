@@ -632,7 +632,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getAuthoritySlots(): number {
-        return 1 + Math.floor(this.data.characterStats.authority.value * 0.2) + this.getAbilityBonuses("authoritySlots");
+        return 1 + Math.floor(this.data.characterStats.authority.value * 0.25) + this.getAbilityBonuses("authoritySlots");
     }
 
 
