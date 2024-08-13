@@ -83,8 +83,9 @@ class WeaponCardCalculator extends AbstractCardCalculator {
         if (this.getCardOfType("weapon.base")) {
             const adj = this.getCardOfType("weapon.form")?.cardName.split(" ")[0] ?? "";
             const weapon = this.getCardOfType("weapon.base")?.cardName ?? "Unarmed";
+            const skill = this.getCardOfType("weapon.skill")?.cardName ?? "";
             const enchantment = (this.getCardOfType("weapon.base") as IScaledWeaponBaseData)?.enchantmentLevel;
-            return adj + " " + weapon + (enchantment > 0 ? ` +${enchantment}` : "")
+            return adj + " " + weapon + (enchantment > 0 ? ` +${enchantment}` : "") + (skill ? (" - " + skill) : "")
         }
         return "NOT LOADED";
 
