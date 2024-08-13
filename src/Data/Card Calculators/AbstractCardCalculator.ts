@@ -28,6 +28,8 @@ abstract class AbstractCardCalculator {
     protected currentRange: IRangeData;
     protected thrownRange: IRangeData;
     protected currentIcons: Map<string, INumericIconData>;
+    protected finalDamageType: UDamageType;
+    protected finalDamageSubtype: string;
 
     protected currentPower;
     protected constructor(cardTypes: Array<ICardBuilderType>, initialIcons: Map<string,INumericIconData>) {
@@ -45,6 +47,8 @@ abstract class AbstractCardCalculator {
         }
         this.currentIcons = initialIcons;
         this.currentPower = 0;
+        this.finalDamageSubtype = "slashing",
+        this.finalDamageType = "physical"
     }
 
     protected getCardOfType(inputType: string) {

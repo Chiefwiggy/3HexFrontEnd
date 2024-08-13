@@ -116,6 +116,8 @@ export interface IWeaponCommonData extends ICommonCardData {
     baseCritMod?: IDataModifiers,
     critMod?: IDataModifiers
     weaponClassOverride?: UWeaponClass,
+    weaponDamageTypeOverride?: UDamageType,
+    wepaonDamageSubtypeOverride?: string
 }
 
 export interface IScalingData<T> {

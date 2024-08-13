@@ -64,6 +64,8 @@ class WeaponCardCalculator extends AbstractCardCalculator {
             this.currentPower = finalWeaponStats.totalPower;
             this.currentRange = finalWeaponStats.range;
             this.thrownRange = finalWeaponStats.thrownRange;
+            this.finalDamageType = finalWeaponStats.damageType;
+            this.finalDamageSubtype = finalWeaponStats.damageSubtype;
 
             const baseCard = this.getCardOfType("weapon.base") as IScaledWeaponBaseData;
 
@@ -101,7 +103,8 @@ class WeaponCardCalculator extends AbstractCardCalculator {
     }
 
     public getDamageType(): UDamageType {
-        return (((this.getCardOfType("weapon.base") as IWeaponBaseData)?.damageType) as UDamageType) ?? "physical"
+        // return (((this.getCardOfType("weapon.base") as IWeaponBaseData)?.damageType) as UDamageType) ?? "physical"
+        return this.finalDamageType;
     }
 }
 

@@ -4,7 +4,8 @@ import {
     ISpellModifierCardData,
     ISpellTargetCardData,
     IWeaponBaseData,
-    IWeaponCommonData
+    IWeaponCommonData,
+    UDamageType
 } from "../Data/ICardData";
 import spellModifierCard from "../Components/Cards/SpellModifierCard";
 import {IDataModifiers} from "../Data/GenericData";
@@ -37,7 +38,9 @@ export interface ITotalWeaponStats {
         min: number,
         max: number,
         isMelee: boolean
-    }
+    },
+    damageType:  UDamageType,
+    damageSubtype: string
 
 }
 
@@ -142,6 +145,20 @@ export const GetFinalWeaponData = (weaponBase: IScaledWeaponBaseData, allCards: 
 
     const finalHitMod = StatChain(finalBaseHit + (awareness*2) + skill + (char.bonuses?.hitBonus ?? 0), allCards.map(c => c?.hitMod));
 
+    let finalDamageType = weaponBase.damageType;
+    let finalDamageSubtype = weaponBase.damageSubtype;
+
+    for (const card of allCards) {
+        if (card) {
+            if (card.weaponDamageTypeOverride) {
+                finalDamageType = card.weaponDamageTypeOverride
+            }
+            if (card.wepaonDamageSubtypeOverride) {
+                finalDamageSubtype = card.wepaonDamageSubtypeOverride
+            }
+        }
+    }
+
 
     return {
         crit: finalCrit,
@@ -156,7 +173,9 @@ export const GetFinalWeaponData = (weaponBase: IScaledWeaponBaseData, allCards: 
             isMelee: isThrownMelee
         },
         toHit: finalHitMod,
-        totalPower: finalPower
+        totalPower: finalPower,
+        damageType: finalDamageType,
+        damageSubtype: finalDamageSubtype
     }
 
 }
