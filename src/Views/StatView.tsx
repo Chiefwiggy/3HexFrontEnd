@@ -54,19 +54,31 @@ const StatView = ({
         <Box>
             <Box
                 sx={{
+                    display: "grid",
+                    gridTemplateColumns: "9fr 1fr"
+                }}
+            >
+                <Box
+                    sx={{
                     display: 'grid',
                     gridTemplateColumns: pivot ? "repeat(5, 1fr)" : "repeat(2, 1fr)",
                 }}
-            >
-                {
-                    statData ?
-                    Object.entries(statData).map(([name, stats]) => {
-                        return <StatBox stat={name} value={stats} key={name} editMode={isInEditMode} handleStatChange={handleEditStat} />
-                    })
-                        :
-                        <></>
-                }
+                >
+                    {
+                        statData ?
+                        Object.entries(statData).map(([name, stats]) => {
+                            return <StatBox stat={name} value={stats} key={name} editMode={isInEditMode} handleStatChange={handleEditStat} />
+                        })
+                            :
+                            <></>
+                    }
+                </Box>
+                <Box>
+                    <Typography>Dash: {currentSheet.getDashSpeed()}</Typography>
+                    <Typography>Step: {currentSheet.getStepSpeed()}</Typography>
+                </Box>
             </Box>
+
             {
                 statDiff > 0 ?
                     <Box
