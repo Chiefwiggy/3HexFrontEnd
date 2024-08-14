@@ -28,6 +28,8 @@ const CardListScrollable = ({
     skeletonMax = 10
 }: ICardListScrollableInput) => {
 
+    console.log(cardList)
+
     return (
         <Box
             sx={{

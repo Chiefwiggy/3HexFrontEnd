@@ -75,22 +75,40 @@ export const default_spell_cards: Array<ISpellTargetCardData|ISpellModifierCardD
     },
 ]
 
-export const default_weapon_cards: Array<IWeaponCommonData|IScaledWeaponBaseData> = [
+export const default_weapon_cards: Array<IWeaponCommonData|IWeaponBaseData> = [
     {
         cardName: "Fists",
         cardType: "weapon",
         cardSubtype: "base",
         effects: [],
         prerequisites: [],
-        baseHit: 0,
-        basePower: 0,
-        potency: 2.5,
+        baseHit: {
+            baseValue: 0,
+            breakpoints: [],
+            breakpointBonuses: []
+        },
+        basePower: {
+            baseValue: 0,
+            breakpoints: [],
+            breakpointBonuses: []
+        },
+        potency: {
+            baseValue: 2.5,
+            breakpoints: [],
+            breakpointBonuses: []
+        },
         weaponClass: "light",
         weaponType: "unarmed",
         damageType: "physical",
         damageSubtype: "crushing",
-        baseCrit: 0,
-        specialCrit: {
+        baseCrit: {
+            baseValue: 0,
+            breakpoints: [],
+            breakpointBonuses: []
+        },
+        specialCrit:
+        {
+            baseValue: {
             d1: "5",
             d2: "5",
             d3: "5",
@@ -98,20 +116,61 @@ export const default_weapon_cards: Array<IWeaponCommonData|IScaledWeaponBaseData
             d5: "?",
             d6: "-"
         },
+            breakpoints: [],
+            breakpointBonuses: []
+        }
+
+
+            ,
         baseRange: {
-            min: 0,
-            max: 0,
+            min: {
+            baseValue: 0,
+            breakpoints: [],
+            breakpointBonuses: []
+        },
+            max: {
+            baseValue: 0,
+            breakpoints: [],
+            breakpointBonuses: []
+        },
             isMelee: true
         },
         thrownRange: {
-            min: 0,
-            max: 0,
+            min: {
+            baseValue: 0,
+            breakpoints: [],
+            breakpointBonuses: []
+        },
+            max: {
+            baseValue: 0,
+            breakpoints: [],
+            breakpointBonuses: []
+        },
             isMelee: true
         },
-        canThrow: false,
-        skillRequirement: 0,
-        _id: "___defaultBaseWeapon",
-        enchantmentLevel: 0
+        canThrow: {
+            baseValue: false,
+            breakpoints: [],
+            breakpointBonuses: []
+        },
+        skillRequirement: {
+            baseValue: 0,
+            breakpoints: [],
+            breakpointBonuses: []
+        },
+        staminaCost: {
+            baseValue: 0,
+            breakpoints: [],
+            breakpointBonuses: []
+        },
+        tetherCost: {
+            baseValue: 0,
+            breakpoints: [],
+            breakpointBonuses: []
+        },
+        weaponTags: ["unarmed"],
+        handedness: 1.0,
+        _id: "___defaultBaseWeapon"
     },
     {
         cardName: "Standard Attack",

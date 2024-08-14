@@ -368,7 +368,11 @@ class CharacterSheet extends AbstractSheet {
                 if (e.cardSubtype == "base") {
                     const preparedStruct = this.data.preparedCards.find(prep => prep.cardId === e._id);
                     console.log(preparedStruct);
-                    return ConstructFinalWeapon(e as IWeaponBaseData, preparedStruct?.additionalData ?? 0)
+                    console.log("E", e);
+                    return {
+                        ...e,
+                        tempEnchantValue: preparedStruct?.additionalData ?? 0
+                    }
                 } else {
                     return e;
                 }
@@ -390,15 +394,11 @@ class CharacterSheet extends AbstractSheet {
         return [];
     }
 
-    public GetPreparedWeaponBases = (): Array<IScaledWeaponBaseData> => {
+    public GetPreparedWeaponBases = (): Array<IWeaponBaseData> => {
         if (this.allCards) {
             return this.allCards.weapons.bases.map(base => {
                 const prepData = this.data.preparedCards.find(e => e.cardId === base._id);
-                try {
-                    return ConstructFinalWeapon(base, prepData?.additionalData ?? 0);
-                } catch (e) {
-                    return base as IScaledWeaponBaseData
-                }
+                return base;
             })
         }
         return [];

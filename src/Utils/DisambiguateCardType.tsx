@@ -1,7 +1,6 @@
 import SpellBaseCard from "../Components/Cards/SpellBaseCard";
 import {
     ICommanderCardData, ICommonCardData,
-    IScaledWeaponBaseData,
     ISpellBaseCardData,
     ISpellModifierCardData,
     ISpellTargetCardData, IWeaponBaseData
@@ -48,7 +47,8 @@ export const disambiguateCard = (allCards: Array<ICommonCardData>, compendiumPro
         }
         } else if (card.cardType == "weapon") {
             if (card.cardSubtype == "base") {
-                return (<Box key = {card.cardName}><WeaponBaseCard cardData = {ConstructFinalWeapon(card as IWeaponBaseData, 0)}
+                console.log("CARK", card);
+                return (<Box key = {card.cardName}><WeaponBaseCard cardData = {card as IWeaponBaseData} enchantmentData={0}
                 sendBack = {()=>{} }
                 {...
                     compendiumProps

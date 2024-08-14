@@ -5,7 +5,7 @@ import MinionSheet from "../../Data/MinionSheet";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
 import WeaponCardCalculator from "../../Data/Card Calculators/WeaponCardCalculator";
 import usePreloadedContent from "../../Hooks/usePreloadedContent/usePreloadedContent";
-import {IScaledWeaponBaseData, IWeaponBaseData} from "../../Data/ICardData";
+import {IWeaponBaseData} from "../../Data/ICardData";
 import CalculatedCard from "./CalculatedCard";
 import {ConstructFinalWeapon} from "../../Utils/ConstructFinalWeapon";
 
@@ -50,6 +50,7 @@ const MinionWeaponCardWrapper = ({
                     return b._id == weaponData.weaponBaseData.baseId
                 }) as IWeaponBaseData
                 if (base) {
+                    console.log("BASE MWRAP", base)
                     const finalBase = ConstructFinalWeapon(base, weaponData.weaponBaseData.enchantmentLevel);
                     const cards = weaponData.weaponCardsIds.map(skill => {
                         return allCards.find(b => b._id == skill)

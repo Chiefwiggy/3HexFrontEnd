@@ -6,7 +6,7 @@ import CalculatedCard from "./CalculatedCard";
 import WeaponCardCalculator from "../../Data/Card Calculators/WeaponCardCalculator";
 import {ConstructFinalWeapon} from "../../Utils/ConstructFinalWeapon";
 import usePreloadedContent from "../../Hooks/usePreloadedContent/usePreloadedContent";
-import {IScaledWeaponBaseData} from "../../Data/ICardData";
+import {IWeaponBaseData} from "../../Data/ICardData";
 
 interface IPrebuiltWeaponCardWrapperInput {
     weaponData: ICalculatedWeapon | null,
@@ -46,7 +46,7 @@ const PrebuiltWeaponCardWrapper = ({
             let allCards = currentSheet.allCards;
             if (allCards) {
                 const allWeapons = allCards.weapons;
-                const allBases: Array<IScaledWeaponBaseData> = [...currentSheet.GetPreparedWeaponBases(), ...WeaponData.GetCardPreparedStruct(currentSheet.data.knownWeapons)]
+                const allBases: Array<IWeaponBaseData> = [...currentSheet.GetPreparedWeaponBases(), ...WeaponData.GetCardPreparedStruct(currentSheet.data.knownWeapons)]
                 const base = allBases.find(b => {
                     return b._id == weaponData.weaponBaseData.baseId;
                 });

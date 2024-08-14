@@ -1,8 +1,9 @@
-import {ICommonCardData, IEffectData, UCritDie, UDamageType} from "../ICardData";
+import {ICommonCardData, IEffectData, IWeaponBaseData, UCritDie, UDamageType} from "../ICardData";
 import {ICardBuilderType} from "../../Layouts/CardBuilder";
 import {ElementType} from 'react';
 import {ICharacterBaseData} from "../ICharacterData";
 import {IMinionData} from "../IMinionData";
+import {ConstructFinalWeapon} from "../../Utils/ConstructFinalWeapon";
 
 export interface IRangeData {
     min: number,
@@ -56,7 +57,15 @@ abstract class AbstractCardCalculator {
     }
 
     public sendCurrentCards(cards: Array<ICommonCardData|null>, char: ICharacterBaseData | IMinionData) {
-        this.cards = cards;
+        this.cards = cards.map(card => {
+            if (card) {
+                if (card.cardType == "weapon" && card.cardSubtype == "base") {
+                    return ConstructFinalWeapon(card as IWeaponBaseData, (card as IWeaponBaseData)?.tempEnchantValue ?? 0);
+                }
+            }
+            return card;
+
+        })
         this.invokeRecalculateData(char);
     }
 

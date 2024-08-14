@@ -73,20 +73,9 @@ const CardList = ({
                     } else {
                         switch (val.cardSubtype) {
                             case 'base':
-                                let finalWeapon: IScaledWeaponBaseData;
-                                console.log(val);
-                                const x: IWeaponBaseData = val as IWeaponBaseData;
-                                console.log("X");
-                                console.log(x);
-                                if (!Number.isNaN(x.basePower.baseValue)) {
-                                    console.log("naan");
-                                    finalWeapon = ConstructFinalWeapon(val as IWeaponBaseData, 0);
-                                } else {
-                                    finalWeapon = val as IScaledWeaponBaseData;
-                                }
                                 return (
                                     <Grid item key={val.cardName}>
-                                        <WeaponBaseCard cardData={finalWeapon} sendBack={onClickButton}
+                                        <WeaponBaseCard cardData={val as IWeaponBaseData} enchantmentData={0} sendBack={onClickButton}
                                                         isExpanded={isExpanded} canToggleExpand={canToggleExpand}
                                                         isAdd={isAdd} canFavorite={canFavorite}/>
                                     </Grid>

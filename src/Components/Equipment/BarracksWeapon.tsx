@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import {IWeaponBaseData} from "../../Data/ICardData";
 import WeaponBaseCard from "../Cards/WeaponBaseCard";
-import {ConstructFinalWeapon} from "../../Utils/ConstructFinalWeapon";
 import {ICardSendbackData} from "../../Layouts/GenericCardLayout";
 import {
     AddCircleOutlined,
@@ -116,7 +115,7 @@ const BarracksWeapon = ({
                     <AddCircleOutlined />
                 </IconButton>
             </Box>
-            <WeaponBaseCard cardData={ConstructFinalWeapon(weaponData, currentScaling)} sendBack={handleSendback} canFavorite={false} />
+            <WeaponBaseCard cardData={weaponData} enchantmentData={currentScaling} sendBack={handleSendback} canFavorite={false} />
         </Box>
         <Dialog
             open={dialogOpen}

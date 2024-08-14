@@ -196,6 +196,7 @@ export interface IWeaponBaseData extends IWeaponCommonData {
     staminaCost: IScalingData<number>,
     skillRequirement: IScalingData<number>
     weaponTags: Array<string>
+    tempEnchantValue?: number
 }
 
 export interface IEffectData {

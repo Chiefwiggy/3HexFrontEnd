@@ -45,6 +45,7 @@ const CardPreparationView = ({closeSelf}: ICardPreparationViewInput) => {
     }
 
     const handleRemoveCard = (data: ICardSendbackData) => {
+        console.log(data);
         setNotPreparedCards([...notPreparedCards, data.cardData].sort(sortCards))
         setCurrentPreparedCards(currentPreparedCards.filter((elem) => elem !== data.cardData));
     }
