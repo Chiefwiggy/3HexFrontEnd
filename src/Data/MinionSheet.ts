@@ -71,7 +71,7 @@ class MinionSheet extends AbstractSheet {
         this.data.attributeBars.tether.current = amount;
     }
     public getMaxHealth(): number {
-        return 4 + ((this.data.attributeBars.health.scaling.value ?? 2)*this.data.minionStats.vitality.value);
+        return 4 + ((2)*this.data.minionStats.vitality.value);
     }
     public getMaxStamina(): number {
         // return 12 + ((this.data.attributeBars.stamina.scaling.value ?? 4)*this.data.minionStats.endurance.value);
@@ -79,7 +79,7 @@ class MinionSheet extends AbstractSheet {
     }
 
     public getMaxTether(): number {
-        return ((this.data.attributeBars.tether.scaling.value ?? 3)*this.data.minionStats.mind.value);
+        return 6 + ((3)*this.data.minionStats.mind.value);
     }
 
      public getEvadeDodge(): number {

@@ -20,6 +20,7 @@ interface ICardEffectInput {
 const CardEffect = ({effectData, finalPower}: ICardEffectInput) => {
 
     const [emblem, setEmblem] = useState<React.ReactNode|null>(null);
+    const [tintColor, setTintColor] = useState<string>("none");
 
     const getFinalText = () => {
         if (effectData.powerX && finalPower) {
@@ -36,15 +37,19 @@ const CardEffect = ({effectData, finalPower}: ICardEffectInput) => {
                 break;
             case 'warning':
                 setEmblem(<WarningOutlined />)
+                setTintColor("rgba(255,255,0,0.07)")
                 break;
             case 'tether':
                 setEmblem(<AutoFixHighOutlined />)
+                setTintColor("rgba(255,0,255,0.03)")
                 break;
             case 'stamina':
                 setEmblem(<DirectionsRunOutlined/>)
+                setTintColor("rgba(0,255,0,0.03)")
                 break;
             case 'requirement':
                 setEmblem(<ReportGmailerrorredOutlined />)
+                setTintColor("rgba(255,0,0,0.07)")
                 break;
             case 'default':
                 setEmblem(<SquareOutlined />)
@@ -67,7 +72,8 @@ const CardEffect = ({effectData, finalPower}: ICardEffectInput) => {
                     display: 'flex',
                     alignItems: 'center',
                     padding: '4px',
-                    gap: '12px'
+                    gap: '12px',
+                    backgroundColor: tintColor
                 }}
             >
 

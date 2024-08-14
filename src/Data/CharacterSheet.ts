@@ -603,7 +603,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getMaxTether() {
-        return this.getAbilityBonuses("maxTether") + ((this.data.attributeBars.tether.scaling.value ?? 2) * this.data.characterStats.mind.value);
+        return this.getAbilityBonuses("maxTether") + ((3) * this.data.characterStats.mind.value);
     }
 
     public getHealth(): number {
