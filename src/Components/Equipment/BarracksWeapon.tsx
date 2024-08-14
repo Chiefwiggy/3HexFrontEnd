@@ -16,8 +16,6 @@ import {ConstructFinalWeapon} from "../../Utils/ConstructFinalWeapon";
 import {ICardSendbackData} from "../../Layouts/GenericCardLayout";
 import {
     AddCircleOutlined,
-    CancelOutlined,
-    CancelPresentationOutlined,
     CloseOutlined,
     RemoveCircleOutlined
 } from "@mui/icons-material";

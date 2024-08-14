@@ -26,6 +26,11 @@ export interface IPreparedCard {
     additionalData?: number
 }
 
+export interface IPreparedSource {
+    sourceId: string,
+    attunementLevel: number
+}
+
 export interface ICharacterBaseData {
     characterName: string,
     characterLevel: number,
@@ -61,6 +66,7 @@ export interface ICharacterBaseData {
     knownArmor: Array<IEnchantmentData>,
     knownBaseSpells: Array<string>,
     knownWeapons: Array<IEnchantmentData>,
+    knownSources: Array<IPreparedSource>,
     skillPoints: ISkillPointObject,
     minionsOwned: Array<{
         minionId: string,

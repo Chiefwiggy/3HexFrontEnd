@@ -1,6 +1,7 @@
 import {ICommonCardData, ISpellBaseCardData, ISpellModifierCardData} from "./ICardData";
 
 export interface ISourceData {
+    _id: string,
     sourceName: string,
     sourceArcanotype: string,
     sourceTier: number,

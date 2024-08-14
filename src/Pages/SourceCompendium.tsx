@@ -16,7 +16,7 @@ const SourceCompendium = ({}: ISourceCompendiumInput) => {
         <Box
             sx={{
                 display: 'grid',
-                gridTemplateColumns: "repeat( auto-fill , max(396px, 33vw))",
+                gridTemplateColumns: "repeat( auto-fill , max(532px, 33vw))",
                 gridGap: "10px"
             }}
         >
