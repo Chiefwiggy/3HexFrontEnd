@@ -134,7 +134,7 @@ export interface IScaledWeaponBaseData extends IWeaponCommonData {
     weaponClass: UWeaponClass,
     weaponType: UWeaponType,
     baseCrit: number,
-    damageType: string,
+    damageType: UDamageType,
     damageSubtype: string,
     handedness: number,
     specialCrit: {
@@ -170,7 +170,7 @@ export interface IWeaponBaseData extends IWeaponCommonData {
     weaponClass: UWeaponClass,
     weaponType: UWeaponType,
     baseCrit: IScalingData<number>,
-    damageType: string,
+    damageType: UDamageType,
     damageSubtype: string,
     handedness: number,
     specialCrit: IScalingData<{
@@ -210,6 +210,6 @@ export interface IEffectData {
 
 
 
-export type UPrerequisiteType = "attribute" | "affinity" | "class" | "arcana"
+export type UPrerequisiteType = "attribute" | "affinity" | "class" | "arcana" | "nodefault"
 export type UCharacterStat = "might" | "agility" | "skill" | "awareness" | "vitality" | "knowledge" | "mind" | "presence" | "authority" | "endurance"
 export type UAffinity = `${keyof IAffinities}`

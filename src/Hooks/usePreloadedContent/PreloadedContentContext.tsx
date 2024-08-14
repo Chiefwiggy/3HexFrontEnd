@@ -6,6 +6,7 @@ import PLC_AffinityData from "./PLC_AffinityData";
 import PLC_ArcanaData from "./PLC_ArcanaData";
 import PLC_WeaponData from "./PLC_WeaponData";
 import PLC_ArmorData from "./PLC_ArmorData";
+import PLC_SourceData from "./PLC_SourceData";
 
 
 
@@ -15,6 +16,7 @@ const PreloadedContentContext =     createContext<IPreloadedContentContextInput>
         AffinityData: new PLC_AffinityData(),
         WeaponData: new PLC_WeaponData(),
         ArmorData: new PLC_ArmorData(),
+        SourceData: new PLC_SourceData(),
         isLoaded: false
     }
 );

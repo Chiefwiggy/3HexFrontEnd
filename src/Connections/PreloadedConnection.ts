@@ -1,6 +1,7 @@
 import Axios, {AxiosRequestConfig} from "axios";
 import {IBaseArmorData} from "../Data/IArmorData";
 import {IWeaponBaseData} from "../Data/ICardData";
+import {ISourceData} from "../Data/ISourceData";
 
 export interface IPreloadedDataStruct {
     class: {
@@ -17,7 +18,8 @@ export interface IPreloadedDataStruct {
         abilities: Object
     },
     weaponData: Array<IWeaponBaseData>,
-    armorData: Array<IBaseArmorData>
+    armorData: Array<IBaseArmorData>,
+    sources: Array<ISourceData>
 }
 class PreloadedConnection {
     private _preloadedURL: string;
@@ -38,7 +40,8 @@ class PreloadedConnection {
                 affinity: {},
                 arcana: {},
                 weaponData: [],
-                armorData: []
+                armorData: [],
+                sources: []
             }
         })
     }

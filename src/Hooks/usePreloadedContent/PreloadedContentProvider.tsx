@@ -10,6 +10,7 @@ import Axios from "axios";
 import {IAffinitiesArray, IArcanaArray} from "../../Data/ICharacterData";
 import {ICommonCardData} from "../../Data/ICardData";
 import {IAbility} from "../../Data/IAbilities";
+import PLC_SourceData from "./PLC_SourceData";
 
 interface IPreloadedContentProviderInput {
     children: any
@@ -21,6 +22,7 @@ export interface IPreloadedContentContextInput {
     ArcanaData: PLC_ArcanaData,
     WeaponData: PLC_WeaponData,
     ArmorData: PLC_ArmorData,
+    SourceData: PLC_SourceData,
     isLoaded: boolean
 }
 const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) => {
@@ -34,6 +36,8 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
     const [WeaponData, setWeaponData] = useState(new PLC_WeaponData());
 
     const [ArmorData, setArmorData] = useState(new PLC_ArmorData());
+
+    const [SourceData, setSourceData]  = useState(new PLC_SourceData());
 
     const [isLoaded, setIsLoaded] = useState(false);
 
@@ -51,6 +55,7 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
             await ArcanaData.Initialize(data.arcana.cards as IArcanaArray<ICommonCardData>, data.arcana.abilities as IArcanaArray<IAbility>);
             await WeaponData.Initialize(data.weaponData);
             await ArmorData.Initialize(data.armorData);
+            await SourceData.Initialize(data.sources);
             setIsLoaded(true);
         })();
     }, []);
@@ -63,6 +68,7 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
                 AffinityData,
                 WeaponData,
                 ArmorData,
+                SourceData,
                 isLoaded
             }}
         >

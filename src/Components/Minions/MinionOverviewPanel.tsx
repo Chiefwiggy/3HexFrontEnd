@@ -89,6 +89,7 @@ const MinionOverviewPanel = ({currentMinions, displayMinions}: IMinionOverviewPa
                     }}
                 >
                     <Typography>Minion Slots: {currentPrep} / {currentSheet.getCumulativeCommanderCard().minionSlots}</Typography>
+                    <Typography>Reinforcements: {currentSheet.getMaxReinforcements()}</Typography>
                     <Typography>Show Unprepared?</Typography>
                     <Switch checked={displayUnpreparedMinions} onChange={handleDisplayUnpreparedMinionsCheckbox} />
                 </Box>

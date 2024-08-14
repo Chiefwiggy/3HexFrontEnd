@@ -150,6 +150,10 @@ class CharacterSheet extends AbstractSheet {
         }
     }
 
+    public getMaxReinforcements = () => {
+        return 1 + this.getAbilityBonuses("reinforcementSlots");
+    }
+
     public areAllCardsPrepared = (data: Array<ICommonCardData|null>): boolean => {
         return data.reduce((pv, cv) => {
             if (!pv) return pv;

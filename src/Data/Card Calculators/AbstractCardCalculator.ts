@@ -47,7 +47,7 @@ abstract class AbstractCardCalculator {
         }
         this.currentIcons = initialIcons;
         this.currentPower = 0;
-        this.finalDamageSubtype = "slashing",
+        this.finalDamageSubtype = "slashing";
         this.finalDamageType = "physical"
     }
 
