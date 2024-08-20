@@ -104,20 +104,23 @@ const SourceComponent = ({sourceData}: ISourceComponentInput) => {
                 <Box>
                     <SourceList sourceData={sourceData} handleSetIndex={handleSetIndex} currentIndex={currentIndex}/>
                 </Box>
-                <Box
-                    sx={{
-                        display: "flex",
-                        justifyContent: "center"
-                    }}
-                >
-                    {
-                        sourceData.sourceTiers[currentIndex].cardType == "base" ?
-                            <SpellBaseCard cardData={sourceData.sourceTiers[currentIndex].cardData as ISpellBaseCardData} sendBack={()=>{}} canFavorite={false} />
-                            :
-                            <SpellModifierCard cardData={sourceData.sourceTiers[currentIndex].cardData as ISpellModifierCardData} sendBack={() => {}} canFavorite={false}  />
-                    }
+                <Box>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            justifyContent: "center"
+                        }}
+                    >
+                        {
+                            sourceData.sourceTiers[currentIndex].cardType == "base" ?
+                                <SpellBaseCard cardData={sourceData.sourceTiers[currentIndex].cardData as ISpellBaseCardData} sendBack={()=>{}} canFavorite={false} isExpanded={true} canToggleExpand={false}/>
+                                :
+                                <SpellModifierCard cardData={sourceData.sourceTiers[currentIndex].cardData as ISpellModifierCardData} sendBack={() => {}} canFavorite={false}  isExpanded={true} canToggleExpand={false}/>
+                        }
 
+                    </Box>
                 </Box>
+
             </Box>
             <Box
                 sx={{

@@ -16,13 +16,13 @@ const SourceCompendium = ({}: ISourceCompendiumInput) => {
         <Box
             sx={{
                 display: 'grid',
-                gridTemplateColumns: "repeat( auto-fill , max(532px, calc(33.3vw - 10px)))",
+                gridTemplateColumns: "repeat( auto-fill , max(532px, calc(33.3vw - 20px)))",
                 gridGap: "10px"
             }}
         >
             {SourceData.GetAllSourceData().map((data) => {
                 return (
-                    <SourceComponent sourceData={data} />
+                    <SourceComponent sourceData={data} key={data._id} />
                 )
             })}
         </Box>

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {IEffectData} from "../../Data/ICardData";
 import {Box, Paper, Typography} from "@mui/material";
 import {
-    AutoFixHighOutlined, DirectionsRunOutlined,
+    AutoFixHighOutlined, DirectionsRunOutlined, HeartBrokenOutlined,
     InfoOutlined, PriorityHigh, PriorityHighOutlined,
     ReportGmailerrorredOutlined,
     SportsMmaOutlined, SquareOutlined,
@@ -47,15 +47,21 @@ const CardEffect = ({effectData, finalPower}: ICardEffectInput) => {
                 setEmblem(<DirectionsRunOutlined/>)
                 setTintColor("rgba(0,255,0,0.03)")
                 break;
+            case 'health':
+                setEmblem(<HeartBrokenOutlined />);;
+                setTintColor("rgba(255,0,0,0.12)")
+                break;
             case 'requirement':
                 setEmblem(<ReportGmailerrorredOutlined />)
                 setTintColor("rgba(255,0,0,0.07)")
                 break;
             case 'default':
                 setEmblem(<SquareOutlined />)
+                setTintColor("rgba(0,0,0,0.00)")
                 break;
             case 'priority':
                 setEmblem(<PriorityHighOutlined />)
+                setTintColor("rgba(255,128,128,0.33)")
                 break;
         }
     }, [effectData]);
