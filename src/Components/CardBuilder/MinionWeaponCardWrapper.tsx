@@ -49,14 +49,10 @@ const MinionWeaponCardWrapper = ({
                 const base: IWeaponBaseData = allCards.find(b => {
                     return b._id == weaponData.weaponBaseData.baseId
                 }) as IWeaponBaseData
-                if (base) {
-                    console.log("BASE MWRAP", base)
-                    const finalBase = ConstructFinalWeapon(base, weaponData.weaponBaseData.enchantmentLevel);
-                    const cards = weaponData.weaponCardsIds.map(skill => {
+                const cards = weaponData.weaponCardsIds.map(skill => {
                         return allCards.find(b => b._id == skill)
                     })
-                    setCurrentWeaponData([finalBase, ...cards]);
-                }
+                setCurrentWeaponData([base, ...cards]);
 
             }
         }
