@@ -37,7 +37,7 @@ const CharacterSelectView = () => {
                 sx={{
                     padding: "12px",
                     display: 'grid',
-                    gridTemplateColumns: "repeat(5, 1fr)"
+                    gridTemplateColumns: "repeat(3, 1fr)"
                 }}
             >
                 <Box></Box>
@@ -65,7 +65,7 @@ const CharacterSelectView = () => {
             <Box
                 sx={{
                     display: 'grid',
-                    gridTemplateColumns: 'repeat(3, 1fr)',
+                    gridTemplateColumns: 'repeat(5, 1fr)',
                     gap: 1,
                     margin: 4
                 }}
