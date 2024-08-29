@@ -142,7 +142,7 @@ class MinionSheet extends AbstractSheet {
     }
 
     public getStaminaRefresh(): number {
-        return this.data.minionStats.endurance.value + (this.data.bonuses?.staminaRefresh ?? 0);
+        return Math.floor(this.data.minionStats.endurance.value*1.5) + (this.data.bonuses?.staminaRefresh ?? 0);
     }
 
     public getTetherRefresh(): number {

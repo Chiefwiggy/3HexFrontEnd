@@ -643,7 +643,7 @@ class CharacterSheet extends AbstractSheet {
 
 
     public getStaminaRefresh(): number {
-        return this.data.characterStats.endurance.value + (this.data.bonuses?.staminaRefresh ?? 0);
+        return Math.floor(this.data.characterStats.endurance.value * 1.5) + (this.data.bonuses?.staminaRefresh ?? 0);
     }
 
     public getStaminaBreather(): number {
