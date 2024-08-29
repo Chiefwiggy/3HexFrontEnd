@@ -79,7 +79,7 @@ class MinionSheet extends AbstractSheet {
     }
 
     public getMaxTether(): number {
-        return 6 + ((3)*this.data.minionStats.mind.value);
+        return 4 + ((2)*this.data.minionStats.mind.value);
     }
 
      public getEvadeDodge(): number {
@@ -146,7 +146,7 @@ class MinionSheet extends AbstractSheet {
     }
 
     public getTetherRefresh(): number {
-        return Math.floor(this.data.minionStats.mind.value / 2) + (this.data.bonuses?.tetherRefresh ?? 0);
+        return this.data.minionStats.mind.value + (this.data.bonuses?.tetherRefresh ?? 0);
     }
 
     public getEvadePDEFBreakdown(): IDefenseBreakdown {

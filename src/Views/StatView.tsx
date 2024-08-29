@@ -76,6 +76,8 @@ const StatView = ({
                 <Box>
                     <Typography>Dash: {currentSheet.getDashSpeed()}</Typography>
                     <Typography>Step: {currentSheet.getStepSpeed()}</Typography>
+                    <Typography>Stamina Refresh: {currentSheet.getStaminaRefresh()}</Typography>
+                    <Typography>Tether Refresh: {currentSheet.getTetherRefresh()}</Typography>
                 </Box>
             </Box>
 
