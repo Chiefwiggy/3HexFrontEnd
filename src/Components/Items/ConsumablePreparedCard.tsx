@@ -29,7 +29,9 @@ const ConsumablePreparedCard = ({consumableTemplate, consumableData, slotsUsed, 
                 gridTemplateColumns: "7fr 1fr"
             }}
         >
-            <ConsumableCard consumableTemplate={consumableTemplate} defaultScaled={true} />
+            <Box>
+                <ConsumableCard consumableTemplate={consumableTemplate} defaultScaled={true} />
+            </Box>
             <Box
                 sx={{
                     padding: 1,

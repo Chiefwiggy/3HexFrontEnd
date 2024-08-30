@@ -75,7 +75,7 @@ const ConsumableCard = ({ consumableTemplate, defaultScaled = false }: IConsumab
         }, []);
 
         return (
-            <Typography key={`scaled-${index}`} sx={{ textAlign: "center", fontSize: "14px" }}>
+            <Typography key={`scaled-${index}`} sx={{ textAlign: "center", fontSize: "16px" }}>
                 {newScaled}
             </Typography>
         );
@@ -109,7 +109,7 @@ const ConsumableCard = ({ consumableTemplate, defaultScaled = false }: IConsumab
         }, []);
 
         return (
-            <Typography key={`unscaled-${index}`} sx={{fontSize: "14px"}}>
+            <Typography key={`unscaled-${index}`} sx={{fontSize: "16px"}}>
                 {newUnscaled}
             </Typography>
         );
