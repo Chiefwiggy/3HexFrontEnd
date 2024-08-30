@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Box, capitalize, Divider, Paper, Switch, Typography } from "@mui/material";
+import {Box, capitalize, Collapse, Divider, Paper, Switch, Typography} from "@mui/material";
 import {EConsumableType, IConsumableTemplate} from "../../Data/IConsumable";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
 import { ICharacterStats } from "../../Data/ICharacterData";
-import { FlipOutlined, LinearScaleOutlined, WaterDropOutlined } from "@mui/icons-material";
+import {ExpandMoreOutlined, FlipOutlined, LinearScaleOutlined, WaterDropOutlined} from "@mui/icons-material";
+import {ExpandMore} from "../../Elements/ExpandMore";
 
 interface IConsumableCardInput {
     consumableTemplate: IConsumableTemplate,
@@ -18,6 +19,8 @@ const ConsumableCard = ({ consumableTemplate, defaultScaled = false }: IConsumab
     const [unscaledDescriptions, setUnscaledDescriptions] = useState<Array<JSX.Element>>([]);
     const [isScaled, setIsScaled] = useState<boolean>(defaultScaled);
 
+    const [isOpen, setIsOpen] = useState(false);
+
     useEffect(() => {
         setUnscaledDescriptions(consumableTemplate.description.map((desc, index) => GetUnscaledDescription(desc, index)));
         setScaledDescriptions(consumableTemplate.description.map((desc, index) => GetScaledDescription(desc, index)));
@@ -29,6 +32,10 @@ const ConsumableCard = ({ consumableTemplate, defaultScaled = false }: IConsumab
 
     const handleSwitch = () => {
         setIsScaled(!isScaled)
+    }
+
+    const handleExpandClick = () => {
+        setIsOpen(!isOpen);
     }
 
     const GetScaledDescription = (desc: string, index: number) => {
@@ -51,7 +58,7 @@ const ConsumableCard = ({ consumableTemplate, defaultScaled = false }: IConsumab
         }
 
         const scaled = desc.split("[X]").map((e, i) => (
-            <Typography key={`scaled-desc-${index}-${i}`} component={"span"}>{e}</Typography>
+            <Typography key={`scaled-desc-${index}-${i}`} component={"span"} sx={{fontSize: "inherit"}}>{e}</Typography>
         ));
 
         const newScaled = scaled.reduce((pv: any, cv: any, i) => {
@@ -59,7 +66,7 @@ const ConsumableCard = ({ consumableTemplate, defaultScaled = false }: IConsumab
                 return [...pv, cv, <Typography
                     color={"primary"}
                     component={"span"}
-                    key={`scaled-value-${index}-${i}`}
+                    key={`scaled-value-${index}-${i}`} sx={{fontSize: "inherit"}}
                 >
                     {newT}
                 </Typography>]
@@ -68,7 +75,7 @@ const ConsumableCard = ({ consumableTemplate, defaultScaled = false }: IConsumab
         }, []);
 
         return (
-            <Typography key={`scaled-${index}`} sx={{ textAlign: "center" }}>
+            <Typography key={`scaled-${index}`} sx={{ textAlign: "center", fontSize: "12px" }}>
                 {newScaled}
             </Typography>
         );
@@ -85,7 +92,7 @@ const ConsumableCard = ({ consumableTemplate, defaultScaled = false }: IConsumab
         }
 
         const unscaled = desc.split("[X]").map((e, i) => (
-            <Typography key={`unscaled-desc-${index}-${i}`} component={"span"}>{e}</Typography>
+            <Typography key={`unscaled-desc-${index}-${i}`} component={"span"}  sx={{fontSize: "inherit"}}>{e}</Typography>
         ));
 
         const newUnscaled = unscaled.reduce((pv: any, cv: any, i) => {
@@ -93,7 +100,7 @@ const ConsumableCard = ({ consumableTemplate, defaultScaled = false }: IConsumab
                 return [...pv, cv, <Typography
                     color={"secondary"}
                     component={"span"}
-                    key={`unscaled-value-${index}-${i}`}
+                    key={`unscaled-value-${index}-${i}`} sx={{fontSize: "inherit"}}
                 >
                     {newT}
                 </Typography>]
@@ -102,7 +109,7 @@ const ConsumableCard = ({ consumableTemplate, defaultScaled = false }: IConsumab
         }, []);
 
         return (
-            <Typography key={`unscaled-${index}`}>
+            <Typography key={`unscaled-${index}`} sx={{fontSize: "14px"}}>
                 {newUnscaled}
             </Typography>
         );
@@ -197,12 +204,14 @@ const ConsumableCard = ({ consumableTemplate, defaultScaled = false }: IConsumab
                     marginBottom: "4px"
                 }} />
 
-                <Box
+                <Collapse
+                    in={isOpen}
                     sx={{
                         display: "flex",
                         flexDirection: "column",
                         justifyContent: "center",
-                        alignItems: "center"
+                        alignItems: "center",
+                        padding: 1
                     }}
                 >
                     {currentSheet && isScaled
@@ -213,7 +222,15 @@ const ConsumableCard = ({ consumableTemplate, defaultScaled = false }: IConsumab
                             <Box key={`unscaled-box-${index}`} sx={{ textAlign: "center", paddingBottom: "2px" }}>{e}</Box>
                         ))
                     }
-                </Box>
+                </Collapse>
+                <ExpandMore
+                  expand={isOpen}
+                  onClick={handleExpandClick}
+                  aria-expanded={isOpen}
+                  aria-label="show more"
+                >
+                  <ExpandMoreOutlined />
+                </ExpandMore>
             </Box>
         </Paper>
     )

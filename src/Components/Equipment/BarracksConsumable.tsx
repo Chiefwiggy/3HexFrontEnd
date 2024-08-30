@@ -33,6 +33,7 @@ const BarracksConsumable = ({consumable}: IBarracksConsumableInput) => {
     }
 
     return (
+        <Box>
         <Paper
             elevation={1}
             sx={{
@@ -64,6 +65,7 @@ const BarracksConsumable = ({consumable}: IBarracksConsumableInput) => {
                 submitFunction={submitFunction}
             />
         </Paper>
+        </Box>
     )
 }
 
