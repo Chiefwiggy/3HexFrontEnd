@@ -3,7 +3,7 @@ import {
     IAttributeBars,
     ICalculatedSpell,
     ICalculatedWeapon,
-    ICharacterBaseData, ICharacterStats, IPreparedCard, IEnchantmentData, IPreparedSource
+    ICharacterBaseData, ICharacterStats, IPreparedCard, IEnchantmentData, IPreparedSource, IConsumablePlayerData
 } from "../Data/ICharacterData";
 import Axios, { AxiosRequestConfig } from 'axios'
 import {IBaseArmorData} from "../Data/IArmorData";
@@ -143,6 +143,14 @@ class CharacterConnection {
         })
     }
 
+    public async UpdateConsumableList(charID: string, consumables: Array<IConsumablePlayerData>) {
+        await Axios.put(this.GetRouteURL(`update/${charID}`), {
+            knownConsumables: consumables
+        }, this._getConfig()).then((resp) => {
+            console.log(resp);
+        })
+    }
+
     public async UpdateSourceList(charID: string, sources: Array<IPreparedSource>) {
         await Axios.put(this.GetRouteURL(`update/${charID}`), {
             knownSources: sources
@@ -154,6 +162,14 @@ class CharacterConnection {
     public async UpdateArmor(charID: string, armor: IEnchantmentData) {
         await Axios.put(this.GetRouteURL(`update/${charID}`), {
             currentArmor: armor
+        }, this._getConfig()).then((resp) => {
+            console.log(resp);
+        })
+    }
+
+    public async UpdateConsumables(charID: string, knownConsumables: Array<IConsumablePlayerData>) {
+        await Axios.put(this.GetRouteURL(`update/${charID}`), {
+            knownConsumables: knownConsumables
         }, this._getConfig()).then((resp) => {
             console.log(resp);
         })

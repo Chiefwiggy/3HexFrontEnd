@@ -11,6 +11,7 @@ import {IAffinitiesArray, IArcanaArray} from "../../Data/ICharacterData";
 import {ICommonCardData} from "../../Data/ICardData";
 import {IAbility} from "../../Data/IAbilities";
 import PLC_SourceData from "./PLC_SourceData";
+import PLC_ConsumableData from "./PLC_ConsumableData";
 
 interface IPreloadedContentProviderInput {
     children: any
@@ -23,6 +24,7 @@ export interface IPreloadedContentContextInput {
     WeaponData: PLC_WeaponData,
     ArmorData: PLC_ArmorData,
     SourceData: PLC_SourceData,
+    ConsumableData: PLC_ConsumableData,
     isLoaded: boolean
 }
 const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) => {
@@ -38,6 +40,8 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
     const [ArmorData, setArmorData] = useState(new PLC_ArmorData());
 
     const [SourceData, setSourceData]  = useState(new PLC_SourceData());
+
+    const [ConsumableData, setConsumableData] = useState(new PLC_ConsumableData());
 
     const [isLoaded, setIsLoaded] = useState(false);
 
@@ -56,6 +60,7 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
             await WeaponData.Initialize(data.weaponData);
             await ArmorData.Initialize(data.armorData);
             await SourceData.Initialize(data.sources);
+            await ConsumableData.Initialize(data.consumableData);
             setIsLoaded(true);
         })();
     }, []);
@@ -69,6 +74,7 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
                 WeaponData,
                 ArmorData,
                 SourceData,
+                ConsumableData,
                 isLoaded
             }}
         >

@@ -55,6 +55,7 @@ const BarracksWeapon = ({
 
     const handleEditEnchantment = (delta: number) => (event: React.MouseEvent) => {
         setCurrentScaling(currentScaling + delta);
+        weaponData.tempEnchantValue = currentScaling + delta;
     }
 
     const handleCloseDialog = () => {

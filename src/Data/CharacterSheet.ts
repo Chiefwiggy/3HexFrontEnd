@@ -185,7 +185,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getAbilityBonuses = (bonusType: string) => {
-        return this.allAbilities.reduce((pv, cv) => {
+        const ab = this.allAbilities.reduce((pv, cv) => {
             try {
                 const strSplit = bonusType.split(".");
                 let ability: any = cv.bonuses;
@@ -200,6 +200,9 @@ class CharacterSheet extends AbstractSheet {
                 return pv;
             }
         }, 0)
+
+        const cc = this.getCommanderBonus(`bonuses.${bonusType}`, "commander");
+        return ab + cc;
     }
 
     public isUnlocked = (unlockType: string) => {
@@ -236,8 +239,8 @@ class CharacterSheet extends AbstractSheet {
                 strSplit.forEach(str => {
                     ability = ability[str];
                 })
-                if (Number.isInteger(ability)) {
-                    return pv + ability as number;
+                if (Number.isInteger(ability["modifier"])) {
+                    return pv + ability["modifier"] as number;
                 }
                 return pv;
             } catch (e) {
@@ -649,6 +652,14 @@ class CharacterSheet extends AbstractSheet {
     public getStaminaBreather(): number {
         return this.getStaminaRefresh() + this.getAbilityBonuses("staminaBreather") + (this.isUnlocked("mindBreathing") ? Math.floor(this.data.characterStats.mind.value * 0.5): 0);
 
+    }
+
+    public getQuickSlots(): number {
+        return 2 + this.getAbilityBonuses("quickSlots");
+    }
+
+    public getSlotsUsed(): number {
+        return 0;
     }
 
     public getStepSpeed(): number {

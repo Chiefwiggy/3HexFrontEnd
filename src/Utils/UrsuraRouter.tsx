@@ -19,6 +19,7 @@ import SourceCompendium from "../Pages/SourceCompendium";
 import MinionCreationPage from '../Pages/MinionCreationPage';
 import MinionCompendiumPage from "../Pages/MinionCompendiumPage";
 import MinionLandingPage from "../Pages/MinionLandingPage";
+import ConsumableCompendium from "../Pages/ConsumableCompendium";
 
 
 
@@ -75,6 +76,10 @@ const UrsuraRouter = createBrowserRouter([
                     {
                         path: "sources",
                         element: <SourceCompendium />
+                    },
+                    {
+                        path: "consumables",
+                        element: <ConsumableCompendium />
                     },
                     {
                         path: "",

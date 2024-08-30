@@ -63,6 +63,7 @@ export interface ICharacterBaseData {
     currentWeapon: ICalculatedWeapon | null,
     counterWeapon: ICalculatedWeapon | null,
     currentArmor: IEnchantmentData | null,
+    knownConsumables: Array<IConsumablePlayerData>,
     knownArmor: Array<IEnchantmentData>,
     knownBaseSpells: Array<string>,
     knownWeapons: Array<IEnchantmentData>,
@@ -78,6 +79,11 @@ export interface ICharacterBaseData {
 export interface IEnchantmentData {
     baseId: string,
     enchantmentLevel: number
+}
+
+export interface IConsumablePlayerData {
+    consumableId: string,
+    amount: number
 }
 
 export interface ISkillPointObject {

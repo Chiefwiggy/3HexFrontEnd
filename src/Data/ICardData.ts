@@ -61,11 +61,7 @@ export interface ICommanderCardData extends ICommonCardData {
             stepSpeed: IDataModifiers,
             dashSpeed: IDataModifiers,
         },
-        bonuses?: {
-            toHit: IDataModifiers,
-            damage: IDataModifiers,
-            consumableHealing: IDataModifiers
-        },
+        bonuses?: Object,
         specialization?: {
             axes?: ISpecialistData,
             blades?: ISpecialistData,
