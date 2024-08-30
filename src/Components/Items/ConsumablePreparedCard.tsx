@@ -22,7 +22,7 @@ const ConsumablePreparedCard = ({consumableTemplate, consumableData, slotsUsed, 
         updateFunction(consumableIndex, delta);
     }
 
-    return currentSheet ? (
+    return currentSheet && consumableData ? (
         <Box
             sx={{
                 display: "grid",
@@ -40,7 +40,7 @@ const ConsumablePreparedCard = ({consumableTemplate, consumableData, slotsUsed, 
                 }}
             >
                 <IconButton onClick={handlePrepare(1)} disabled={(slotsUsed + consumableTemplate.slotCost) > currentSheet.getQuickSlots()}><ArrowDropUp /></IconButton>
-                <Typography sx={{userSelect: "none"}}>{consumableData.amount}</Typography>
+                <Typography sx={{userSelect: "none"}}>{consumableData.amount }</Typography>
                 <IconButton onClick={handlePrepare(-1)} disabled={consumableData.amount == 0}><ArrowDropDown /></IconButton>
             </Box>
         </Box>
