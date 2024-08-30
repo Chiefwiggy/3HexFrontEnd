@@ -239,8 +239,8 @@ class CharacterSheet extends AbstractSheet {
                 strSplit.forEach(str => {
                     ability = ability[str];
                 })
-                if (Number.isInteger(ability["modifier"])) {
-                    return pv + ability["modifier"] as number;
+                if (Number.isInteger(ability)) {
+                    return pv + ability as number;
                 }
                 return pv;
             } catch (e) {
