@@ -119,7 +119,8 @@ export interface IClassData {
     affinities: IAffinities,
     classExpertises: Array<string>,
     downtimeActivities: Array<string>,
-    classTier: number
+    classTier: number,
+    isPromoted: boolean
 }
 
 export interface IAffinities {

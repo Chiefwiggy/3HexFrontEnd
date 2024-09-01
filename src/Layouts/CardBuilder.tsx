@@ -136,7 +136,7 @@ const CardBuilder = ({
         }
 
         if (isCompleteLocal && currentSheet) {
-            cardCalculator.sendCurrentCards(cardData, currentSheet.data);
+            cardCalculator.sendCurrentCards(cardData, currentSheet);
         }
         setIsComplete(isCompleteLocal);
 

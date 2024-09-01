@@ -22,7 +22,13 @@ const ClassSelectView = ({}: IClassSelectViewInput) => {
 
     const handleSelectClass = (doPick: boolean, classData: IClassData) => {
         if (doPick) {
-            setMyClasses([...myClasses, classData]);
+
+            const exists = myClasses.find(e => e.className === classData.className);
+            if (exists) {
+                setMyClasses([...myClasses.filter(e => e.className.toLowerCase() !== classData.className.toLowerCase()), classData]);
+            } else {
+                setMyClasses([...myClasses, classData]);
+            }
         } else {
             setMyClasses(myClasses.filter(e => e.className.toLowerCase() !== classData.className.toLowerCase()));
         }

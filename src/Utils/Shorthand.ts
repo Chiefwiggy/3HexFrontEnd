@@ -98,3 +98,22 @@ export const getArmorAffinityRequirement = (armorClass: UArmorClass, enchantment
             return `• Guardian ${enchantmentLevel}`
     }
 }
+
+export const getTierFromName = (tierName: string) => {
+    switch (tierName) {
+        case 'beginner':
+            return 1;
+        case 'intermediate':
+            return 2;
+        case 'advanced':
+            return 3;
+        case 'expert':
+            return 4;
+        case 'master':
+            return 5;
+        case 'legend':
+            return 6;
+        default:
+            return 0;
+    }
+}

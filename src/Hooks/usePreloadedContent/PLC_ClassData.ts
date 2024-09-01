@@ -1,19 +1,26 @@
 import {IAPIContext} from "../useAPI/APIProvider";
-import {IClassMetaData} from "../../Data/IClassMetaData";
+import {IClassMetaData, IClassServerOutput} from "../../Data/IClassMetaData";
 
 
 class PLC_ClassData {
 
     private classCards;
     private classAbilities;
-    private classData: Array<IClassMetaData> = []
+    private classData: IClassServerOutput = {
+        tier1: [],
+        tier2: [],
+        tier3: [],
+        tier4: [],
+        tier5: [],
+        tier6: []
+    }
 
     constructor() {
         this.classCards = {};
         this.classAbilities = {};
     }
 
-    public async Initialize(classCards: Object, classAbilities: Object, classData: Array<IClassMetaData>) {
+    public async Initialize(classCards: Object, classAbilities: Object, classData: IClassServerOutput) {
         this.classCards = classCards;
         this.classAbilities = classAbilities
         this.classData = classData
@@ -47,12 +54,12 @@ class PLC_ClassData {
         }
     }
 
-    public getClassData(className: string) {
-        return this.classData.find(clz => clz.className.toLowerCase() == className.toLowerCase()) ?? undefined
-    }
+    // public getClassData(className: string) {
+    //     return this.classData.find(clz => clz.className.toLowerCase() == className.toLowerCase()) ?? undefined
+    // }
 
-    public getClassesData() {
-        return this.classData;
+    public getClassesData(tier: number) {
+        return this.classData[`tier${tier}` as keyof IClassServerOutput] ?? [];
     }
 }
 

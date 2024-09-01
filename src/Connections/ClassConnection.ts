@@ -19,6 +19,15 @@ class ClassConnection {
         })
     }
 
+    public async GetAllClasses() {
+        return await Axios.get(`${this._classURL}/getAll`, this._getConfig()).then((resp) => {
+            return resp.data;
+        }).catch((e) => {
+            console.error(e)
+            return []
+        })
+    }
+
 }
 
 export default ClassConnection;

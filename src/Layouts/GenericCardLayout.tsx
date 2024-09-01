@@ -23,6 +23,7 @@ import Draggable from "../Elements/Draggable";
 import {useDraggable} from "@dnd-kit/core";
 import CardEffect from "../Components/Cards/CardEffect";
 import {CardGetColor} from "../Utils/CardColorUtils";
+import {IPrerequisite} from "../Data/GenericData";
 
 
 
@@ -60,8 +61,35 @@ const GenericCardLayout = ({
     const [isFavorite, setIsFavorite] = useState(cardData.isFavorite);
     const [prereqString, setPrereqString] = useState("None");
 
+    const getPrereqPriority = (prereq: IPrerequisite) => {
+        switch (prereq.prerequisiteType) {
+            case "attribute":
+                return 2;
+            case "affinity":
+                return 4;
+            case "class":
+                return 1;
+            case "arcana":
+                return 3;
+            default:
+                return 99;
+        }
+    }
+
     useEffect(() => {
-        const str = cardData.prerequisites.map(prereq => {
+        const str = cardData.prerequisites.sort((a,b) =>{
+            if (a.prerequisiteType === b.prerequisiteType) {
+                if (a.level != b.level) {
+                    return b.level - a.level;
+                }
+                return a.skill.localeCompare(b.skill)
+            } else {
+                return getPrereqPriority(a) - getPrereqPriority(b);
+            }
+        }).map(prereq => {
+                                if (prereq.prerequisiteType === "class") {
+                                    return `${capitalize(prereq.skill)}${prereq.level > 1 ? "+" : ""}`
+                                }
                                 return `${capitalize(prereq.skill)} ${prereq.level}`
                             }).join(", ");
         if (str != "") {

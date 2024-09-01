@@ -40,7 +40,7 @@ const CalculatedCard = ({
 
     useEffect(() => {
         if (isReady) {
-            cardCalculator.sendCurrentCards(depArray, owner.data);
+            cardCalculator.sendCurrentCards(depArray, owner);
             setCardTitle(overrideName != "" ? overrideName : cardCalculator.getTitle())
             setEffectArray(cardCalculator.getEffectList());
             setValidCard(owner.areAllCardsPrepared(cardCalculator.getCards()))

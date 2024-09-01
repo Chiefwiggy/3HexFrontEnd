@@ -51,7 +51,7 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
         (async() => {
 
             const data = await API.PreloadedAPI.GetPreloadedData();
-            const classData = await API.ClassAPI.GetAllClassesOfTier(1);
+            const classData = await API.ClassAPI.GetAllClasses();
 
 
             await ClassData.Initialize(data.class.cards, data.class.abilities, classData);

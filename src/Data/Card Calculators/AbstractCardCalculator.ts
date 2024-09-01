@@ -4,6 +4,8 @@ import {ElementType} from 'react';
 import {ICharacterBaseData} from "../ICharacterData";
 import {IMinionData} from "../IMinionData";
 import {ConstructFinalWeapon} from "../../Utils/ConstructFinalWeapon";
+import CharacterSheet from "../CharacterSheet";
+import MinionSheet from "../MinionSheet";
 
 export interface IRangeData {
     min: number,
@@ -56,7 +58,7 @@ abstract class AbstractCardCalculator {
         return this.cards[this.cardTypes.findIndex((type) => type.name == inputType)];
     }
 
-    public sendCurrentCards(cards: Array<ICommonCardData|null>, char: ICharacterBaseData | IMinionData) {
+    public sendCurrentCards(cards: Array<ICommonCardData|null>, char: CharacterSheet | MinionSheet) {
         this.cards = cards.map(card => {
             if (card) {
                 if (card.cardType == "weapon" && card.cardSubtype == "base") {
@@ -69,7 +71,7 @@ abstract class AbstractCardCalculator {
         this.invokeRecalculateData(char);
     }
 
-    protected abstract invokeRecalculateData(char: ICharacterBaseData|IMinionData): void;
+    protected abstract invokeRecalculateData(char: CharacterSheet|MinionSheet): void;
     public abstract getTitle(): string;
     public abstract getType(): string;
     public abstract getCrit(): {

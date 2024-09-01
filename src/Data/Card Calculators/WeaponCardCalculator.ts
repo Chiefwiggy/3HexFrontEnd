@@ -12,6 +12,7 @@ import {ICharacterBaseData} from "../ICharacterData";
 import {GetFinalWeaponData} from "../../Utils/GetFinalSpellData";
 import {getHandedness, getSkillFormat} from "../../Utils/Shorthand";
 import {createRangeString} from "../../Utils/helper_functions";
+import CharacterSheet from "../CharacterSheet";
 
 
 class WeaponCardCalculator extends AbstractCardCalculator {
@@ -54,12 +55,12 @@ class WeaponCardCalculator extends AbstractCardCalculator {
         return (this.getCardOfType("weapon.base") as IScaledWeaponBaseData)?.canThrow ?? false;
     }
 
-    protected invokeRecalculateData(char: ICharacterBaseData): void {
+    protected invokeRecalculateData(char: CharacterSheet): void {
         if (this.cards.length > 0 && this.cards[0] != undefined) {
             const finalWeaponStats = GetFinalWeaponData(
                 this.getCardOfType("weapon.base") as IScaledWeaponBaseData,
                 this.cards,
-                char
+                char.data
             )
             this.currentPower = finalWeaponStats.totalPower;
             this.currentRange = finalWeaponStats.range;
@@ -70,8 +71,8 @@ class WeaponCardCalculator extends AbstractCardCalculator {
             const baseCard = this.getCardOfType("weapon.base") as IScaledWeaponBaseData;
 
             this.updateVal("toHit", getSkillFormat(finalWeaponStats.toHit));
-            this.updateVal("critDamage", finalWeaponStats.crit.toString());
-            this.updateVal("handedness", getHandedness(char, baseCard.handedness));
+            this.updateVal("critDamage", (finalWeaponStats.crit+char.getAbilityBonuses("critDamage")).toString());
+            this.updateVal("handedness", getHandedness(char.data, baseCard.handedness));
             this.updateVal("thrownDistance", (baseCard.canThrow) ? createRangeString(finalWeaponStats.thrownRange) : "-");
         }
     }

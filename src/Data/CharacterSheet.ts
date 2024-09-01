@@ -359,7 +359,14 @@ class CharacterSheet extends AbstractSheet {
             }
             return pv;
         }, 0)
-        return this.data.classes.filter(e => e.classTier == highestTier).map(e => e.className).join(" • ")
+        return this.data.classes.filter(e => e.classTier == highestTier).sort((a,b) => {
+            if (a.isPromoted != b.isPromoted) {
+                if (a.isPromoted) return -1;
+                else return 1;
+            } else {
+                return a.className.localeCompare(b.className);
+            }
+        }).map(e => e.isPromoted ? e.className + "+" : e.className).join(" • ")
     }
     public getPreparedWeaponCards = () => {
         if (this.allButDefaultCards) {

@@ -24,3 +24,12 @@ export interface IClassMetaData {
   prerequisites: any[]
   __v: number
 }
+
+export interface IClassServerOutput {
+    tier1: Array<IClassMetaData>,
+    tier2: Array<IClassMetaData>,
+    tier3: Array<IClassMetaData>,
+    tier4: Array<IClassMetaData>,
+    tier5: Array<IClassMetaData>,
+    tier6: Array<IClassMetaData>
+}
