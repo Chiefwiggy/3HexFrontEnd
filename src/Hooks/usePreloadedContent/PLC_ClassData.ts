@@ -61,6 +61,10 @@ class PLC_ClassData {
     public getClassesData(tier: number) {
         return this.classData[`tier${tier}` as keyof IClassServerOutput] ?? [];
     }
+
+    public getAllClassesByTier() {
+        return Object.values(this.classData);
+    }
 }
 
 export default PLC_ClassData

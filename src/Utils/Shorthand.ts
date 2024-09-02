@@ -117,3 +117,22 @@ export const getTierFromName = (tierName: string) => {
             return 0;
     }
 }
+
+export const getNameFromTier = (tierNo: number) => {
+    switch (tierNo) {
+        case 1:
+            return "beginner";
+        case 2:
+            return "intermediate";
+        case 3:
+            return "advanced";
+        case 4:
+            return "expert";
+        case 5:
+            return "master";
+        case 6:
+            return "legend";
+        default:
+            return "unknown";
+    }
+}

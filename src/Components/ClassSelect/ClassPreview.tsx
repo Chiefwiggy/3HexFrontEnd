@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Button, capitalize, Paper, Typography} from "@mui/material";
+import {Box, Button, capitalize, IconButton, Paper, Typography} from "@mui/material";
 import usePreloadedContent from "../../Hooks/usePreloadedContent/usePreloadedContent";
 import {IClassMetaData} from "../../Data/IClassMetaData";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
 import {IAffinities, IClassData} from "../../Data/ICharacterData";
 import SelectAffinitiesDialog from "./SelectAffinitiesDialog";
+import {OpenInNewOutlined} from "@mui/icons-material";
+import {useNavigate} from "react-router-dom";
 
 interface IClassPreviewInput {
     classData: IClassMetaData,
@@ -26,6 +28,12 @@ const ClassPreview = ({classData, isEquipped, canEquip, sendBack, equipData, can
     const handleEquipClassDialog = (open: boolean, prestige: boolean) => (event: React.MouseEvent) => {
         setIsPrestige(prestige);
         setDialogOpen(open);
+    }
+
+    const navigate = useNavigate();
+
+    const handleNavigateToClass = (event: React.MouseEvent) => {
+        window.open(`/compendium/classes?class=${classData.className.toLowerCase()}`, "_blank");
     }
 
 
@@ -71,12 +79,23 @@ const ClassPreview = ({classData, isEquipped, canEquip, sendBack, equipData, can
                 flexDirection: "column"
             }}
         >
-            <Typography
+            <Box
                 sx={{
-                    textAlign: "center"
+                    display: "flex",
+                    justifyContent: "center"
                 }}
-                variant={"h5"}
-            >{classData.className}{equipData?.isPromoted ? "+" : ""}</Typography>
+            >
+                <Typography
+                    sx={{
+                        textAlign: "center"
+                    }}
+                    variant={"h5"}
+                >
+                    {classData.className}{equipData?.isPromoted ? "+" : ""}
+                </Typography>
+                <IconButton onClick={handleNavigateToClass}><OpenInNewOutlined sx={{fontSize: "14px", marginLeft: "2px"}} /></IconButton>
+            </Box>
+
             <br/>
             {
                 isEquipped

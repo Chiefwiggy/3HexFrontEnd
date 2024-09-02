@@ -36,8 +36,10 @@ const CompendiumClassElement = ({
     const [allAbilities, setAllAbilities] = useState<Array<IAbility>>([]);
 
     useEffect(() => {
-        setAllCards(ClassData.getClassCards(data.className.toLowerCase()));
-        setAllAbilities(ClassData.getClassAbilities(data.className.toLowerCase()));
+        if (data) {
+            setAllCards(ClassData.getClassCards(data.className.toLowerCase()));
+            setAllAbilities(ClassData.getClassAbilities(data.className.toLowerCase()));
+        }
     }, [data, isLoaded]);
 
     const compendiumProps = {
@@ -48,7 +50,7 @@ const CompendiumClassElement = ({
         showPrerequisites: true
     }
 
-    return (
+    return data ? (
         <Box>
             <Typography variant="h3" component="div">{data.className}</Typography>
             <Typography variant={"body2"}>{data.description}</Typography>
@@ -73,7 +75,7 @@ const CompendiumClassElement = ({
             </Box>
 
         </Box>
-    )
+    ) : <></>
 }
 
 export default CompendiumClassElement

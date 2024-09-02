@@ -15,7 +15,7 @@ import usePreloadedContent from "../../Hooks/usePreloadedContent/usePreloadedCon
 import {IClassMetaData} from "../../Data/IClassMetaData";
 import ClassPreview from "./ClassPreview";
 import {IClassData} from "../../Data/ICharacterData";
-import {getTierFromName} from "../../Utils/Shorthand";
+import {getNameFromTier, getTierFromName} from "../../Utils/Shorthand";
 
 interface IClassSelectPanelInput {
     myClasses: IClassData[];
@@ -127,7 +127,31 @@ const ClassSelectPanel = ({
                       </Select>
                     </FormControl>
                 </Box>
-                <Typography variant="h5">{capitalize(tier)} Classes</Typography>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center"
+                    }}
+                >
+                    <Typography variant="h4">{capitalize(tier)} Classes</Typography>
+
+                    {
+                        tier != "legend" ?
+                            <>
+                                <Typography variant={"subtitle2"}>Unlock Classes at Level {(getTierFromName(tier)-1)*60}</Typography>
+                                <Typography variant={"subtitle2"}>Unlock Promotions at Level {(getTierFromName(tier)-1)*60 + 20} and {(getTierFromName(tier)-1)*60 + 40} </Typography>
+                            </>
+                            :
+                            <>
+                                <Typography variant={"subtitle2"}>Unlock Class at Level {(getTierFromName(tier)-1)*60}</Typography>
+                            </>
+                    }
+
+
+                </Box>
+
                 <Button onClick={handleSave}> SAVE </Button>
             </Box>
             <Box
