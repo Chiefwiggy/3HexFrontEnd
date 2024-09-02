@@ -13,6 +13,7 @@ import {GetFinalWeaponData} from "../../Utils/GetFinalSpellData";
 import {getHandedness, getSkillFormat} from "../../Utils/Shorthand";
 import {createRangeString} from "../../Utils/helper_functions";
 import CharacterSheet from "../CharacterSheet";
+import MinionSheet from "../MinionSheet";
 
 
 class WeaponCardCalculator extends AbstractCardCalculator {
@@ -55,12 +56,12 @@ class WeaponCardCalculator extends AbstractCardCalculator {
         return (this.getCardOfType("weapon.base") as IScaledWeaponBaseData)?.canThrow ?? false;
     }
 
-    protected invokeRecalculateData(char: CharacterSheet): void {
+    protected invokeRecalculateData(char: CharacterSheet|MinionSheet): void {
         if (this.cards.length > 0 && this.cards[0] != undefined) {
             const finalWeaponStats = GetFinalWeaponData(
                 this.getCardOfType("weapon.base") as IScaledWeaponBaseData,
                 this.cards,
-                char.data
+                char
             )
             this.currentPower = finalWeaponStats.totalPower;
             this.currentRange = finalWeaponStats.range;

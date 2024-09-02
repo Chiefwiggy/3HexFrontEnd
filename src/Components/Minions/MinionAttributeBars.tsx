@@ -28,7 +28,7 @@ const MinionAttributeBars = ({
     const [currentMaxTether, setCurrentMaxTether] = useState(0);
 
     const [triggerPing, setTriggerPing] = useState(false);
-    const {healthPing} = useCharacter();
+    const {healthPing, charPing} = useCharacter();
 
     const triggerUpdate = () => {
         setTriggerPing(!triggerPing);
@@ -46,7 +46,7 @@ const MinionAttributeBars = ({
             setCurrentTether(minionData.getBarCurrent("tether"));
             setCurrentMaxTether(minionData.getMaxBar("tether"));
         }
-    }, [triggerPing, minionData, healthPing])
+    }, [triggerPing, minionData, healthPing, charPing])
 
     useEffect(() => {
         triggerUpdate();

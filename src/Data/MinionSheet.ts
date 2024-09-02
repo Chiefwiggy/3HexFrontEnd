@@ -1,7 +1,7 @@
-import {IMinionData} from "./IMinionData";
+import {IMinionData, IMinionStats} from "./IMinionData";
 import AbstractSheet from "./AbstractSheet";
 import CharacterSheet, { AttributeBarType, DamageType } from "./CharacterSheet";
-import {UStance} from "./ICharacterData";
+import {ICharacterStats, UStance} from "./ICharacterData";
 import {ICardBuilderType} from "../Layouts/CardBuilder";
 import SpellBaseCard from "../Components/Cards/SpellBaseCard";
 import SpellTargetCard from "../Components/Cards/SpellTargetCard";
@@ -11,11 +11,13 @@ import WeaponModCard from "../Components/Cards/WeaponModCard";
 import {default_spell_cards, default_weapon_cards} from "./default_cards";
 import {IAPIContext} from "../Hooks/useAPI/APIProvider";
 import {IDefenseBreakdown} from "./IDefenses";
-import {getSkillFormat} from "../Utils/Shorthand";
+import {getSkillFormat, UStat} from "../Utils/Shorthand";
 import {IArmor} from "./IArmorData";
+import {StatChain} from "../Utils/GetFinalSpellData";
 
 
 class MinionSheet extends AbstractSheet {
+
 
 
     public getEvadePDEF(): number {
@@ -25,7 +27,9 @@ class MinionSheet extends AbstractSheet {
         }
         //commander cards
         //final
-        return Math.floor((this.data.minionStats.endurance.value + this.data.minionStats.vitality.value)*0.5) + evadeArmorBonus;
+        return Math.floor((this.getStat("endurance")
+ + this.getStat("vitality")
+)*0.5) + evadeArmorBonus;
     }
 
     public getBlockPDEF(): number {
@@ -42,7 +46,9 @@ class MinionSheet extends AbstractSheet {
         }
         //commander cards
         //final
-        return Math.floor((this.data.minionStats.mind.value + this.data.minionStats.presence.value)*0.5) + evadeArmorBonus;
+        return Math.floor((this.getStat("mind")
+ + this.getStat("presence")
+)*0.5) + evadeArmorBonus;
     }
     public getBlockMDEF(): number {
         let blockArmorBonus = 0;
@@ -71,23 +77,30 @@ class MinionSheet extends AbstractSheet {
         this.data.attributeBars.tether.current = amount;
     }
     public getMaxHealth(): number {
-        return 4 + ((2)*this.data.minionStats.vitality.value);
+        return 4 + ((2)*this.getStat("vitality")
+);
     }
     public getMaxStamina(): number {
-        // return 12 + ((this.data.attributeBars.stamina.scaling.value ?? 4)*this.data.minionStats.endurance.value);
-        return 12 + ((4)*this.data.minionStats.endurance.value);
+        // return 12 + ((this.data.attributeBars.stamina.scaling.value ?? 4)*this.getStat("endurance")
+        return 12 + ((4)*this.getStat("endurance")
+);
     }
 
     public getMaxTether(): number {
-        return 4 + ((2)*this.data.minionStats.mind.value);
+        return 4 + ((2)*this.getStat("mind")
+);
     }
 
      public getEvadeDodge(): number {
-        return 25+(2*this.data.minionStats.agility.value)+this.data.minionStats.awareness.value-(this.weightPenalty*3);
+        return 25+(2*this.getStat("agility")
+)+this.getStat("awareness")
+-(this.weightPenalty*3);
     }
 
     public getBlockDodge(): number {
-        return 15+(this.data.minionStats.agility.value)+this.data.minionStats.awareness.value-(this.weightPenalty*3);
+        return 15+(this.getStat("agility")
+)+this.getStat("awareness")
+-(this.weightPenalty*3);
     }
 
     public getLevel(): number {
@@ -120,9 +133,11 @@ class MinionSheet extends AbstractSheet {
 
     private _setWeightPenalty() {
         console.log(this.currentArmor?.vitalityRequirement);
-        if (this.currentArmor && this.data.minionStats.vitality.value < this.currentArmor.vitalityRequirement) {
+        if (this.currentArmor && this.getStat("vitality")
+ < this.currentArmor.vitalityRequirement) {
 
-            this.weightPenalty = -(this.data.minionStats.vitality.value - this.currentArmor.vitalityRequirement);
+            this.weightPenalty = -(this.getStat("vitality")
+ - this.currentArmor.vitalityRequirement);
             console.log(this.weightPenalty)
         } else {
             this.weightPenalty = 0;
@@ -142,11 +157,15 @@ class MinionSheet extends AbstractSheet {
     }
 
     public getStaminaRefresh(): number {
-        return Math.floor(this.data.minionStats.endurance.value*1.5) + (this.data.bonuses?.staminaRefresh ?? 0);
+        return Math.floor(this.getStat("endurance")*1.5) + (this.data.bonuses?.staminaRefresh ?? 0);
     }
 
     public getTetherRefresh(): number {
-        return this.data.minionStats.mind.value + (this.data.bonuses?.tetherRefresh ?? 0);
+        return this.getStat("mind") + (this.data.bonuses?.tetherRefresh ?? 0);
+    }
+
+    public getStat(stat: keyof IMinionStats | "command"): number {
+        return StatChain(this.data.minionStats[stat].value, [this.data.minionStats[stat].modifiers]) + this.owner.getCommanderBonus(`stats.${stat}.modifier`, "minion")
     }
 
     public getEvadePDEFBreakdown(): IDefenseBreakdown {
@@ -155,11 +174,11 @@ class MinionSheet extends AbstractSheet {
             sources: [
                 {
                     reason: "Vitality",
-                    value: this.data.minionStats.vitality.value * 0.5
+                    value: this.getStat("vitality") * 0.5
                 },
                 {
                     reason: "Endurance",
-                    value: this.data.minionStats.endurance.value * 0.5
+                    value: this.getStat("endurance") * 0.5
                 },
                 {
                     reason: "Armor",
@@ -175,11 +194,11 @@ class MinionSheet extends AbstractSheet {
             sources: [
                 {
                     reason: "Presence",
-                    value: this.data.minionStats.presence.value * 0.5
+                    value: this.getStat("presence") * 0.5
                 },
                 {
                     reason: "Mind",
-                    value: this.data.minionStats.mind.value * 0.5
+                    value: this.getStat("mind") * 0.5
                 },
                 {
                     reason: "Armor",
@@ -199,11 +218,13 @@ class MinionSheet extends AbstractSheet {
                 },
                 {
                     reason: "Vitality",
-                    value: this.data.minionStats.vitality.value * 0.5
+                    value: this.getStat("vitality")
+ * 0.5
                 },
                 {
                     reason: "Endurance",
-                    value: this.data.minionStats.endurance.value * 0.5
+                    value: this.getStat("endurance")
+ * 0.5
                 },
                 {
                     reason: "Armor",
@@ -223,11 +244,13 @@ class MinionSheet extends AbstractSheet {
                 },
                 {
                     reason: "Presence",
-                    value: this.data.minionStats.presence.value * 0.5
+                    value: this.getStat("presence")
+ * 0.5
                 },
                 {
                     reason: "Mind",
-                    value: this.data.minionStats.mind.value * 0.5
+                    value: this.getStat("mind")
+ * 0.5
                 },
                 {
                     reason: "Armor",
@@ -247,11 +270,13 @@ class MinionSheet extends AbstractSheet {
                 },
                 {
                     reason: "Agility",
-                    value: getSkillFormat(2*this.data.minionStats.agility.value)
+                    value: getSkillFormat(2*this.getStat("agility")
+)
                 },
                 {
                     reason: "Awareness",
-                    value: getSkillFormat(this.data.minionStats.awareness.value)
+                    value: getSkillFormat(this.getStat("awareness")
+)
                 }
             ]
         }
@@ -274,11 +299,13 @@ class MinionSheet extends AbstractSheet {
                 },
                 {
                     reason: "Agility",
-                    value: getSkillFormat(this.data.minionStats.agility.value)
+                    value: getSkillFormat(this.getStat("agility")
+)
                 },
                 {
                     reason: "Awareness",
-                    value: getSkillFormat(this.data.minionStats.awareness.value)
+                    value: getSkillFormat(this.getStat("awareness")
+)
                 }
             ]
         }
@@ -289,6 +316,10 @@ class MinionSheet extends AbstractSheet {
             })
         }
         return ret;
+    }
+
+    public getAbilityBonuses(bonusType: string): number {
+        return this.owner.getCommanderBonus(`bonuses.${bonusType}`, "minion");
     }
 
 

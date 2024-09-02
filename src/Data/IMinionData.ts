@@ -3,7 +3,18 @@ import {IModifiable} from "./GenericData";
 import {IArmor} from "./IArmorData";
 import {ICommonCardData} from "./ICardData";
 
-
+export interface IMinionStats {
+    might: IModifiable,
+    agility: IModifiable,
+    skill: IModifiable,
+    awareness: IModifiable,
+    vitality: IModifiable,
+    knowledge: IModifiable,
+    mind: IModifiable,
+    presence: IModifiable,
+    command: IModifiable,
+    endurance: IModifiable
+}
 export interface IMinionData {
     _id: string,
     minionName: string,
@@ -13,18 +24,7 @@ export interface IMinionData {
         stamina: IAttributeBar
         tether: IAttributeBar
     },
-    minionStats: {
-        might: IModifiable,
-        agility: IModifiable,
-        skill: IModifiable,
-        awareness: IModifiable,
-        vitality: IModifiable,
-        knowledge: IModifiable,
-        mind: IModifiable,
-        presence: IModifiable,
-        command: IModifiable,
-        endurance: IModifiable
-    },
+    minionStats: IMinionStats ,
     movement: {
         stepSpeed: IModifiable,
         dashSpeed: IModifiable,

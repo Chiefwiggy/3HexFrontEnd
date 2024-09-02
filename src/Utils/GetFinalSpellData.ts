@@ -11,6 +11,8 @@ import spellModifierCard from "../Components/Cards/SpellModifierCard";
 import {IDataModifiers} from "../Data/GenericData";
 import {ICharacterBaseData} from "../Data/ICharacterData";
 import {IMinionData} from "../Data/IMinionData";
+import CharacterSheet from "../Data/CharacterSheet";
+import MinionSheet from "../Data/MinionSheet";
 
 export interface ITotalSpellStats {
     tetherCost: number,
@@ -44,10 +46,10 @@ export interface ITotalWeaponStats {
 
 }
 
-export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: ISpellTargetCardData, spellSkill: ISpellModifierCardData, spellEdict: ISpellModifierCardData | null, char: ICharacterBaseData): ITotalSpellStats => {
+export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: ISpellTargetCardData, spellSkill: ISpellModifierCardData, spellEdict: ISpellModifierCardData | null, char: CharacterSheet|MinionSheet): ITotalSpellStats => {
     try {
         let finalBasePower = StatChain(spellBase.basePower, [spellBase.basePowerMod, spellTarget.basePowerMod, spellSkill.basePowerMod, spellEdict?.basePowerMod]);
-        let finalPotencyPower = Math.floor(StatChain(spellBase.potency, [spellBase.potencyMod, spellTarget.potencyMod, spellSkill.potencyMod, spellEdict?.potencyMod]) * char.characterStats.might.value);
+        let finalPotencyPower = Math.floor(StatChain(spellBase.potency, [spellBase.potencyMod, spellTarget.potencyMod, spellSkill.potencyMod, spellEdict?.potencyMod]) * char.getStat("might"));
         const finalPower = StatChain(finalBasePower + finalPotencyPower, [spellBase.powerMod, spellTarget.powerMod, spellSkill.powerMod, spellEdict?.powerMod]);
         const minRange = StatChain(spellTarget.baseRange.min, [spellBase.minRangeMod, spellTarget.minRangeMod, spellSkill.minRangeMod, spellEdict?.minRangeMod]);
         const maxRange = StatChain(spellTarget.baseRange.max, [spellBase.maxRangeMod, spellTarget.maxRangeMod, spellSkill.maxRangeMod, spellEdict?.maxRangeMod]);
@@ -55,7 +57,7 @@ export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: IS
         const maxRangeFinal = StatChain(maxRange, [spellBase.fullRangeMod, spellTarget.fullRangeMod, spellSkill.fullRangeMod, spellEdict?.fullRangeMod]);
 
         let finalBaseSet = StatChain(spellBase.baseSpellSet, [spellBase.baseSpellSetMod, spellTarget.baseSpellSetMod, spellSkill.baseSpellSetMod, spellEdict?.baseSpellSetMod])
-        let finalSet = StatChain(finalBaseSet + char.characterStats.presence.value, [spellBase.spellSetMod, spellTarget.spellSetMod, spellSkill.spellSetMod, spellEdict?.spellSetMod])
+        let finalSet = StatChain(finalBaseSet + char.getStat("presence"), [spellBase.spellSetMod, spellTarget.spellSetMod, spellSkill.spellSetMod, spellEdict?.spellSetMod])
 
         const isMelee = [spellBase.forceMelee, spellTarget.forceMelee, spellSkill.forceMelee, spellEdict?.forceMelee].reduce((pv: boolean, cv: boolean | undefined) => {
             if (cv) {
@@ -104,22 +106,14 @@ export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: IS
 
 
 
-export const GetFinalWeaponData = (weaponBase: IScaledWeaponBaseData, allCards: Array<IWeaponCommonData | null>, char: ICharacterBaseData|IMinionData): ITotalWeaponStats => {
+export const GetFinalWeaponData = (weaponBase: IScaledWeaponBaseData, allCards: Array<IWeaponCommonData | null>, char: CharacterSheet|MinionSheet): ITotalWeaponStats => {
 
     let might = 0;
     let skill = 0;
     let awareness = 0;
-    if ((char as ICharacterBaseData).characterStats == undefined) {
-        const ms: IMinionData = (char as IMinionData);
-        might = ms.minionStats.might.value;
-        skill = ms.minionStats.skill.value;
-        awareness = ms.minionStats.awareness.value;
-    } else {
-        const cs = char as ICharacterBaseData;
-        might = cs.characterStats.might.value;
-        skill = cs.characterStats.skill.value;
-        awareness = cs.characterStats.awareness.value;
-    }
+    might = char.getStat("might");
+    skill = char.getStat("skill");
+    awareness = char.getStat("awareness");
 
     let finalBasePower = StatChain(weaponBase.basePower, allCards.map(c => c?.basePowerMod));
     let finalPotencyPower = Math.floor(StatChain(weaponBase.potency, allCards.map(c => c?.potencyMod), false) * might);
@@ -139,11 +133,11 @@ export const GetFinalWeaponData = (weaponBase: IScaledWeaponBaseData, allCards: 
     const isThrownMelee = weaponBase.thrownRange.isMelee
 
     const finalBaseCrit = StatChain(weaponBase.baseCrit, allCards.map(c => c?.baseCritMod));
-    const finalCrit = StatChain(skill + finalBaseCrit + (char.bonuses?.critBonus ?? 0), allCards.map(c => c?.critMod));
+    const finalCrit = StatChain(skill + finalBaseCrit + (char.data.bonuses?.critBonus ?? 0), allCards.map(c => c?.critMod));
 
     const finalBaseHit = StatChain(weaponBase.baseHit, allCards.map(c => c?.baseHitMod));
 
-    const finalHitMod = StatChain(finalBaseHit + (awareness*2) + skill + (char.bonuses?.hitBonus ?? 0), allCards.map(c => c?.hitMod));
+    const finalHitMod = StatChain(finalBaseHit + (awareness*2) + skill + (char.data.bonuses?.hitBonus ?? 0), allCards.map(c => c?.hitMod));
 
     let finalDamageType: UDamageType = weaponBase.damageType;
     let finalDamageSubtype = weaponBase.damageSubtype;

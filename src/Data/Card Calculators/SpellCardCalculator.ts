@@ -13,6 +13,7 @@ import {ICharacterBaseData} from "../ICharacterData";
 import {getSkillFormat, getStatShorthand, UStat} from "../../Utils/Shorthand";
 import {capitalize} from "@mui/material";
 import CharacterSheet from "../CharacterSheet";
+import MinionSheet from "../MinionSheet";
 
 class SpellCardCalculator extends AbstractCardCalculator {
 
@@ -49,14 +50,14 @@ class SpellCardCalculator extends AbstractCardCalculator {
             ]
         ]));
     }
-    protected invokeRecalculateData(char: CharacterSheet): void {
+    protected invokeRecalculateData(char: CharacterSheet|MinionSheet): void {
         if (this.cards.length > 0) {
             const finalSpellData = GetFinalSpellData(
                 this.getCardOfType("spell.base") as ISpellBaseCardData,
                 this.getCardOfType("spell.target") as ISpellTargetCardData,
                 this.getCardOfType("spell.skill") as ISpellModifierCardData,
                 this.getCardOfType("spell.edict") as ISpellModifierCardData,
-                char.data
+                char
             )
             this.updateVal("tetherCost", finalSpellData.tetherCost.toString());
             this.currentPower = finalSpellData.totalPower;

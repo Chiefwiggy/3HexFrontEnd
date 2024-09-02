@@ -233,6 +233,7 @@ class CharacterSheet extends AbstractSheet {
                     if (!cv.appliesTo.minions) return pv;
                     break;
             }
+
             try {
                 const strSplit = bonusType.split(".");
                 let ability: any = cv.characterModifiers;
@@ -296,6 +297,7 @@ class CharacterSheet extends AbstractSheet {
             return pv + this.getStat(cv as UStat);
         }, 0)
     }
+
 
     public getSkillBreakdown = (skillName: string): IDefenseBreakdown => {
 

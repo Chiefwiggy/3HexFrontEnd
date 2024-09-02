@@ -2,6 +2,7 @@ import {UDamageType} from "../Data/ICardData";
 import AbstractSheet from "../Data/AbstractSheet";
 import {ICharacterBaseData} from "../Data/ICharacterData";
 import {UArmorClass} from "../Data/IArmorData";
+import {IMinionData} from "../Data/IMinionData";
 
 
 export type UStat = "might" | "agility" | "skill" | "awareness" | "vitality" | "knowledge" | "mind" | "presence" | "authority" | "endurance"
@@ -71,7 +72,7 @@ export const getDamageShorthand = (dt: UDamageType) => {
     }
 }
 
-export const getHandedness = (sheet: ICharacterBaseData|null, handednessValue: number) => {
+export const getHandedness = (sheet: ICharacterBaseData|IMinionData|null, handednessValue: number) => {
     if (handednessValue >= 2) {
         return "Two-Handed"
     } else if (handednessValue >= 1.5) {

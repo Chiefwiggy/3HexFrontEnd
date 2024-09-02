@@ -1,6 +1,6 @@
 import {AttributeBarType, DamageType} from "./CharacterSheet";
 import React, {SetStateAction} from "react";
-import {UStance} from "./ICharacterData";
+import {IAttributeBar, ICharacterStats, UStance} from "./ICharacterData";
 import {IAPIContext} from "../Hooks/useAPI/APIProvider";
 import {ICommonCardData, UDamageType} from "./ICardData";
 import {IDefenseBreakdown} from "./IDefenses";
@@ -12,6 +12,7 @@ import WeaponBaseCard from "../Components/Cards/WeaponBaseCard";
 import WeaponModCard from "../Components/Cards/WeaponModCard";
 import {default_spell_cards, default_weapon_cards} from "./default_cards";
 import {IArmor} from "./IArmorData";
+import {IMinionData} from "./IMinionData";
 
 
 abstract class AbstractSheet {
@@ -65,6 +66,9 @@ abstract class AbstractSheet {
     public abstract getBlockMDEFBreakdown(): IDefenseBreakdown;
     public abstract getEvadeDodgeBreakdown(): IDefenseBreakdown;
     public abstract getBlockDodgeBreakdown(): IDefenseBreakdown;
+
+    public abstract getAbilityBonuses(bonusType: string): number;
+    public abstract getStat(statName: keyof ICharacterStats | "command"): number;
 
     public abstract getLevel(): number
     public currentArmor: IArmor | undefined = undefined;

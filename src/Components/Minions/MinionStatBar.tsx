@@ -1,7 +1,7 @@
 import React from 'react';
 import {Box, Typography} from "@mui/material";
 import StatView from "../../Views/StatView";
-import {IMinionData} from "../../Data/IMinionData";
+import {IMinionData, IMinionStats} from "../../Data/IMinionData";
 import MinionSheet from "../../Data/MinionSheet";
 import {getStatShorthand, UStat} from "../../Utils/Shorthand";
 import MinionStatView from "./MinionStatView";
@@ -24,9 +24,9 @@ const MinionStatBar = ({
                 }}
             >
                 {
-                    Object.entries(minionData.data.minionStats).map(([stat, value]) => {
+                    Object.keys(minionData.data.minionStats).map((stat) => {
                         return (
-                            <MinionStatView key={stat} stat={stat as UStat | "command"} value={value.value} />
+                            <MinionStatView key={stat} stat={stat as UStat | "command"} value={minionData.getStat(stat as keyof IMinionStats)} />
                         )
                     })
                 }
