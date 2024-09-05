@@ -71,7 +71,7 @@ const StatBox = ({
         }
     }, [value.value, value.modifiers?.modifier, value.modifiers?.override, value.modifiers?.multiplier]);
 
-    return currentSheet ? (
+    return (
         <Box>
             <Box
                 onClick={handlePop}
@@ -103,7 +103,7 @@ const StatBox = ({
                             <Typography variant={"h6"} color={statRelativeColor}>{statValue}</Typography>
                             <IconButton
                                 onClick={handleEditStat(1)}
-                                disabled={currentValue >= currentSheet?.getStatCap()}
+                                disabled={currentValue >= (currentSheet ? currentSheet.getStatCap() : 75)}
                             >
                                 <AddCircleOutlined />
                             </IconButton>
@@ -137,7 +137,7 @@ const StatBox = ({
                 </Box>
             </Popover>
         </Box>
-    ) : <></>
+    )
 }
 
 export default StatBox
