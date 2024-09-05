@@ -19,7 +19,7 @@ const ArcanaLayout = ({
 
     const [affData, setAffData] = useState({
         affinities: {
-            hex: 0,
+            focus: 0,
             rune: 0,
             soul: 0,
             deft: 0,

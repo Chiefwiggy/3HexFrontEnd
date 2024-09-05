@@ -124,7 +124,7 @@ export interface IClassData {
 }
 
 export interface IAffinities {
-    hex: number,
+    focus: number,
     rune: number,
     soul: number,
     deft: number,
@@ -139,7 +139,7 @@ export interface IAffinities {
 }
 
 export interface IAffinitiesArray<T> {
-    hex: Array<T>,
+    focus: Array<T>,
     rune: Array<T>,
     soul: Array<T>,
     deft: Array<T>,

@@ -12,7 +12,7 @@ export interface IAbility {
     abilityRefreshTime: string,
     bonuses: {
         affinity?: {
-            hex?: number,
+            focus?: number,
             rune?: number,
             soul?: number,
             deft?: number,

@@ -24,7 +24,7 @@ const AffinitiesPanel = ({
         >
             <Typography variant={"h4"} textAlign={"center"}>Affinities</Typography>
             <ArcanaLayout myClasses={myClasses} arcana={"warrior"} affinities={["deft", "infantry", "guardian"]}/>
-            <ArcanaLayout myClasses={myClasses} arcana={"arcane"} affinities={["hex", "soul", "rune"]}/>
+            <ArcanaLayout myClasses={myClasses} arcana={"arcane"} affinities={["focus", "soul", "rune"]}/>
             <ArcanaLayout myClasses={myClasses} arcana={"support"} affinities={["leadership", "erudite", "supply"]}/>
             <ArcanaLayout myClasses={myClasses} arcana={"hacker"} affinities={["machinery", "abjuration", "biohacking"]}/>
 

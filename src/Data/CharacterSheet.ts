@@ -426,7 +426,7 @@ class CharacterSheet extends AbstractSheet {
         this.API = api;
         this.currentAttack = null;
         this.currentAffinities = {
-            hex: 0,
+            focus: 0,
             rune: 0,
             soul: 0,
             deft: 0,
@@ -555,7 +555,7 @@ class CharacterSheet extends AbstractSheet {
             })
         })
         this.currentArcana = {
-            arcane: this.currentAffinities.hex + this.currentAffinities.soul + this.currentAffinities.rune,
+            arcane: this.currentAffinities.focus + this.currentAffinities.soul + this.currentAffinities.rune,
             warrior: this.currentAffinities.infantry + this.currentAffinities.guardian + this.currentAffinities.deft,
             support: this.currentAffinities.leadership + this.currentAffinities.erudite + this.currentAffinities.supply,
             hacker: this.currentAffinities.biohacking + this.currentAffinities.abjuration + this.currentAffinities.machinery
@@ -564,7 +564,7 @@ class CharacterSheet extends AbstractSheet {
 
     public getArcanaAndAffinitiesFromClassList(classes: Array<IClassData>) {
         const currentAffinities = {
-            hex: 0,
+            focus: 0,
             rune: 0,
             soul: 0,
             deft: 0,
@@ -589,7 +589,7 @@ class CharacterSheet extends AbstractSheet {
             })
         })
         currentArcana = {
-            arcane: currentAffinities.hex + currentAffinities.soul + currentAffinities.rune,
+            arcane: currentAffinities.focus + currentAffinities.soul + currentAffinities.rune,
             warrior: currentAffinities.infantry + currentAffinities.guardian + currentAffinities.deft,
             support: currentAffinities.leadership + currentAffinities.erudite + currentAffinities.supply,
             hacker: currentAffinities.biohacking + currentAffinities.abjuration + currentAffinities.machinery

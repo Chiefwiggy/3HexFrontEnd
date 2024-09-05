@@ -32,7 +32,7 @@ const AffinityCheckbox = ({
 
     const [disableNew, setDisableNew] = useState<boolean>(false);
 
-    const allAffinities = ["deft", "infantry", "guardian", "hex", "soul", "rune", "leadership", "erudite", "supply", "machinery", "abjuration", "biohacking"]
+    const allAffinities = ["deft", "infantry", "guardian", "focus", "soul", "rune", "leadership", "erudite", "supply", "machinery", "abjuration", "biohacking"]
 
     const [affDropdown, setAffDropdown] = useState<keyof IAffinities | "">("");
 
@@ -41,7 +41,7 @@ const AffinityCheckbox = ({
 
     const affDataHardCode = {
         warrior: ["deft", "infantry", "guardian"],
-        arcane: ["hex", "soul", "rune"],
+        arcane: ["focus", "soul", "rune"],
         support: ["leadership", "erudite", "supply"],
         hacker: ["machinery", "abjuration", "biohacking"]
     }

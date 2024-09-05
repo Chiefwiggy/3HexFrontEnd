@@ -38,7 +38,7 @@ const ClassPreview = ({classData, isEquipped, canEquip, sendBack, equipData, can
 
 
     const handleButton = (doPick: boolean, cancel=false, affinityData: IAffinities = {
-        hex: 0,
+        focus: 0,
         rune: 0,
         soul: 0,
         deft: 0,

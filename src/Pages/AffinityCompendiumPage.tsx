@@ -22,7 +22,7 @@ const AffinityCompendiumPage = ({}: IAffinityCompendiumPageInput) => {
     const [currentName, setCurrentName] = useState<keyof IArcanaKeys | keyof IAffinities | "_">((searchParams.get("arcana") ?? searchParams.get("affinity") ?? "warrior") as keyof IArcanaKeys | keyof IAffinities | "_");
 
     const arcanas: Array<keyof IArcanaKeys> = ["warrior", "arcane", "support", "hacker"]
-    const affinities: Array<keyof IAffinities | "_"> = ["_", "deft", "infantry", "guardian", "_", "hex", "rune", "soul", "_", "leadership", "erudite", "supply", "_", "machinery", "abjuration", "biohacking"]
+    const affinities: Array<keyof IAffinities | "_"> = ["_", "deft", "infantry", "guardian", "_", "focus", "rune", "soul", "_", "leadership", "erudite", "supply", "_", "machinery", "abjuration", "biohacking"]
 
     useEffect(() => {
         const arcana = searchParams.get("arcana") ?? "";
@@ -73,7 +73,7 @@ const AffinityCompendiumPage = ({}: IAffinityCompendiumPageInput) => {
                 <Tab label={"Infantry"}/>
                 <Tab label={"Guardian"}/>
                 <Tab label={<Typography variant={"h6"}>Arcane</Typography>}/>
-                <Tab label={"Hex"}/>
+                <Tab label={"Focus"}/>
                 <Tab label={"Rune"}/>
                 <Tab label={"Soul"}/>
                 <Tab label={<Typography variant={"h6"}>Support</Typography>}/>
