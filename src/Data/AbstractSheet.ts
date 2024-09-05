@@ -163,8 +163,6 @@ abstract class AbstractSheet {
         this.healCharacter("health", 999, false);
         this.healCharacter("stamina", 999, false);
         this.healCharacter("tether", 999, false);
-        console.log("REST");
-
     }
 
     public useBar(bar: AttributeBarType, amount: number) {

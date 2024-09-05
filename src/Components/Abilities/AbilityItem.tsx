@@ -22,6 +22,7 @@ const AbilityItem = ({abilityData, showPrerequisites = false}: IAbilityItemInput
         if (str != "") {
             setPrereqString(str);
         }
+        setIsOpen(false);
     }, [abilityData]);
 
 

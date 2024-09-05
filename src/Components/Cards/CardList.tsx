@@ -34,7 +34,6 @@ const CardList = ({
   canFavorite = true
 }: ICardListInput) => {
 
-    console.log(cardList);
     return (
         <>
             {

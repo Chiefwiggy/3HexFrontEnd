@@ -44,7 +44,6 @@ const EquipmentTab = ({}: IEquipmentTabInput) => {
         const nData: Array<boolean> = [...primedToDelete];
 
         nData[index] = doDelete;
-        console.log(nData);
         setPrimedToDelete(nData);
     }
 

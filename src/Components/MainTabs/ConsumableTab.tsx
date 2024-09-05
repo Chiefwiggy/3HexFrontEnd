@@ -39,7 +39,6 @@ const ConsumableTab = ({}: IConsumableTabInput) => {
                 ...newState[consumableIndex],
                 amount: newState[consumableIndex].amount + delta,
             };
-            console.log(newState);
             return newState;
         });
         setHasChanged(true);

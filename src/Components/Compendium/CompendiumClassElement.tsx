@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Typography} from "@mui/material";
+import {Box, capitalize, Paper, Typography} from "@mui/material";
 import {IClassMetaData} from "../../Data/IClassMetaData";
 import useAPI from "../../Hooks/useAPI/useAPI";
 import {
@@ -21,6 +21,9 @@ import usePreloadedContent from "../../Hooks/usePreloadedContent/usePreloadedCon
 import CommanderCard from '../Cards/CommanderCard'
 import {ConstructFinalWeapon} from "../../Utils/ConstructFinalWeapon";
 import {disambiguateCard} from "../../Utils/DisambiguateCardType";
+import MultiselectChoice from "../ClassSelect/ChoiceElements/MultiselectChoice";
+import AffinityCheckbox from "../ClassSelect/ChoiceElements/AffinityCheckbox";
+import CompendiumChoiceAffinities from '../ClassSelect/Affinities/CompendiumChoiceAffinities'
 
 interface ICompendiumClassElementInput {
     data: IClassMetaData
@@ -54,14 +57,13 @@ const CompendiumClassElement = ({
         <Box>
             <Typography variant="h3" component="div">{data.className}</Typography>
             <Typography variant={"body2"}>{data.description}</Typography>
-            <Typography variant={"h4"}> Class Abilities </Typography>
-            {
-                allAbilities.map((ability,index) => {
-                    return <AbilityItem abilityData={ability} showPrerequisites={true} key={index} />
-
-                })
-            }
-            <Typography variant={"h4"}> Class Cards </Typography>
+            <Typography variant={"h5"}> Standard Affinities</Typography>
+            <Typography variant={"subtitle2"}>Choose {data.choices.baseChoice.amount}</Typography>
+            <CompendiumChoiceAffinities choiceData={data.choices.baseChoice}/>
+            <Typography variant={"h5"}> Prestige Affinities </Typography>
+            <Typography variant={"subtitle2"}>Choose {data.choices.prestigeChoice.amount}</Typography>
+            <CompendiumChoiceAffinities choiceData={data.choices.prestigeChoice}/>
+            <Typography variant={"h4"}> Unlocks </Typography>
             <Box
                 sx={{
                     display: 'grid',
@@ -70,8 +72,14 @@ const CompendiumClassElement = ({
                 }}
             >
                 {
+                    allAbilities.map((ability, index) => {
+                        return <AbilityItem abilityData={ability} showPrerequisites={true} key={index}/>
+                    })
+                }
+                {
                     disambiguateCard(allCards, compendiumProps)
                 }
+
             </Box>
 
         </Box>

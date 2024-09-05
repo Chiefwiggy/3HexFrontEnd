@@ -380,7 +380,6 @@ class CharacterSheet extends AbstractSheet {
                 if (e.cardSubtype == "base") {
                     const preparedStruct = this.data.preparedCards.find(prep => prep.cardId === e._id);
                     console.log(preparedStruct);
-                    console.log("E", e);
                     return {
                         ...e,
                         tempEnchantValue: preparedStruct?.additionalData ?? 0
@@ -471,7 +470,6 @@ class CharacterSheet extends AbstractSheet {
      }
 
      private setArmor(timeout = 0) {
-        console.log(this.preloadedData.ArmorData.hasData());
         if (this.data.currentArmor) {
             this.currentArmor = this.preloadedData.ArmorData.GetConstructedArmorById(this.data.currentArmor.baseId, this.data.currentArmor.enchantmentLevel);
             this._setWeightPenalty()
@@ -542,11 +540,9 @@ class CharacterSheet extends AbstractSheet {
     }
 
     private _setWeightPenalty() {
-        console.log(this.currentArmor?.vitalityRequirement);
         if (this.currentArmor && this.data.characterStats.vitality.value < this.currentArmor.vitalityRequirement) {
 
             this.weightPenalty = -(this.data.characterStats.vitality.value - this.currentArmor.vitalityRequirement);
-            console.log(this.weightPenalty)
         } else {
             this.weightPenalty = 0;
         }
@@ -648,7 +644,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getAuthoritySlots(): number {
-        return 1 + Math.floor(this.data.characterStats.authority.value * 0.25) + this.getAbilityBonuses("authoritySlots");
+        return 1 + Math.floor(this.data.characterStats.authority.value * 0.25) + this.getAbilityBonuses("commanderCardSlots");
     }
 
 
@@ -956,7 +952,6 @@ class CharacterSheet extends AbstractSheet {
 
 
     public EnterEditMode() {
-        console.log("Enter EditMode with:");
         console.log(this.data);
         this.dataBackup = JSON.parse(JSON.stringify(this.data));
     }

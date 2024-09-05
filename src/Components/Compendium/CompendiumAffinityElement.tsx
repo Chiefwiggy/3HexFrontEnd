@@ -69,14 +69,7 @@ const CompendiumAffinityElement = ({
                     return (
                         <Box key={e}>
                             <Typography variant={"h5"}>{capitalize(elemName)} {e}</Typography>
-                            {
-                                (allAbilities?.get(e) ?? []).map(ability => {
-                                    return (
-                                        <AbilityItem abilityData={ability} key={ability._id}
-                                                     showPrerequisites={true}/>
-                                    )
-                                })
-                            }
+
                             <Box
                                 sx={{
                                     display: 'grid',
@@ -84,6 +77,14 @@ const CompendiumAffinityElement = ({
                                     gridGap: "10px"
                                 }}
                             >
+                                {
+                                    (allAbilities?.get(e) ?? []).map(ability => {
+                                        return (
+                                            <AbilityItem abilityData={ability} key={ability._id}
+                                                         showPrerequisites={true}/>
+                                        )
+                                    })
+                                }
                                 {
                                     allCards ?
                                     disambiguateCard((allCards.get(e) ?? []), compendiumProps)
