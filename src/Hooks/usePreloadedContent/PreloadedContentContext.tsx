@@ -8,6 +8,7 @@ import PLC_WeaponData from "./PLC_WeaponData";
 import PLC_ArmorData from "./PLC_ArmorData";
 import PLC_SourceData from "./PLC_SourceData";
 import PLC_ConsumableData from "./PLC_ConsumableData";
+import PLC_FatelineData from "./PLC_FatelineData";
 
 
 
@@ -19,6 +20,7 @@ const PreloadedContentContext =     createContext<IPreloadedContentContextInput>
         ArmorData: new PLC_ArmorData(),
         SourceData: new PLC_SourceData(),
         ConsumableData: new PLC_ConsumableData(),
+        FatelineData: new PLC_FatelineData(),
         isLoaded: false
     }
 );

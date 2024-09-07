@@ -20,6 +20,7 @@ import MinionCreationPage from '../Pages/MinionCreationPage';
 import MinionCompendiumPage from "../Pages/MinionCompendiumPage";
 import MinionLandingPage from "../Pages/MinionLandingPage";
 import ConsumableCompendium from "../Pages/ConsumableCompendium";
+import FatelinesPage from "../Pages/FatelinesPage";
 
 
 
@@ -82,30 +83,33 @@ const UrsuraRouter = createBrowserRouter([
                         element: <ConsumableCompendium />
                     },
                     {
+                        path: "fatelines",
+                        element: <FatelinesPage />
+                    },
+                    {
                         path: "",
                         element: <BarracksPage />
-                    }
+                    },
+                    {
+                        path: "minions",
+                        children: [
+                            {
+                                path: "create",
+                                element: <MinionCreationPage />
+                            },
+                            {
+                                path: "templates",
+                                element: <MinionCompendiumPage />
+                            },
+                            {
+                                path: "",
+                                element: <MinionLandingPage />
+                            }
+                        ]
+                    },
                 ],
-
             },
-            {
-              path: "minions",
-                children: [
-                    {
-                        path: "create",
-                        element: <MinionCreationPage />
-                    },
-                    {
-                        path: "templates",
-                        element: <MinionCompendiumPage />
-                    },
-                    {
-                        path: "",
-                        element: <MinionLandingPage />
-                    }
-                ]
 
-            },
             {
                 path: "/login",
                 element: <LoggedInRoute element={<LoginPage />} reverse={true}/>

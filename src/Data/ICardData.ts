@@ -207,6 +207,6 @@ export interface IEffectData {
 
 
 
-export type UPrerequisiteType = "attribute" | "affinity" | "class" | "arcana" | "nodefault"
+export type UPrerequisiteType = "attribute" | "affinity" | "class" | "arcana" | "nodefault" | "race" | "fateline"
 export type UCharacterStat = "might" | "agility" | "skill" | "awareness" | "vitality" | "knowledge" | "mind" | "presence" | "authority" | "endurance"
 export type UAffinity = `${keyof IAffinities}`

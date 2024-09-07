@@ -57,6 +57,29 @@ const CompendiumClassElement = ({
         <Box>
             <Typography variant="h3" component="div">{data.className}</Typography>
             <Typography variant={"body2"}>{data.description}</Typography>
+            <Typography variant={"h5"}>Skill Specialties</Typography>
+            <Box
+                sx={{
+                    display: "flex",
+                    gap: "10px"
+                }}
+            >
+                {
+                    data.classExpertises.map(spec => {
+                      return (
+                          <Paper
+                            sx={{
+                                padding: "12px"
+                            }}
+                            elevation={1}
+                          >
+                              {capitalize(spec)}
+                          </Paper>
+                      )
+                    })
+                }
+            </Box>
+
             <Typography variant={"h5"}> Standard Affinities</Typography>
             <Typography variant={"subtitle2"}>Choose {data.choices.baseChoice.amount}</Typography>
             <CompendiumChoiceAffinities choiceData={data.choices.baseChoice}/>

@@ -39,6 +39,8 @@ const BarracksPage = ({}: IBarracksPageInput) => {
                 <CompendiumSelect text={"Armor"} linkTo={"armor"} />
                 <CompendiumSelect text={"Sources"} linkTo={"sources"} />
                 <CompendiumSelect text={"Consumables"} linkTo={"consumables"} />
+                <CompendiumSelect text={"Minions"} linkTo={"minions"} />
+                <CompendiumSelect text={"Fatelines"} linkTo={"fatelines"} />
             </Box>
         </Box>
     )

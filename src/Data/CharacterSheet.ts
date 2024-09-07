@@ -206,18 +206,23 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public isUnlocked = (unlockType: string) => {
-        return this.allAbilities.reduce((pv, cv) => {
-            if (pv) return pv;
-            const strSplit = unlockType.split(".");
-            let ability: any = cv.unlocks;
-            strSplit.forEach(str => {
-                ability = ability[str];
-            })
-            if (ability) {
-                return ability;
-            }
-            return pv;
-        }, false)
+        try {
+            return this.allAbilities.reduce((pv, cv) => {
+                if (pv) return pv;
+                const strSplit = unlockType.split(".");
+                let ability: any = cv.unlocks;
+                strSplit.forEach(str => {
+                    ability = ability[str];
+                })
+                if (ability) {
+                    return ability;
+                }
+                return pv;
+            }, false)
+        } catch (e) {
+            return false;
+        }
+
     }
 
     public getCommanderBonus = (bonusType: string, whoFor: "commander" | "adjutant" | "minion" = "commander") => {

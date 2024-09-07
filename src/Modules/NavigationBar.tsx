@@ -10,6 +10,7 @@ import {
 import MenuIcon from "@mui/icons-material/Menu"
 import useUser from "../Hooks/useUser/useUser";
 import {useNavigate} from "react-router-dom";
+import {Link} from 'react-router-dom'
 
 const NavigationBar = () => {
 
@@ -32,22 +33,18 @@ const NavigationBar = () => {
                     <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                         URSURA
                     </Typography>
-                    <Button onClick={handleNavigate("/")}>
+                    <Button component={Link} to="/">
                         Characters
                     </Button>
-                    <Button onClick={handleNavigate("/compendium/classes")}>
+                    <Button component={Link} to="/compendium/classes">
                         Class Guide
                     </Button>
-                    <Button onClick={handleNavigate("/compendium/affinities")}>
+                    <Button component={Link} to="/compendium/affinities">
                         Affinities
                     </Button>
-                    <Button onClick={handleNavigate("/barracks")}>
+                    <Button component={Link} to="/barracks">
                         Barracks
                     </Button>
-                    <Button onClick={handleNavigate("/minions")}>
-                        Minions
-                    </Button>
-
                     <Box sx={{flexGrow: 1}}/>
                     {loggedIn ? (
                         <Button variant="contained" onClick={handleLogout}>Logout</Button>

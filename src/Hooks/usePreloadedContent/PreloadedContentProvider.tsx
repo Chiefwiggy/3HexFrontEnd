@@ -12,6 +12,7 @@ import {ICommonCardData} from "../../Data/ICardData";
 import {IAbility} from "../../Data/IAbilities";
 import PLC_SourceData from "./PLC_SourceData";
 import PLC_ConsumableData from "./PLC_ConsumableData";
+import PLC_FatelineData from "./PLC_FatelineData";
 
 interface IPreloadedContentProviderInput {
     children: any
@@ -25,6 +26,7 @@ export interface IPreloadedContentContextInput {
     ArmorData: PLC_ArmorData,
     SourceData: PLC_SourceData,
     ConsumableData: PLC_ConsumableData,
+    FatelineData: PLC_FatelineData,
     isLoaded: boolean
 }
 const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) => {
@@ -42,6 +44,8 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
     const [SourceData, setSourceData]  = useState(new PLC_SourceData());
 
     const [ConsumableData, setConsumableData] = useState(new PLC_ConsumableData());
+
+    const [FatelineData, setFatelineData] = useState(new PLC_FatelineData());
 
     const [isLoaded, setIsLoaded] = useState(false);
 
@@ -61,6 +65,7 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
             await ArmorData.Initialize(data.armorData);
             await SourceData.Initialize(data.sources);
             await ConsumableData.Initialize(data.consumableData);
+            await FatelineData.Initialize(data.fatelineData);
             setIsLoaded(true);
         })();
     }, []);
@@ -75,6 +80,7 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
                 ArmorData,
                 SourceData,
                 ConsumableData,
+                FatelineData,
                 isLoaded
             }}
         >

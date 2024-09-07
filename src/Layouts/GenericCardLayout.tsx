@@ -24,6 +24,7 @@ import {useDraggable} from "@dnd-kit/core";
 import CardEffect from "../Components/Cards/CardEffect";
 import {CardGetColor} from "../Utils/CardColorUtils";
 import {IPrerequisite} from "../Data/GenericData";
+import {GetPrerequisiteString} from "../Utils/PrerequisiteString";
 
 
 
@@ -69,6 +70,8 @@ const GenericCardLayout = ({
                 return 4;
             case "class":
                 return 1;
+            case "fateline":
+                return 0;
             case "arcana":
                 return 3;
             default:
@@ -77,21 +80,7 @@ const GenericCardLayout = ({
     }
 
     useEffect(() => {
-        const str = cardData.prerequisites.sort((a,b) =>{
-            if (a.prerequisiteType === b.prerequisiteType) {
-                if (a.level != b.level) {
-                    return b.level - a.level;
-                }
-                return a.skill.localeCompare(b.skill)
-            } else {
-                return getPrereqPriority(a) - getPrereqPriority(b);
-            }
-        }).map(prereq => {
-                                if (prereq.prerequisiteType === "class") {
-                                    return `${capitalize(prereq.skill)}${prereq.level > 1 ? "+" : ""}`
-                                }
-                                return `${capitalize(prereq.skill)} ${prereq.level}`
-                            }).join(", ");
+        const str= GetPrerequisiteString(cardData.prerequisites);
         if (str != "") {
             setPrereqString(str);
         }

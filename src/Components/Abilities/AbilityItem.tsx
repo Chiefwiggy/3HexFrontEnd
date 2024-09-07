@@ -3,6 +3,7 @@ import {Box, capitalize, Collapse, IconButton, Paper, Typography} from "@mui/mat
 import {IAbility} from "../../Data/IAbilities";
 import {ExpandMoreOutlined} from "@mui/icons-material";
 import {ExpandMore} from "../../Elements/ExpandMore";
+import {GetPrerequisiteString} from "../../Utils/PrerequisiteString";
 
 interface IAbilityItemInput {
     abilityData: IAbility,
@@ -16,9 +17,7 @@ const AbilityItem = ({abilityData, showPrerequisites = false}: IAbilityItemInput
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
-        const str = abilityData.prerequisites.map(prereq => {
-            return `${capitalize(prereq.skill)} ${prereq.level}`
-        }).join(", ");
+        const str = GetPrerequisiteString(abilityData.prerequisites);
         if (str != "") {
             setPrereqString(str);
         }
