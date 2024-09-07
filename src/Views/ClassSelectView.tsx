@@ -4,6 +4,7 @@ import AffinitiesPanel from "../Components/ClassSelect/Affinities/AffinitiesPane
 import ClassSelectPanel from "../Components/ClassSelect/ClassSelectPanel";
 import {IClassData} from "../Data/ICharacterData";
 import useCharacter from "../Hooks/useCharacter/useCharacter";
+import {IFatelineData} from "../Data/IFatelineData";
 
 interface IClassSelectViewInput {
 
@@ -13,10 +14,12 @@ const ClassSelectView = ({}: IClassSelectViewInput) => {
 
     const {currentSheet} = useCharacter();
     const [myClasses, setMyClasses] = useState<Array<IClassData>>([]);
+    const [myFate, setMyFate] = useState<IFatelineData|undefined>(undefined)
 
     useEffect(() => {
         if (currentSheet) {
             setMyClasses(currentSheet.data.classes);
+            setMyFate(currentSheet.data.fateline);
         }
     }, []);
 
@@ -34,6 +37,15 @@ const ClassSelectView = ({}: IClassSelectViewInput) => {
         }
     }
 
+    const handleSelectFate = (doPick: boolean, fateData: IFatelineData) => {
+        console.log("charist", doPick, fateData);
+        if (doPick) {
+            setMyFate(fateData);
+        } else {
+            setMyFate(undefined);
+        }
+    }
+
     return (
         <Box
             sx={{
@@ -45,8 +57,8 @@ const ClassSelectView = ({}: IClassSelectViewInput) => {
                 padding: "32px 12px"
             }}
         >
-            <ClassSelectPanel myClasses={myClasses} sendBack={handleSelectClass} />
-            <AffinitiesPanel myClasses={myClasses}/>
+            <ClassSelectPanel myClasses={myClasses} myFate={myFate} sendBack={handleSelectClass} sendBackFate={handleSelectFate}/>
+            <AffinitiesPanel myClasses={myClasses} myFate={myFate}/>
         </Box>
     )
 }

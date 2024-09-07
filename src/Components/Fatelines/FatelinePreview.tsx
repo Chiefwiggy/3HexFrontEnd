@@ -4,36 +4,37 @@ import usePreloadedContent from "../../Hooks/usePreloadedContent/usePreloadedCon
 import {IClassMetaData} from "../../Data/IClassMetaData";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
 import {IAffinities, IClassData} from "../../Data/ICharacterData";
-import SelectAffinitiesDialog from "./SelectAffinitiesDialog";
+
 import {OpenInNewOutlined} from "@mui/icons-material";
 import {useNavigate} from "react-router-dom";
+import SelectAffinitiesDialog from '../ClassSelect/SelectAffinitiesDialog';
+import {IFatelineData, IFatelineFullData} from "../../Data/IFatelineData";
 
 interface IClassPreviewInput {
-    classData: IClassMetaData,
-    equipData: IClassData | undefined,
+    fateData: IFatelineFullData,
+    equipData: IFatelineData | undefined,
     isEquipped: boolean,
     canEquip: boolean,
-    canPromote: boolean,
-    sendBack: (doPick: boolean, classData: IClassData) => void
+    sendBack: (doPick: boolean, classData: IFatelineData) => void
 }
 
-const ClassPreview = ({classData, isEquipped, canEquip, sendBack, equipData, canPromote}: IClassPreviewInput) => {
+const FatelinePreview = ({fateData, isEquipped, canEquip, sendBack, equipData}: IClassPreviewInput) => {
 
     const {currentSheet} = useCharacter();
 
     const [isDialogOpen, setDialogOpen] = useState(false);
 
-    const [isPrestige, setIsPrestige] = useState(false);
-
-    const handleEquipClassDialog = (open: boolean, prestige: boolean) => (event: React.MouseEvent) => {
-        setIsPrestige(prestige);
+    const handleEquipClassDialog = (open: boolean, reversed: boolean) => (event: React.MouseEvent) => {
         setDialogOpen(open);
+        setSendReversed(reversed);
     }
+
+    const [sendReversed, setSendReversed] = useState(false);
 
     const navigate = useNavigate();
 
     const handleNavigateToClass = (event: React.MouseEvent) => {
-        window.open(`/compendium/classes?class=${classData.className.toLowerCase()}`, "_blank");
+        window.open(`/barracks/fatelines?fate=${fateData.fatelineId}`, "_blank");
     }
 
 
@@ -55,18 +56,16 @@ const ClassPreview = ({classData, isEquipped, canEquip, sendBack, equipData, can
 
         if (!cancel) {
                 sendBack(doPick, {
-                    className: classData.className,
-                    classExpertises: classData.classExpertises,
-                    downtimeActivities: classData.downtimeActivities,
-                    classTier: classData.classTier,
+                    fatelineName: fateData.fatelineName,
+                    fatelineId: fateData.fatelineId,
                     affinities: affinityData,
-                    isPromoted: isPrestige
+                    isReversed: sendReversed
                 }
             );
         }
     }
 
-    return currentSheet && classData ? (
+    return currentSheet && fateData ? (
         <Paper
             elevation={1}
             sx={{
@@ -91,7 +90,7 @@ const ClassPreview = ({classData, isEquipped, canEquip, sendBack, equipData, can
                     }}
                     variant={"h5"}
                 >
-                    {classData.className}{equipData?.isPromoted ? "+" : ""}
+                    {fateData.fatelineName}
                 </Typography>
                 <IconButton onClick={handleNavigateToClass}><OpenInNewOutlined sx={{fontSize: "14px", marginLeft: "2px"}} /></IconButton>
             </Box>
@@ -137,39 +136,37 @@ const ClassPreview = ({classData, isEquipped, canEquip, sendBack, equipData, can
                              <Button
                                 onClick={handleButton(false)}
                             >
-                                Remove
+                                Remove {sendReversed ? "Reversed" : "Upright"}
                             </Button>
-                            {
-                                !equipData?.isPromoted ?
-                                <Button
-                                    color={"secondary"}
-                                    disabled={!canPromote}
-                                    onClick={handleEquipClassDialog(true, true)}
-                                >
-                                    Promote
-                                </Button>
-                                :
-                                <Button
-                                    disabled={true}
-                                >
-                                    PROMOTED
-                                </Button>
-                            }
                         </Box>
                     </Box>
 
 
                     :
-                    <Button
-                        disabled={!canEquip}
-                        onClick={handleEquipClassDialog(true, false)}
+                    <Box
+                        sx={{
+                            display: "flex",
+                            justifyContent: "space-around"
+                        }}
                     >
-                        Add
-                    </Button>
+                        <Button
+                            disabled={!canEquip}
+                            onClick={handleEquipClassDialog(true, false)}
+                        >
+                            Add Upright
+                        </Button>
+                        <Button
+                            disabled={!canEquip}
+                            onClick={handleEquipClassDialog(true, true)}
+                        >
+                            Add Reversed
+                        </Button>
+                    </Box>
+
             }
-            <SelectAffinitiesDialog choiceName={classData.className} choiceData={isPrestige ? classData.choices.prestigeChoice : classData.choices.baseChoice} open={isDialogOpen} sendClose={handleButton} existingData={equipData?.affinities}/>
+            <SelectAffinitiesDialog choiceName={fateData.fatelineName} choiceData={sendReversed ? fateData.reversed.affinityChoices : fateData.upright.affinityChoices} open={isDialogOpen} sendClose={handleButton}  existingData={equipData?.affinities}/>
         </Paper>
     ) : <></>
 }
 
-export default ClassPreview
+export default FatelinePreview

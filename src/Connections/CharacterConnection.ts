@@ -126,6 +126,7 @@ class CharacterConnection {
             characterStats: newData.characterStats,
             skillPoints: newData.skillPoints,
             classes: newData.classes,
+            fateline: newData.fateline,
             characterLevel: newData.characterLevel,
             preparedCards: newData.preparedCards,
             currentSpell: newData.currentSpell,

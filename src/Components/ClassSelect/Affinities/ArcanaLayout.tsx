@@ -1,55 +1,25 @@
 import React, {useEffect, useState} from 'react';
 import {Box, capitalize, Typography} from "@mui/material";
 import useCharacter from "../../../Hooks/useCharacter/useCharacter";
-import {IAffinities, IArcanaKeys, IClassData} from "../../../Data/ICharacterData";
+import {IAffinities, IAffinitiesAndArcana, IArcanaKeys, IClassData} from "../../../Data/ICharacterData";
+import {IFatelineData} from "../../../Data/IFatelineData";
+import {GetArcanaAndAffinitiesFromClassList} from "../../../Utils/CalculateAffinities";
 
 interface IArcanaLayoutInput {
     arcana: string,
     affinities: Array<string>,
-    myClasses: Array<IClassData>
+    affData: IAffinitiesAndArcana
 }
 
 const ArcanaLayout = ({
     arcana,
     affinities,
-    myClasses
+    affData
 }: IArcanaLayoutInput) => {
 
-    const {currentSheet} = useCharacter();
-
-    const [affData, setAffData] = useState({
-        affinities: {
-            focus: 0,
-            rune: 0,
-            soul: 0,
-            deft: 0,
-            infantry: 0,
-            guardian: 0,
-            leadership: 0,
-            erudite: 0,
-            supply: 0,
-            biohacking: 0,
-            abjuration: 0,
-            machinery: 0
-        },
-        arcana: {
-            arcane: 0,
-            warrior: 0,
-            support: 0,
-            hacker: 0
-        }
-    })
-
-    useEffect(() => {
-        if (currentSheet) {
-            setAffData(currentSheet.getArcanaAndAffinitiesFromClassList(myClasses));
-        }
-    }, [myClasses]);
 
 
-
-
-    return currentSheet ? (
+    return (
         <Box
                 sx={{
                     padding: 2
@@ -66,7 +36,7 @@ const ArcanaLayout = ({
                     })
                 }
             </Box>
-    ) : <></>
+    )
 }
 
 export default ArcanaLayout

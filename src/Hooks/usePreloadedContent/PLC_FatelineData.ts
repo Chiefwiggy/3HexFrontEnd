@@ -9,7 +9,7 @@ class PLC_FatelineData {
     }
 
     public async Initialize(fd: Array<IFatelineFullData>) {
-        this.fatelineData = fd;
+        this.fatelineData = fd.sort((a,b) => a.fatelineNumber - b.fatelineNumber);
     }
 
     public GetAllFatelineData() {

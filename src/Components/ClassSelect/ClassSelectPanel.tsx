@@ -16,20 +16,27 @@ import {IClassMetaData} from "../../Data/IClassMetaData";
 import ClassPreview from "./ClassPreview";
 import {IClassData} from "../../Data/ICharacterData";
 import {getNameFromTier, getTierFromName} from "../../Utils/Shorthand";
+import FatelinePreview from '../Fatelines/FatelinePreview';
+import {IFatelineData} from "../../Data/IFatelineData";
+import characterSheet from "../../Data/CharacterSheet";
 
 interface IClassSelectPanelInput {
-    myClasses: IClassData[];
+    myClasses: IClassData[],
+    myFate: IFatelineData|undefined,
     sendBack: (doPick: boolean, classData: IClassData) => void
+    sendBackFate: (doPick: boolean, fateData: IFatelineData) => void
 }
 
 const ClassSelectPanel = ({
     myClasses,
-    sendBack
+    myFate,
+    sendBack,
+    sendBackFate
 }: IClassSelectPanelInput) => {
 
     const {currentSheet, invokeSave} = useCharacter();
 
-    const {ClassData, isLoaded} = usePreloadedContent();
+    const {ClassData, FatelineData, isLoaded} = usePreloadedContent();
 
     const [allClassData, setAllClassData] = useState<Array<IClassMetaData>>([]);
 
@@ -40,6 +47,7 @@ const ClassSelectPanel = ({
     const handleSave = async() => {
         if (currentSheet) {
             currentSheet.data.classes = myClasses;
+            currentSheet.data.fateline = myFate;
             currentSheet.setPreparedCards([]);
             currentSheet.data.currentWeapon = null;
             currentSheet.data.currentSpell = null;
@@ -49,6 +57,10 @@ const ClassSelectPanel = ({
 
     const handleSendBack = (doPick: boolean, classData: IClassData) => {
         sendBack(doPick, classData);
+    }
+
+    const handleFateSendback = (doPick: boolean, fateData: IFatelineData) => {
+        sendBackFate(doPick, fateData);
     }
 
     const setPromotionLogic = () => {
@@ -117,12 +129,13 @@ const ClassSelectPanel = ({
                         label="Tier"
                         fullWidth
                       >
-                        <MenuItem value="beginner">Beginner</MenuItem>
-                        <MenuItem value="intermediate">Intermediate</MenuItem>
-                        <MenuItem value="advanced">Advanced</MenuItem>
-                        <MenuItem value="expert">Expert</MenuItem>
-                        <MenuItem value="master">Master</MenuItem>
-                        <MenuItem value="legend">Legend</MenuItem>
+                            <MenuItem value="fate">Fateline</MenuItem>
+                            <MenuItem value="beginner">Beginner</MenuItem>
+                            <MenuItem value="intermediate">Intermediate</MenuItem>
+                            <MenuItem value="advanced">Advanced</MenuItem>
+                            <MenuItem value="expert">Expert</MenuItem>
+                            <MenuItem value="master">Master</MenuItem>
+                            <MenuItem value="legend">Legend</MenuItem>
                       </Select>
                     </FormControl>
                 </Box>
@@ -137,7 +150,9 @@ const ClassSelectPanel = ({
                     <Typography variant="h4">{capitalize(tier)} Classes</Typography>
 
                     {
-                        tier != "legend" ?
+                        tier != "fate" ?
+
+                            (tier != "legend" ?
                             <>
                                 <Typography variant={"subtitle2"}>Unlock Classes at Level {(getTierFromName(tier)-1)*60}</Typography>
                                 <Typography variant={"subtitle2"}>Unlock Promotions at Level {(getTierFromName(tier)-1)*60 + 20} and {(getTierFromName(tier)-1)*60 + 40} </Typography>
@@ -145,6 +160,9 @@ const ClassSelectPanel = ({
                             :
                             <>
                                 <Typography variant={"subtitle2"}>Unlock Class at Level {(getTierFromName(tier)-1)*60}</Typography>
+                            </>)
+                            : <>
+                                <Typography variant={"subtitle2"}>Choose a Fateline. This decision cannot be changed unless you undergo a major transformation</Typography>
                             </>
                     }
 
@@ -157,13 +175,22 @@ const ClassSelectPanel = ({
                 sx={{
                     display: "grid",
                     gridTemplateColumns: "repeat(4, 1fr)",
-                    width: '100%'
+                    width: '100%',
+                    maxHeight: "88vh",
+                    overflowY: "auto",
+                    scrollbarColor: '#6b6b6b #2b2b2b',
+                    scrollbarWidth: 'thin',
                 }}
             >
                 {
+                    tier != "fate" ?
                     allClassData.map(cd => {
                         return <ClassPreview classData={cd} isEquipped={hasClass(cd.className)} canEquip={canEquip} canPromote={canPromote} sendBack={handleSendBack} key={cd._id} equipData={hasClass(cd.className) ? getMyClass(cd.className) : undefined}/>
                     })
+                        :
+                        FatelineData.GetAllFatelineData().map(fd => {
+                            return <FatelinePreview key={fd.fatelineId} fateData={fd} isEquipped={myFate?.fatelineId === fd.fatelineId} canEquip={!myFate} equipData={myFate} sendBack={handleFateSendback} />
+                        })
                 }
             </Box>
         </Box>

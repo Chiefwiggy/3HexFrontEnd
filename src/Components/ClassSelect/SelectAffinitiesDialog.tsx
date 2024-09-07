@@ -1,23 +1,23 @@
 import React, {useEffect, useState} from 'react';
 import {Box, Button, Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
 import {IAffinities, IClassData} from "../../Data/ICharacterData";
-import {IClassMetaData} from "../../Data/IClassMetaData";
+import {IClassChoiceData, IClassMetaData} from "../../Data/IClassMetaData";
 import MultiselectChoice from "./ChoiceElements/MultiselectChoice"
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
 
 interface ISelectAffinitiesDialogInput {
-    classData: IClassMetaData,
+    choiceName: string,
+    choiceData: IClassChoiceData,
     open: boolean,
     sendClose: (doPick: boolean, cancel?: boolean, affinityData?: IAffinities) => (event: React.MouseEvent) => void,
-    isPromotion: boolean,
-    existingData: IClassData | undefined
+    existingData: IAffinities|undefined
 }
 
 const SelectAffinitiesDialog = ({
-    classData,
+    choiceName,
+    choiceData,
     open,
     sendClose,
-    isPromotion,
     existingData
 }: ISelectAffinitiesDialogInput) => {
 
@@ -27,7 +27,7 @@ const SelectAffinitiesDialog = ({
 
     useEffect(() => {
         if (open) {
-            setBaseChoices(existingData?.affinities ?? {
+            setBaseChoices(existingData ?? {
             abjuration: 0,
             biohacking: 0,
             deft: 0,
@@ -44,7 +44,7 @@ const SelectAffinitiesDialog = ({
         }
     }, [open]);
 
-    const [baseChoices, setBaseChoices] = useState<IAffinities>(existingData?.affinities ??
+    const [baseChoices, setBaseChoices] = useState<IAffinities>(existingData ??
         {
             abjuration: 0,
             biohacking: 0,
@@ -64,9 +64,9 @@ const SelectAffinitiesDialog = ({
 
     return (
         <Dialog open={open} onClose={handleClose(true)}>
-            <DialogTitle>{classData.className}</DialogTitle>
+            <DialogTitle>{choiceName}</DialogTitle>
             <DialogContent>
-                <MultiselectChoice choiceData={isPromotion ? classData.choices.prestigeChoice : classData.choices.baseChoice} choices={baseChoices} setChoices={setBaseChoices} />
+                <MultiselectChoice choiceData={choiceData} choices={baseChoices} setChoices={setBaseChoices} />
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose(true)} variant={"contained"} color={"error"}>Cancel</Button>

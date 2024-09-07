@@ -1,6 +1,7 @@
 import {IDataModifiers, IModifiable} from "./GenericData";
 import {IArmor} from "./IArmorData";
 import {IMinionData} from "./IMinionData";
+import {IFatelineData} from "./IFatelineData";
 
 export interface IAttributeBars {
     health: IAttributeBar,
@@ -36,6 +37,7 @@ export interface ICharacterBaseData {
     characterLevel: number,
     classes: Array<IClassData>,
     attributeBars: IAttributeBars,
+    fateline: IFatelineData|undefined,
     currentActionPoints: number,
     characterStats: ICharacterStats,
     movement: {
@@ -136,6 +138,29 @@ export interface IAffinities {
     biohacking: number,
     abjuration: number,
     machinery: number
+}
+
+export interface IAffinitiesAndArcana {
+    affinities: {
+        focus: number,
+        rune: number,
+        soul: number,
+        deft: number,
+        infantry: number,
+        guardian: number,
+        leadership: number,
+        erudite: number,
+        supply: number,
+        biohacking: number,
+        abjuration: number,
+        machinery: number
+    },
+    arcana: {
+        arcane: number,
+        warrior: number,
+        support: number,
+        hacker: number
+    }
 }
 
 export interface IAffinitiesArray<T> {
