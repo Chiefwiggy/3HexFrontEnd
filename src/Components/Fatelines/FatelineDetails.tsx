@@ -44,7 +44,9 @@ const FatelineDetails = ({fateline, reversed}: IFatelineDetailsInput) => {
             </Box>
             <br />
             <Box>
-                <Typography variant={"h5"}>Affinities</Typography>
+                <Typography variant={"h5"}>Affinities <Typography component="span" sx={{color: "darkgray"}} variant={"body2"}>CHOOSE {fatelineData.affinityChoices.amount}</Typography></Typography>
+
+
                 {
                     fatelineData.affinityChoices.choices.length > 0 ?
                         <CompendiumChoiceAffinities choiceData={fatelineData.affinityChoices}/>
