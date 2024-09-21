@@ -576,11 +576,11 @@ class CharacterSheet extends AbstractSheet {
 
     public getMaxStamina() {
         // return 12 + this.getAbilityBonuses("maxStamina") + ((this.data.attributeBars.stamina.scaling.value ?? 4) * this.data.characterStats.endurance.value)
-        return 12 + this.getAbilityBonuses("maxStamina") + ((4) * this.data.characterStats.endurance.value)
+        return 12 + this.getAbilityBonuses("maxStamina") + ((4) * this.getStat("endurance"))
     }
 
     public getMaxTether() {
-        return 4 + this.getAbilityBonuses("maxTether") + ((2) * this.data.characterStats.mind.value);
+        return 4 + this.getAbilityBonuses("maxTether") + Math.floor(((2.5) * this.getStat("mind")));
     }
 
     public getHealth(): number {

@@ -87,8 +87,7 @@ class MinionSheet extends AbstractSheet {
     }
 
     public getMaxTether(): number {
-        return 4 + ((2)*this.getStat("mind")
-);
+        return 4 + Math.floor((2.5)*this.getStat("mind"));
     }
 
      public getEvadeDodge(): number {
