@@ -580,7 +580,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getMaxTether() {
-        return 4 + this.getAbilityBonuses("maxTether") + Math.floor(((2.5) * this.getStat("mind")));
+        return 5 + this.getAbilityBonuses("maxTether") + Math.floor(((2.5) * this.getStat("mind")));
     }
 
     public getHealth(): number {
