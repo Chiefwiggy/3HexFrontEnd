@@ -82,7 +82,7 @@ class MinionSheet extends AbstractSheet {
     }
     public getMaxStamina(): number {
         // return 12 + ((this.data.attributeBars.stamina.scaling.value ?? 4)*this.getStat("endurance")
-        return 12 + ((4)*this.getStat("endurance")
+        return 10 + ((5)*this.getStat("endurance")
 );
     }
 
@@ -156,7 +156,7 @@ class MinionSheet extends AbstractSheet {
     }
 
     public getStaminaRefresh(): number {
-        return Math.floor(this.getStat("endurance")*1.5) + (this.data.bonuses?.staminaRefresh ?? 0);
+        return Math.floor(this.getStat("endurance")*2) + (this.data.bonuses?.staminaRefresh ?? 0);
     }
 
     public getTetherRefresh(): number {
