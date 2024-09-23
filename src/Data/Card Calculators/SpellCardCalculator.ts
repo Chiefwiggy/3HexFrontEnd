@@ -7,7 +7,14 @@ import {
 } from "../ICardData";
 import AbstractCardCalculator, {INumericIconData} from "./AbstractCardCalculator";
 import {ICardBuilderType} from "../../Layouts/CardBuilder";
-import {AutoFixOffOutlined, ElectricBoltOutlined, SaveAltOutlined, WaterDropOutlined} from "@mui/icons-material";
+import {
+    AccessTime, AccessTimeOutlined,
+    AutoFixOffOutlined,
+    ElectricBoltOutlined,
+    SaveAltOutlined,
+    TimelineOutlined,
+    WaterDropOutlined
+} from "@mui/icons-material";
 import {GetFinalSpellData} from "../../Utils/GetFinalSpellData";
 import {ICharacterBaseData} from "../ICharacterData";
 import {getSkillFormat, getStatShorthand, UStat} from "../../Utils/Shorthand";
@@ -47,6 +54,13 @@ class SpellCardCalculator extends AbstractCardCalculator {
                     val: "NONE",
                     icon: SaveAltOutlined
                 }
+            ],
+            [
+                "duration",
+                {
+                    val: "0",
+                    icon: AccessTimeOutlined
+                }
             ]
         ]));
     }
@@ -55,8 +69,7 @@ class SpellCardCalculator extends AbstractCardCalculator {
             const finalSpellData = GetFinalSpellData(
                 this.getCardOfType("spell.base") as ISpellBaseCardData,
                 this.getCardOfType("spell.target") as ISpellTargetCardData,
-                this.getCardOfType("spell.skill") as ISpellModifierCardData,
-                this.getCardOfType("spell.edict") as ISpellModifierCardData,
+                this.cards.filter(e => e?.cardSubtype != "target" && e?.cardSubtype != "base"),
                 char
             )
             this.updateVal("tetherCost", finalSpellData.tetherCost.toString());
@@ -65,6 +78,7 @@ class SpellCardCalculator extends AbstractCardCalculator {
             this.updateVal("energyCost", finalSpellData.castTime.toString());
             this.updateVal("spellSet", getSkillFormat(finalSpellData.spellSet))
             this.updateVal("saveType", (getStatShorthand(((this.getCardOfType("spell.base") as ISpellBaseCardData).saveType) as UStat | "none" | "luck")).toUpperCase());
+            this.updateVal("duration", finalSpellData.duration.toString());
         }
 
 

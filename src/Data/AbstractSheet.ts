@@ -13,6 +13,7 @@ import WeaponModCard from "../Components/Cards/WeaponModCard";
 import {default_spell_cards, default_weapon_cards} from "./default_cards";
 import {IArmor} from "./IArmorData";
 import {IMinionData} from "./IMinionData";
+import ConditionCard from "../Components/Cards/ConditionCard";
 
 
 abstract class AbstractSheet {
@@ -259,6 +260,22 @@ abstract class AbstractSheet {
             display: "edict",
             component: SpellModifierCard,
             required: false
+        },
+        {
+            name: "condition.buff",
+            display: "buff",
+            component: ConditionCard,
+            required: false,
+            counterRequired: false,
+            counterInvalid: true
+        },
+        {
+            name: "condition.debuff",
+            display: "debuff",
+            component: ConditionCard,
+            required: false,
+            counterRequired: false,
+            counterInvalid: true
         }
     ]
 
@@ -284,6 +301,22 @@ abstract class AbstractSheet {
             name: "weapon.skill",
             display: "skill",
             component: WeaponModCard,
+            required: false,
+            counterRequired: false,
+            counterInvalid: true
+        },
+        {
+            name: "condition.buff",
+            display: "buff",
+            component: ConditionCard,
+            required: false,
+            counterRequired: false,
+            counterInvalid: true
+        },
+        {
+            name: "condition.debuff",
+            display: "debuff",
+            component: ConditionCard,
             required: false,
             counterRequired: false,
             counterInvalid: true

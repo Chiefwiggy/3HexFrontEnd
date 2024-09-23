@@ -57,5 +57,6 @@ export interface IAbility {
         evadeWithHeavyArmor?: boolean,
         mindBreathing?: boolean,
         ironGrasp?: boolean
-    }
+    },
+    showByDefault: boolean
 }

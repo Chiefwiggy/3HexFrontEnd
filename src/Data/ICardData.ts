@@ -205,6 +205,14 @@ export interface IEffectData {
     powerX?: number
 }
 
+export interface IConditionCard extends IWeaponCommonData, ISpellModifierCardData {
+    appliesTo: {
+        attacks: boolean,
+        spells: boolean,
+        hacks: boolean
+    }
+}
+
 
 
 export type UPrerequisiteType = "attribute" | "affinity" | "class" | "arcana" | "nodefault" | "race" | "fateline"

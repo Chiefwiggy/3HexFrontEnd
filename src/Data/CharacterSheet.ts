@@ -159,7 +159,10 @@ class CharacterSheet extends AbstractSheet {
         return data.reduce((pv, cv) => {
             if (!pv) return pv;
             if (cv != null) {
-                 return [...this.data.preparedCards.map(e => e.cardId), ...this.data.knownWeapons.map(e => e.baseId), ...this.data.knownBaseSpells, ...default_weapon_cards.map(e => e._id), ...default_spell_cards.map(e => e._id)].includes(cv._id);
+                if (cv.cardType != "condition") {
+                    return [...this.data.preparedCards.map(e => e.cardId), ...this.data.knownWeapons.map(e => e.baseId), ...this.data.knownBaseSpells, ...default_weapon_cards.map(e => e._id), ...default_spell_cards.map(e => e._id)].includes(cv._id);
+                }
+                return pv;
             }
             return pv;
         }, true)
@@ -846,11 +849,11 @@ class CharacterSheet extends AbstractSheet {
 
 
     public getEvadeDodge(): number {
-        return 25+(2*this.data.characterStats.agility.value)+this.data.characterStats.awareness.value-(this.weightPenalty*3) + this.getAbilityBonuses("dodgeEvade") + this.getAbilityBonuses("dodge");
+        return 25+(3*this.getStat("agility"))+this.getStat("awareness")-(this.weightPenalty*5) + this.getAbilityBonuses("dodgeEvade") + this.getAbilityBonuses("dodge");
     }
 
     public getBlockDodge(): number {
-        return 15+(this.data.characterStats.agility.value)+this.data.characterStats.awareness.value-(this.weightPenalty*3) + this.getAbilityBonuses("dodgeBlock") + this.getAbilityBonuses("dodge");
+        return 15+(2*this.getStat("agility"))+this.getStat("awareness")-(this.weightPenalty*5) + this.getAbilityBonuses("dodgeBlock") + this.getAbilityBonuses("dodge");
     }
 
     public getEvadeDodgeBreakdown(): IDefenseBreakdown {
@@ -863,11 +866,11 @@ class CharacterSheet extends AbstractSheet {
                 },
                 {
                     reason: "Agility",
-                    value: getSkillFormat(2*this.data.characterStats.agility.value)
+                    value: getSkillFormat(3*this.getStat("agility"))
                 },
                 {
                     reason: "Awareness",
-                    value: getSkillFormat(this.data.characterStats.awareness.value)
+                    value: getSkillFormat(this.getStat("agility"))
                 },
                 {
                     reason: "Other Bonuses",
@@ -894,11 +897,11 @@ class CharacterSheet extends AbstractSheet {
                 },
                 {
                     reason: "Agility",
-                    value: getSkillFormat(this.data.characterStats.agility.value)
+                    value: getSkillFormat(this.getStat("agility")*2)
                 },
                 {
                     reason: "Awareness",
-                    value: getSkillFormat(this.data.characterStats.awareness.value)
+                    value: getSkillFormat(this.getStat("awareness"))
                 },
                 {
                     reason: "Other Bonuses",

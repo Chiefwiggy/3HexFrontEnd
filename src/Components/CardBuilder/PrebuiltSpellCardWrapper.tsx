@@ -4,6 +4,8 @@ import useCharacter from "../../Hooks/useCharacter/useCharacter";
 import {ICalculatedSpell} from "../../Data/ICharacterData";
 import CalculatedCard from "./CalculatedCard";
 import SpellCardCalculator from "../../Data/Card Calculators/SpellCardCalculator";
+import usePreloadedContent from "../../Hooks/usePreloadedContent/usePreloadedContent";
+import ConditionCard from "../Cards/ConditionCard";
 
 
 
@@ -28,6 +30,8 @@ const PrebuiltSpellCardWrapper = ({
         }
     }, [spellData]);
 
+    const {ConditionData} = usePreloadedContent();
+
 
     useEffect(() => {
         if (currentSheet) {
@@ -43,6 +47,7 @@ const PrebuiltSpellCardWrapper = ({
             const allCards = currentSheet.allCards;
             if (allCards) {
                 const allSpells = allCards.spells;
+                const allConditions = ConditionData.GetSpellConditions();
 
                 const base = allSpells.bases.find(b => {
                     return b._id == spellData.spellBaseId
@@ -51,7 +56,7 @@ const PrebuiltSpellCardWrapper = ({
                     return b._id == spellData.spellTargetId;
                 })
                 const skills = spellData.spellSkillsIds.map(skill => {
-                    return allSpells.modifiers.find(b => b._id == skill);
+                    return allSpells.modifiers.find(b => b._id == skill) ?? allConditions.find(b => b._id == skill);
                 })
                 setCurrentSpellData([base, target, ...skills]);
             }

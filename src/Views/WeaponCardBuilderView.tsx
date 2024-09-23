@@ -63,6 +63,7 @@ const WeaponCardBuilderView = ({closeSelf}: IWeaponCardBuilderViewInput) => {
     }
 
     const handleReceiveEquipCards = async(sentCards :Array<ICommonCardData|null>) => {
+        console.log(sentCards);
         const cards: Array<ICommonCardData> = sentCards.filter(c => c !== null && c !== undefined) as ICommonCardData[];
         const base = cards.find(e => e.cardSubtype == "base");
         const rest = cards.filter(e => e.cardSubtype != "base");
@@ -75,6 +76,7 @@ const WeaponCardBuilderView = ({closeSelf}: IWeaponCardBuilderViewInput) => {
                 },
                 weaponCardsIds: rest.map(e => e._id)
             };
+            console.log(weaponCalcData);
             await handleFinalEquip(weaponCalcData);
         }
     }
@@ -142,7 +144,7 @@ const WeaponCardBuilderView = ({closeSelf}: IWeaponCardBuilderViewInput) => {
                 sendSaveData={handleReceiveSaveCards}
                 sendEquipData={handleReceiveEquipCards}
                 sendCounterData={handleCounter}
-                canCounter={true}
+                canCounter={false}
             />
             <Dialog
                 open={saveWeaponDialog}

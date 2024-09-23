@@ -3,7 +3,7 @@ import {Box, Card, CardContent, CardHeader, Typography} from "@mui/material";
 import AbstractCardCalculator from "../../Data/Card Calculators/AbstractCardCalculator";
 import CardEffect from "../Cards/CardEffect";
 import {ICommonCardData, IEffectData} from "../../Data/ICardData";
-import {LooksOutlined, SportsMmaOutlined} from "@mui/icons-material";
+import {FlareOutlined, LooksOutlined, SportsMmaOutlined} from "@mui/icons-material";
 import NumericIcon from "../Cards/NumericIcon";
 import CritNumberBox from "../SmallComponents/CritNumberBox";
 import {createRangeString} from "../../Utils/helper_functions";
@@ -16,7 +16,7 @@ import CharacterSheet from "../../Data/CharacterSheet";
 
 interface ICalculatedCardInput {
     cardCalculator: AbstractCardCalculator
-    depArray: Array<any>,
+    depArray: Array<ICommonCardData|null>,
     overrideName?: string,
     overrideWidth?: number,
     owner: CharacterSheet | MinionSheet
@@ -38,12 +38,15 @@ const CalculatedCard = ({
 
     const [validCard, setValidCard] = useState<boolean>(true);
 
+    const [conditionalCard, setConditionalCard] = useState(false);
+
     useEffect(() => {
         if (isReady) {
             cardCalculator.sendCurrentCards(depArray, owner);
             setCardTitle(overrideName != "" ? overrideName : cardCalculator.getTitle())
             setEffectArray(cardCalculator.getEffectList());
             setValidCard(owner.areAllCardsPrepared(cardCalculator.getCards()))
+            setConditionalCard(depArray.filter(e => e?.cardType == "condition").length > 0)
 
         }
     }, [depArray, charPing, statPing, cancelPing, isReady]);
@@ -60,21 +63,29 @@ const CalculatedCard = ({
                 opacity: validCard ? "100%" : "50%"
             }}
         >
-            <CardHeader
-                title={cardTitle}
-                subheader={
-                    <>
-                        {cardCalculator.getType()}
-                    </>
-                }
-                sx={{padding: "14px 0 0 0"}}
-                titleTypographyProps={{
-                    fontSize: 22
-                }}
-                subheaderTypographyProps={{
-                    fontSize: 14
-                }}
-            />
+            <CardContent>
+                <Box
+                    sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        gap: 2
+                    }}
+                >
+                    <Typography variant={"h5"}>{cardTitle}</Typography>
+                    {
+                        conditionalCard ?
+                            <>
+                                <FlareOutlined />
+                            </>
+                            :
+                            <></>
+                    }
+                </Box>
+                <Box>
+                    <Typography sx={{color: "darkgray"}}>{cardCalculator.getType()}</Typography>
+                </Box>
+            </CardContent>
             {
                 validCard ? <></> :
                     <Box>

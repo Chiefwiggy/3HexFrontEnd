@@ -18,6 +18,10 @@ export const CardGetColor = (type: string) => {
                 return '#FF8305';
             case "commander.commander":
                 return '#600b0b'
+            case "condition.buff":
+                return '#ffffff';
+            case "condition.debuff":
+                return '#000000';
         }
         return 'white'
     }

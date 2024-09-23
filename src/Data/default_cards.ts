@@ -192,30 +192,30 @@ export const default_weapon_cards: Array<IWeaponCommonData|IWeaponBaseData> = [
 
 
 export const default_commander_cards: Array<ICommanderCardData> = [
-    {
-        _id: "___defaultCommanderCard",
-        cardName: "First Follower",
-        cardType: "commander",
-        cardSubtype: "commander",
-        effects: [
-            {
-                text: "Increase your Minion Capacity by 1.",
-                icon: {
-                    emblem: "info",
-                    symbol: "",
-                    text: ""
-                }
-            }
-        ],
-        prerequisites: [],
-        isUltimate: false,
-        isFavorite: false,
-        appliesTo: {
-            commander: true,
-            minions: true
-        },
-        characterModifiers: {},
-        unlocks: {},
-        minionSlots: 1
-    }
+    // {
+    //     _id: "___defaultCommanderCard",
+    //     cardName: "First Follower",
+    //     cardType: "commander",
+    //     cardSubtype: "commander",
+    //     effects: [
+    //         {
+    //             text: "Increase your Minion Capacity by 1.",
+    //             icon: {
+    //                 emblem: "info",
+    //                 symbol: "",
+    //                 text: ""
+    //             }
+    //         }
+    //     ],
+    //     prerequisites: [],
+    //     isUltimate: false,
+    //     isFavorite: false,
+    //     appliesTo: {
+    //         commander: true,
+    //         minions: true
+    //     },
+    //     characterModifiers: {},
+    //     unlocks: {},
+    //     minionSlots: 1
+    // }
 ]

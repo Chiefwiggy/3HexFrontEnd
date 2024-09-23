@@ -1,4 +1,4 @@
-import {ICommonCardData, IEffectData, IWeaponBaseData, UCritDie, UDamageType} from "../ICardData";
+import {ICommonCardData, IEffectData, ISpellBaseCardData, IWeaponBaseData, UCritDie, UDamageType} from "../ICardData";
 import {ICardBuilderType} from "../../Layouts/CardBuilder";
 import {ElementType} from 'react';
 import {ICharacterBaseData} from "../ICharacterData";
@@ -121,12 +121,27 @@ abstract class AbstractCardCalculator {
         return ret;
     }
     public getEffectList(): Array<IEffectData> {
-        return this.cards.reduce((pv: Array<IEffectData>, cv) => {
+        const normalEffects =this.cards.reduce((pv: Array<IEffectData>, cv) => {
             if (cv && cv.effects) {
                 return [...pv, ...cv.effects];
             }
             return pv;
         }, []).sort(this.sortEffects);
+        const baseCard = this.cards.find(e => e?.cardSubtype == "base");
+        if (baseCard?.cardType === "spell") {
+            const envEffectDesc = (baseCard as ISpellBaseCardData).environmentBonus;
+            const envEffect: IEffectData = {
+                text: envEffectDesc,
+                icon: {
+                    emblem: "environment",
+                    symbol: "",
+                    text: ""
+                }
+            }
+            return [...normalEffects, envEffect]
+        }
+        return normalEffects
+
     }
 
     public abstract getFinalTopColor(): string;

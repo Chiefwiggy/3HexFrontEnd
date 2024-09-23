@@ -52,7 +52,10 @@ const ActionPointsPanel = ({}: IActionPointsPanelInput) => {
                                 <LinearProgress key={index} value={ Utils.Clamp((currentSheet.data.currentActionPoints)-(index), 0, 1)*100} variant={"determinate"} sx={{
                                     height: 14,
                                     width: 14,
-                                    borderRadius: 10
+                                    borderRadius: 10,
+                                    '& .MuiLinearProgress-bar1Determinate': {
+                                        backgroundColor: 'lightblue',
+                                    }
                                 }} />
                             )
                         })

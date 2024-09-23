@@ -91,15 +91,15 @@ class MinionSheet extends AbstractSheet {
     }
 
      public getEvadeDodge(): number {
-        return 25+(2*this.getStat("agility")
+        return 25+(3*this.getStat("agility")
 )+this.getStat("awareness")
--(this.weightPenalty*3);
+-(this.weightPenalty*5);
     }
 
     public getBlockDodge(): number {
-        return 15+(this.getStat("agility")
+        return 15+(2*this.getStat("agility")
 )+this.getStat("awareness")
--(this.weightPenalty*3);
+-(this.weightPenalty*5);
     }
 
     public getLevel(): number {

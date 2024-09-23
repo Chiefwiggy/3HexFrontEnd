@@ -1,13 +1,22 @@
 import React, {useState} from 'react'
-import {Box, Button, Drawer, IconButton, TextField, Typography} from "@mui/material";
+import {Box, Button, Drawer, IconButton, TextField, Tooltip, Typography} from "@mui/material";
 import CharacterSheetView from "./CharacterSheetView";
 import CharacterSelectView from "./CharacterSelectView";
 import {
     ArrowBackIosNewOutlined,
+    AutoFixHighOutlined,
     AutoFixNormalOutlined,
     ChatOutlined,
-    EditNoteOutlined, EngineeringOutlined, MilitaryTechOutlined, ModeEditOutlined, SdCardOutlined,
-    TokenOutlined
+    EditNoteOutlined,
+    EngineeringOutlined,
+    FlareOutlined,
+    LocalDiningOutlined,
+    MilitaryTechOutlined,
+    ModeEditOutlined,
+    SdCardOutlined,
+    TokenOutlined,
+    ViewCarousel,
+    ViewCarouselOutlined
 } from "@mui/icons-material";
 import CardBuilderView from "./CardBuilderView";
 import useCharacter from "../Hooks/useCharacter/useCharacter";
@@ -19,6 +28,8 @@ import SpellCardBuilderView from "./SpellCardBuilderView";
 import {useNavigate} from "react-router-dom";
 import ClassSelectView from './ClassSelectView'
 import CommanderCardPrepView from "./CommanderCardPrepView";
+import IconButtonWithTooltip from "../Components/Generic/IconButtonWithTooltip";
+import ConditionsPanelView from "./ConditionsPanelView";
 
 const CharacterSheetFullView = () => {
 
@@ -30,6 +41,7 @@ const CharacterSheetFullView = () => {
     const [currentTab, setCurrentTab] = useState<number>(0);
     const [classSelectOpen, setClassSelectOpen] = useState<boolean>(false);
     const [commanderPanelOpen, setCommanderPanelOpen] = useState<boolean>(false);
+    const [effectPanelOpen, setEffectPanelOpen] = useState<boolean>(false);
 
     const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
         setCurrentTab(newValue);
@@ -61,6 +73,10 @@ const CharacterSheetFullView = () => {
 
     const handleCommanderSelectPanel = (open: boolean) => (event: React.MouseEvent) => {
         setCommanderPanelOpen(open);
+    }
+
+    const handleConditionsPanel = (open: boolean) => (event: React.MouseEvent) => {
+        setEffectPanelOpen(open);
     }
 
     const {currentSheet, SetCurrentSheet, isReady} = useCharacter();
@@ -125,13 +141,17 @@ const CharacterSheetFullView = () => {
                     zIndex: 10 // Ensure it's above other content
                 }}
             >
-                <IconButton onClick={handleCardsPanel(true)}><SdCardOutlined/></IconButton>
-                <IconButton onClick={handleSpellPanel(true)}><AutoFixNormalOutlined/></IconButton>
-                <IconButton onClick={handleWeaponsPanel(true)}><TokenOutlined/></IconButton>
-                <IconButton onClick={handleCommanderSelectPanel(true)}><MilitaryTechOutlined /></IconButton>
-                <IconButton onClick={handleEventPanel(true)}><ChatOutlined/></IconButton>
-                <IconButton onClick={handleClassSelectPanel(true)}><EngineeringOutlined /></IconButton>
-                <IconButton onClick={handleNotesPanel(true)}><EditNoteOutlined/></IconButton>
+                <IconButtonWithTooltip title={"Prepare Cards"} placement={"left"} onClick={handleCardsPanel(true)}><ViewCarouselOutlined/></IconButtonWithTooltip>
+
+                <IconButtonWithTooltip onClick={handleSpellPanel(true)} placement={"left"} title={"Create Spells"}>
+                    <AutoFixHighOutlined/>
+                </IconButtonWithTooltip>
+                <IconButtonWithTooltip title={"Create Attacks"} placement={"left"} onClick={handleWeaponsPanel(true)}><LocalDiningOutlined/></IconButtonWithTooltip>
+                <IconButtonWithTooltip title={"Prepare Commander Cards"} placement={"left"} onClick={handleCommanderSelectPanel(true)}><MilitaryTechOutlined /></IconButtonWithTooltip>
+                <IconButtonWithTooltip title={"Conditions"} placement={"left"} onClick={handleConditionsPanel(true)}><FlareOutlined/></IconButtonWithTooltip>
+                <IconButtonWithTooltip title={"Classes & Affinities"} placement={"left"} onClick={handleClassSelectPanel(true)}><EngineeringOutlined /></IconButtonWithTooltip>
+                <IconButtonWithTooltip title={"Event Log"} placement={"left"} onClick={handleEventPanel(true)}><ChatOutlined/></IconButtonWithTooltip>
+                <IconButtonWithTooltip title={"Notes"} placement={"left"} onClick={handleNotesPanel(true)}><EditNoteOutlined/></IconButtonWithTooltip>
 
 
             </Box>
@@ -165,6 +185,13 @@ const CharacterSheetFullView = () => {
                 onClose={handleCommanderSelectPanel(false)}
             >
                 <CommanderCardPrepView closeSelf={handleCommanderSelectPanel(false)}/>
+            </Drawer>
+            <Drawer
+                anchor={"right"}
+                open={effectPanelOpen}
+                onClose={handleConditionsPanel(false)}
+            >
+                <ConditionsPanelView closeSelf={handleConditionsPanel(false)}/>
             </Drawer>
             <Drawer
                 anchor={"right"}

@@ -44,7 +44,7 @@ const PreparedSpellsPanel = ({}: IPreparedSpellsPanelInput) => {
                 <Tab label={"Weapon"} value={0}/>
                 <Tab label={"Spell"} value={1}/>
                 <Tab label={"Commander"} value={2} />
-                <Tab label={"Counter"} value={3} />
+                {/*<Tab label={"Counter"} value={3} />*/}
             </Tabs>
             <br />
                     <CustomTabPanel index={tabIndex} value={0}>

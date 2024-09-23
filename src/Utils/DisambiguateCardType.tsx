@@ -1,6 +1,6 @@
 import SpellBaseCard from "../Components/Cards/SpellBaseCard";
 import {
-    ICommanderCardData, ICommonCardData,
+    ICommanderCardData, ICommonCardData, IConditionCard,
     ISpellBaseCardData,
     ISpellModifierCardData,
     ISpellTargetCardData, IWeaponBaseData
@@ -13,6 +13,7 @@ import CommanderCard from "../Components/Cards/CommanderCard";
 import React from "react";
 import {ConstructFinalWeapon} from "./ConstructFinalWeapon";
 import {Box} from "@mui/material";
+import ConditionCard from "../Components/Cards/ConditionCard";
 
 
 export const disambiguateCard = (allCards: Array<ICommonCardData>, compendiumProps: Object) => {
@@ -63,14 +64,27 @@ export const disambiguateCard = (allCards: Array<ICommonCardData>, compendiumPro
                 /></Box>)
             }
         } else if (card.cardType == "commander") {
-            return (<Box key = {card.cardName}><CommanderCard cardData = {card as ICommanderCardData}
-            sendBack = {()=>{} }
-            key = {card.cardName}
-            {...
-                compendiumProps
-            }
+            return (<Box key={card.cardName}><CommanderCard cardData={card as ICommanderCardData}
+                                                            sendBack={() => {
+                                                            }}
+                                                            key={card.cardName}
+                                                            {...
+                                                                compendiumProps
+                                                            }
             /></Box>)
-
+        } else if (card.cardType == "condition") {
+            return (
+                <Box key={card.cardName}>
+                    <ConditionCard
+                        cardData={card as IConditionCard}
+                        sendBack={() => {}}
+                        key={card.cardName}
+                        {...
+                            compendiumProps
+                        }
+                    />
+                </Box>
+            )
         } else {
             return <>test</>
         }

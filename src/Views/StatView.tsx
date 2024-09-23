@@ -2,12 +2,14 @@ import React, {useEffect, useState} from 'react'
 import {Box, Button, IconButton, Typography} from "@mui/material";
 import useCharacter from "../Hooks/useCharacter/useCharacter";
 import StatBox from "../Components/StatBox/StatBox";
-import {ModeEditOutlined} from "@mui/icons-material";
+import {DirectionsRunOutlined, DirectionsWalkOutlined, ModeEditOutlined, RefreshOutlined} from "@mui/icons-material";
 import {UStat} from "../Utils/Shorthand";
 import {ICharacterStats} from "../Data/ICharacterData";
 import characterSheet from "../Data/CharacterSheet";
 import useAPI from "../Hooks/useAPI/useAPI";
 import CharacterSheet from "../Data/CharacterSheet";
+import ClickPopup from "../Components/Generic/ClickPopup";
+import BoxWithTooltip from "../Components/Generic/BoxWithTooltip";
 
 interface IStatViewInput {
     pivot: boolean
@@ -16,14 +18,14 @@ const StatView = ({
     pivot
 }: IStatViewInput) => {
 
-    const {currentSheet , isInEditMode, cancelPing, isReady} = useCharacter();
+    const {currentSheet , isInEditMode, cancelPing, statPing, isReady} = useCharacter();
 
     const [statData, setStatData] = useState<ICharacterStats|null>(null);
-    const [statDiff, setStatDiffPv] = useState<number>(0);
+    const [statsUsed, setStatsUsed] = useState<number>(0);
 
     const setStatDiff = () => {
         if (currentSheet && statData) {
-            setStatDiffPv(currentSheet.getTotalStatPoints() - Object.values(statData).reduce((a, b) => a + b.value, 0));
+            setStatsUsed(Object.values(statData).reduce((a, b) => a + b.value, 0))
         }
     }
 
@@ -47,7 +49,7 @@ const StatView = ({
             setStatData(JSON.parse(JSON.stringify(currentSheet.data.characterStats)));
             setStatDiff();
         }
-    }, [cancelPing, currentSheet?.data.characterLevel]);
+    }, [statPing, currentSheet?.data.characterLevel]);
 
 
     return currentSheet ? (
@@ -55,7 +57,7 @@ const StatView = ({
             <Box
                 sx={{
                     display: "grid",
-                    gridTemplateColumns: "9fr 1fr"
+                    gridTemplateColumns: "14fr 1fr"
                 }}
             >
                 <Box
@@ -74,34 +76,77 @@ const StatView = ({
                     }
                 </Box>
                 <Box>
-                    <Typography>Dash: {currentSheet.getDashSpeed()}</Typography>
-                    <Typography>Step: {currentSheet.getStepSpeed()}</Typography>
-                    <Typography>Stamina Refresh: {currentSheet.getStaminaRefresh()}</Typography>
-                    <Typography>Tether Refresh: {currentSheet.getTetherRefresh()}</Typography>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            flexDirection: "column"
+                        }}
+                    >
+                        <BoxWithTooltip
+                            placement={"left"}
+                            title={"Dash Speed (Action)"}
+                            sx={{
+                                display: "grid",
+                                gridTemplateColumns: "1fr 1fr"
+                            }}
+                        >
+                            <DirectionsRunOutlined sx={{color: "lightblue"}} />
+                            <Typography>{currentSheet.getDashSpeed()}</Typography>
+                        </BoxWithTooltip>
+                        <BoxWithTooltip
+                            sx={{
+                                display: "grid",
+                                gridTemplateColumns: "1fr 1fr"
+                            }}
+                            title={"Step Speed (Bonus Action)"}
+                            placement={"left"}
+                        >
+                            <DirectionsWalkOutlined sx={{color: "cornsilk"}} />
+                            <Typography> {currentSheet.getStepSpeed()}</Typography>
+                        </BoxWithTooltip>
+                        <BoxWithTooltip
+                            title={"Stamina Refresh"}
+                            placement={"left"}
+                            sx={{
+                                display: "grid",
+                                gridTemplateColumns: "1fr 1fr"
+                            }}
+                        >
+                            <RefreshOutlined sx={{color: "#38ea6a"}}/>
+                            <Typography> {currentSheet.getStaminaRefresh()}</Typography>
+                        </BoxWithTooltip>
+                        <BoxWithTooltip
+                            placement={"left"}
+                            title={"Tether Refresh"}
+                            sx={{
+                                display: "grid",
+                                gridTemplateColumns: "1fr 1fr"
+                            }}
+                        >
+                            <RefreshOutlined sx={{color: "#ac38ea"}}/>
+                            <Typography> {currentSheet.getTetherRefresh()}</Typography>
+                        </BoxWithTooltip>
+
+
+
+
+                    </Box>
                 </Box>
+
             </Box>
 
             {
-                statDiff > 0 ?
+                isInEditMode ?
                     <Box
                         sx={{
                             display: "flex",
                             justifyContent: "center"
                         }}
                     >
-                        <Typography variant={"body2"} color={"green"}>(You have {statDiff} unspent Attribute Points)</Typography>
+                        <Typography variant={"body2"} color={statsUsed <= currentSheet.getTotalStatPoints() ? "green" : "red"}>Stat Points: {statsUsed}/{currentSheet.getTotalStatPoints()}</Typography>
                     </Box>
-                    : statDiff < 0 ?
-                    <Box
-                        sx={{
-                            display: "flex",
-                            justifyContent: "center"
-                        }}
-                    >
-                        <Typography variant={"body2"} color={"red"}>(You are {-statDiff} Attribute Points over for your level.)</Typography>
-                        <br />
-                    </Box>
-                    :<></>
+                    :
+                    <></>
             }
 
         </Box>

@@ -6,7 +6,8 @@ import CalculatedCard from "./CalculatedCard";
 import WeaponCardCalculator from "../../Data/Card Calculators/WeaponCardCalculator";
 import {ConstructFinalWeapon} from "../../Utils/ConstructFinalWeapon";
 import usePreloadedContent from "../../Hooks/usePreloadedContent/usePreloadedContent";
-import {IWeaponBaseData} from "../../Data/ICardData";
+import {IConditionCard, IWeaponBaseData} from "../../Data/ICardData";
+import ConditionCard from "../Cards/ConditionCard";
 
 interface IPrebuiltWeaponCardWrapperInput {
     weaponData: ICalculatedWeapon | null,
@@ -24,7 +25,7 @@ const PrebuiltWeaponCardWrapper = ({
 
     const [currentWeaponData, setCurrentWeaponData] = useState<Array<any>>([]);
 
-    const {WeaponData} = usePreloadedContent();
+    const {WeaponData, ConditionData} = usePreloadedContent();
 
     useEffect(() => {
         if (currentSheet) {
@@ -47,11 +48,12 @@ const PrebuiltWeaponCardWrapper = ({
             if (allCards) {
                 const allWeapons = allCards.weapons;
                 const allBases: Array<IWeaponBaseData> = [...currentSheet.GetPreparedWeaponBases(), ...WeaponData.GetCardPreparedStruct(currentSheet.data.knownWeapons)]
+                const allConditions: Array<IConditionCard> = ConditionData.GetAttackConditions()
                 const base = allBases.find(b => {
                     return b._id == weaponData.weaponBaseData.baseId;
                 });
                 const cards = weaponData.weaponCardsIds.map(skill => {
-                    return allWeapons.skills.find(b => b._id == skill) ?? allWeapons.forms.find(b => b._id == skill);
+                    return allWeapons.skills.find(b => b._id == skill) ?? allWeapons.forms.find(b => b._id == skill) ?? allConditions.find(b => b._id == skill);
                 })
                 if (!base) {
                     if (timeout < 10) {

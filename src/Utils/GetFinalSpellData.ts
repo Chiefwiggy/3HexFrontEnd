@@ -46,40 +46,40 @@ export interface ITotalWeaponStats {
 
 }
 
-export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: ISpellTargetCardData, spellSkill: ISpellModifierCardData, spellEdict: ISpellModifierCardData | null, char: CharacterSheet|MinionSheet): ITotalSpellStats => {
+export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: ISpellTargetCardData, rest: Array<ISpellModifierCardData|null>, char: CharacterSheet|MinionSheet): ITotalSpellStats => {
     try {
-        let finalBasePower = StatChain(spellBase.basePower, [spellBase.basePowerMod, spellTarget.basePowerMod, spellSkill.basePowerMod, spellEdict?.basePowerMod]);
-        let finalPotencyPower = Math.floor(StatChain(spellBase.potency, [spellBase.potencyMod, spellTarget.potencyMod, spellSkill.potencyMod, spellEdict?.potencyMod]) * char.getStat("might"));
-        const finalPower = StatChain(finalBasePower + finalPotencyPower, [spellBase.powerMod, spellTarget.powerMod, spellSkill.powerMod, spellEdict?.powerMod]);
-        const minRange = StatChain(spellTarget.baseRange.min, [spellBase.minRangeMod, spellTarget.minRangeMod, spellSkill.minRangeMod, spellEdict?.minRangeMod]);
-        const maxRange = StatChain(spellTarget.baseRange.max, [spellBase.maxRangeMod, spellTarget.maxRangeMod, spellSkill.maxRangeMod, spellEdict?.maxRangeMod]);
-        const minRangeFinal = StatChain(minRange, [spellBase.fullRangeMod, spellTarget.fullRangeMod, spellSkill.fullRangeMod, spellEdict?.fullRangeMod]);
-        const maxRangeFinal = StatChain(maxRange, [spellBase.fullRangeMod, spellTarget.fullRangeMod, spellSkill.fullRangeMod, spellEdict?.fullRangeMod]);
+        let finalBasePower = StatChain(spellBase.basePower, [spellBase.basePowerMod, spellTarget.basePowerMod, ...rest.map(e => e?.basePowerMod)]);
+        let finalPotencyPower = Math.floor(StatChain(spellBase.potency, [spellBase.potencyMod, spellTarget.potencyMod, ...rest.map(e => e?.potencyMod)]) * char.getStat("might"));
+        const finalPower = StatChain(finalBasePower + finalPotencyPower, [spellBase.powerMod, spellTarget.powerMod, ...rest.map(e => e?.powerMod)]);
+        const minRange = StatChain(spellTarget.baseRange.min, [spellBase.minRangeMod, spellTarget.minRangeMod, ...rest.map(e => e?.minRangeMod)]);
+        const maxRange = StatChain(spellTarget.baseRange.max, [spellBase.maxRangeMod, spellTarget.maxRangeMod, ...rest.map(e => e?.maxRangeMod)]);
+        const minRangeFinal = StatChain(minRange, [spellBase.fullRangeMod, spellTarget.fullRangeMod, ...rest.map(e => e?.fullRangeMod)]);
+        const maxRangeFinal = StatChain(maxRange, [spellBase.fullRangeMod, spellTarget.fullRangeMod, ...rest.map(e => e?.fullRangeMod)]);
 
-        let finalBaseSet = StatChain(spellBase.baseSpellSet, [spellBase.baseSpellSetMod, spellTarget.baseSpellSetMod, spellSkill.baseSpellSetMod, spellEdict?.baseSpellSetMod])
-        let finalSet = StatChain(finalBaseSet + char.getStat("presence"), [spellBase.spellSetMod, spellTarget.spellSetMod, spellSkill.spellSetMod, spellEdict?.spellSetMod])
+        let finalBaseSet = StatChain(spellBase.baseSpellSet, [spellBase.baseSpellSetMod, spellTarget.baseSpellSetMod, ...rest.map(e => e?.baseSpellSetMod)])
+        let finalSet = StatChain(finalBaseSet + char.getStat("presence"), [spellBase.spellSetMod, spellTarget.spellSetMod, ...rest.map(e => e?.spellSetMod)])
 
-        const isMelee = [spellBase.forceMelee, spellTarget.forceMelee, spellSkill.forceMelee, spellEdict?.forceMelee].reduce((pv: boolean, cv: boolean | undefined) => {
+        const isMelee = [spellBase.forceMelee, spellTarget.forceMelee, ...rest.map(e => e?.forceMelee)].reduce((pv: boolean, cv: boolean | undefined) => {
             if (cv) {
                 return true;
             }
             return pv;
         }, false);
 
-        const isRanged = [spellBase.forceRanged, spellTarget.forceRanged, spellSkill.forceRanged, spellEdict?.forceRanged].reduce((pv: boolean, cv: boolean | undefined) => {
+        const isRanged = [spellBase.forceRanged, spellTarget.forceRanged, ...rest.map(e => e?.forceRanged)].reduce((pv: boolean, cv: boolean | undefined) => {
             if (cv) {
                 return true;
             }
             return pv;
         }, false);
 
-        const finalCost = StatChain(spellBase.energyCost, [spellBase.castTimeMod, spellTarget.castTimeMod, spellSkill.castTimeMod, spellEdict?.castTimeMod])
+        const finalCost = StatChain(spellBase.energyCost, [spellBase.castTimeMod, spellTarget.castTimeMod, ...rest.map(e => e?.castTimeMod)])
 
         return {
-            tetherCost: StatChain(spellBase.tetherCost, [spellBase.tetherCostMod, spellTarget.tetherCostMod, spellSkill.tetherCostMod, spellEdict?.tetherCostMod]),
+            tetherCost: StatChain(spellBase.tetherCost, [spellBase.tetherCostMod, spellTarget.tetherCostMod, ...rest.map(e => e?.tetherCostMod)]),
             castTime: finalCost,
             totalPower: finalPower,
-            duration: StatChain(spellBase.duration, [spellBase.durationMod, spellTarget.durationMod, spellSkill.durationMod, spellEdict?.durationMod]),
+            duration: StatChain(spellBase.duration, [spellBase.durationMod, spellTarget.durationMod, ...rest.map(e => e?.durationMod)]),
             range: {
                 min: minRangeFinal,
                 max: maxRangeFinal,

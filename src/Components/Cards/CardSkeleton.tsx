@@ -28,7 +28,7 @@ const CardSkeleton = ({
             canToggleExpand={false}
             canFavorite={false}
         />
-    ) : (
+    ) : (type.split(".")[0] == "condition" ? <></> : (
         <Paper elevation={1} sx={{
             display: 'flex',
             justifyContent: 'center',
@@ -38,7 +38,7 @@ const CardSkeleton = ({
         }}>
             <Typography variant={"h5"}>{placeholderText}</Typography>
         </Paper>
-    )
+    ))
 }
 
 export default CardSkeleton

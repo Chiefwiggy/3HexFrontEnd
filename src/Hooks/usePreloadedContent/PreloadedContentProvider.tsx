@@ -13,6 +13,7 @@ import {IAbility} from "../../Data/IAbilities";
 import PLC_SourceData from "./PLC_SourceData";
 import PLC_ConsumableData from "./PLC_ConsumableData";
 import PLC_FatelineData from "./PLC_FatelineData";
+import PLC_ConditionData from "./PLC_ConditionData";
 
 interface IPreloadedContentProviderInput {
     children: any
@@ -27,6 +28,7 @@ export interface IPreloadedContentContextInput {
     SourceData: PLC_SourceData,
     ConsumableData: PLC_ConsumableData,
     FatelineData: PLC_FatelineData,
+    ConditionData: PLC_ConditionData,
     isLoaded: boolean
 }
 const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) => {
@@ -47,6 +49,8 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
 
     const [FatelineData, setFatelineData] = useState(new PLC_FatelineData());
 
+    const [ConditionData, setConditionData] = useState(new PLC_ConditionData());
+
     const [isLoaded, setIsLoaded] = useState(false);
 
     const API = useAPI();
@@ -66,6 +70,7 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
             await SourceData.Initialize(data.sources);
             await ConsumableData.Initialize(data.consumableData);
             await FatelineData.Initialize(data.fatelineData);
+            await ConditionData.Initialize(data.conditionCards);
             setIsLoaded(true);
         })();
     }, []);
@@ -81,6 +86,7 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
                 SourceData,
                 ConsumableData,
                 FatelineData,
+                ConditionData: ConditionData,
                 isLoaded
             }}
         >

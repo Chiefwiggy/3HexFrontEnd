@@ -73,8 +73,8 @@ const CommanderCardPrepView = ({
 
                     }
                     onClickButton={handleAddCard}
-                    gridTemplate={"1fr"}
-                    skeletonMax={5}
+                    gridTemplate={"1fr 1fr"}
+                    skeletonMax={10}
                 />
             </Box>
             <Box
@@ -98,8 +98,8 @@ const CommanderCardPrepView = ({
                     }
                     onClickButton={handleRemoveCard}
                     isAdd={false}
-                    gridTemplate={"1fr"}
-                    skeletonMax={5}
+                    gridTemplate={"1fr 1fr"}
+                    skeletonMax={10}
                 />
             </Box>
         </Box>

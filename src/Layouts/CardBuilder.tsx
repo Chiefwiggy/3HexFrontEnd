@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Box, Button, Grid, Paper} from "@mui/material";
-import {ICommonCardData} from "../Data/ICardData";
+import {ICommonCardData, IConditionCard} from "../Data/ICardData";
 import useCharacter from "../Hooks/useCharacter/useCharacter";
 import {SortCardList} from "../Utils/CardSorting";
 import CardSkeleton from "../Components/Cards/CardSkeleton";
@@ -10,6 +10,7 @@ import AbstractCardCalculator from "../Data/Card Calculators/AbstractCardCalcula
 import CalculatedCard from "../Components/CardBuilder/CalculatedCard";
 import cardConnection from "../Connections/CardConnection";
 import useAPI from "../Hooks/useAPI/useAPI";
+import usePreloadedContent from "../Hooks/usePreloadedContent/usePreloadedContent";
 
 
 
@@ -48,6 +49,8 @@ const CardBuilder = ({
     const [cardData, setCardData] = useState<Array<ICommonCardData|null>>(new Array(cardTypes.length).fill(null));
 
     const { CharacterAPI } = useAPI();
+
+    const { ConditionData } = usePreloadedContent();
 
     const sendSetCard = (cardIndex: number) => (data: ICardSendbackData) => {
         const newState = [...cardData];
@@ -95,13 +98,14 @@ const CardBuilder = ({
     useEffect(() => {
         (async() => {
             const cards: Array<ICommonCardData> = await GetAllCards();
-            setAllCards([...defaultCardList, ...cards].sort(SortCardList));
+            const conditions: Array<IConditionCard> = cardTypes[0].name.split(".")[0] === "weapon" ?  ConditionData.GetAttackConditions() : ConditionData.GetSpellConditions()
+            setAllCards([...defaultCardList, ...cards, ...conditions].sort(SortCardList));
         })();
     }, []);
 
     useEffect(() => {
         if (currentFilter == null) {
-            setCurrentCards(allCards);
+            setCurrentCards(allCards.filter(card => card.cardType != "condition"));
         } else if (currentFilter == -1) {
             setCurrentCards([]);
         } else {
@@ -154,9 +158,11 @@ const CardBuilder = ({
                 sx={{
                     display: 'flex',
                     justifyContent: 'center',
-                    flexWrap: 'wrap',
+                    overflowX: "scroll",
+                    scrollbarColor: '#6b6b6b #2b2b2b',
+                    scrollbarWidth: 'thin',
                     '& > :not(style)': {
-                         m: 1,
+                        m: 1,
                         width: "16vw",
                         minHeight: 128,
                         textAlign: 'center',

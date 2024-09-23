@@ -3,9 +3,9 @@ import {IEffectData} from "../../Data/ICardData";
 import {Box, Paper, Typography} from "@mui/material";
 import {
     AutoFixHighOutlined, DirectionsRunOutlined, HeartBrokenOutlined,
-    InfoOutlined, PriorityHigh, PriorityHighOutlined,
+    InfoOutlined, LandscapeOutlined, PriorityHigh, PriorityHighOutlined,
     ReportGmailerrorredOutlined,
-    SportsMmaOutlined, SquareOutlined,
+    SportsMmaOutlined, SquareOutlined, TrendingDownOutlined, TrendingUpOutlined,
     WarningOutlined
 } from "@mui/icons-material";
 import HighlightType from "../Generic/HighlightType";
@@ -30,10 +30,11 @@ const CardEffect = ({effectData, finalPower}: ICardEffectInput) => {
         return <Typography sx={{fontSize: "0.8rem"}}>{effectData.text}</Typography>
     }
 
-    useEffect(() => {
+    const setIconData = () => {
         switch(effectData.icon.emblem) {
             case 'info':
                 setEmblem(<InfoOutlined />)
+                setTintColor("rgba(255,255,255,0)")
                 break;
             case 'warning':
                 setEmblem(<WarningOutlined />)
@@ -63,8 +64,28 @@ const CardEffect = ({effectData, finalPower}: ICardEffectInput) => {
                 setEmblem(<PriorityHighOutlined />)
                 setTintColor("rgba(255,128,128,0.33)")
                 break;
+            case 'buff':
+                setEmblem(<TrendingUpOutlined />)
+                setTintColor("rgba(255, 255, 255, 0.3)");
+                break;
+            case 'debuff':
+                setEmblem(<TrendingDownOutlined />)
+                setTintColor("rgba(0,0,0,0.9)");
+                break;
+            case 'environment':
+                setEmblem(<LandscapeOutlined />);
+                setTintColor("rgba(20,255,20,0.15)");
+                break;
         }
+    }
+
+    useEffect(() => {
+        setIconData();
     }, [effectData]);
+
+    useEffect(() => {
+        setIconData()
+    }, []);
 
     return (
         <Box

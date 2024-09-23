@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import AttributeBar from "../Components/Sheet/AttributeBar";
 import {Box, Button, IconButton, Typography} from "@mui/material";
-import {RefreshOutlined, SelfImprovementOutlined, SelfImprovementRounded} from "@mui/icons-material";
+import {FlareOutlined, RefreshOutlined, SelfImprovementOutlined, SelfImprovementRounded} from "@mui/icons-material";
 import SimpleClosableDialog from "../Components/Generic/SimpleClosableDialog";
 import useCharacter from "../Hooks/useCharacter/useCharacter";
 import useEventHistory from "../Hooks/useEventHistory/useEventHistory";
@@ -130,7 +130,9 @@ const AttributeView = ({pivot}: IAttributeViewInput) => {
                         </Button>
                         <IconButton
                             onClick={handleBreatherPanel(true)}
-                        ><SelfImprovementOutlined /></IconButton>
+                        ><SelfImprovementOutlined sx={{
+                            color: "lightblue"
+                        }} /></IconButton>
                     </Box>
 
                     <ActionPointsPanel />

@@ -9,6 +9,7 @@ import PLC_ArmorData from "./PLC_ArmorData";
 import PLC_SourceData from "./PLC_SourceData";
 import PLC_ConsumableData from "./PLC_ConsumableData";
 import PLC_FatelineData from "./PLC_FatelineData";
+import PLC_ConditionData from "./PLC_ConditionData";
 
 
 
@@ -21,6 +22,7 @@ const PreloadedContentContext =     createContext<IPreloadedContentContextInput>
         SourceData: new PLC_SourceData(),
         ConsumableData: new PLC_ConsumableData(),
         FatelineData: new PLC_FatelineData(),
+        ConditionData: new PLC_ConditionData(),
         isLoaded: false
     }
 );
