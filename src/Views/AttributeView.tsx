@@ -8,6 +8,8 @@ import useEventHistory from "../Hooks/useEventHistory/useEventHistory";
 import {AttributeBarType, DamageType} from "../Data/CharacterSheet";
 import {UDamageType} from "../Data/ICardData";
 import ActionPointsPanel from "../Components/Sheet/ActionPointsPanel";
+import IconButtonWithTooltip from "../Components/Generic/IconButtonWithTooltip";
+import BoxWithTooltip from "../Components/Generic/BoxWithTooltip";
 
 interface IAttributeViewInput {
     pivot: boolean
@@ -122,17 +124,24 @@ const AttributeView = ({pivot}: IAttributeViewInput) => {
                             marginBottom: 2
                         }}
                     >
-                        <Button
-                            variant="contained"
-                            onClick={handleRefreshPanel(true)}
+                        <BoxWithTooltip
+                            title={"Refresh"}
+                            placement={"left"}
                         >
-                            <RefreshOutlined />
-                        </Button>
-                        <IconButton
+                            <Button
+                                variant="contained"
+                                onClick={handleRefreshPanel(true)}
+                            >
+                                <RefreshOutlined />
+                            </Button>
+                        </BoxWithTooltip>
+                        <IconButtonWithTooltip
+                            title={"Take a Breather"}
+                            placement={"right"}
                             onClick={handleBreatherPanel(true)}
                         ><SelfImprovementOutlined sx={{
                             color: "lightblue"
-                        }} /></IconButton>
+                        }} /></IconButtonWithTooltip>
                     </Box>
 
                     <ActionPointsPanel />

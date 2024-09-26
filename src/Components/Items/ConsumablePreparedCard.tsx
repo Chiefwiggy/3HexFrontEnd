@@ -42,8 +42,8 @@ const ConsumablePreparedCard = ({consumableTemplate, consumableData, slotsUsed, 
                 }}
             >
                 <IconButton onClick={handlePrepare(1)} disabled={(slotsUsed + consumableTemplate.slotCost) > currentSheet.getQuickSlots()}><ArrowDropUp /></IconButton>
-                <Typography sx={{userSelect: "none"}}>{consumableData.amount }</Typography>
-                <IconButton onClick={handlePrepare(-1)} disabled={consumableData.amount == 0}><ArrowDropDown /></IconButton>
+                <Typography sx={{userSelect: "none"}}>{consumableData.prepared }</Typography>
+                <IconButton onClick={handlePrepare(-1)} disabled={consumableData.prepared == 0}><ArrowDropDown /></IconButton>
             </Box>
         </Box>
     ) : <></>

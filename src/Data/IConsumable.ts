@@ -19,3 +19,9 @@ export interface IConsumableTemplate {
     description: Array<string>,
     slotCost: number,
 }
+
+export interface IConsumableMergedData extends IConsumableTemplate {
+    consumableId: string,
+    prepared: number,
+    amount: number
+}

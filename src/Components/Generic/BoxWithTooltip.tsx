@@ -5,14 +5,14 @@ import {jsx} from "@emotion/react";
 interface IBoxWithTooltipInput {
     title: string,
     placement: "top" | "bottom" | "left" | "right",
-    sx: SxProps<any>,
+    sx?: SxProps<any>,
     children: React.ReactNode
 }
 
 const BoxWithTooltip = ({
     title,
     placement,
-    sx,
+    sx = {},
     children
 }: IBoxWithTooltipInput) => {
 

@@ -5,7 +5,7 @@ import CharacterSelectView from "./CharacterSelectView";
 import {
     ArrowBackIosNewOutlined,
     AutoFixHighOutlined,
-    AutoFixNormalOutlined,
+    AutoFixNormalOutlined, BackpackOutlined,
     ChatOutlined,
     EditNoteOutlined,
     EngineeringOutlined,
@@ -30,6 +30,7 @@ import ClassSelectView from './ClassSelectView'
 import CommanderCardPrepView from "./CommanderCardPrepView";
 import IconButtonWithTooltip from "../Components/Generic/IconButtonWithTooltip";
 import ConditionsPanelView from "./ConditionsPanelView";
+import BackpackView from "./BackpackView";
 
 const CharacterSheetFullView = () => {
 
@@ -42,6 +43,7 @@ const CharacterSheetFullView = () => {
     const [classSelectOpen, setClassSelectOpen] = useState<boolean>(false);
     const [commanderPanelOpen, setCommanderPanelOpen] = useState<boolean>(false);
     const [effectPanelOpen, setEffectPanelOpen] = useState<boolean>(false);
+    const [backpackPanelOpen, setBackpackPanelOpen] = useState<boolean>(false);
 
     const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
         setCurrentTab(newValue);
@@ -79,13 +81,17 @@ const CharacterSheetFullView = () => {
         setEffectPanelOpen(open);
     }
 
+    const handleBackpackPanel = (open: boolean) => (event: React.MouseEvent) => {
+        setBackpackPanelOpen(open);
+    }
+
     const {currentSheet, SetCurrentSheet, isReady} = useCharacter();
 
     const navigate = useNavigate();
 
     const handleGoBack = () => {
         SetCurrentSheet(undefined);
-        navigate("/")
+        navigate("/character_select")
     }
 
 
@@ -149,6 +155,7 @@ const CharacterSheetFullView = () => {
                 <IconButtonWithTooltip title={"Create Attacks"} placement={"left"} onClick={handleWeaponsPanel(true)}><LocalDiningOutlined/></IconButtonWithTooltip>
                 <IconButtonWithTooltip title={"Prepare Commander Cards"} placement={"left"} onClick={handleCommanderSelectPanel(true)}><MilitaryTechOutlined /></IconButtonWithTooltip>
                 <IconButtonWithTooltip title={"Conditions"} placement={"left"} onClick={handleConditionsPanel(true)}><FlareOutlined/></IconButtonWithTooltip>
+                <IconButtonWithTooltip title={"Backpack"} placement={"left"} onClick={handleBackpackPanel(true)}><BackpackOutlined/></IconButtonWithTooltip>
                 <IconButtonWithTooltip title={"Classes & Affinities"} placement={"left"} onClick={handleClassSelectPanel(true)}><EngineeringOutlined /></IconButtonWithTooltip>
                 <IconButtonWithTooltip title={"Event Log"} placement={"left"} onClick={handleEventPanel(true)}><ChatOutlined/></IconButtonWithTooltip>
                 <IconButtonWithTooltip title={"Notes"} placement={"left"} onClick={handleNotesPanel(true)}><EditNoteOutlined/></IconButtonWithTooltip>
@@ -192,6 +199,13 @@ const CharacterSheetFullView = () => {
                 onClose={handleConditionsPanel(false)}
             >
                 <ConditionsPanelView closeSelf={handleConditionsPanel(false)}/>
+            </Drawer>
+            <Drawer
+                anchor={"right"}
+                open={backpackPanelOpen}
+                onClose={handleBackpackPanel(false)}
+            >
+                <BackpackView closeSelf={handleBackpackPanel(false)}/>
             </Drawer>
             <Drawer
                 anchor={"right"}

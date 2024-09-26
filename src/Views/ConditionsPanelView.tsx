@@ -11,7 +11,13 @@ const ConditionsPanelView = ({
 
 
     return (
-        <Box>
+        <Box
+            sx={{
+                width: "90vw",
+                backgroundColor: "#121212",
+                height: "100vh"
+            }}
+        >
             COND
         </Box>
     )

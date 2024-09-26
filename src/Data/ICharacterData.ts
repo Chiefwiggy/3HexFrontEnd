@@ -85,7 +85,8 @@ export interface IEnchantmentData {
 
 export interface IConsumablePlayerData {
     consumableId: string,
-    amount: number
+    amount: number,
+    prepared: number
 }
 
 export interface ISkillPointObject {

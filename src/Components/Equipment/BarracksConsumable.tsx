@@ -27,6 +27,7 @@ const BarracksConsumable = ({consumable}: IBarracksConsumableInput) => {
     const submitFunction = async(char: ICharacterBaseData) => {
         char.knownConsumables.push({
             consumableId: consumable._id,
+            prepared: 0,
             amount: 0
         });
         await CharacterAPI.UpdateConsumables(char._id, char.knownConsumables);

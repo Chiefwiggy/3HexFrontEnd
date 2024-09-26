@@ -37,7 +37,7 @@ const ConsumableTab = ({}: IConsumableTabInput) => {
             const newState = [...prevState];
             newState[consumableIndex] = {
                 ...newState[consumableIndex],
-                amount: newState[consumableIndex].amount + delta,
+                prepared: newState[consumableIndex].prepared + delta,
             };
             return newState;
         });
@@ -50,7 +50,7 @@ const ConsumableTab = ({}: IConsumableTabInput) => {
 
     const calculateSlotsUsed = () => {
         const finalCost = consumablePlayerData.reduce((pv, cv) => {
-            const cost = (ConsumableData.GetConsumableById(cv.consumableId)?.slotCost ?? 0) * cv.amount;
+            const cost = (ConsumableData.GetConsumableById(cv.consumableId)?.slotCost ?? 0) * cv.prepared;
             return pv + cost;
         }, 0)
         setCurrentSlotsUsed(finalCost);

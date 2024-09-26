@@ -21,6 +21,7 @@ import MinionCompendiumPage from "../Pages/MinionCompendiumPage";
 import MinionLandingPage from "../Pages/MinionLandingPage";
 import ConsumableCompendium from "../Pages/ConsumableCompendium";
 import FatelinesPage from "../Pages/FatelinesPage";
+import CharacterSelectPage from "../Pages/CharacterSelectPage";
 
 
 
@@ -32,6 +33,10 @@ const UrsuraRouter = createBrowserRouter([
             {
                 path: "/",
                 element: <HomePage />
+            },
+            {
+                path: "/character_select",
+                element: <CharacterSelectPage />
             },
             {
                 path: "/new",

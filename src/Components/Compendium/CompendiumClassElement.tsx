@@ -96,7 +96,7 @@ const CompendiumClassElement = ({
             >
                 {
                     allAbilities.map((ability, index) => {
-                        return <AbilityItem abilityData={ability} showPrerequisites={true} key={index}/>
+                        return <AbilityItem abilityData={ability} showPrerequisites={true} key={ability._id}/>
                     })
                 }
                 {

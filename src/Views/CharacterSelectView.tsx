@@ -14,7 +14,7 @@ const CharacterSelectView = () => {
     const [allCharacters, setAllCharacters] = useState<Array<ICharacterBaseData>>([]);
 
     const {CharacterAPI} = useAPI();
-    const {loggedIn, charactersOwned} = useUser();
+    const {loggedIn, charactersOwned, userPermissions} = useUser();
 
 
     useEffect(() => {
@@ -43,7 +43,7 @@ const CharacterSelectView = () => {
                 <Box></Box>
                 <Typography variant="h3" component="div" textAlign={"center"}>My Characters</Typography>
                 {
-                    loggedIn ?
+                    loggedIn && (userPermissions.includes("registered") || userPermissions.includes("admin")) ?
                         <Box
                             sx={{
                                 display: 'flex',
@@ -62,20 +62,35 @@ const CharacterSelectView = () => {
                 }
 
             </Box>
-            <Box
-                sx={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(5, 1fr)',
-                    gap: 1,
-                    margin: 4
-                }}
-            >
-                {
-                    allCharacters.map((character: ICharacterBaseData) => {
-                        return <CharacterSelectCard characterData={character} key={character.characterName}/>
-                    })
-                }
-            </Box>
+            {
+                allCharacters.length > 0
+                ?
+                <Box
+                    sx={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(5, 1fr)',
+                        gap: 1,
+                        margin: 4
+                    }}
+                >
+                    {
+                        allCharacters.map((character: ICharacterBaseData) => {
+                            return <CharacterSelectCard characterData={character} key={character.characterName}/>
+                        })
+                    }
+                </Box>
+                    :
+                    <Box
+                        sx={{
+                            display: "flex",
+                            justifyContent: "center"
+                        }}
+                    >
+                        <Typography variant={"body1"}>Seems you don't have any characters... maybe you should create one!</Typography>
+                    </Box>
+
+            }
+
         </Box>
 
     )

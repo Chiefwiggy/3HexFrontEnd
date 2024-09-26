@@ -30,12 +30,21 @@ const NavigationBar = () => {
         <AppBar position="fixed">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+                    <Typography variant="h5" component={Link} to={"/"} sx={{
+                        textDecoration: "none",
+                        color: "white",
+                        flexGrow: 1
+                    }}>
                         URSURA
                     </Typography>
-                    <Button component={Link} to="/">
-                        Characters
-                    </Button>
+                    {
+                        loggedIn ?
+                            <Button component={Link} to="/character_select">
+                                Characters
+                            </Button>
+                            :
+                            <></>
+                    }
                     <Button component={Link} to="/compendium/classes">
                         Class Guide
                     </Button>

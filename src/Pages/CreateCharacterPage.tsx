@@ -22,8 +22,9 @@ const CreateCharacterPage = ({}: ICreateCharacterPageInput) => {
 
     const handleSubmit = async(event: React.MouseEvent) => {
         const data = await CharacterAPI.CreateCharacter(charName);
-        await UserAPI.AddCharacterToUser(data.data.data._doc._id);
-        navigate("/");
+        const newCharId = data.data.data._doc._id;
+        const resp = await UserAPI.AddCharacterToUser(newCharId);
+        navigate(`/characters?id=${newCharId}`)
     }
 
 

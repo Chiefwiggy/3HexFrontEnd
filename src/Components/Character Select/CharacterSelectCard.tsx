@@ -18,7 +18,7 @@ const CharacterSelectCard = ({
 
 
     const handleSelectCharacter = () => {
-        navigate(`characters?id=${characterData._id}`)
+        navigate(`/characters?id=${characterData._id}`)
     }
 
 
