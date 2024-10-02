@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import {Box, Button, Drawer, IconButton, TextField, Tooltip, Typography} from "@mui/material";
 import CharacterSheetView from "./CharacterSheetView";
 import CharacterSelectView from "./CharacterSelectView";
+import {Helmet} from 'react-helmet'
 import {
     ArrowBackIosNewOutlined,
     AutoFixHighOutlined,
@@ -109,6 +110,10 @@ const CharacterSheetFullView = () => {
                 height: "calc(100vh - 64px)"
             }}
         >
+            <Helmet>
+                <meta charSet={"utf-8"} />
+                <title>{currentSheet.data.characterName} - Ursura</title>
+            </Helmet>
             <Box>
                 <IconButton
                     onClick={handleGoBack}

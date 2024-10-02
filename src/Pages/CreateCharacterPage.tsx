@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Box, Button, TextField, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import useAPI from "../Hooks/useAPI/useAPI";
+import {Helmet} from "react-helmet";
 
 
 
@@ -38,6 +39,10 @@ const CreateCharacterPage = ({}: ICreateCharacterPageInput) => {
                 paddingTop: 20
             }}
         >
+            <Helmet>
+                <meta charSet={"utf-8"} />
+                <title>Create Character - Ursura</title>
+            </Helmet>
             <Typography variant="body2">What would you like to name your character?</Typography>
             <TextField
                 label={"Character Name"}

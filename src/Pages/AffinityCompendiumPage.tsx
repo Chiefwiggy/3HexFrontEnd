@@ -4,6 +4,7 @@ import usePreloadedContent from "../Hooks/usePreloadedContent/usePreloadedConten
 import {useSearchParams} from "react-router-dom";
 import {IAffinities, IArcanaKeys} from "../Data/ICharacterData";
 import CompendiumAffinityElement from "../Components/Compendium/CompendiumAffinityElement";
+import {Helmet} from "react-helmet";
 
 interface IAffinityCompendiumPageInput {
 
@@ -62,6 +63,10 @@ const AffinityCompendiumPage = ({}: IAffinityCompendiumPageInput) => {
                 gridTemplateColumns: "1fr 9fr"
             }}
         >
+            <Helmet>
+                <meta charSet={"utf-8"} />
+                <title>Affinities - Ursura</title>
+            </Helmet>
             <Tabs
                 orientation="vertical"
                 variant="scrollable"

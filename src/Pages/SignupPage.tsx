@@ -4,6 +4,7 @@ import { TextField, Button, Container, Typography, Box } from '@mui/material';
 import useAPI from "../Hooks/useAPI/useAPI";
 import useUser from "../Hooks/useUser/useUser";
 import {Sign} from "node:crypto";
+import {Helmet} from "react-helmet";
 
 interface FormData {
   email: string;
@@ -35,6 +36,10 @@ const SignupPage: React.FC = () => {
 
   return (
     <Container maxWidth="sm">
+      <Helmet>
+          <meta charSet={"utf-8"} />
+          <title>Sign Up - Ursura</title>
+      </Helmet>
       <Box sx={{ marginTop: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Typography component="h1" variant="h5">
           Sign Up

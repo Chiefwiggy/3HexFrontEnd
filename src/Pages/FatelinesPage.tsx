@@ -4,6 +4,7 @@ import usePreloadedContent from "../Hooks/usePreloadedContent/usePreloadedConten
 import FatelineTab from '../Components/Fatelines/FatelineTab';
 import {IFatelineFullData} from "../Data/IFatelineData";
 import {useSearchParams} from "react-router-dom";
+import {Helmet} from "react-helmet";
 
 interface IFatelinesPageInput {
 
@@ -60,6 +61,11 @@ const FatelinesPage = ({
 
             }}
         >
+
+            <Helmet>
+                <meta charSet={"utf-8"} />
+                <title>Fatelines - Ursura</title>
+            </Helmet>
             <Box
                 sx={{
                     minWidth: "160px",

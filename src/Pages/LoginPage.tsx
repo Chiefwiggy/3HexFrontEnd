@@ -2,6 +2,7 @@
 import React, { useState, ChangeEvent } from 'react';
 import { TextField, Button, Container, Typography, Box } from '@mui/material';
 import useUser from "../Hooks/useUser/useUser";
+import {Helmet} from "react-helmet";
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState<string>('');
@@ -24,6 +25,10 @@ const LoginPage: React.FC = () => {
 
   return (
     <Container maxWidth="sm">
+      <Helmet>
+          <meta charSet={"utf-8"} />
+          <title>Login - Ursura</title>
+      </Helmet>
       <Box
         display="flex"
         flexDirection="column"
@@ -31,6 +36,7 @@ const LoginPage: React.FC = () => {
         justifyContent="center"
         minHeight="100vh"
       >
+
         <Typography variant="h4" component="h1" gutterBottom>
           Login
         </Typography>

@@ -10,6 +10,7 @@ const MinionCompendiumPage = ({}: IMinionCompendiumPageInput) => {
 
     return (
         <Box>
+
             test
         </Box>
     )

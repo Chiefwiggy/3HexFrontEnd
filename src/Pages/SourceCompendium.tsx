@@ -2,6 +2,7 @@ import React from 'react';
 import {Box} from "@mui/material";
 import usePreloadedContent from "../Hooks/usePreloadedContent/usePreloadedContent";
 import SourceComponent from '../Components/Sources/SourceComponent';
+import {Helmet} from "react-helmet";
 
 interface ISourceCompendiumInput {
 
@@ -20,6 +21,10 @@ const SourceCompendium = ({}: ISourceCompendiumInput) => {
                 gridGap: "10px"
             }}
         >
+            <Helmet>
+                <meta charSet={"utf-8"} />
+                <title>Sources - Ursura</title>
+            </Helmet>
             {SourceData.GetAllSourceData().map((data) => {
                 return (
                     <Box>

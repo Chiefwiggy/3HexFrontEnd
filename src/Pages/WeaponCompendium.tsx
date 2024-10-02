@@ -2,6 +2,7 @@ import React from 'react';
 import {Box, Typography} from "@mui/material";
 import usePreloadedContent from "../Hooks/usePreloadedContent/usePreloadedContent";
 import BarracksWeapon from "../Components/Equipment/BarracksWeapon";
+import {Helmet} from "react-helmet";
 
 interface IWeaponCompendiumInput {
 
@@ -13,6 +14,10 @@ const WeaponCompendium = ({}: IWeaponCompendiumInput) => {
 
     return (
         <Box>
+            <Helmet>
+                <meta charSet={"utf-8"} />
+                <title>Weapons - Ursura</title>
+            </Helmet>
             <Typography variant={"h4"}>Weapons</Typography>
             <Box
                 sx={{

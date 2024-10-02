@@ -6,6 +6,7 @@ import CompendiumClassElement from "../Components/Compendium/CompendiumClassElem
 import {useLocation, useSearchParams} from "react-router-dom";
 import usePreloadedContent from "../Hooks/usePreloadedContent/usePreloadedContent"
 import {getNameFromTier, getTierFromName} from "../Utils/Shorthand";
+import {Helmet} from "react-helmet";
 
 interface IClassCompendiumPageInput {
 
@@ -64,6 +65,10 @@ const ClassCompendiumPage = ({}: IClassCompendiumPageInput) => {
 
     return classData.length > 0 ?  (
         <Box>
+            <Helmet>
+                <meta charSet={"utf-8"} />
+                <title>Class Guide - Ursura</title>
+            </Helmet>
             <Box
                 sx={{
                     display: "grid",

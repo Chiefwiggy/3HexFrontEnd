@@ -207,7 +207,7 @@ const EquipmentTab = ({}: IEquipmentTabInput) => {
                                     {
                                         ArmorData.GetAllBaseData().map(ad => {
                                             return (
-                                                <MenuItem value={ad._id}>{ad.armorName}</MenuItem>
+                                                <MenuItem value={ad._id} key={ad._id}>{ad.armorName}</MenuItem>
                                             )
                                         })
                                     }

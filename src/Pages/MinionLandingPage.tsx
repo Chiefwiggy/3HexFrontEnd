@@ -2,6 +2,7 @@ import React from 'react';
 import {Box} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import CompendiumSelect from "../Components/Character Select/CompendiumSelect";
+import {Helmet} from "react-helmet";
 
 interface IMinionLandingPageInput {
 
@@ -15,6 +16,10 @@ const MinionLandingPage = ({}: IMinionLandingPageInput) => {
 
     return (
         <Box>
+            <Helmet>
+                <meta charSet={"utf-8"} />
+                <title>Minions - Ursura</title>
+            </Helmet>
             <Box
                 sx={{
                     display: 'grid',

@@ -3,6 +3,7 @@ import {Box, Divider, Typography} from "@mui/material";
 import usePreloadedContent from "../Hooks/usePreloadedContent/usePreloadedContent";
 import ConsumableCard from "../Components/Items/ConsumableCard";
 import BarracksConsumable from "../Components/Equipment/BarracksConsumable";
+import {Helmet} from "react-helmet";
 
 interface IConsumableCompendiumInput {
 
@@ -18,6 +19,10 @@ const ConsumableCompendium = ({}: IConsumableCompendiumInput) => {
                 padding: 2
             }}
         >
+            <Helmet>
+                <meta charSet={"utf-8"} />
+                <title>Consumables - Ursura</title>
+            </Helmet>
             <Box
                 sx={{
                     marginBottom: 2

@@ -6,6 +6,7 @@ import {AddOutlined} from "@mui/icons-material";
 import {ICharacterBaseData} from "../Data/ICharacterData";
 import CharacterSelectCard from "../Components/Character Select/CharacterSelectCard";
 import CompendiumSelect from "../Components/Character Select/CompendiumSelect";
+import {Helmet} from "react-helmet";
 
 interface IBarracksPageInput {
 
@@ -15,6 +16,10 @@ const BarracksPage = ({}: IBarracksPageInput) => {
 
     return (
         <Box>
+            <Helmet>
+                <meta charSet={"utf-8"} />
+                <title>Barracks - Ursura</title>
+            </Helmet>
             <Box
                 sx={{
                     padding: "12px",
@@ -22,6 +27,7 @@ const BarracksPage = ({}: IBarracksPageInput) => {
                     gridTemplateColumns: "repeat(3, 1fr)"
                 }}
             >
+
                 <Box></Box>
                 <Typography variant="h3" component="div" textAlign={"center"}>Barracks</Typography>
                 <Box></Box>

@@ -10,6 +10,7 @@ import SplashImage from "../Data/Static Images/splash_example.png"
 import CardImage from '../Data/Static Images/cards_example.png'
 import {Link} from "react-router-dom";
 import useUser from "../Hooks/useUser/useUser";
+import {Helmet} from "react-helmet";
 
 
 const HomePage = () => {
@@ -35,6 +36,10 @@ const HomePage = () => {
                 padding: "20px 90px"
             }}
         >
+            <Helmet>
+                <meta charSet={"utf-8"} />
+                <title>Ursura Reference</title>
+            </Helmet>
             <Box
                 sx={{
                     display: "flex",

@@ -618,6 +618,12 @@ class CharacterSheet extends AbstractSheet {
                 this.currentAffinities[key as keyof IAffinities] += value;
             })
         })
+        if (this.data.fateline) {
+            Object.entries(this.data.fateline.affinities).forEach(([key, value]) => {
+                this.currentAffinities[key as keyof IAffinities] += value;
+            })
+        }
+
         this.currentArcana = {
             arcane: this.currentAffinities.focus + this.currentAffinities.soul + this.currentAffinities.rune,
             warrior: this.currentAffinities.infantry + this.currentAffinities.guardian + this.currentAffinities.deft,
