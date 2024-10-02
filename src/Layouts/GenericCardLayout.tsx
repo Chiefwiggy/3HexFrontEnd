@@ -1,5 +1,5 @@
 import React, {ReactNode, useEffect, useState} from 'react'
-import {ICommonCardData} from "../Data/ICardData";
+import {ICommonCardData, IWeaponCommonData} from "../Data/ICardData";
 import {
     Box,
     capitalize,
@@ -34,6 +34,7 @@ interface IGenericCardLayoutInput {
     isExpanded?: boolean,
     canToggleExpand?: boolean,
     isAdd?: boolean,
+    showAdd?: boolean,
     canFavorite?: boolean,
     children: ReactNode,
     overrideSubtitle?: string | null,
@@ -51,6 +52,7 @@ const GenericCardLayout = ({
     isExpanded = false,
     canToggleExpand = true,
     isAdd = true,
+    showAdd  = true,
     canFavorite = true,
     children,
     overrideSubtitle,
@@ -133,7 +135,9 @@ const GenericCardLayout = ({
                 title={(cardData.cardName + " " + titleExtra).trim()}
                 subheader={
                     <>
-                        {cardData.cardType.toUpperCase()} {overrideSubtitle ? `• ${overrideSubtitle}` : (cardData.cardSubtype == "commander" ? "" : `• ${cardData.cardSubtype.toUpperCase()}`)} {cardData.isUltimate ? " • ULTIMATE" : ""}
+                     {cardData.cardType.toUpperCase()} {cardData.cardType == "weapon" && cardData.cardSubtype != "base" ? (
+                        (cardData as IWeaponCommonData).offhandOnly ? "• OFFHAND ONLY" : ((cardData as IWeaponCommonData).canUseForOffhand ? "• CAN OFFHAND" : "")
+                    ): ""} {overrideSubtitle ? `• ${overrideSubtitle}` : (cardData.cardSubtype == "commander" ? "" : `• ${cardData.cardSubtype.toUpperCase()}`)} {cardData.isUltimate ? " • ULTIMATE" : ""}
                     </>
                 }
                 sx={{padding: "14px 0 0 0", userSelect: "none"}}
@@ -184,7 +188,7 @@ const GenericCardLayout = ({
                 </CardContent>
             </Collapse>
             <CardActions disableSpacing sx={{marginTop: 'auto'}}>
-                {
+                { showAdd ? (
                     isAdd
                         ?
                         <IconButton
@@ -200,7 +204,7 @@ const GenericCardLayout = ({
                         >
                             <RemoveCircleOutlined/>
                         </IconButton>
-                }
+                ) : <></>}
                 {
                     canFavorite
                         ?

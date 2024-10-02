@@ -8,6 +8,7 @@ import {
 import Axios, { AxiosRequestConfig } from 'axios'
 import {IBaseArmorData} from "../Data/IArmorData";
 import {ISourceData} from "../Data/ISourceData";
+import {IDowntimePlayerData} from "../Data/IDowntime";
 
 class CharacterConnection {
 
@@ -49,6 +50,14 @@ class CharacterConnection {
         })
     }
 
+    public async SetDowntimeActivities(charID: string, dt: Array<IDowntimePlayerData>) {
+        await Axios.put(this.GetRouteURL(`update/${charID}`), {
+            downtimeData: dt
+        }, this._getConfig()).then((resp) => {
+            console.log(resp);
+        })
+    }
+
     public async SetPreparedCommanderCards(charID: string, ids: string[]) {
         await Axios.put(this.GetRouteURL(`update/${charID}`), {
             preparedCommanderCards: ids
@@ -74,6 +83,14 @@ class CharacterConnection {
     public async SetPrepWeapon(charID: string, weaponData: ICalculatedWeapon) {
         await Axios.put(this.GetRouteURL(`update/${charID}`), {
             currentWeapon: weaponData
+        }, this._getConfig()).then((resp) => {
+            console.log(resp);
+        })
+    }
+
+    public async SetOffhandPrepWeapon(charID: string, weaponData: ICalculatedWeapon) {
+        await Axios.put(this.GetRouteURL(`update/${charID}`), {
+            currentOffhandWeapon: weaponData
         }, this._getConfig()).then((resp) => {
             console.log(resp);
         })
@@ -128,6 +145,7 @@ class CharacterConnection {
             classes: newData.classes,
             fateline: newData.fateline,
             characterLevel: newData.characterLevel,
+            downtimeData: newData.downtimeData,
             preparedCards: newData.preparedCards,
             currentSpell: newData.currentSpell,
             currentWeapon: newData.currentWeapon
@@ -139,6 +157,15 @@ class CharacterConnection {
     public async UpdateWeaponsList(charID: string, weapons: Array<IEnchantmentData>) {
         await Axios.put(this.GetRouteURL(`update/${charID}`), {
             knownWeapons: weapons
+        }, this._getConfig()).then((resp) => {
+            console.log(resp);
+        })
+    }
+
+    public async UpdateWeaponsAndArmorList(charID: string, weapons: Array<IEnchantmentData>, armor: IEnchantmentData|null) {
+        await Axios.put(this.GetRouteURL(`update/${charID}`), {
+            knownWeapons: weapons,
+            currentArmor: armor
         }, this._getConfig()).then((resp) => {
             console.log(resp);
         })

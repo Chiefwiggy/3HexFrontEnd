@@ -14,7 +14,6 @@ class PLC_ConditionData {
     }
 
     public GetAllConditions() {
-        console.log(this.conditionCards);
         return this.conditionCards;
     }
 

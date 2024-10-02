@@ -32,6 +32,10 @@ const CardEffect = ({effectData, finalPower}: ICardEffectInput) => {
 
     const setIconData = () => {
         switch(effectData.icon.emblem) {
+            case 'power':
+                setEmblem(<></>);
+                setTintColor("rgba(255,255,255,0)")
+                break;
             case 'info':
                 setEmblem(<InfoOutlined />)
                 setTintColor("rgba(255,255,255,0)")
@@ -80,6 +84,7 @@ const CardEffect = ({effectData, finalPower}: ICardEffectInput) => {
     }
 
     useEffect(() => {
+        console.log(effectData);
         setIconData();
     }, [effectData]);
 

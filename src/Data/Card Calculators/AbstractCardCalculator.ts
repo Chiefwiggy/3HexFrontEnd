@@ -1,4 +1,12 @@
-import {ICommonCardData, IEffectData, ISpellBaseCardData, IWeaponBaseData, UCritDie, UDamageType} from "../ICardData";
+import {
+    ICommonCardData,
+    IEffectData,
+    ISpellBaseCardData,
+    IWeaponBaseData,
+    IWeaponCommonData,
+    UCritDie,
+    UDamageType
+} from "../ICardData";
 import {ICardBuilderType} from "../../Layouts/CardBuilder";
 import {ElementType} from 'react';
 import {ICharacterBaseData} from "../ICharacterData";

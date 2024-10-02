@@ -133,7 +133,7 @@ const StatBox = ({
                     }}
                 >
                     <Typography>Base {capitalize(stat)} [ {value.value} ]  </Typography>
-                    <Typography>{capitalize(stat)} Save [ {getSkillFormat(statValue)} ]</Typography>
+                    <Typography>{capitalize(stat)} Save [ {getSkillFormat(statValue*2)} ]</Typography>
                 </Box>
             </Popover>
         </Box>

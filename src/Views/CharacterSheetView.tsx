@@ -49,9 +49,7 @@ const CharacterSheetView = () => {
 
     const handleFullHeal = () => {
         if (currentSheet) {
-
             currentSheet.rest();
-
         }
     }
 
@@ -250,35 +248,6 @@ const CharacterSheetView = () => {
             </Dialog>
         </Box>
     ) : <></>
-
-    // return currentSheet ? (
-    //     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-    //         <Box sx={{ display: 'flex', justifyContent: 'center', padding: 2 }}>
-    //             <Typography variant={"h3"}>{currentSheet.data.characterName}</Typography>
-    //         </Box>
-    //         <Box sx={{ display: 'flex', flexDirection: isSmallScreen ? 'column' : 'row' }}>
-    //             <Box sx={{ display: 'flex' }}>
-    //                 <StatView />
-    //                 <AttributeView />
-    //                 <DefensesView />
-    //             </Box>
-    //             <Box sx={{ display: 'flex', flexDirection: isSmallScreen ? 'column' : 'row', width: '100%' }}>
-    //                 <Box sx={{ width: isSmallScreen ? '100%' : '70%' }}>
-    //                     <MainContentView />
-    //                 </Box>
-    //                 <Box sx={{ paddingRight: isSmallScreen ? '0' : '96px', paddingTop: isSmallScreen ? '16px' : '0', width: isSmallScreen ? '100%' : '30%' }}>
-    //                     <Typography variant={"h4"} textAlign={"center"}>Equipped Cards</Typography>
-    //                     <br />
-    //                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-    //                         <PrebuiltSpellCardWrapper spellData={currentSpell} />
-    //                         <br />
-    //                         <PrebuiltWeaponCardWrapper weaponData={currentWeapon} />
-    //                     </Box>
-    //                 </Box>
-    //             </Box>
-    //         </Box>
-    //     </Box>
-    // ) : <></>;
 };
 
 export default CharacterSheetView;

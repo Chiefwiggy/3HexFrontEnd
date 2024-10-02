@@ -51,12 +51,6 @@ export interface IAbility {
         quickSlots?: number,
         maxGlyphs?: number
     },
-    unlocks: {
-        unarmoredDefense?: boolean,
-        heavyArmor?: boolean,
-        evadeWithHeavyArmor?: boolean,
-        mindBreathing?: boolean,
-        ironGrasp?: boolean
-    },
+    unlocks: Object,
     showByDefault: boolean
 }

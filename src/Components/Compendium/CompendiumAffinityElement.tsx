@@ -45,6 +45,7 @@ const CompendiumAffinityElement = ({
         canToggleExpand: true,
         canFavorite: false,
         isAdd: true,
+        showAdd: false,
         showPrerequisites: true
     }
 

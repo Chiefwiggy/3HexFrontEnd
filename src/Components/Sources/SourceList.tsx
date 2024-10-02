@@ -32,7 +32,7 @@ const SourceList = ({sourceData, handleSetIndex, currentIndex}: ISourceListInput
                                 <Typography sx={{
                                     textAlign: "right",
                                     width: "100%"
-                                }} variant={"body2"}>{tier.cardData.cardName} [{tier.arcaneRequirement}]</Typography>
+                                }} variant={"body2"}>{tier.cardData.cardName}</Typography>
                             </ListItem>
                         )
                     })

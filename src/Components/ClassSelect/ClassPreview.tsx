@@ -57,7 +57,6 @@ const ClassPreview = ({classData, isEquipped, canEquip, sendBack, equipData, can
                 sendBack(doPick, {
                     className: classData.className,
                     classExpertises: classData.classExpertises,
-                    downtimeActivities: classData.downtimeActivities,
                     classTier: classData.classTier,
                     affinities: affinityData,
                     isPromoted: isPrestige

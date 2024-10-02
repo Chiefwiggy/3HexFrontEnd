@@ -35,7 +35,6 @@ const MainContentView = () => {
                 <Tabs value={currentTab} onChange={handleTabChange}>
                     <Tab label={"Abilities"} value={0} />
                     <Tab label={"Equipment"} value={1} />
-                    <Tab label={"Armor"} value={7} />
                     <Tab label={"Consumables"} value={2} />
                     <Tab label={"Battalion"} value={3} />
                     <Tab label={"Skills"} value={4} />
@@ -49,7 +48,6 @@ const MainContentView = () => {
             <CustomTabPanel index={currentTab} value={4}> <SkillsTab /> </CustomTabPanel>
             <CustomTabPanel index={currentTab} value={5}> <DowntimeTab /> </CustomTabPanel>
             <CustomTabPanel index={currentTab} value={6}> <SettingsTab /> </CustomTabPanel>
-            <CustomTabPanel index={currentTab} value={7}> <ArmorTab /> </CustomTabPanel>
         </Box>
     )
 

@@ -22,7 +22,10 @@ const SourceCompendium = ({}: ISourceCompendiumInput) => {
         >
             {SourceData.GetAllSourceData().map((data) => {
                 return (
-                    <SourceComponent sourceData={data} key={data._id} />
+                    <Box>
+                        <SourceComponent sourceData={data} key={data._id} />
+                    </Box>
+
                 )
             })}
         </Box>

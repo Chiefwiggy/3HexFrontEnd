@@ -10,7 +10,7 @@ import {
     EditNoteOutlined,
     EngineeringOutlined,
     FlareOutlined,
-    LocalDiningOutlined,
+    LocalDiningOutlined, LooksTwoOutlined,
     MilitaryTechOutlined,
     ModeEditOutlined,
     SdCardOutlined,
@@ -38,6 +38,7 @@ const CharacterSheetFullView = () => {
     const [eventPanelOpen, setEventPanelOpen] = useState<boolean>(false);
     const [notesPanelOpen, setNotesPanelOpen] = useState<boolean>(false);
     const [weaponsPanelOpen, setWeaponsPanelOpen] = useState<boolean>(false);
+    const [offhandWeaponsPanelOpen, setOffhandWeaponsPanelOpen] = useState<boolean>(false);
     const [cardsPanelOpen, setCardsPanelOpen] = useState<boolean>(false);
     const [currentTab, setCurrentTab] = useState<number>(0);
     const [classSelectOpen, setClassSelectOpen] = useState<boolean>(false);
@@ -63,6 +64,10 @@ const CharacterSheetFullView = () => {
 
     const handleWeaponsPanel = (open: boolean) => (event: React.MouseEvent) => {
         setWeaponsPanelOpen(open);
+    }
+
+    const handleOffhandWeaponsPanel = (open: boolean) => (event: React.MouseEvent) => {
+        setOffhandWeaponsPanelOpen(open);
     }
 
     const handleCardsPanel = (open: boolean) => (event: React.MouseEvent) => {
@@ -95,7 +100,7 @@ const CharacterSheetFullView = () => {
     }
 
 
-    return isReady ? (
+    return isReady && currentSheet ? (
         <Box
             sx={{
                 position: "relative",
@@ -153,6 +158,13 @@ const CharacterSheetFullView = () => {
                     <AutoFixHighOutlined/>
                 </IconButtonWithTooltip>
                 <IconButtonWithTooltip title={"Create Attacks"} placement={"left"} onClick={handleWeaponsPanel(true)}><LocalDiningOutlined/></IconButtonWithTooltip>
+                {
+                    currentSheet.canDualWield() ?
+                        <IconButtonWithTooltip title={"Create Offhand Attacks"} placement={"left"} onClick={handleOffhandWeaponsPanel(true)}><LooksTwoOutlined/></IconButtonWithTooltip>
+                        :
+                        <></>
+                }
+
                 <IconButtonWithTooltip title={"Prepare Commander Cards"} placement={"left"} onClick={handleCommanderSelectPanel(true)}><MilitaryTechOutlined /></IconButtonWithTooltip>
                 <IconButtonWithTooltip title={"Conditions"} placement={"left"} onClick={handleConditionsPanel(true)}><FlareOutlined/></IconButtonWithTooltip>
                 <IconButtonWithTooltip title={"Backpack"} placement={"left"} onClick={handleBackpackPanel(true)}><BackpackOutlined/></IconButtonWithTooltip>
@@ -185,6 +197,13 @@ const CharacterSheetFullView = () => {
                 onClose={handleWeaponsPanel(false)}
             >
                 <WeaponCardBuilderView closeSelf={handleWeaponsPanel(false)}/>
+            </Drawer>
+            <Drawer
+                anchor={"right"}
+                open={offhandWeaponsPanelOpen}
+                onClose={handleOffhandWeaponsPanel(false)}
+            >
+                <WeaponCardBuilderView isOffhand={true} closeSelf={handleOffhandWeaponsPanel(false)}/>
             </Drawer>
             <Drawer
                 anchor={"right"}

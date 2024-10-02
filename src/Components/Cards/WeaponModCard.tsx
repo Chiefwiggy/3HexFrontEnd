@@ -8,6 +8,7 @@ interface IWeaponModCardInput {
     isExpanded?: boolean,
     canToggleExpand?: boolean,
     isAdd?: boolean,
+    showAdd?: boolean,
     canFavorite?: boolean,
     showPrerequisites?: boolean
 }
@@ -18,11 +19,12 @@ const WeaponModCard = ({
     isExpanded = false,
     canToggleExpand = true,
     isAdd = true,
+    showAdd = true,
     canFavorite = true,
     showPrerequisites=false
 }: IWeaponModCardInput) => {
     return (
-        <GenericCardLayout cardData={cardData} sendBack={sendBack} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} canFavorite={canFavorite} showPrerequisites={showPrerequisites}>
+        <GenericCardLayout cardData={cardData} sendBack={sendBack} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} canFavorite={canFavorite} showPrerequisites={showPrerequisites} showAdd={showAdd}>
         </GenericCardLayout>
     )
 }

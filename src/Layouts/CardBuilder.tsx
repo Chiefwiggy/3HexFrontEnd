@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Box, Button, Grid, Paper} from "@mui/material";
-import {ICommonCardData, IConditionCard} from "../Data/ICardData";
+import {ICommonCardData, IConditionCard, IWeaponBaseData, IWeaponCommonData} from "../Data/ICardData";
 import useCharacter from "../Hooks/useCharacter/useCharacter";
 import {SortCardList} from "../Utils/CardSorting";
 import CardSkeleton from "../Components/Cards/CardSkeleton";
@@ -32,6 +32,7 @@ interface ICardBuilderInput {
     sendSaveData: (cards: Array<ICommonCardData|null>, spellCopy: React.ReactNode) => Promise<void>,
     sendEquipData: (cards: Array<ICommonCardData|null>) => Promise<void>
     sendCounterData: (cards: Array<ICommonCardData|null>) => Promise<void>
+    offhandData?: boolean
     canCounter: boolean
 }
 const CardBuilder = ({
@@ -43,6 +44,7 @@ const CardBuilder = ({
     sendSaveData,
     sendEquipData,
     sendCounterData,
+    offhandData = false,
     canCounter
 }: ICardBuilderInput) => {
 
@@ -97,9 +99,26 @@ const CardBuilder = ({
 
     useEffect(() => {
         (async() => {
-            const cards: Array<ICommonCardData> = await GetAllCards();
+            let cards: Array<ICommonCardData> = [...defaultCardList, ...(await GetAllCards())];
+            if (offhandData) {
+                cards = cards.filter(e => {
+                    switch(e.cardSubtype) {
+                        case "base":
+                            return (e as IWeaponBaseData).handedness < 2;
+                        default:
+                            return (e as IWeaponCommonData).canUseForOffhand
+                    }
+                })
+            } else {
+                cards = cards.filter(e => {
+                    if (e.cardType == "weapon" && e.cardSubtype != "base") {
+                        return !(e as IWeaponCommonData).offhandOnly
+                    }
+                    return true;
+                })
+            }
             const conditions: Array<IConditionCard> = cardTypes[0].name.split(".")[0] === "weapon" ?  ConditionData.GetAttackConditions() : ConditionData.GetSpellConditions()
-            setAllCards([...defaultCardList, ...cards, ...conditions].sort(SortCardList));
+            setAllCards([...cards, ...conditions].sort(SortCardList));
         })();
     }, []);
 

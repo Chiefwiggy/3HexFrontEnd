@@ -19,6 +19,7 @@ const PreparedSpellsPanel = ({}: IPreparedSpellsPanelInput) => {
     const [currentSpell, setCurrentSpell] = useState<null | ICalculatedSpell>(null);
     const [currentWeapon, setCurrentWeapon] = useState<null | ICalculatedWeapon>(null);
     const [currentCommander, setCurrentCommander] = useState<null| ICommanderCardData>(null);
+    const [currentOffhandWeapon, setCurrentOffhandWeapon] = useState<null | ICalculatedWeapon>(null);
     const [currentCounter, setCurrentCounter] = useState<null|ICalculatedWeapon>(null);
 
     const [tabIndex, setTabIndex] = useState(0);
@@ -34,6 +35,7 @@ const PreparedSpellsPanel = ({}: IPreparedSpellsPanelInput) => {
             setCurrentWeapon(currentSheet.data.currentWeapon);
             setCurrentCommander(currentSheet.getCumulativeCommanderCard())
             setCurrentCounter(currentSheet.data.counterWeapon);
+            setCurrentOffhandWeapon(currentSheet.data.currentOffhandWeapon);
         }
     }, [charPing, isReady]);
 
@@ -42,8 +44,15 @@ const PreparedSpellsPanel = ({}: IPreparedSpellsPanelInput) => {
         <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             <Tabs onChange={handleTabChange} value={tabIndex}>
                 <Tab label={"Weapon"} value={0}/>
-                <Tab label={"Spell"} value={1}/>
-                <Tab label={"Commander"} value={2} />
+                {
+                    currentSheet.canDualWield()
+                    ?
+                        <Tab label={"Offhand"} value={1} />
+                        :
+                        <></>
+                }
+                <Tab label={"Spell"} value={2}/>
+                <Tab label={"Commander"} value={3} />
                 {/*<Tab label={"Counter"} value={3} />*/}
             </Tabs>
             <br />
@@ -57,6 +66,14 @@ const PreparedSpellsPanel = ({}: IPreparedSpellsPanelInput) => {
                     </CustomTabPanel>
                     <CustomTabPanel index={tabIndex} value={1}>
                         {
+                        currentOffhandWeapon ?
+                            <PrebuiltWeaponCardWrapper weaponData={currentOffhandWeapon} overrideWidth={28}/>
+                            :
+                            <Typography>Sorry, no offhand weapon loaded.</Typography>
+                        }
+                    </CustomTabPanel>
+                    <CustomTabPanel index={tabIndex} value={2}>
+                        {
                             currentSpell
                             ?
                                 <PrebuiltSpellCardWrapper spellData={currentSpell} overrideWidth={28}/>
@@ -64,21 +81,13 @@ const PreparedSpellsPanel = ({}: IPreparedSpellsPanelInput) => {
                                 <Typography>Sorry, no spell loaded.</Typography>
                         }
                     </CustomTabPanel>
-                    <CustomTabPanel index={tabIndex} value={2}>
+                    <CustomTabPanel index={tabIndex} value={3}>
                         {
                             currentCommander
                             ?
                                 <CommanderCard cardData={currentCommander} sendBack={() => {}} canFavorite={false} canToggleExpand={false} isExpanded={true} />
                                 :
                                 <Typography>Sorry, no commander cards</Typography>
-                        }
-                    </CustomTabPanel>
-                    <CustomTabPanel index={tabIndex} value={3}>
-                        {
-                        currentWeapon ?
-                            <PrebuiltWeaponCardWrapper weaponData={currentCounter} overrideWidth={28}/>
-                            :
-                            <Typography>Sorry, no counterattack loaded.</Typography>
                         }
                     </CustomTabPanel>
         </Box>

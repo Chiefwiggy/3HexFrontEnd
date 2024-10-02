@@ -27,6 +27,7 @@ const FatelineDetails = ({fateline, reversed}: IFatelineDetailsInput) => {
         canToggleExpand: true,
         canFavorite: false,
         isAdd: true,
+        showAdd: false,
         showPrerequisites: true
     }
 

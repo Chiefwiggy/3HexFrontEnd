@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {
     Box, Button,
-    Card, Dialog, DialogActions,
+    Card, Collapse, Dialog, DialogActions,
     DialogContent,
     DialogTitle,
     Divider,
@@ -15,11 +15,12 @@ import SpellBaseCard from "../Cards/SpellBaseCard";
 import {ISpellBaseCardData, ISpellModifierCardData} from "../../Data/ICardData";
 import SpellModifierCard from "../Cards/SpellModifierCard";
 import SourceList from './SourceList';
-import {AddOutlined, CloseOutlined} from "@mui/icons-material";
+import {AddOutlined, CloseOutlined, ExpandMoreOutlined} from "@mui/icons-material";
 import useUser from "../../Hooks/useUser/useUser";
 import useAPI from "../../Hooks/useAPI/useAPI";
 import {useNavigate} from "react-router-dom";
 import {ICardSendbackData} from "../../Layouts/GenericCardLayout";
+import {ExpandMore} from "../../Elements/ExpandMore";
 
 interface ISourceComponentInput {
     sourceData: ISourceData
@@ -38,6 +39,12 @@ const SourceComponent = ({sourceData}: ISourceComponentInput) => {
     const {CharacterAPI} = useAPI();
 
     const navigate = useNavigate();
+
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    const handleExpandClick = () => {
+        setIsExpanded(!isExpanded);
+    }
 
     const handleChangeCharacter = (event: SelectChangeEvent) => {
         setCharAdd(event.target.value)
@@ -95,33 +102,36 @@ const SourceComponent = ({sourceData}: ISourceComponentInput) => {
                 {sourceData.sourceArcanotype.toUpperCase()}
             </Typography>
             <Divider sx={{margin: "12px"}} />
-            <Box
-                sx={{
-                    display: "grid",
-                    gridTemplateColumns: "1fr 2fr"
-                }}
-            >
-                <Box>
-                    <SourceList sourceData={sourceData} handleSetIndex={handleSetIndex} currentIndex={currentIndex}/>
-                </Box>
-                <Box>
-                    <Box
-                        sx={{
-                            display: "flex",
-                            justifyContent: "center"
-                        }}
-                    >
-                        {
-                            sourceData.sourceTiers[currentIndex].cardType == "base" ?
-                                <SpellBaseCard cardData={sourceData.sourceTiers[currentIndex].cardData as ISpellBaseCardData} sendBack={()=>{}} canFavorite={false} isExpanded={true} canToggleExpand={false}/>
-                                :
-                                <SpellModifierCard cardData={sourceData.sourceTiers[currentIndex].cardData as ISpellModifierCardData} sendBack={() => {}} canFavorite={false}  isExpanded={true} canToggleExpand={false}/>
-                        }
-
+            <Collapse in={isExpanded} timeout={"auto"} unmountOnExit>
+                <Box
+                    sx={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 2fr"
+                    }}
+                >
+                    <Box>
+                        <SourceList sourceData={sourceData} handleSetIndex={handleSetIndex} currentIndex={currentIndex}/>
                     </Box>
+                    <Box>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                justifyContent: "center"
+                            }}
+                        >
+                            {
+                                sourceData.sourceTiers[currentIndex].cardType == "base" ?
+                                    <SpellBaseCard cardData={sourceData.sourceTiers[currentIndex].cardData as ISpellBaseCardData} sendBack={()=>{}} canFavorite={false} isExpanded={true} canToggleExpand={false} showAdd={false}/>
+                                    :
+                                    <SpellModifierCard cardData={sourceData.sourceTiers[currentIndex].cardData as ISpellModifierCardData} sendBack={() => {}} canFavorite={false}  isExpanded={true} canToggleExpand={false} showAdd={false}/>
+                            }
+
+                        </Box>
+                    </Box>
+
                 </Box>
 
-            </Box>
+            </Collapse>
             <Box
                 sx={{
                     display: "flex",
@@ -129,7 +139,16 @@ const SourceComponent = ({sourceData}: ISourceComponentInput) => {
                 }}
             >
                 <IconButton onClick={handleOpen}><AddOutlined /></IconButton>
+                <ExpandMore
+                  expand={isExpanded}
+                  onClick={handleExpandClick}
+                  aria-expanded={isExpanded}
+                  aria-label="show more"
+                >
+                  <ExpandMoreOutlined />
+                </ExpandMore>
             </Box>
+
             <Dialog
                 open={dialogOpen}
                 onClose={handleCloseDialog}

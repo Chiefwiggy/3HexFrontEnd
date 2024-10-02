@@ -117,7 +117,7 @@ const HomePage = () => {
                     </Box>
 
                 </Box>
-                <Divider sx={{marginBottom: 2, marginTop: 12}} />
+                <Divider sx={{marginBottom: 2, marginTop: 22}} />
 
 
             </Box>

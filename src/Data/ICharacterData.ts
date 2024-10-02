@@ -2,6 +2,7 @@ import {IDataModifiers, IModifiable} from "./GenericData";
 import {IArmor} from "./IArmorData";
 import {IMinionData} from "./IMinionData";
 import {IFatelineData} from "./IFatelineData";
+import {IDowntimePlayerData} from "./IDowntime";
 
 export interface IAttributeBars {
     health: IAttributeBar,
@@ -37,6 +38,7 @@ export interface ICharacterBaseData {
     characterLevel: number,
     classes: Array<IClassData>,
     attributeBars: IAttributeBars,
+    downtimeData: Array<IDowntimePlayerData>,
     fateline: IFatelineData|undefined,
     currentActionPoints: number,
     characterStats: ICharacterStats,
@@ -63,6 +65,7 @@ export interface ICharacterBaseData {
     createdWeapons: Array<ICalculatedWeapon>,
     currentSpell: ICalculatedSpell | null,
     currentWeapon: ICalculatedWeapon | null,
+    currentOffhandWeapon: ICalculatedWeapon | null,
     counterWeapon: ICalculatedWeapon | null,
     currentArmor: IEnchantmentData | null,
     knownConsumables: Array<IConsumablePlayerData>,
@@ -121,7 +124,6 @@ export interface IClassData {
     className: string,
     affinities: IAffinities,
     classExpertises: Array<string>,
-    downtimeActivities: Array<string>,
     classTier: number,
     isPromoted: boolean
 }

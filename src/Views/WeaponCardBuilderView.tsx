@@ -15,10 +15,11 @@ import {ICalculatedWeapon} from "../Data/ICharacterData";
 import usePreloadedContent from "../Hooks/usePreloadedContent/usePreloadedContent";
 
 interface IWeaponCardBuilderViewInput {
-    closeSelf: (event: any) => void
+    closeSelf: (event: any) => void,
+    isOffhand?: boolean
 }
 
-const WeaponCardBuilderView = ({closeSelf}: IWeaponCardBuilderViewInput) => {
+const WeaponCardBuilderView = ({closeSelf, isOffhand = false}: IWeaponCardBuilderViewInput) => {
 
     const {CardAPI, CharacterAPI} = useAPI();
     const {currentSheet} = useCharacter();
@@ -83,8 +84,14 @@ const WeaponCardBuilderView = ({closeSelf}: IWeaponCardBuilderViewInput) => {
 
     const handleFinalEquip = async(weaponData: ICalculatedWeapon) => {
         if (currentSheet) {
-            await CharacterAPI.SetPrepWeapon(currentSheet.data._id, weaponData);
-            currentSheet.setCurrentWeapon(weaponData);
+            if (isOffhand) {
+                await CharacterAPI.SetOffhandPrepWeapon(currentSheet.data._id, weaponData);
+                currentSheet.setOffhandWeapon(weaponData);
+            } else {
+                await CharacterAPI.SetPrepWeapon(currentSheet.data._id, weaponData);
+                currentSheet.setCurrentWeapon(weaponData);
+            }
+
             closeSelf(null);
         }
     }
@@ -139,6 +146,7 @@ const WeaponCardBuilderView = ({closeSelf}: IWeaponCardBuilderViewInput) => {
                 GetAllCards={GetAllCards}
                 defaultCardList={default_weapon_cards}
                 cardTypes={currentSheet.weaponCalculatorTypes}
+                offhandData={isOffhand}
                 cardCalculator={currentSheet.weaponCalculator}
                 closeSelf={closeSelf}
                 sendSaveData={handleReceiveSaveCards}

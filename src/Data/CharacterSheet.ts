@@ -44,6 +44,7 @@ import PLC_ArmorData from "../Hooks/usePreloadedContent/PLC_ArmorData";
 import {IPreloadedContentContextInput} from "../Hooks/usePreloadedContent/PreloadedContentProvider";
 import {Utils} from "../Utils/LanguageLacking";
 import {IFatelineData} from "./IFatelineData";
+import {IDowntimePlayerData} from "./IDowntime";
 
 export type AttributeBarType = "tether" | "stamina" | "health"
 export type DamageType = "physical" | "magical" | "raw" | "resistant"
@@ -73,6 +74,7 @@ class CharacterSheet extends AbstractSheet {
     public currentArcana: IArcanaKeys
 
 
+
     public allCards: IAllCardsData | null = null;
     public allButDefaultCards: IAllCardsData | null = null;
     public commanderCards: Array<ICommanderCardData> = [];
@@ -91,6 +93,9 @@ class CharacterSheet extends AbstractSheet {
     private delayPing: boolean = false;
     private currentTimeout: any = null;
 
+    private _canDualWield: boolean = false;
+    private _hasUnarmored: boolean = false;
+
 
 
 
@@ -105,6 +110,11 @@ class CharacterSheet extends AbstractSheet {
         this._ping();
     }
 
+    public setOffhandWeapon = (data: ICalculatedWeapon) => {
+        this.data.currentOffhandWeapon = data;
+        this._ping();
+    }
+
     public setCurrentCounter = (data: ICalculatedWeapon) => {
         this.data.counterWeapon = data;
         this._ping();
@@ -112,6 +122,11 @@ class CharacterSheet extends AbstractSheet {
 
     public setPreparedCards = (data: Array<IPreparedCard>) => {
         this.data.preparedCards = data
+        this._ping();
+    }
+
+    public setDowntimeData = (data: Array<IDowntimePlayerData>) => {
+        this.data.downtimeData = data;
         this._ping();
     }
 
@@ -210,16 +225,19 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public isUnlocked = (unlockType: string) => {
+
         try {
             return this.allAbilities.reduce((pv, cv) => {
                 if (pv) return pv;
                 const strSplit = unlockType.split(".");
                 let ability: any = cv.unlocks;
-                strSplit.forEach(str => {
-                    ability = ability[str];
-                })
                 if (ability) {
-                    return ability;
+                    strSplit.forEach(str => {
+                        ability = ability[str];
+                    })
+                    if (ability) {
+                        return true
+                    }
                 }
                 return pv;
             }, false)
@@ -227,6 +245,10 @@ class CharacterSheet extends AbstractSheet {
             return false;
         }
 
+    }
+
+    public canDualWield() {
+        return this._canDualWield;
     }
 
     public getCommanderBonus = (bonusType: string, whoFor: "commander" | "adjutant" | "minion" = "commander") => {
@@ -341,6 +363,20 @@ class CharacterSheet extends AbstractSheet {
 
     public getLevel = () => {
         return this.data.characterLevel;
+    }
+
+    public getDowntimeRanks = () => {
+        return 3 + Math.floor(this.data.characterLevel / 15) + Math.floor((this.getStat("knowledge") + this.getStat("skill"))/10)
+    }
+
+    public getCurrentDowntimeRanks = () => {
+        return this.data.downtimeData.reduce((pv, cv) => {
+            return pv + cv.proficiency;
+        }, 0)
+    }
+
+    public getDowntimeMaxRank = () => {
+        return 4 + this.getAbilityBonuses("downtimeRanks");
     }
 
     public getStatCap = () => {
@@ -460,8 +496,10 @@ class CharacterSheet extends AbstractSheet {
 
 
         this.initializeAsync().then(r => {
-
+            this._canDualWield = this.isUnlocked("dualWielding");
+            this._hasUnarmored = this.isUnlocked("unarmoredDefense");
         });
+
      }
 
      private async initializeAsync() {
@@ -483,6 +521,23 @@ class CharacterSheet extends AbstractSheet {
             this.currentArmor = this.preloadedData.ArmorData.GetConstructedArmorById(this.data.currentArmor.baseId, this.data.currentArmor.enchantmentLevel);
             this._setWeightPenalty()
         }
+     }
+
+     public UpdateArmor(newArmor: IArmor|undefined) {
+        this.currentArmor = newArmor;
+        this._setWeightPenalty();
+
+        if (newArmor) {
+            this.data.currentArmor = {
+                baseId: newArmor._id,
+                enchantmentLevel: newArmor.enchantmentLevel,
+            }
+        } else {
+            this.data.currentArmor = null
+        }
+
+        this._ping();
+        return this.data.currentArmor;
      }
 
     private _setAllCards = async() => {
@@ -706,9 +761,11 @@ class CharacterSheet extends AbstractSheet {
         let evadeArmorBonus= 0;
         if (this.currentArmor) {
             evadeArmorBonus = this.currentArmor.pDEFBonus;
+        } else if (this._hasUnarmored) {
+            return this.getStat("vitality") + this.getStat("endurance") + this.getAbilityBonuses("pDEF");
         }
         evadeArmorBonus += this.getAbilityBonuses("pDEF");
-        return Math.floor((this.data.characterStats.vitality.value + this.data.characterStats.endurance.value)*0.5) + evadeArmorBonus;
+        return Math.floor((this.getStat("vitality") + this.getStat("endurance"))*0.5) + evadeArmorBonus;
     }
 
     public getBlockPDEF(): number {
@@ -717,7 +774,7 @@ class CharacterSheet extends AbstractSheet {
             blockArmorBonus = this.currentArmor.blockPDEFBonus;
         }
         blockArmorBonus += this.getAbilityBonuses("pDEFBlock")
-        return this.getEvadePDEF()+3+blockArmorBonus;
+        return this.getEvadePDEF()+4+blockArmorBonus;
     }
 
 
@@ -745,11 +802,11 @@ class CharacterSheet extends AbstractSheet {
             sources: [
                 {
                     reason: "Vitality",
-                    value: this.data.characterStats.vitality.value * 0.5
+                    value: (this._hasUnarmored && this.currentArmor == null) ? this.getStat("vitality") : this.getStat("vitality") * 0.5
                 },
                 {
                     reason: "Endurance",
-                    value: this.data.characterStats.endurance.value * 0.5
+                    value: (this._hasUnarmored && this.currentArmor == null) ? this.getStat("endurance") : this.getStat("endurance") * 0.5
                 },
                 {
                     reason: "Armor",

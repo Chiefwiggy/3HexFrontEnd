@@ -23,6 +23,7 @@ interface IWeaponBaseCardInput {
     isExpanded?: boolean,
     canToggleExpand?: boolean,
     isAdd?: boolean,
+    showAdd?: boolean,
     canFavorite?: boolean,
     showPrerequisites?: boolean
 }
@@ -33,6 +34,7 @@ const WeaponBaseCard = ({
     isExpanded = false,
     canToggleExpand = true,
     isAdd = true,
+    showAdd = true,
     canFavorite = true,
     showPrerequisites=false
 }: IWeaponBaseCardInput) => {
@@ -52,7 +54,7 @@ const WeaponBaseCard = ({
 
 
     return cardData.specialCrit ? (
-        <GenericCardLayout cardData={constructedData} sendBack={handleCustomSendBack} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} canFavorite={canFavorite} overrideSubtitle={cardData.weaponType.toUpperCase() + " • " + cardData.weaponClass.toUpperCase()} showPrerequisites={showPrerequisites}
+        <GenericCardLayout cardData={constructedData} sendBack={handleCustomSendBack} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} showAdd={showAdd} canFavorite={canFavorite} overrideSubtitle={cardData.weaponType.toUpperCase() + " • " + cardData.weaponClass.toUpperCase()} showPrerequisites={showPrerequisites}
                            titleExtra={constructedData.enchantmentLevel ? ("+" + constructedData.enchantmentLevel) : ""}>
             <Box
                 sx={{

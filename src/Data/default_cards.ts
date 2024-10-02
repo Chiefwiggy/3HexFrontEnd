@@ -191,6 +191,7 @@ export const default_weapon_cards: Array<IWeaponCommonData|IWeaponBaseData> = [
 
 
 
+
 export const default_commander_cards: Array<ICommanderCardData> = [
     // {
     //     _id: "___defaultCommanderCard",

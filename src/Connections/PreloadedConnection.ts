@@ -4,6 +4,7 @@ import {IConditionCard, IWeaponBaseData} from "../Data/ICardData";
 import {ISourceData} from "../Data/ISourceData";
 import {IConsumableTemplate} from "../Data/IConsumable";
 import {IFatelineFullData} from "../Data/IFatelineData";
+import {IDowntimeActivity} from "../Data/IDowntime";
 
 export interface IPreloadedDataStruct {
     class: {
@@ -24,7 +25,8 @@ export interface IPreloadedDataStruct {
     sources: Array<ISourceData>,
     consumableData: Array<IConsumableTemplate>
     fatelineData: Array<IFatelineFullData>,
-    conditionCards: Array<IConditionCard>
+    conditionCards: Array<IConditionCard>,
+    downtimeActivitiesData: Array<IDowntimeActivity>
 }
 class PreloadedConnection {
     private _preloadedURL: string;

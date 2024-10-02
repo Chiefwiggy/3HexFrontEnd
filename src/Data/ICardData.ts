@@ -111,9 +111,11 @@ export interface IWeaponCommonData extends ICommonCardData {
     hitMod?: IDataModifiers,
     baseCritMod?: IDataModifiers,
     critMod?: IDataModifiers
+    canUseForOffhand?: boolean,
+    offhandOnly? :boolean,
     weaponClassOverride?: UWeaponClass,
     weaponDamageTypeOverride?: UDamageType,
-    wepaonDamageSubtypeOverride?: string
+    weaponDamageSubtypeOverride?: string
 }
 
 export interface IScalingData<T> {

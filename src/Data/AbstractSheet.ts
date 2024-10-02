@@ -161,7 +161,7 @@ abstract class AbstractSheet {
     }
 
     public rest() {
-        this.healCharacter("health", 999, false);
+        // this.healCharacter("health", 999, false);
         this.healCharacter("stamina", 999, false);
         this.healCharacter("tether", 999, false);
     }
@@ -322,6 +322,8 @@ abstract class AbstractSheet {
             counterInvalid: true
         }
     ]
+
+
 
     public areAllCardsPrepared = (data: Array<ICommonCardData|null>): boolean => {
         return true;

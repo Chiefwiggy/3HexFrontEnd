@@ -10,6 +10,7 @@ import PLC_SourceData from "./PLC_SourceData";
 import PLC_ConsumableData from "./PLC_ConsumableData";
 import PLC_FatelineData from "./PLC_FatelineData";
 import PLC_ConditionData from "./PLC_ConditionData";
+import PLC_DowntimeData from "./PLC_DowntimeData";
 
 
 
@@ -23,6 +24,7 @@ const PreloadedContentContext =     createContext<IPreloadedContentContextInput>
         ConsumableData: new PLC_ConsumableData(),
         FatelineData: new PLC_FatelineData(),
         ConditionData: new PLC_ConditionData(),
+        DowntimeData: new PLC_DowntimeData(),
         isLoaded: false
     }
 );
