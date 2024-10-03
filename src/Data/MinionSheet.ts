@@ -282,7 +282,7 @@ class MinionSheet extends AbstractSheet {
         if (this.weightPenalty > 0) {
             ret.sources.push({
                 reason: "Encumbered",
-                value: "-"+getSkillFormat(this.weightPenalty*3, false)
+                value: "-"+getSkillFormat(this.weightPenalty*5, false)
             })
         }
         return ret;
@@ -311,7 +311,7 @@ class MinionSheet extends AbstractSheet {
         if (this.weightPenalty > 0) {
             ret.sources.push({
                 reason: "Encumbered",
-                value: "-"+getSkillFormat(this.weightPenalty*3, false)
+                value: "-"+getSkillFormat(this.weightPenalty*5, false)
             })
         }
         return ret;
