@@ -45,7 +45,6 @@ const WeaponCardBuilderView = ({closeSelf, isOffhand = false}: IWeaponCardBuilde
     }
 
     const handleReceiveSaveCards = async(sentCards: Array<ICommonCardData|null>, spellCopy: React.ReactNode) => {
-        console.log("SENT SOHO", sentCards)
         const cards: Array<ICommonCardData> = sentCards.filter(c => c !== null && c !== undefined) as ICommonCardData[];
         const base = cards.find(e => e.cardSubtype == "base") as IScaledWeaponBaseData;
         const rest = cards.filter(e => e.cardSubtype != "base");

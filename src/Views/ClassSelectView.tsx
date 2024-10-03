@@ -38,7 +38,6 @@ const ClassSelectView = ({}: IClassSelectViewInput) => {
     }
 
     const handleSelectFate = (doPick: boolean, fateData: IFatelineData) => {
-        console.log("charist", doPick, fateData);
         if (doPick) {
             setMyFate(fateData);
         } else {

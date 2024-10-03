@@ -87,7 +87,7 @@ class MinionSheet extends AbstractSheet {
     }
 
     public getMaxTether(): number {
-        return 5 + Math.floor((2.5)*this.getStat("mind"));
+        return (5)*this.getStat("mind");
     }
 
      public getEvadeDodge(): number {
@@ -160,7 +160,7 @@ class MinionSheet extends AbstractSheet {
     }
 
     public getTetherRefresh(): number {
-        return this.getStat("mind") + (this.data.bonuses?.tetherRefresh ?? 0);
+        return (this.getStat("mind")*2) + (this.data.bonuses?.tetherRefresh ?? 0);
     }
 
     public getStat(stat: keyof IMinionStats | "command"): number {

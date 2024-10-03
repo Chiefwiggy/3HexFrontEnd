@@ -366,7 +366,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getDowntimeRanks = () => {
-        return 3 + Math.floor(this.data.characterLevel / 15) + Math.floor((this.getStat("knowledge") + this.getStat("skill"))/10)
+        return 2 + Math.floor((this.getStat("knowledge") + this.getStat("skill"))/10)
     }
 
     public getCurrentDowntimeRanks = () => {
@@ -376,7 +376,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getDowntimeMaxRank = () => {
-        return 4 + this.getAbilityBonuses("downtimeRanks");
+        return 2 + Math.floor(this.getLevel() / 30)
     }
 
     public getStatCap = () => {
@@ -644,7 +644,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getMaxTether() {
-        return 5 + this.getAbilityBonuses("maxTether") + Math.floor(((2.5) * this.getStat("mind")));
+        return this.getAbilityBonuses("maxTether") + (5 * this.getStat("mind"));
     }
 
     public getHealth(): number {
@@ -760,7 +760,7 @@ class CharacterSheet extends AbstractSheet {
 
 
     public getTetherRefresh(): number {
-        return this.data.characterStats.mind.value + (this.data.bonuses?.tetherRefresh ?? 0);
+        return (this.getStat("mind")*2) + (this.data.bonuses?.tetherRefresh ?? 0);
     }
 
     public getEvadePDEF(): number {

@@ -35,7 +35,6 @@ const ClassCompendiumPage = ({}: IClassCompendiumPageInput) => {
 
     const handleTabChange = (event: any, newValue: number) => {
         setCurrentTabValue(newValue);
-        console.log(classData);
         setSearchParams({
             class: classData[getTierFromName(tier)-1][newValue].className.toLowerCase()
         });

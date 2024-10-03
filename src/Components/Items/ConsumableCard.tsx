@@ -55,6 +55,7 @@ const ConsumableCard = ({ consumableTemplate, defaultScaled = false }: IConsumab
                     newT += currentSheet?.getAbilityBonuses("trapDamage")
                     break;
             }
+            newT = Math.floor(newT);
         }
 
         const scaled = desc.split("[X]").map((e, i) => (
