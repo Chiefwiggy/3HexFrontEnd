@@ -1,14 +1,14 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Box,
     Button,
-    capitalize, Divider,
+    capitalize, CircularProgress, Divider,
     FormControl,
-    InputLabel,
+    InputLabel, LinearProgress,
     MenuItem, Paper,
     Select,
     SelectChangeEvent,
-    TextField
+    TextField, Typography
 } from "@mui/material";
 import StatView from "../../../Views/StatView";
 import StatBox from "../../StatBox/StatBox";
@@ -19,6 +19,8 @@ import FormikTextField from "../../FormikHelpers/FormikTextField";
 import FormikNumericField from "../../FormikHelpers/FormikNumericField";
 import FormikSelect from "../../FormikHelpers/FormikSelect";
 import usePreloadedContent from "../../../Hooks/usePreloadedContent/usePreloadedContent";
+import VerticalLinearBar from "../../Generic/VerticalLinearBar";
+import PoleProgress from './PoleProgress';
 
 
 interface ICreateMinionTemplateInput {
@@ -28,6 +30,10 @@ interface ICreateMinionTemplateInput {
 const CreateMinionTemplate = ({}: ICreateMinionTemplateInput) => {
 
     const {ArmorData, WeaponData} = usePreloadedContent();
+
+    const [currentXP, setCurrentXP] = useState(0);
+
+
 
     const validationSchema = Yup.object({
         minionTemplateName: Yup.string().required("Required"),
@@ -83,6 +89,35 @@ const CreateMinionTemplate = ({}: ICreateMinionTemplateInput) => {
 
 
     })
+
+    useEffect(() => {
+        const xpFromStats = Object.values(formik.values.minionBaseStats).reduce((pv, cv) => {
+            return pv + cv;
+        }, 0)
+        const level = Math.max(0,xpFromStats - 35);
+        const maxStat = Object.values(formik.values.minionBaseStats).reduce((pv, cv) => {
+            if (cv > pv) return cv;
+            return pv;
+        }, 0)
+        // console.log("LEVEL", level)
+        // console.log("MAX", maxStat);
+        const maxStatLevel = (maxStat - 10)*5;
+        // console.log("BARRIER LEVEL", maxStatLevel);
+
+        const minionActualLevel = Math.max(maxStatLevel, level);
+        console.log( "MINION LEVEL", minionActualLevel);
+
+        const x1 = minionActualLevel + 10;
+        const roughPlayerLevel = x1 * 1.25;
+        console.log(roughPlayerLevel);
+
+        const playerMaxAUT = 10 + roughPlayerLevel / 5
+
+        console.log("RPAUT:", playerMaxAUT);
+
+        setCurrentXP(playerMaxAUT*50);
+
+    }, [formik.values]);
 
     return (
         <Box>
@@ -164,23 +199,53 @@ const CreateMinionTemplate = ({}: ICreateMinionTemplateInput) => {
                 </Box>
                 <Button type={"submit"}>test</Button>
 
+                <Divider />
+                test
+                <Box
+                    sx={{
+                        display: "grid",
+                        gridTemplateColumns: "5fr 5fr 1fr",
+                        gap: "10px"
+                    }}
+                >
+                    <Paper
+                        sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center"
+                        }}
+                        elevation={1}
+                    >
+                        <Box
+                            sx={{
+                                display: "flex",
+                                gap: "12px",
+                                padding: "6px",
+                                justifyContent: "space-around"
+                            }}
+                        >
+                            <FormikTextField formik={formik} fieldName={"minionTemplateName"} label={"Minion Name"}/>
+                            <FormikSelect formik={formik} fieldName={"minionRole"} options={[
+                                "brute", "tank", "soldier", "ranged", "magic", "support"
+                            ]} label={"Role"}/>
+
+                        </Box>
+                    </Paper>
+                    <Paper
+                        sx={{
+
+                        }}
+                        elevation={1}
+                    >
+                        test2
+                    </Paper>
+                    <Box>
+                        <PoleProgress currentXP={currentXP}/>
+                    </Box>
+                </Box>
+
 
             </form>
-            {/*<Box*/}
-            {/*    sx={{*/}
-            {/*        display: "grid",*/}
-            {/*        gridTemplateColumns: "repeat(5, 1fr)",*/}
-            {/*        gap: "10px"*/}
-            {/*    }}*/}
-            {/*>*/}
-            {/*    {*/}
-            {/*        Object.entries(newMinionData.minionBaseStats).map(([key, stat]) => {*/}
-            {/*            return (*/}
-            {/*                <StatBox stat={key} key={key} value={stat} editMode={true} handleStatChange={handleStatChange}/>*/}
-            {/*            )*/}
-            {/*        })*/}
-            {/*    }*/}
-            {/*</Box>*/}
 
         </Box>
     )

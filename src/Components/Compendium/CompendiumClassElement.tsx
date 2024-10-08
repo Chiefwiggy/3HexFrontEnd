@@ -73,6 +73,7 @@ const CompendiumClassElement = ({
                                 padding: "12px"
                             }}
                             elevation={1}
+                            key={spec}
                           >
                               {capitalize(spec)}
                           </Paper>

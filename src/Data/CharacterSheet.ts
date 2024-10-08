@@ -701,11 +701,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getStepSpeed(): number {
-        return this.data.movement.stepSpeed.value + this.getAbilityBonuses("stepSpeed");
-    }
-
-    public getDashSpeed(): number {
-        return this.data.movement.dashSpeed.value + this.getAbilityBonuses("dashSpeed");
+        return 2 + this.getAbilityBonuses("stepSpeed");
     }
 
     public getWeaponClassAffinity(weaponClass: UWeaponClass) {

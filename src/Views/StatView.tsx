@@ -83,22 +83,11 @@ const StatView = ({
                         }}
                     >
                         <BoxWithTooltip
-                            placement={"left"}
-                            title={"Dash Speed (Action)"}
                             sx={{
                                 display: "grid",
                                 gridTemplateColumns: "1fr 1fr"
                             }}
-                        >
-                            <DirectionsRunOutlined sx={{color: "lightblue"}} />
-                            <Typography>{currentSheet.getDashSpeed()}</Typography>
-                        </BoxWithTooltip>
-                        <BoxWithTooltip
-                            sx={{
-                                display: "grid",
-                                gridTemplateColumns: "1fr 1fr"
-                            }}
-                            title={"Step Speed (Bonus Action)"}
+                            title={"Step Speed"}
                             placement={"left"}
                         >
                             <DirectionsWalkOutlined sx={{color: "cornsilk"}} />
