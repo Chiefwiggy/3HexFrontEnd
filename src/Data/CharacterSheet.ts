@@ -294,7 +294,7 @@ class CharacterSheet extends AbstractSheet {
         const pts = this.data.skillPoints[skillName.toLowerCase() as keyof ISkillPointObject] as number;
 
         return {
-            value: pts > total ? total * 2 : total + pts,
+            value: pts > total*2 ? total * 3 : total + pts,
             isExpert: this.data.classes.flatMap(clz => clz.classExpertises).includes(skillName.toLowerCase())
         }
     }
@@ -318,9 +318,9 @@ class CharacterSheet extends AbstractSheet {
         const pts = this.data.skillPoints[skillName.toLowerCase() as keyof ISkillPointObject] as number;
 
         if (atCapReturnFalse) {
-            return pts > total*2;
+            return pts > total;
         }
-        return pts >= total*2;
+        return pts >= total;
     }
 
     public getCap = (skillName: string) => {
