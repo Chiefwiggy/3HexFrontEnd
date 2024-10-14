@@ -34,6 +34,7 @@ const CharacterSelectCard = ({
         >
             <Typography variant={"h5"}>{characterData.characterName}</Typography>
             <Typography variant={"body2"} color={"gray"}>Level {characterData.characterLevel} • {characterData.classes.at(-1)?.className} / {characterData.classes.at(-2)?.className}</Typography>
+
             <br />
             <Button variant={"contained"} onClick={handleSelectCharacter}>Use</Button>
         </Card>

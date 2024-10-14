@@ -298,7 +298,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getMaxSkillPoints = () => {
-        return this.getStat("knowledge")*2 + this.getStat("skill")*2 + this.getLevel();
+        return this.getStat("knowledge")*5 + this.getStat("skill")*3 + this.getLevel();
     }
 
     public getSkillPointsUsed = () => {
