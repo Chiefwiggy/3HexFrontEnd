@@ -84,7 +84,6 @@ const CardEffect = ({effectData, finalPower}: ICardEffectInput) => {
     }
 
     useEffect(() => {
-        console.log(effectData);
         setIconData();
     }, [effectData]);
 
