@@ -1,5 +1,7 @@
-import React from 'react';
-import {Box} from "@mui/material";
+import React, {useEffect, useState} from 'react';
+import {Box, Paper, Typography} from "@mui/material";
+import {Casino, CasinoOutlined} from "@mui/icons-material";
+import useCharacter from "../../Hooks/useCharacter/useCharacter";
 
 interface IExpertiseWidgetInput {
 
@@ -7,12 +9,39 @@ interface IExpertiseWidgetInput {
 
 const ExpertiseWidget = ({}: IExpertiseWidgetInput) => {
 
+    const [expertiseDice, setExpertiseDice] = useState(3);
 
-    return (
-        <Box>
-            test
-        </Box>
-    )
+    const {currentSheet} = useCharacter();
+
+    useEffect(() => {
+        if (currentSheet) {
+            setExpertiseDice(currentSheet.expertiseDice)
+        }
+    }, [currentSheet?.expertiseDice]);
+
+
+    return currentSheet ? (
+        <Paper elevation={2}
+            sx={{
+                padding: "12px"
+            }}
+        >
+            <Box
+                sx={{
+                    display: "flex",
+                    gap: "4px"
+                }}
+            >
+                <Typography>Expertise Dice: </Typography>
+                {
+                    Array.from({length: expertiseDice}).map((_, i) => {
+                        return <CasinoOutlined key={i}/>
+                    })
+                }
+            </Box>
+
+        </Paper>
+    ) : <></>
 }
 
 export default ExpertiseWidget

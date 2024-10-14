@@ -80,6 +80,8 @@ class CharacterSheet extends AbstractSheet {
     public commanderCards: Array<ICommanderCardData> = [];
     public minionData: Array<MinionSheet> = [];
 
+    public expertiseDice = 3;
+
 
 
     public spellCalculator = new SpellCardCalculator(this.spellCalculatorTypes);
@@ -316,9 +318,9 @@ class CharacterSheet extends AbstractSheet {
         const pts = this.data.skillPoints[skillName.toLowerCase() as keyof ISkillPointObject] as number;
 
         if (atCapReturnFalse) {
-            return pts > total;
+            return pts > total*2;
         }
-        return pts >= total;
+        return pts >= total*2;
     }
 
     public getCap = (skillName: string) => {
@@ -326,7 +328,7 @@ class CharacterSheet extends AbstractSheet {
 
         return config.attr.reduce((pv, cv) => {
             return pv + this.getStat(cv as UStat);
-        }, 0)
+        }, 0) * 2
     }
 
 
@@ -493,6 +495,8 @@ class CharacterSheet extends AbstractSheet {
         this._setAffinities()
         this.preloadedData = preloadedData;
         this.setArmor();
+        this.setExpertiseDice()
+
 
 
         this.initializeAsync().then(r => {
@@ -500,6 +504,15 @@ class CharacterSheet extends AbstractSheet {
             this._hasUnarmored = this.isUnlocked("unarmoredDefense");
         });
 
+     }
+     private setExpertiseDice () {
+        const expertiseObject = this.data.classes.flatMap(clz => clz.classExpertises).reduce((acc, curr) => ({ ...acc, [curr]: (acc[curr] || 0) + 1 }), {} as Record<string, number>);
+        this.expertiseDice = Object.values(expertiseObject).reduce((pv, cv) => {
+            if (cv > 1) {
+                return pv + cv - 1;
+            }
+            return pv;
+        }, 3)
      }
 
      private async initializeAsync() {

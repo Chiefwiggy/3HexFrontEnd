@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {Box, IconButton, TableCell, Typography, useMediaQuery} from "@mui/material";
-import {getSkillFormat} from "../../Utils/Shorthand";
+import {getSkillFormat, getStatShorthand, UStat} from "../../Utils/Shorthand";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
 import DefensiveStatPopover from "../Defenses/DefensiveStatPopover";
 import GrayBox from "../Defenses/GrayBox";
 import ClickPopup from "../Generic/ClickPopup";
 import {ISkillPointObject} from "../../Data/ICharacterData";
 import {AddCircleOutlined, RemoveCircleOutlined} from "@mui/icons-material";
+import {ISkillConfig, ISkillItemConfig, skill_config} from "../../Data/skill_config";
 
 interface ISkillCellInput {
     skillName: string,
@@ -94,6 +95,34 @@ const SkillCell = ({
                                 </IconButton>
 
                                 <Typography variant={"body2"}>{currentSheet.data.skillPoints[skillName.toLowerCase() as keyof ISkillPointObject]} / {currentSheet.getCap(skillName.toLowerCase() as keyof ISkillPointObject)} {showPoints ? "pts." : ""}</Typography>
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        flexDirection: "column"
+                                    }}
+                                >
+                                    <Typography
+                                        sx={{
+                                            textTransform: "uppercase",
+                                            fontSize: "11px"
+                                        }}
+                                    >
+                                        {
+                                            getStatShorthand((skill_config[skillName.toLowerCase() as keyof ISkillConfig] as ISkillItemConfig).attr[0] as UStat)
+                                        }
+                                    </Typography>
+                                    <Typography
+                                        sx={{
+                                            textTransform: "uppercase",
+                                            fontSize: "11px"
+                                        }}
+                                    >
+                                        {
+                                            getStatShorthand((skill_config[skillName.toLowerCase() as keyof ISkillConfig] as ISkillItemConfig).attr[1] as UStat)
+                                        }
+
+                                    </Typography>
+                                </Box>
                             </Box>
                         </>
                         :

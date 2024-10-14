@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box} from "@mui/material";
+import {Box, Divider} from "@mui/material";
 import ExpertiseWidget from "../Skills/ExpertiseWidget";
 import SkillsTable from "../Skills/SkillsTable"
 
@@ -13,6 +13,7 @@ const SkillsTab = ({}: ISkillsTabInput) => {
     return (
         <Box>
             <ExpertiseWidget />
+            <Divider sx={{margin: 2}} />
             <SkillsTable />
         </Box>
     )
