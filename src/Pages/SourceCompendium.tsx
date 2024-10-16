@@ -3,6 +3,7 @@ import {Box} from "@mui/material";
 import usePreloadedContent from "../Hooks/usePreloadedContent/usePreloadedContent";
 import SourceComponent from '../Components/Sources/SourceComponent';
 import {Helmet} from "react-helmet";
+import useUser from "../Hooks/useUser/useUser";
 
 interface ISourceCompendiumInput {
 
@@ -11,6 +12,8 @@ interface ISourceCompendiumInput {
 const SourceCompendium = ({}: ISourceCompendiumInput) => {
 
     const {SourceData} = usePreloadedContent();
+
+    const {userPermissions} = useUser();
 
 
     return (
@@ -25,12 +28,11 @@ const SourceCompendium = ({}: ISourceCompendiumInput) => {
                 <meta charSet={"utf-8"} />
                 <title>Sources - Ursura</title>
             </Helmet>
-            {SourceData.GetAllSourceData().map((data) => {
+            {SourceData.GetSourceDataForUser(userPermissions).map((data) => {
                 return (
-                    <Box>
-                        <SourceComponent sourceData={data} key={data._id} />
+                    <Box key={data._id}>
+                        <SourceComponent sourceData={data}  />
                     </Box>
-
                 )
             })}
         </Box>

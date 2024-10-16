@@ -6,7 +6,8 @@ export interface ISourceData {
     sourceArcanotype: string,
     sourceTier: number,
     law: null | ILawData,
-    sourceTiers: Array<ITierData>
+    sourceTiers: Array<ITierData>,
+    visibility: "all" | "restricted" | "admin"
 }
 
 export interface ITierData {

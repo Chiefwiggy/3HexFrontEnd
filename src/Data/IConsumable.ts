@@ -5,7 +5,8 @@ import {IRangeData} from "./Card Calculators/AbstractCardCalculator";
 export enum EConsumableType {
     HEALING = "healing",
     BOMB = "bomb",
-    TRAP = "trap"
+    TRAP = "trap",
+    TOTEM = "totem",
 }
 
 export interface IConsumableTemplate {
@@ -18,6 +19,8 @@ export interface IConsumableTemplate {
     itemType: EConsumableType,
     description: Array<string>,
     slotCost: number,
+    itemTier: number,
+    itemBaseHealth?: number
 }
 
 export interface IConsumableMergedData extends IConsumableTemplate {

@@ -5,6 +5,7 @@ import useCharacter from "../../Hooks/useCharacter/useCharacter";
 import { ICharacterStats } from "../../Data/ICharacterData";
 import {ExpandMoreOutlined, FlipOutlined, LinearScaleOutlined, WaterDropOutlined} from "@mui/icons-material";
 import {ExpandMore} from "../../Elements/ExpandMore";
+import {romanize} from "../../Utils/Shorthand";
 
 interface IConsumableCardInput {
     consumableTemplate: IConsumableTemplate,
@@ -38,6 +39,27 @@ const ConsumableCard = ({ consumableTemplate, defaultScaled = false }: IConsumab
         setIsOpen(!isOpen);
     }
 
+    const GetSlotCost = () => {
+        let finalCost = consumableTemplate.slotCost
+        if (currentSheet) {
+            switch (consumableTemplate.itemType) {
+                case EConsumableType.BOMB:
+                    finalCost += currentSheet.getAbilityBonuses("bombSlotCost");
+                    break;
+                case EConsumableType.TRAP:
+                    finalCost += currentSheet.getAbilityBonuses("trapSlotCost");
+                    break;
+                case EConsumableType.HEALING:
+                    finalCost += currentSheet.getAbilityBonuses("healingSlotCost");
+                    break;
+                case EConsumableType.TOTEM:
+                    finalCost += currentSheet.getAbilityBonuses("totemSlotCost");
+                    break;
+            }
+        }
+        return Math.max(1, finalCost + (currentSheet?.getAbilityBonuses("allSlotCost") ?? 0))
+    }
+
     const GetScaledDescription = (desc: string, index: number) => {
         let newT = consumableTemplate.basePower;
         if (currentSheet) {
@@ -53,6 +75,9 @@ const ConsumableCard = ({ consumableTemplate, defaultScaled = false }: IConsumab
                     break;
                 case EConsumableType.TRAP:
                     newT += currentSheet?.getAbilityBonuses("trapDamage")
+                    break;
+                case EConsumableType.TOTEM:
+                    newT += currentSheet?.getAbilityBonuses("totemHealth")
                     break;
             }
             newT = Math.floor(newT);
@@ -162,7 +187,7 @@ const ConsumableCard = ({ consumableTemplate, defaultScaled = false }: IConsumab
                         }}>{consumableTemplate.itemName}</Typography>
                         <Typography variant={"subtitle1"} sx={{
                             color: "darkgray"
-                        }}>ITEM • {consumableTemplate.itemType.toUpperCase()}</Typography>
+                        }}>TIER {romanize(consumableTemplate.itemTier)} ITEM • {consumableTemplate.itemType.toUpperCase()}</Typography>
                     </Box>
                     <Box>
                         {
@@ -194,7 +219,7 @@ const ConsumableCard = ({ consumableTemplate, defaultScaled = false }: IConsumab
                                 <FlipOutlined />
                                 <Typography sx={{
                                     paddingTop: "2px"
-                                }}>{consumableTemplate.slotCost}</Typography>
+                                }}>{GetSlotCost()}</Typography>
                             </Box>
                         </Box>
                     </Box>

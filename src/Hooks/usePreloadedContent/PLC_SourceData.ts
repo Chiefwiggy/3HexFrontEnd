@@ -15,6 +15,16 @@ class PLC_SourceData {
     public GetAllSourceData() {
         return this.baseSourceData;
     }
+
+    public GetSourceDataForUser(userPermissions: string[]) {
+        if (userPermissions.includes("admin") || userPermissions.includes("sources_all")) {
+            return this.baseSourceData
+        }
+        return this.baseSourceData.filter(sd => {
+            return (sd.visibility === "all" || userPermissions.includes(`source_${sd._id}`));
+        })
+
+    }
 }
 
 export default PLC_SourceData;

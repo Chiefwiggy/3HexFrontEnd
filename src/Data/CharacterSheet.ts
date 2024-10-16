@@ -80,7 +80,7 @@ class CharacterSheet extends AbstractSheet {
     public commanderCards: Array<ICommanderCardData> = [];
     public minionData: Array<MinionSheet> = [];
 
-    public expertiseDice = 3;
+    private baseExpertiseDice = 3;
 
 
 
@@ -299,6 +299,10 @@ class CharacterSheet extends AbstractSheet {
         }
     }
 
+    public getExpertiseDice = () => {
+        return this.baseExpertiseDice + this.getAbilityBonuses("expertiseDice");
+    }
+
     public getMaxSkillPoints = () => {
         return this.getStat("knowledge")*5 + this.getStat("skill")*3 + this.getLevel();
     }
@@ -368,7 +372,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getDowntimeRanks = () => {
-        return 2 + Math.floor((this.getStat("knowledge") + this.getStat("skill"))/10)
+        return 2 + Math.floor((this.getStat("knowledge") + this.getStat("skill"))/10) + this.getAbilityBonuses("downtimeRanks")
     }
 
     public getCurrentDowntimeRanks = () => {
@@ -507,12 +511,12 @@ class CharacterSheet extends AbstractSheet {
      }
      private setExpertiseDice () {
         const expertiseObject = this.data.classes.flatMap(clz => clz.classExpertises).reduce((acc, curr) => ({ ...acc, [curr]: (acc[curr] || 0) + 1 }), {} as Record<string, number>);
-        this.expertiseDice = Object.values(expertiseObject).reduce((pv, cv) => {
+        this.baseExpertiseDice = Object.values(expertiseObject).reduce((pv, cv) => {
             if (cv > 1) {
                 return pv + cv - 1;
             }
             return pv;
-        }, 3)
+        }, 3);
      }
 
      private async initializeAsync() {

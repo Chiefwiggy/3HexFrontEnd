@@ -15,9 +15,9 @@ const ExpertiseWidget = ({}: IExpertiseWidgetInput) => {
 
     useEffect(() => {
         if (currentSheet) {
-            setExpertiseDice(currentSheet.expertiseDice)
+            setExpertiseDice(currentSheet.getExpertiseDice)
         }
-    }, [currentSheet?.expertiseDice]);
+    }, [currentSheet]);
 
 
     return currentSheet ? (
