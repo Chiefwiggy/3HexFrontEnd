@@ -69,14 +69,13 @@ const ClassSelectPanel = ({
             let minLevel = 60 * (tierNumber - 1);
             const classesOfTier = myClasses.filter(clz => clz.classTier === tierNumber).length;
             const promotions = myClasses.filter(clz => clz.classTier === tierNumber && clz.isPromoted).length;
-            if (classesOfTier < 2 && currentSheet.getLevel() >= minLevel) {
+            if ((classesOfTier + promotions) < (2 + Math.min(2, Math.floor((currentSheet.getLevel() - minLevel) / 20))) && currentSheet.getLevel() >= minLevel) {
                 setCanEquip(true);
+                if (currentSheet.getLevel() > minLevel + 20) {
+                    setCanPromote(true);
+                }
             } else {
                 setCanEquip(false);
-            }
-            if (currentSheet.getLevel() >= (minLevel + ((promotions+1) * 20))) {
-                setCanPromote(true);
-            } else {
                 setCanPromote(false);
             }
         }

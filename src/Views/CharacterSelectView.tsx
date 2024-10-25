@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Box, Button, Typography} from "@mui/material";
+import {Box, Button, TextField, Typography} from "@mui/material";
 import {ICharacterBaseData} from "../Data/ICharacterData";
 import CharacterSelectCard from "../Components/Character Select/CharacterSelectCard";
 import Axios from 'axios'
@@ -15,6 +15,12 @@ const CharacterSelectView = () => {
 
     const {CharacterAPI} = useAPI();
     const {loggedIn, charactersOwned, userPermissions} = useUser();
+
+    const [currentFilter, setCurrentFilter] = useState<string>();
+
+    const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setCurrentFilter(event.target.value)
+    }
 
 
     useEffect(() => {
@@ -62,6 +68,19 @@ const CharacterSelectView = () => {
                 }
 
             </Box>
+            <Box
+                sx={{
+                    padding: "2px 20%"
+                }}
+            >
+                <TextField
+                    value={currentFilter}
+                    onChange={handleFilterChange}
+                    placeholder={"Type here to filter..."}
+                    fullWidth={true}
+                    autoComplete="off"
+                />
+            </Box>
             {
                 allCharacters.length > 0
                 ?
@@ -74,7 +93,10 @@ const CharacterSelectView = () => {
                     }}
                 >
                     {
-                        allCharacters.map((character: ICharacterBaseData) => {
+                        allCharacters.filter(
+                            char =>
+                                currentFilter ? (char.characterName.toLowerCase().includes(currentFilter.toLowerCase()) || char.classes.map(clz => clz.className.toLowerCase()).includes(currentFilter.toLowerCase())) : true)
+                            .map((character: ICharacterBaseData) => {
                             return <CharacterSelectCard characterData={character} key={character.characterName}/>
                         })
                     }

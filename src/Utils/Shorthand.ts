@@ -1,4 +1,4 @@
-import {UDamageType} from "../Data/ICardData";
+import {UDamageType, UWeaponClass} from "../Data/ICardData";
 import AbstractSheet from "../Data/AbstractSheet";
 import {ICharacterBaseData, IClassData} from "../Data/ICharacterData";
 import {UArmorClass} from "../Data/IArmorData";
@@ -98,6 +98,37 @@ export const getArmorAffinityRequirement = (armorClass: UArmorClass, enchantment
         case "heavy":
             return `• Guardian ${enchantmentLevel}`
     }
+}
+
+export const getWeaponAffinityRequirement = (weaponClass: UWeaponClass, enchantmentLevel: number, handedness: number, hasIronGrasp: boolean, showBullet: boolean = true): string => {
+    let retVal = ""
+    if (showBullet) {
+        retVal = "• "
+    }
+    if (enchantmentLevel == 0) {
+        return retVal
+    }
+    let enchantmentLevelMod = enchantmentLevel;
+    if (hasIronGrasp) {
+        enchantmentLevelMod -= 1;
+    }
+    switch (weaponClass) {
+        case "light":
+            retVal += `Deft ${enchantmentLevelMod}`
+            break;
+        case "standard":
+            retVal += `Infantry ${enchantmentLevelMod}`
+            break;
+        case "heavy":
+            retVal += `Guardian ${enchantmentLevelMod}`
+            break;
+    }
+    if (hasIronGrasp) {
+        if (handedness > 1.2 && handedness < 2.0) {
+            retVal += `/${enchantmentLevel}`
+        }
+    }
+    return retVal;
 }
 
 export const getTierFromName = (tierName: string) => {

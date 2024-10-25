@@ -1,6 +1,7 @@
 import {IScaledWeaponBaseData, IWeaponBaseData} from "../../Data/ICardData";
 import {IAPIContext} from "../useAPI/APIProvider";
 import {ConstructFinalWeapon} from "../../Utils/ConstructFinalWeapon";
+import {IEnchantmentData} from "../../Data/ICharacterData";
 
 
 class PLC_WeaponData {
@@ -17,6 +18,11 @@ class PLC_WeaponData {
 
     public GetCardById(cardId: string) {
         return this.baseWeaponCards.find(e => e._id === cardId);
+    }
+
+    public GetCardsByEnchantmentValues(enchantmentData: Array<IEnchantmentData>) {
+        const idList = enchantmentData.map(e => e.baseId);
+        return this.baseWeaponCards.filter(e => idList.includes(e._id))
     }
 
     public GetAllStandardWeapons() {

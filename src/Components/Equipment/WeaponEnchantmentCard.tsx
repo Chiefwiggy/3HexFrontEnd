@@ -11,36 +11,28 @@ import {
 import {ConstructFinalWeapon, ScaleChainNumeric} from "../../Utils/ConstructFinalWeapon";
 import useAPI from "../../Hooks/useAPI/useAPI";
 import {IEnchantmentData} from "../../Data/ICharacterData";
-import {getSkillFormat} from "../../Utils/Shorthand";
+import {getArmorAffinityRequirement, getSkillFormat, getWeaponAffinityRequirement} from "../../Utils/Shorthand";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
+import {UArmorClass} from "../../Data/IArmorData";
 
 interface IWeaponEnchantmentCardInput {
     weaponData: IWeaponBaseData,
     weaponMetadata: IEnchantmentData,
-    primedToDelete: boolean,
-    index: number
-    callback: (delta: number, index: number) => void,
-    deleteCallback: (doDelete: boolean, index: number) => void
+    callback: (delta: number, id: string) => void,
 }
 
 const WeaponEnchantmentCard = ({
     weaponData,
     weaponMetadata,
-    primedToDelete,
-    index,
     callback,
-    deleteCallback
 }: IWeaponEnchantmentCardInput) => {
 
 
 
     const handleEditEnchantment = (delta: number) => (event: React.MouseEvent) => {
-        callback(delta, index);
+        callback(delta, weaponData._id);
     }
 
-    const handleSetRemoveWeapon = (doRemove: boolean) => () => {
-        deleteCallback(doRemove, index);
-    }
 
     const {currentSheet} = useCharacter();
 
@@ -55,9 +47,7 @@ const WeaponEnchantmentCard = ({
                     padding: "12px",
                     display: "grid",
                     gridTemplateColumns: "2fr 3fr 2fr",
-                    gap: "4px",
-                    opacity: primedToDelete ? 0.6 : 1,
-                    border: primedToDelete ? "1px solid red" : "0px solid white",
+                    gap: "4px"
                 }}
             >
                 <Box
@@ -69,6 +59,13 @@ const WeaponEnchantmentCard = ({
                     <Box>
                         <Typography sx={{ userSelect: "none"}}>{weaponData.cardName} +{weaponMetadata.enchantmentLevel}</Typography>
                         <Typography variant={"body2"} sx={{ userSelect: "none"}}>{currentSheet.getHandedness(weaponData.weaponClass, weaponData.handedness, weaponMetadata.enchantmentLevel)}</Typography>
+                        <Typography variant={"subtitle2"} sx={{
+                            color: "darkgray"
+                        }}>{getWeaponAffinityRequirement(weaponData.weaponClass, weaponMetadata.enchantmentLevel, weaponData.handedness, currentSheet.isUnlocked("ironGrasp"), false)}</Typography>
+                        <Typography variant={"subtitle2"} sx={{
+                            color: "darkgray"
+                        }}>{weaponData.damageType == "physical" ? "Skill" : "Mind"} {currentSheet.getSkillRequirementString(weaponData, weaponMetadata.enchantmentLevel)}</Typography>
+
                     </Box>
 
                 </Box>
@@ -134,23 +131,7 @@ const WeaponEnchantmentCard = ({
                     </Box>
                 </Box>
             </Paper>
-            <Box
-                sx={{
-                    marginLeft: "-16px",
-                    marginTop: "-20px"
-                }}
-            >
-                {
-                    primedToDelete ?
-                        <IconButton
-                            onClick={handleSetRemoveWeapon(false)}
-                        ><UndoOutlined /></IconButton>
-                        :
-                        <IconButton
-                            onClick={handleSetRemoveWeapon(true)}
-                        ><CloseOutlined /></IconButton>
-                }
-            </Box>
+
         </Box>
     ) : <></>
 }
