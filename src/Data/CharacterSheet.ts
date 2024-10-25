@@ -741,7 +741,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getHandedness(weaponClass: UWeaponClass, handedness: number, currentEnchant: number) {
-        if (handedness <= 1) {
+        if (handedness <= 1.2) {
             return "One-Handed"
         } else if (handedness >= 2) {
             return "Two-Handed"

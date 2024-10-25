@@ -36,6 +36,7 @@ export interface IPreparedSource {
 export interface ICharacterBaseData {
     characterName: string,
     characterLevel: number,
+    isMainCharacter: boolean,
     classes: Array<IClassData>,
     attributeBars: IAttributeBars,
     downtimeData: Array<IDowntimePlayerData>,

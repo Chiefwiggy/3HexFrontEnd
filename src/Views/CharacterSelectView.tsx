@@ -5,7 +5,7 @@ import CharacterSelectCard from "../Components/Character Select/CharacterSelectC
 import Axios from 'axios'
 import useAPI from "../Hooks/useAPI/useAPI";
 import useUser from "../Hooks/useUser/useUser";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {AddOutlined} from "@mui/icons-material";
 
 
@@ -68,7 +68,7 @@ const CharacterSelectView = () => {
                 <Box
                     sx={{
                         display: 'grid',
-                        gridTemplateColumns: 'repeat(5, 1fr)',
+                        gridTemplateColumns: 'repeat(6, 1fr)',
                         gap: 1,
                         margin: 4
                     }}

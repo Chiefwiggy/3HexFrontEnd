@@ -1,6 +1,6 @@
 import {UDamageType} from "../Data/ICardData";
 import AbstractSheet from "../Data/AbstractSheet";
-import {ICharacterBaseData} from "../Data/ICharacterData";
+import {ICharacterBaseData, IClassData} from "../Data/ICharacterData";
 import {UArmorClass} from "../Data/IArmorData";
 import {IMinionData} from "../Data/IMinionData";
 
@@ -172,3 +172,20 @@ export function romanize(num: number) {
 
     return roman;
 }
+
+export function getClassesString(classes: Array<IClassData>) {
+        const highestTier = classes.reduce((pv, cv) => {
+            if (cv.classTier > pv) {
+                return cv.classTier;
+            }
+            return pv;
+        }, 0)
+        return classes.filter(e => e.classTier == highestTier).sort((a,b) => {
+            if (a.isPromoted != b.isPromoted) {
+                if (a.isPromoted) return -1;
+                else return 1;
+            } else {
+                return a.className.localeCompare(b.className);
+            }
+        }).map(e => e.isPromoted ? e.className + "+" : e.className).join(" • ")
+    }

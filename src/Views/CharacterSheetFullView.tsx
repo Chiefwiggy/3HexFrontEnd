@@ -14,7 +14,7 @@ import {
     LocalDiningOutlined, LooksTwoOutlined,
     MilitaryTechOutlined,
     ModeEditOutlined,
-    SdCardOutlined,
+    SdCardOutlined, SettingsOutlined,
     TokenOutlined,
     ViewCarousel,
     ViewCarouselOutlined
@@ -32,6 +32,7 @@ import CommanderCardPrepView from "./CommanderCardPrepView";
 import IconButtonWithTooltip from "../Components/Generic/IconButtonWithTooltip";
 import ConditionsPanelView from "./ConditionsPanelView";
 import BackpackView from "./BackpackView";
+import SettingsPanel from "./SettingsPanel";
 
 const CharacterSheetFullView = () => {
 
@@ -46,6 +47,7 @@ const CharacterSheetFullView = () => {
     const [commanderPanelOpen, setCommanderPanelOpen] = useState<boolean>(false);
     const [effectPanelOpen, setEffectPanelOpen] = useState<boolean>(false);
     const [backpackPanelOpen, setBackpackPanelOpen] = useState<boolean>(false);
+    const [settingsPanelOpen, setSettingsPanelOpen] = useState<boolean>(false);
 
     const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
         setCurrentTab(newValue);
@@ -89,6 +91,10 @@ const CharacterSheetFullView = () => {
 
     const handleBackpackPanel = (open: boolean) => (event: React.MouseEvent) => {
         setBackpackPanelOpen(open);
+    }
+
+    const handleSettingsPanel = (open: boolean) => (event: React.MouseEvent) => {
+        setSettingsPanelOpen(open);
     }
 
     const {currentSheet, SetCurrentSheet, isReady} = useCharacter();
@@ -176,6 +182,7 @@ const CharacterSheetFullView = () => {
                 <IconButtonWithTooltip title={"Classes & Affinities"} placement={"left"} onClick={handleClassSelectPanel(true)}><EngineeringOutlined /></IconButtonWithTooltip>
                 <IconButtonWithTooltip title={"Event Log"} placement={"left"} onClick={handleEventPanel(true)}><ChatOutlined/></IconButtonWithTooltip>
                 <IconButtonWithTooltip title={"Notes"} placement={"left"} onClick={handleNotesPanel(true)}><EditNoteOutlined/></IconButtonWithTooltip>
+                <IconButtonWithTooltip title={"Settings"} placement={"left"} onClick={handleSettingsPanel(true)}><SettingsOutlined /></IconButtonWithTooltip>
 
 
             </Box>
@@ -244,6 +251,13 @@ const CharacterSheetFullView = () => {
                 onClose={handleClassSelectPanel(false)}
             >
                 <ClassSelectView />
+            </Drawer>
+            <Drawer
+                anchor={"right"}
+                open={settingsPanelOpen}
+                onClose={handleSettingsPanel(false)}
+            >
+                <SettingsPanel />
             </Drawer>
 
             <Drawer

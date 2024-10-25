@@ -18,6 +18,7 @@ export interface IDialogButton {
     variant?: any,
     isIcon?: boolean,
     icon?: React.ReactNode,
+    disableCondition?: boolean
 }
 interface ISimpleCloseableDialogInput {
     title: string,
@@ -25,7 +26,8 @@ interface ISimpleCloseableDialogInput {
     buttons: Array<IDialogButton>,
     isOpen: boolean,
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
-    fullWidth?: boolean
+    fullWidth?: boolean,
+    runOnClose?: () => void
 }
 const SimpleClosableDialog = ({
     title,
@@ -33,10 +35,12 @@ const SimpleClosableDialog = ({
     buttons,
     isOpen,
     setIsOpen,
-    fullWidth=false
+    fullWidth=false,
+    runOnClose = () => {}
 }: ISimpleCloseableDialogInput) => {
 
     const handleClose = () => {
+        runOnClose();
         setIsOpen(false);
     }
 
@@ -66,6 +70,7 @@ const SimpleClosableDialog = ({
                                 <IconButton
                                     onClick={button.action}
                                     key={index}
+                                    disabled={button?.disableCondition ?? false}
                                 >
                                     {button.icon}
                                 </IconButton>
@@ -77,6 +82,7 @@ const SimpleClosableDialog = ({
                                     key={index}
                                     color={button.color}
                                     variant={button.variant ?? "primary"}
+                                    disabled={button?.disableCondition ?? false}
                                 >
                                     {button.label}
                                 </Button>

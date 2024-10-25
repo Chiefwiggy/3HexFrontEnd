@@ -6,6 +6,7 @@ const UserContext = createContext<IUserContext>({
     SignupUser: (email: string, string: string) => {},
     LoginUser: (email, string) => {},
     LogoutUser: () => {},
+    RemoveCharacterFromUser: (characterId: string) => {},
     loggedIn: false,
     userPermissions: [""],
     charactersOwned: [] as Array<ICharacterBaseData>,

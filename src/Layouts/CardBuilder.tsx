@@ -104,7 +104,7 @@ const CardBuilder = ({
                 cards = cards.filter(e => {
                     switch(e.cardSubtype) {
                         case "base":
-                            return (e as IWeaponBaseData).handedness < 2;
+                            return (e as IWeaponBaseData).handedness <= 1;
                         default:
                             return (e as IWeaponCommonData).canUseForOffhand
                     }

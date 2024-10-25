@@ -154,6 +154,10 @@ class CharacterConnection {
         })
     }
 
+    public async DeleteCharacter(charID: string) {
+        return await Axios.delete(this.GetRouteURL(`delete/${charID}`), this._getConfig())
+    }
+
     public async UpdateWeaponsList(charID: string, weapons: Array<IEnchantmentData>) {
         await Axios.put(this.GetRouteURL(`update/${charID}`), {
             knownWeapons: weapons

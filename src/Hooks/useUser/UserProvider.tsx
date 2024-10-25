@@ -8,6 +8,7 @@ export interface IUserContext {
     SignupUser: (email: string, password: string) => Promise<void>
     LoginUser: (email: string, password: string) => Promise<void>,
     LogoutUser: () => void,
+    RemoveCharacterFromUser: (characterId: string) => Promise<void>
     loggedIn: boolean,
     userPermissions: Array<string>,
     charactersOwned: Array<ICharacterBaseData>
@@ -31,7 +32,7 @@ const UserProvider = ({children}: any) => {
     const GetAPIConfig = (): AxiosRequestConfig => {
         return {
             headers: {
-                'Authorization': `Bearer ${sessionStorage.getItem("token")}`,
+                'Authorization': `Bearer ${localStorage.getItem("token")}`,
                 'Content-Type': 'application/json'
             }
         }
@@ -47,13 +48,13 @@ const UserProvider = ({children}: any) => {
     const [charactersOwned, setCharactersOwned] = useState<Array<ICharacterBaseData>>([]);
 
     useEffect(() => {
-        if (sessionStorage.getItem("refresh") && sessionStorage.getItem("email")) {
-            LoginWithToken(sessionStorage.getItem("email"), sessionStorage.getItem("refresh")).then(() => {})
+        if (localStorage.getItem("refresh") && localStorage.getItem("email")) {
+            LoginWithToken(localStorage.getItem("email"), localStorage.getItem("refresh")).then(() => {})
         }
     }, []);
 
     const LogoutUser = () => {
-        sessionStorage.clear();
+        localStorage.clear();
         setUserPermissions([]);
         setLoggedIn(false);
         setCharactersOwnedIds([]);
@@ -61,11 +62,11 @@ const UserProvider = ({children}: any) => {
     }
 
     const __SetLoginData = async(data: IUserResponse) => {
-        sessionStorage.setItem("refresh", data.refresh);
-        sessionStorage.setItem("email", data.response.email);
+        localStorage.setItem("refresh", data.refresh);
+        localStorage.setItem("email", data.response.email);
         setCharactersOwnedIds(data.response.characters_owned);
         setUserPermissions(data.response.userPermissions);
-        sessionStorage.setItem("token", data.token);
+        localStorage.setItem("token", data.token);
         setLoggedIn(true);
         await Axios.get(apiUrl+"characters/getMine", GetAPIConfig()).then((resp) => {
             setCharactersOwned(resp.data);
@@ -85,6 +86,12 @@ const UserProvider = ({children}: any) => {
             await __SetLoginData(resp.data);
         }).catch((e) => {
             console.error(e);
+        })
+    }
+
+    const RemoveCharacterFromUser = async(characterId: string) => {
+        setCharactersOwned(currentCharactersOwned => {
+            return currentCharactersOwned.filter(item => item._id !== characterId);
         })
     }
 
@@ -118,6 +125,7 @@ const UserProvider = ({children}: any) => {
             SignupUser,
             LoginUser,
             LogoutUser,
+            RemoveCharacterFromUser,
             loggedIn,
             userPermissions,
             charactersOwned

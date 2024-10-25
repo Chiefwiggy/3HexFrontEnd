@@ -34,7 +34,7 @@ const APIProvider = ({children}: IAPIProviderInput) => {
     const GetAPIConfig = (): AxiosRequestConfig => {
         return {
             headers: {
-                'Authorization': `Bearer ${sessionStorage.getItem("token")}`,
+                'Authorization': `Bearer ${localStorage.getItem("token")}`,
                 'Content-Type': 'application/json'
             }
         }
