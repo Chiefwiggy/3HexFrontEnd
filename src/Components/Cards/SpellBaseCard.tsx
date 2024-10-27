@@ -12,6 +12,7 @@ import {
 import NumericIcon from "./NumericIcon";
 import CardEffect from "./CardEffect";
 import {getDamageShorthand, getSkillFormat, getStatShorthand, UStat} from "../../Utils/Shorthand";
+import SubtypeDamageIcon from "../SmallComponents/SubtypeDamageIcon";
 
 
 interface ISpellBaseCardInput {
@@ -56,7 +57,7 @@ const SpellBaseCard = ({
                 }}
             >
                 <Box>
-                    <NumericIcon val={cardData.basePower} icon={SportsMmaOutlined} postText={getDamageShorthand(cardData.damageType as UDamageType)}/>
+                    <NumericIcon val={cardData.basePower} icon={SportsMmaOutlined} postText={getDamageShorthand(cardData.damageType as UDamageType)} postIcon={<SubtypeDamageIcon damageSubtype={cardData.damageSubtype}/>} />
                     <NumericIcon val={"x" + cardData.potency} icon={FitnessCenterOutlined} />
                     <NumericIcon val={cardData.duration} icon={AccessTimeOutlined} />
                 </Box>

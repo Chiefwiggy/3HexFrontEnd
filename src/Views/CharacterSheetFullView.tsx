@@ -33,6 +33,11 @@ import IconButtonWithTooltip from "../Components/Generic/IconButtonWithTooltip";
 import ConditionsPanelView from "./ConditionsPanelView";
 import BackpackView from "./BackpackView";
 import SettingsPanel from "./SettingsPanel";
+import CharacterSheetSidebar from "../Components/Character Sheet/CharacterSheetSidebar";
+import RaceSelectView from "./RaceSelectView";
+import {GiAxeSword, GiDaggers, GiDwarfFace, GiSave} from "react-icons/gi";
+import {IoMan} from "react-icons/io5";
+import SavedCardsView from "./SavedCardsView";
 
 const CharacterSheetFullView = () => {
 
@@ -163,130 +168,20 @@ const CharacterSheetFullView = () => {
                     zIndex: 10 // Ensure it's above other content
                 }}
             >
-                <IconButtonWithTooltip title={"Prepare Cards"} placement={"left"} onClick={handleCardsPanel(true)}><ViewCarouselOutlined/></IconButtonWithTooltip>
-
-                <IconButtonWithTooltip onClick={handleSpellPanel(true)} placement={"left"} title={"Create Spells"}>
-                    <AutoFixHighOutlined/>
-                </IconButtonWithTooltip>
-                <IconButtonWithTooltip title={"Create Attacks"} placement={"left"} onClick={handleWeaponsPanel(true)}><LocalDiningOutlined/></IconButtonWithTooltip>
-                {
-                    currentSheet.canDualWield() ?
-                        <IconButtonWithTooltip title={"Create Offhand Attacks"} placement={"left"} onClick={handleOffhandWeaponsPanel(true)}><LooksTwoOutlined/></IconButtonWithTooltip>
-                        :
-                        <></>
-                }
-
-                <IconButtonWithTooltip title={"Prepare Commander Cards"} placement={"left"} onClick={handleCommanderSelectPanel(true)}><MilitaryTechOutlined /></IconButtonWithTooltip>
-                <IconButtonWithTooltip title={"Conditions"} placement={"left"} onClick={handleConditionsPanel(true)}><FlareOutlined/></IconButtonWithTooltip>
-                <IconButtonWithTooltip title={"Backpack"} placement={"left"} onClick={handleBackpackPanel(true)}><BackpackOutlined/></IconButtonWithTooltip>
-                <IconButtonWithTooltip title={"Classes & Affinities"} placement={"left"} onClick={handleClassSelectPanel(true)}><EngineeringOutlined /></IconButtonWithTooltip>
-                <IconButtonWithTooltip title={"Event Log"} placement={"left"} onClick={handleEventPanel(true)}><ChatOutlined/></IconButtonWithTooltip>
-                <IconButtonWithTooltip title={"Notes"} placement={"left"} onClick={handleNotesPanel(true)}><EditNoteOutlined/></IconButtonWithTooltip>
-                <IconButtonWithTooltip title={"Settings"} placement={"left"} onClick={handleSettingsPanel(true)}><SettingsOutlined /></IconButtonWithTooltip>
-
+                <CharacterSheetSidebar title={"Prepare Cards"} icon={ViewCarouselOutlined} panelComponent={CardPreparationView} />
+                <CharacterSheetSidebar title={"Create Spells"} icon={AutoFixHighOutlined} panelComponent={SpellCardBuilderView} />
+                <CharacterSheetSidebar title={"Create Attacks"} icon={GiAxeSword} panelComponent={WeaponCardBuilderView} />
+                <CharacterSheetSidebar title={"Create Offhand Attacks"} icon={GiDaggers} panelComponent={WeaponCardBuilderView}  doShow={currentSheet.canDualWield()} isOffhand={true}/>
+                <CharacterSheetSidebar title={"Saved Cards"} icon={GiSave} panelComponent={SavedCardsView} />
+                <CharacterSheetSidebar title={"Prepare Commander Cards"} icon={MilitaryTechOutlined} panelComponent={CommanderCardPrepView} />
+                <CharacterSheetSidebar title={"Conditions"} icon={FlareOutlined} panelComponent={ConditionsPanelView} />
+                <CharacterSheetSidebar title={"Backpack"} icon={BackpackOutlined} panelComponent={BackpackView} />
+                <CharacterSheetSidebar title={"Classes & Affinities"} icon={EngineeringOutlined} panelComponent={ClassSelectView} />
+                <CharacterSheetSidebar title={"Race & Build"} icon={IoMan} panelComponent={RaceSelectView}/>
+                <CharacterSheetSidebar title={"Event Log"} icon={ChatOutlined} panelComponent={EventLogView} />
+                <CharacterSheetSidebar title={"Settings"} icon={SettingsOutlined} panelComponent={SettingsPanel} />
 
             </Box>
-            <Drawer
-                anchor={"right"}
-                open={cardsPanelOpen}
-                onClose={handleCardsPanel(false)}
-            >
-                <CardPreparationView closeSelf={handleCardsPanel(false)}/>
-            </Drawer>
-
-
-            <Drawer
-                anchor={"right"}
-                open={spellPanelOpen}
-                onClose={handleSpellPanel(false)}
-            >
-                {/*<CardBuilderView closeSelf={handleSpellPanel(false)} />*/}
-                <SpellCardBuilderView closeSelf={handleSpellPanel(false)}/>
-            </Drawer>
-            <Drawer
-                anchor={"right"}
-                open={weaponsPanelOpen}
-                onClose={handleWeaponsPanel(false)}
-            >
-                <WeaponCardBuilderView closeSelf={handleWeaponsPanel(false)}/>
-            </Drawer>
-            <Drawer
-                anchor={"right"}
-                open={offhandWeaponsPanelOpen}
-                onClose={handleOffhandWeaponsPanel(false)}
-            >
-                <WeaponCardBuilderView isOffhand={true} closeSelf={handleOffhandWeaponsPanel(false)}/>
-            </Drawer>
-            <Drawer
-                anchor={"right"}
-                open={commanderPanelOpen}
-                onClose={handleCommanderSelectPanel(false)}
-            >
-                <CommanderCardPrepView closeSelf={handleCommanderSelectPanel(false)}/>
-            </Drawer>
-            <Drawer
-                anchor={"right"}
-                open={effectPanelOpen}
-                onClose={handleConditionsPanel(false)}
-            >
-                <ConditionsPanelView closeSelf={handleConditionsPanel(false)}/>
-            </Drawer>
-            <Drawer
-                anchor={"right"}
-                open={backpackPanelOpen}
-                onClose={handleBackpackPanel(false)}
-            >
-                <BackpackView closeSelf={handleBackpackPanel(false)}/>
-            </Drawer>
-            <Drawer
-                anchor={"right"}
-                open={eventPanelOpen}
-                onClose={handleEventPanel(false)}
-            >
-                <EventLogView/>
-            </Drawer>
-            <Drawer
-                anchor={"right"}
-                open={classSelectOpen}
-                onClose={handleClassSelectPanel(false)}
-            >
-                <ClassSelectView />
-            </Drawer>
-            <Drawer
-                anchor={"right"}
-                open={settingsPanelOpen}
-                onClose={handleSettingsPanel(false)}
-            >
-                <SettingsPanel />
-            </Drawer>
-
-            <Drawer
-                anchor={"right"}
-                open={notesPanelOpen}
-                onClose={handleNotesPanel(false)}
-            >
-                <TextField
-                    sx={{
-                        width: "90vw",
-                        height: "90vh",
-                    }}
-                    multiline={true}
-                    variant={"outlined"}
-                    size={"small"}
-                    minRows={35}
-                />
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'right',
-                        padding: "16px"
-                    }}
-                >
-                    <Button
-                        variant={"contained"}
-                    >Save</Button>
-                </Box>
-            </Drawer>
         </Box>
 
     ) : <></>

@@ -72,6 +72,7 @@ export const getDamageShorthand = (dt: UDamageType) => {
     }
 }
 
+
 export const getHandedness = (sheet: ICharacterBaseData|IMinionData|null, handednessValue: number) => {
     if (handednessValue >= 2) {
         return "Two-Handed"

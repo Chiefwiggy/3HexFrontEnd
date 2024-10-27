@@ -5,10 +5,12 @@ interface INumericIconInput {
     val: string | number,
     icon: React.ElementType,
     align?: "left" | "center" | "right",
-    postText?: string
+    postText?: string,
+    postIcon?: React.ReactNode
 }
-const NumericIcon = ({val, align="left", icon, postText=""}: INumericIconInput) => {
+const NumericIcon = ({val, align="left", icon, postText="", postIcon=<></>}: INumericIconInput) => {
     const IconComponent = icon;
+
 
     return (
         <Box sx={{
@@ -17,7 +19,7 @@ const NumericIcon = ({val, align="left", icon, postText=""}: INumericIconInput) 
             justifyContent: align,
             fontSize: "0.9rem"
         }}>
-            <><IconComponent /> { val } {postText} </>
+            <><IconComponent /> { val } {postText} {postIcon} </>
         </Box>
     )
 }

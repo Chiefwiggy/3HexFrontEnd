@@ -13,6 +13,7 @@ import {getDamageShorthand} from "../../Utils/Shorthand";
 import AbstractSheet from "../../Data/AbstractSheet";
 import MinionSheet from "../../Data/MinionSheet";
 import CharacterSheet from "../../Data/CharacterSheet";
+import SubtypeDamageIcon from "../SmallComponents/SubtypeDamageIcon";
 
 interface ICalculatedCardInput {
     cardCalculator: AbstractCardCalculator
@@ -97,7 +98,7 @@ const CalculatedCard = ({
                     display: 'grid',
                     gridTemplateColumns: "1fr 1fr"
                 }}>
-                    <NumericIcon val={cardCalculator.getFinalPower()}  icon={SportsMmaOutlined} postText={getDamageShorthand(cardCalculator.getDamageType())}/>
+                    <NumericIcon val={cardCalculator.getFinalPower()}  icon={SportsMmaOutlined} postText={getDamageShorthand(cardCalculator.getDamageType())} postIcon={<SubtypeDamageIcon damageSubtype={cardCalculator.getDamageSubtype()} />}/>
                     <NumericIcon
                         val={`${createRangeString(cardCalculator.getFinalRange())}`}
                         icon={LooksOutlined}

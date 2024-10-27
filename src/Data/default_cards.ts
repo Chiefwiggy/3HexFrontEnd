@@ -100,7 +100,7 @@ export const default_weapon_cards: Array<IWeaponCommonData|IWeaponBaseData> = [
         weaponClass: "light",
         weaponType: "unarmed",
         damageType: "physical",
-        damageSubtype: "crushing",
+        damageSubtype: "impact",
         baseCrit: {
             baseValue: 0,
             breakpoints: [],

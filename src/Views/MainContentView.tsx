@@ -33,21 +33,23 @@ const MainContentView = () => {
                 }}
             >
                 <Tabs value={currentTab} onChange={handleTabChange}>
-                    <Tab label={"Abilities"} value={0} />
-                    <Tab label={"Equipment"} value={1} />
-                    <Tab label={"Consumables"} value={2} />
-                    <Tab label={"Battalion"} value={3} />
-                    <Tab label={"Skills"} value={4} />
-                    <Tab label={"Downtime"} value={5} />
+                    <Tab label={"Skills"} value={0} />
+                    <Tab label={"Downtime"} value={1} />
+                    <Tab label={"Abilities"} value={2} />
+                    <Tab label={"Equipment"} value={3} />
+                    <Tab label={"Consumables"} value={4} />
+                    <Tab label={"Battalion"} value={5} />
+
+
                 </Tabs>
             </Box>
-            <CustomTabPanel index={currentTab} value={0}>  <AbilityTab /> </CustomTabPanel>
-            <CustomTabPanel index={currentTab} value={1}> <EquipmentTab /> </CustomTabPanel>
-            <CustomTabPanel index={currentTab} value={2}> <ConsumableTab /> </CustomTabPanel>
-            <CustomTabPanel index={currentTab} value={3}> <BattalionTab /> </CustomTabPanel>
-            <CustomTabPanel index={currentTab} value={4}> <SkillsTab /> </CustomTabPanel>
-            <CustomTabPanel index={currentTab} value={5}> <DowntimeTab /> </CustomTabPanel>
-            <CustomTabPanel index={currentTab} value={6}> <SettingsTab /> </CustomTabPanel>
+            <CustomTabPanel index={currentTab} value={0}> <SkillsTab /> </CustomTabPanel>
+            <CustomTabPanel index={currentTab} value={1}> <DowntimeTab /> </CustomTabPanel>
+            <CustomTabPanel index={currentTab} value={2}>  <AbilityTab /> </CustomTabPanel>
+            <CustomTabPanel index={currentTab} value={3}> <EquipmentTab /> </CustomTabPanel>
+            <CustomTabPanel index={currentTab} value={4}> <ConsumableTab /> </CustomTabPanel>
+            <CustomTabPanel index={currentTab} value={5}> <BattalionTab /> </CustomTabPanel>
+
         </Box>
     )
 

@@ -84,6 +84,8 @@ const SpellCardBuilderView = ({closeSelf}: ISpellCardBuilderView) => {
                 standbyCards.customName = customName;
             }
             await CharacterAPI.AddPrepSpell(currentSheet.data._id, standbyCards)
+            currentSheet.data.createdSpells.push(standbyCards);
+
             if (doEquip) {
                 await handleFinalEquip(standbyCards);
             }

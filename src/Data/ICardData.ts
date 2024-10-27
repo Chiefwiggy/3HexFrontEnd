@@ -14,8 +14,8 @@ export interface ISpellBaseCardData extends ISpellModifierCardData {
     energyCost: number,
     environmentBonus: string,
     baseSpellSet: number,
-    damageType: string,
-    damageSubtype: string,
+    damageType: UDamageType,
+    damageSubtype: UDamageSubtype,
     saveType: string
 }
 
@@ -87,6 +87,7 @@ export interface ISpecialistData {
 }
 
 export type UDamageType = "physical" | "magical" | "raw" | "resistant" | "none";
+export type UDamageSubtype = "force" | "pierce" | "slash" | "impact" | "burn" | "frost" | "shock" | "corrosive" | "sensory" | "holy" | "curse" | "soul" | "none"
 
 
 export interface ICommonCardData {
@@ -115,7 +116,7 @@ export interface IWeaponCommonData extends ICommonCardData {
     offhandOnly? :boolean,
     weaponClassOverride?: UWeaponClass,
     weaponDamageTypeOverride?: UDamageType,
-    weaponDamageSubtypeOverride?: string
+    weaponDamageSubtypeOverride?: UDamageSubtype
 }
 
 export interface IScalingData<T> {
@@ -133,7 +134,7 @@ export interface IScaledWeaponBaseData extends IWeaponCommonData {
     weaponType: UWeaponType,
     baseCrit: number,
     damageType: UDamageType,
-    damageSubtype: string,
+    damageSubtype: UDamageSubtype,
     handedness: number,
     specialCrit: {
         d1: UCritDie,
@@ -169,7 +170,7 @@ export interface IWeaponBaseData extends IWeaponCommonData {
     weaponType: UWeaponType,
     baseCrit: IScalingData<number>,
     damageType: UDamageType,
-    damageSubtype: string,
+    damageSubtype: UDamageSubtype,
     handedness: number,
     specialCrit: IScalingData<{
         d1: UCritDie,

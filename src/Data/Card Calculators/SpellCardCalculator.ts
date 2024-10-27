@@ -3,7 +3,7 @@ import {
     ISpellBaseCardData,
     ISpellModifierCardData,
     ISpellTargetCardData,
-    IWeaponBaseData, UDamageType
+    IWeaponBaseData, UDamageSubtype, UDamageType
 } from "../ICardData";
 import AbstractCardCalculator, {INumericIconData} from "./AbstractCardCalculator";
 import {ICardBuilderType} from "../../Layouts/CardBuilder";
@@ -21,6 +21,7 @@ import {getSkillFormat, getStatShorthand, UStat} from "../../Utils/Shorthand";
 import {capitalize} from "@mui/material";
 import CharacterSheet from "../CharacterSheet";
 import MinionSheet from "../MinionSheet";
+import {string} from "yup";
 
 class SpellCardCalculator extends AbstractCardCalculator {
 
@@ -108,6 +109,10 @@ class SpellCardCalculator extends AbstractCardCalculator {
 
     public getDamageType(): UDamageType {
         return (((this.getCardOfType("spell.base") as ISpellBaseCardData)?.damageType) as UDamageType) ?? "magical"
+    }
+
+    public getDamageSubtype(): UDamageSubtype {
+        return (this.getCardOfType("spell.base") as ISpellBaseCardData)?.damageSubtype ?? "none"
     }
 }
 

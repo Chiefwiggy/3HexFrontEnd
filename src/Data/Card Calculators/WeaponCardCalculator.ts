@@ -1,4 +1,4 @@
-import {IEffectData, IScaledWeaponBaseData, IWeaponBaseData, UDamageType} from "../ICardData";
+import {IEffectData, IScaledWeaponBaseData, IWeaponBaseData, UDamageSubtype, UDamageType} from "../ICardData";
 import AbstractCardCalculator, {INumericIconData} from "./AbstractCardCalculator";
 import {ICardBuilderType} from "../../Layouts/CardBuilder";
 import {
@@ -14,6 +14,7 @@ import {getHandedness, getSkillFormat} from "../../Utils/Shorthand";
 import {createRangeString} from "../../Utils/helper_functions";
 import CharacterSheet from "../CharacterSheet";
 import MinionSheet from "../MinionSheet";
+import {string} from "yup";
 
 
 class WeaponCardCalculator extends AbstractCardCalculator {
@@ -108,6 +109,10 @@ class WeaponCardCalculator extends AbstractCardCalculator {
     public getDamageType(): UDamageType {
         // return (((this.getCardOfType("weapon.base") as IWeaponBaseData)?.damageType) as UDamageType) ?? "physical"
         return this.finalDamageType;
+    }
+
+    public getDamageSubtype(): UDamageSubtype {
+        return this.finalDamageSubtype
     }
 }
 

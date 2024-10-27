@@ -4,7 +4,7 @@ import {
     ISpellModifierCardData,
     ISpellTargetCardData,
     IWeaponBaseData,
-    IWeaponCommonData,
+    IWeaponCommonData, UDamageSubtype,
     UDamageType
 } from "../Data/ICardData";
 import spellModifierCard from "../Components/Cards/SpellModifierCard";
@@ -42,7 +42,7 @@ export interface ITotalWeaponStats {
         isMelee: boolean
     },
     damageType:  UDamageType,
-    damageSubtype: string
+    damageSubtype: UDamageSubtype
 
 }
 

@@ -15,6 +15,7 @@ import {getDamageShorthand, getHandedness, getSkillFormat} from "../../Utils/Sho
 import CritNumberBox from "../SmallComponents/CritNumberBox";
 import {createRangeString} from "../../Utils/helper_functions";
 import {ConstructFinalWeapon} from "../../Utils/ConstructFinalWeapon";
+import SubtypeDamageIcon from "../SmallComponents/SubtypeDamageIcon";
 
 interface IWeaponBaseCardInput {
     cardData: IWeaponBaseData,
@@ -63,7 +64,9 @@ const WeaponBaseCard = ({
                 }}
             >
 
-                <NumericIcon val={constructedData.basePower} icon={SportsMmaOutlined}  postText={getDamageShorthand(cardData.damageType as UDamageType)}/>
+                <NumericIcon val={constructedData.basePower} icon={SportsMmaOutlined}  postText={getDamageShorthand(cardData.damageType as UDamageType)}
+                    postIcon={<SubtypeDamageIcon damageSubtype={cardData.damageSubtype}/>}
+                />
                 <NumericIcon val={"x" + constructedData.potency} icon={FitnessCenterOutlined} />
                 <NumericIcon val={constructedData.skillRequirement} icon={BackHandOutlined} />
                 <NumericIcon val={`${createRangeString(constructedData.baseRange)}`} icon={LooksOutlined} />

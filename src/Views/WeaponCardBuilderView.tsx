@@ -101,6 +101,7 @@ const WeaponCardBuilderView = ({closeSelf, isOffhand = false}: IWeaponCardBuilde
                 standbyCards.customName = customName;
             }
             await CharacterAPI.AddPrepWeapon(currentSheet.data._id, standbyCards);
+            currentSheet.data.createdWeapons.push(standbyCards);
             if (doEquip) {
                 await handleFinalEquip(standbyCards);
             }

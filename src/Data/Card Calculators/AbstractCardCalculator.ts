@@ -4,7 +4,7 @@ import {
     ISpellBaseCardData,
     IWeaponBaseData,
     IWeaponCommonData,
-    UCritDie,
+    UCritDie, UDamageSubtype,
     UDamageType
 } from "../ICardData";
 import {ICardBuilderType} from "../../Layouts/CardBuilder";
@@ -40,7 +40,7 @@ abstract class AbstractCardCalculator {
     protected thrownRange: IRangeData;
     protected currentIcons: Map<string, INumericIconData>;
     protected finalDamageType: UDamageType;
-    protected finalDamageSubtype: string;
+    protected finalDamageSubtype: UDamageSubtype;
 
     protected currentPower;
     protected constructor(cardTypes: Array<ICardBuilderType>, initialIcons: Map<string,INumericIconData>) {
@@ -58,7 +58,7 @@ abstract class AbstractCardCalculator {
         }
         this.currentIcons = initialIcons;
         this.currentPower = 0;
-        this.finalDamageSubtype = "slashing";
+        this.finalDamageSubtype = "slash";
         this.finalDamageType = "physical"
     }
 
@@ -110,6 +110,7 @@ abstract class AbstractCardCalculator {
     }
 
     public abstract getDamageType(): UDamageType
+    public abstract getDamageSubtype(): UDamageSubtype
 
     public getFinalRange(): IRangeData  {
         return this.currentRange;
