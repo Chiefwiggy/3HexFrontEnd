@@ -87,7 +87,9 @@ export interface ISpecialistData {
 }
 
 export type UDamageType = "physical" | "magical" | "raw" | "resistant" | "none";
-export type UDamageSubtype = "force" | "pierce" | "slash" | "impact" | "burn" | "frost" | "shock" | "corrosive" | "sensory" | "holy" | "curse" | "soul" | "none"
+export const VDamageSubtypes = ["pierce", "slash", "kinetic", "burn", "frost", "shock", "corrosive", "sensory", "holy", "curse", "soul", "none"]
+
+export type UDamageSubtype = typeof VDamageSubtypes[number]
 
 
 export interface ICommonCardData {

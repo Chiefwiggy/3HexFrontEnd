@@ -6,20 +6,22 @@ interface IIconButtonWithTooltipInput {
     title: string,
     placement: "top" | "bottom" | "left" | "right",
     onClick: (e: React.MouseEvent) => void,
-    children: React.ReactNode
+    children: React.ReactNode,
+    [x:string]: any
 }
 
 const IconButtonWithTooltip = ({
     title,
     placement,
     onClick,
-    children
+    children,
+    ...rest
 }: IIconButtonWithTooltipInput) => {
 
 
     return (
         <Tooltip title={title} placement={placement} >
-            <IconButton onClick={onClick}>
+            <IconButton onClick={onClick} {...rest}>
                 {children}
             </IconButton>
         </Tooltip>

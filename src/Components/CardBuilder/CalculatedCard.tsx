@@ -86,13 +86,20 @@ const CalculatedCard = ({
                 <Box>
                     <Typography sx={{color: "darkgray"}}>{cardCalculator.getType()}</Typography>
                 </Box>
+                <Box>
+                    <Typography variant={"subtitle2"} sx={{
+                        color: "darkgray"
+                    }}>{cardCalculator.getAllCardNames() }</Typography>
+                </Box>
             </CardContent>
+
             {
                 validCard ? <></> :
                     <Box>
                         <Typography variant={"body2"} color={"red"}>Not all cards prepared.</Typography>
                     </Box>
             }
+
             <CardContent>
                 <Box sx={{
                     display: 'grid',
@@ -132,6 +139,8 @@ const CalculatedCard = ({
                         :
                         <></>
                 }
+
+
 
 
                 <br/>

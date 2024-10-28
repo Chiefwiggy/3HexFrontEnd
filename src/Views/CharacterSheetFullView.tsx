@@ -38,6 +38,9 @@ import RaceSelectView from "./RaceSelectView";
 import {GiAxeSword, GiDaggers, GiDwarfFace, GiSave} from "react-icons/gi";
 import {IoMan} from "react-icons/io5";
 import SavedCardsView from "./SavedCardsView";
+import {FaDice} from "react-icons/fa6";
+import RollDiceView from "./RollDiceView";
+import SubtypeDamageIcon from '../Components/SmallComponents/SubtypeDamageIcon';
 
 const CharacterSheetFullView = () => {
 
@@ -168,6 +171,7 @@ const CharacterSheetFullView = () => {
                     zIndex: 10 // Ensure it's above other content
                 }}
             >
+                <CharacterSheetSidebar title={"Roll Dice"} icon={FaDice} panelComponent={RollDiceView} />
                 <CharacterSheetSidebar title={"Prepare Cards"} icon={ViewCarouselOutlined} panelComponent={CardPreparationView} />
                 <CharacterSheetSidebar title={"Create Spells"} icon={AutoFixHighOutlined} panelComponent={SpellCardBuilderView} />
                 <CharacterSheetSidebar title={"Create Attacks"} icon={GiAxeSword} panelComponent={WeaponCardBuilderView} />
@@ -180,6 +184,9 @@ const CharacterSheetFullView = () => {
                 <CharacterSheetSidebar title={"Race & Build"} icon={IoMan} panelComponent={RaceSelectView}/>
                 <CharacterSheetSidebar title={"Event Log"} icon={ChatOutlined} panelComponent={EventLogView} />
                 <CharacterSheetSidebar title={"Settings"} icon={SettingsOutlined} panelComponent={SettingsPanel} />
+
+
+
 
             </Box>
         </Box>

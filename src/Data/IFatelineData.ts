@@ -27,3 +27,4 @@ export interface IFatelineData {
     affinities: IAffinities,
     isReversed: boolean
 }
+

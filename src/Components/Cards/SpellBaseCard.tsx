@@ -53,7 +53,7 @@ const SpellBaseCard = ({
             <Box
                 sx={{
                     display: 'grid',
-                    gridTemplateColumns: '1fr 2fr'
+                    gridTemplateColumns: '2fr 3fr'
                 }}
             >
                 <Box>

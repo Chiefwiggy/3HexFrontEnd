@@ -3,7 +3,13 @@ import {
     IAttributeBars,
     ICalculatedSpell,
     ICalculatedWeapon,
-    ICharacterBaseData, ICharacterStats, IPreparedCard, IEnchantmentData, IPreparedSource, IConsumablePlayerData
+    ICharacterBaseData,
+    ICharacterStats,
+    IPreparedCard,
+    IEnchantmentData,
+    IPreparedSource,
+    IConsumablePlayerData,
+    ISettingsData
 } from "../Data/ICharacterData";
 import Axios, { AxiosRequestConfig } from 'axios'
 import {IBaseArmorData} from "../Data/IArmorData";
@@ -158,6 +164,14 @@ class CharacterConnection {
 
     public async DeleteCharacter(charID: string) {
         return await Axios.delete(this.GetRouteURL(`delete/${charID}`), this._getConfig())
+    }
+
+    public async UpdateSettings(charID: string, settings: ISettingsData) {
+        await Axios.put(this.GetRouteURL(`settings/update/${charID}`), {
+            dieColorId: settings.dieColorId
+        }, this._getConfig()).then((resp) => {
+            console.log(resp);
+        })
     }
 
     public async UpdateWeaponsList(charID: string, weapons: Array<IEnchantmentData>) {

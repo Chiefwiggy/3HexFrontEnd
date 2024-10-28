@@ -14,6 +14,7 @@ import {IMinionData} from "../IMinionData";
 import {ConstructFinalWeapon} from "../../Utils/ConstructFinalWeapon";
 import CharacterSheet from "../CharacterSheet";
 import MinionSheet from "../MinionSheet";
+import {string} from "yup";
 
 export interface IRangeData {
     min: number,
@@ -81,6 +82,9 @@ abstract class AbstractCardCalculator {
 
     protected abstract invokeRecalculateData(char: CharacterSheet|MinionSheet): void;
     public abstract getTitle(): string;
+    public getAllCardNames(): string {
+        return this.cards.map(e => e ? e.cardName : "").join( " • ");
+    }
     public abstract getType(): string;
     public abstract getCrit(): {
         d1: UCritDie,

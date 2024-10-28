@@ -15,7 +15,7 @@ import {
     ISpellModifierCardData,
     ISpellTargetCardData, IWeaponBaseData,
     UAffinity,
-    UCharacterStat, UWeaponClass
+    UCharacterStat, UDamageSubtype, UDamageType, UWeaponClass, VDamageSubtypes
 } from "./ICardData";
 import {IAPIContext} from "../Hooks/useAPI/APIProvider";
 import {IArmor} from "./IArmorData";
@@ -98,6 +98,9 @@ class CharacterSheet extends AbstractSheet {
     private _canDualWield: boolean = false;
     private _hasUnarmored: boolean = false;
 
+    private _weaknesses: Array<UDamageSubtype> | null = null;
+    private _resistances: Array<UDamageSubtype> | null = null;
+
 
 
 
@@ -143,6 +146,12 @@ class CharacterSheet extends AbstractSheet {
 
     public getPreparedCommanderCards = () => {
         return this.commanderCards.filter(e => this.data.preparedCommanderCards.includes(e._id));
+    }
+
+    public setDieColor = async(dieColorId: string) => {
+        this.data.settings.dieColorId = dieColorId;
+        await this.API.CharacterAPI.UpdateSettings(this.data._id, {...this.data.settings, dieColorId})
+        this.manualCharPing()
     }
 
     public getCumulativeCommanderCard = (): ICommanderCardData => {
@@ -774,6 +783,32 @@ class CharacterSheet extends AbstractSheet {
 
     public getTetherRefresh(): number {
         return (this.getStat("mind")*2) + (this.data.bonuses?.tetherRefresh ?? 0);
+    }
+
+    public getResistancesAndWeaknesses() {
+        if (this._resistances === null && !this._weaknesses === null) {
+
+            const resistances = VDamageSubtypes.filter(dst => {
+                return this.isUnlocked(`${dst}Resistance`)
+            })
+            const weaknesses = VDamageSubtypes.filter(dst => {
+                return this.isUnlocked(`${dst}Weakness`)
+            })
+
+            const resistancesSet = new Set(resistances);
+            const weaknessSet = new Set(weaknesses);
+
+            const finalResistances = resistances.filter(item => !weaknessSet.has(item));
+            const finalWeakness = weaknesses.filter(item => !resistancesSet.has(item));
+
+            this._resistances = finalResistances;
+            this._weaknesses = finalWeakness;
+        }
+        return {
+            resistances: this._resistances ?? [],
+            weaknesses: this._weaknesses ?? []
+        }
+
     }
 
     public getEvadePDEF(): number {

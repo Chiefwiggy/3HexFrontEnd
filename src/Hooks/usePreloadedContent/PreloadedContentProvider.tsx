@@ -15,6 +15,7 @@ import PLC_ConsumableData from "./PLC_ConsumableData";
 import PLC_FatelineData from "./PLC_FatelineData";
 import PLC_ConditionData from "./PLC_ConditionData";
 import PLC_DowntimeData from "./PLC_DowntimeData";
+import PLC_SettingsData from "./PLC_SettingsData";
 
 interface IPreloadedContentProviderInput {
     children: any
@@ -31,6 +32,7 @@ export interface IPreloadedContentContextInput {
     FatelineData: PLC_FatelineData,
     ConditionData: PLC_ConditionData,
     DowntimeData: PLC_DowntimeData,
+    SettingsData: PLC_SettingsData,
     isLoaded: boolean
 }
 const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) => {
@@ -54,6 +56,8 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
     const [ConditionData, setConditionData] = useState(new PLC_ConditionData());
 
     const [DowntimeData, setDowntimeData] = useState(new PLC_DowntimeData());
+
+    const [SettingsData, setSettingsData] = useState(new PLC_SettingsData());
 
     const [isLoaded, setIsLoaded] = useState(false);
 
@@ -93,6 +97,7 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
                 FatelineData,
                 ConditionData,
                 DowntimeData,
+                SettingsData,
                 isLoaded
             }}
         >

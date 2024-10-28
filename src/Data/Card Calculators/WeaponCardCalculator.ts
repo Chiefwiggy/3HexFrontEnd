@@ -91,8 +91,9 @@ class WeaponCardCalculator extends AbstractCardCalculator {
             return adj + " " + weapon + (enchantment > 0 ? ` +${enchantment}` : "") + (skill ? (" - " + skill) : "")
         }
         return "NOT LOADED";
-
     }
+
+
 
     getType(): string {
         return "ATTACK"

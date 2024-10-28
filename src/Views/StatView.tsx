@@ -10,6 +10,9 @@ import useAPI from "../Hooks/useAPI/useAPI";
 import CharacterSheet from "../Data/CharacterSheet";
 import ClickPopup from "../Components/Generic/ClickPopup";
 import BoxWithTooltip from "../Components/Generic/BoxWithTooltip";
+import SubtypeDamageIcon from '../Components/SmallComponents/SubtypeDamageIcon';
+import {UDamageSubtype} from "../Data/ICardData";
+import {RxValueNone} from "react-icons/rx";
 
 interface IStatViewInput {
     pivot: boolean
@@ -115,6 +118,44 @@ const StatView = ({
                             <RefreshOutlined sx={{color: "#ac38ea"}}/>
                             <Typography> {currentSheet.getTetherRefresh()}</Typography>
                         </BoxWithTooltip>
+                        <Typography variant={"subtitle2"}>Resistances</Typography>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                height: "23px"
+                            }}
+                        >
+                            {
+                                currentSheet.getResistancesAndWeaknesses().resistances.map(res => (
+                                    <SubtypeDamageIcon damageSubtype={res as UDamageSubtype}/>
+                                ))
+                            }
+                            {
+                                currentSheet.getResistancesAndWeaknesses().resistances.length == 0 ?
+                                    <RxValueNone size={21} />
+                                    : <></>
+                            }
+                        </Box>
+                        <Typography variant={"subtitle2"}>Weaknesses</Typography>
+                        <Box
+                            sx={{
+                                height: "23px",
+                                display: "flex"
+                            }}
+                        >
+                            {
+                                currentSheet.getResistancesAndWeaknesses().weaknesses.map(weak => (
+                                    <SubtypeDamageIcon damageSubtype={weak as UDamageSubtype}/>
+                                ))
+                            }
+                            {
+                                currentSheet.getResistancesAndWeaknesses().weaknesses.length == 0 ?
+                                    <RxValueNone size={21} />
+                                    : <></>
+                            }
+
+                        </Box>
+
 
 
 

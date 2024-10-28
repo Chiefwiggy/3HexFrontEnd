@@ -3,6 +3,7 @@ import {IArmor} from "./IArmorData";
 import {IMinionData} from "./IMinionData";
 import {IFatelineData} from "./IFatelineData";
 import {IDowntimePlayerData} from "./IDowntime";
+import {ICharacterRacialData} from "./IRacialData";
 
 export interface IAttributeBars {
     health: IAttributeBar,
@@ -33,6 +34,10 @@ export interface IPreparedSource {
     attunementLevel: number
 }
 
+export interface ISettingsData {
+    dieColorId: string
+}
+
 export interface ICharacterBaseData {
     characterName: string,
     characterLevel: number,
@@ -43,6 +48,8 @@ export interface ICharacterBaseData {
     fateline: IFatelineData|undefined,
     currentActionPoints: number,
     characterStats: ICharacterStats,
+    race: ICharacterRacialData|undefined,
+    specialId: string,
     movement: {
         stepSpeed: IModifiable,
         dashSpeed: IModifiable,
@@ -78,7 +85,8 @@ export interface ICharacterBaseData {
     minionsOwned: Array<{
         minionId: string,
         isEquipped: boolean
-    }>
+    }>,
+    settings: ISettingsData,
     _id: string
 }
 

@@ -95,6 +95,7 @@ class SpellCardCalculator extends AbstractCardCalculator {
         return ((adj + " ") ?? "") + (spell ?? "ERROR") + ((" " + targ) ?? "");
     }
 
+
     getType(): string {
         return "SPELL"
     }
