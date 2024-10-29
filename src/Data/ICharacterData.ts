@@ -51,8 +51,6 @@ export interface ICharacterBaseData {
     race: ICharacterRacialData|undefined,
     specialId: string,
     movement: {
-        stepSpeed: IModifiable,
-        dashSpeed: IModifiable,
         canClimb?: boolean,
         canFly?: boolean
         canSwim?: boolean

@@ -280,16 +280,11 @@ class CharacterConnection {
               "value": 1
             }
           },
-          "movement": {
-            "stepSpeed": {
-              "value": 1
-            },
-            "dashSpeed": {
-              "value": 4
-            }
-          },
           "preparedCards": [],
-          "skillPoints": {}
+          "skillPoints": {},
+            race: {
+              raceId: ""
+            }
         }, this._getConfig()).then((resp) => {
             console.log(resp);
             return resp;
