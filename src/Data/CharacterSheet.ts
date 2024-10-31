@@ -341,7 +341,7 @@ class CharacterSheet extends AbstractSheet {
 
         return config.attr.reduce((pv, cv) => {
             return pv + this.getStat(cv as UStat);
-        }, 0) * 2
+        }, 0) + (Math.floor(this.getLevel() / 60)+1)*10
     }
 
 
@@ -402,34 +402,27 @@ class CharacterSheet extends AbstractSheet {
         return this.getLevel() + 35;
     }
 
-    public editStat(mod: number, statName: string) {
-        this.data.characterStats[statName as UStat].value += mod;
-        if (statName === "endurance") {
-            this.data.attributeBars.stamina.current = Math.max(this.getStamina() + 4*mod, 0);
-        } else if (statName === "vitality") {
-            this.data.attributeBars.health.current = Math.max(this.getHealth() + this.data.attributeBars.health.scaling.value*mod, 0);
-        } else if (statName === "mind") {
-            this.data.attributeBars.tether.current = Math.max(this.getTether() + this.data.attributeBars.tether.scaling.value*mod, 0);
-        }
+    public editStat(val: number, statName: string) {
+        this.data.characterStats[statName as UStat].value = Math.max(0, val);
         this._sping();
     }
 
-    public getClassesString = () => {
-        const highestTier = this.data.classes.reduce((pv, cv) => {
-            if (cv.classTier > pv) {
-                return cv.classTier;
-            }
-            return pv;
-        }, 0)
-        return this.data.classes.filter(e => e.classTier == highestTier).sort((a,b) => {
-            if (a.isPromoted != b.isPromoted) {
-                if (a.isPromoted) return -1;
-                else return 1;
-            } else {
-                return a.className.localeCompare(b.className);
-            }
-        }).map(e => e.isPromoted ? e.className + "+" : e.className).join(" • ")
-    }
+    // public getClassesString = () => {
+    //     const highestTier = this.data.classes.reduce((pv, cv) => {
+    //         if (cv.classTier > pv) {
+    //             return cv.classTier;
+    //         }
+    //         return pv;
+    //     }, 0)
+    //     return this.data.classes.filter(e => e.classTier == highestTier).sort((a,b) => {
+    //         if (a.isPromoted != b.isPromoted) {
+    //             if (a.isPromoted) return -1;
+    //             else return 1;
+    //         } else {
+    //             return a.className.localeCompare(b.className);
+    //         }
+    //     }).map(e => e.isPromoted ? e.className + "+" : e.className).join(" • ")
+    // }
     public getPreparedWeaponCards = () => {
         if (this.allButDefaultCards) {
             const weaponCards: Array<ICommonCardData> = [...this.allButDefaultCards.weapons.forms, ...this.allButDefaultCards.weapons.skills, ...this.allButDefaultCards.weapons.bases];
@@ -639,6 +632,20 @@ class CharacterSheet extends AbstractSheet {
     }
 
     private _setAffinities() {
+        this.currentAffinities = {
+            focus: 0,
+            rune: 0,
+            soul: 0,
+            deft: 0,
+            infantry: 0,
+            guardian: 0,
+            leadership: 0,
+            erudite: 0,
+            supply: 0,
+            biohacking: 0,
+            abjuration: 0,
+            machinery: 0
+        }
         this.data.classes.forEach((val) => {
             Object.entries(val.affinities).forEach(([key, value]) => {
                 this.currentAffinities[key as keyof IAffinities] += value;
@@ -1054,6 +1061,8 @@ class CharacterSheet extends AbstractSheet {
         await this.API.CharacterAPI.UpdateCharacter(this.data._id, this.data);
         this.sendReadyFn(false);
         await this.initializeAsync();
+        this._setAffinities()
+        this._ping();
     }
 
     public async healthPingExecute(doSend: boolean): Promise<void> {

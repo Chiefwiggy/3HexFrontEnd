@@ -85,6 +85,7 @@ export interface ICharacterBaseData {
         isEquipped: boolean
     }>,
     settings: ISettingsData,
+    __times_accessed: number,
     _id: string
 }
 

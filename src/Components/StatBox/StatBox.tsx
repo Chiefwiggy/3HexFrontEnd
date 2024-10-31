@@ -15,12 +15,13 @@ import {
     RemoveOutlined
 } from "@mui/icons-material";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
+import AddSubtractPanel from '../Generic/AddSubtractPanel';
 
 interface IStatBoxInput {
     stat: string,
     value: IModifiable,
     editMode: boolean,
-    handleStatChange: (amount: number, stat: string) => (event: React.MouseEvent) => void
+    handleStatChange: (amount: number, stat: string) => () => void
 }
 const StatBox = ({
     stat,
@@ -29,18 +30,28 @@ const StatBox = ({
     handleStatChange
 }: IStatBoxInput) => {
 
+    const {currentSheet, charPing} = useCharacter();
+
     const [statValue, setStatValue] = useState<number>(0);
     const [statRelativeColor, setStatRelativeColor] = useState("white")
+
+    const [statCap, setStatCap] = useState(currentSheet?.getStatCap ?? 75);
 
     const [isPopped, setIsPopped] = useState(false);
     const [popAnchor, setPopAnchor] = useState<HTMLDivElement | null>(null);
 
     const [currentValue, setCurrentValue] = useState(0);
-    const {currentSheet} = useCharacter();
+
 
     useEffect(() => {
         setCurrentValue(value.value);
     }, [value]);
+
+    useEffect(() => {
+        if (currentSheet) {
+            setStatCap(currentSheet.getStatCap());
+        }
+    }, [charPing]);
 
     const handlePop = (event: React.MouseEvent<HTMLDivElement>) => {
         if (!editMode) {
@@ -50,8 +61,11 @@ const StatBox = ({
     }
 
     const handleEditStat = (amount: number) => (event: React.MouseEvent) => {
-        handleStatChange(amount, stat.toLowerCase())(event);
-        setCurrentValue(currentValue + amount);
+        setCurrentValue(currentValue => currentValue + amount);
+    }
+
+    const handlePushEdits = () => {
+        handleStatChange(currentValue, stat.toLowerCase())();
     }
 
     const handleClosePop = () => {
@@ -86,28 +100,15 @@ const StatBox = ({
                 <Typography variant={"h6"}>{capitalize(stat)}</Typography>
                 {
                     editMode ?
-
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                alignItems: "center",
-                                gap: 2
-                            }}
-                        >
-                            <IconButton
-                                onClick={handleEditStat(-1)}
-                                disabled={currentValue < 1}
-                            >
-                                <RemoveCircleOutlined />
-                            </IconButton>
-                            <Typography variant={"h6"} color={statRelativeColor}>{statValue}</Typography>
-                            <IconButton
-                                onClick={handleEditStat(1)}
-                                disabled={currentValue >= (currentSheet ? currentSheet.getStatCap() : 75)}
-                            >
-                                <AddCircleOutlined />
-                            </IconButton>
-                        </Box>
+                        <AddSubtractPanel
+                            handleChange={handleEditStat}
+                            callAfterChange={handlePushEdits}
+                            value={currentValue}
+                            textVariant={"h6"}
+                            isAtBottom={currentValue < 1}
+                            isAtCap={currentValue >= statCap}
+                            textWidth={30}
+                        />
                         :
                         <Typography variant={"h6"} color={statRelativeColor}>{statValue}</Typography>
                 }

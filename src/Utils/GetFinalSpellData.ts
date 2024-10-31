@@ -57,7 +57,7 @@ export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: IS
         const maxRangeFinal = StatChain(maxRange, [spellBase.fullRangeMod, spellTarget.fullRangeMod, ...rest.map(e => e?.fullRangeMod)]);
 
         let finalBaseSet = StatChain(spellBase.baseSpellSet, [spellBase.baseSpellSetMod, spellTarget.baseSpellSetMod, ...rest.map(e => e?.baseSpellSetMod)])
-        let finalSet = StatChain(finalBaseSet + char.getStat("presence")*2, [spellBase.spellSetMod, spellTarget.spellSetMod, ...rest.map(e => e?.spellSetMod)])
+        let finalSet = StatChain(finalBaseSet + char.getStat("presence")*3, [spellBase.spellSetMod, spellTarget.spellSetMod, ...rest.map(e => e?.spellSetMod)])
 
         const isMelee = [spellBase.forceMelee, spellTarget.forceMelee, ...rest.map(e => e?.forceMelee)].reduce((pv: boolean, cv: boolean | undefined) => {
             if (cv) {

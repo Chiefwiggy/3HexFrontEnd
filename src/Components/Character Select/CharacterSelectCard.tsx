@@ -18,6 +18,10 @@ const CharacterSelectCard = ({
 
     const {SetCurrentSheet} = useCharacter();
 
+    const handleGoToCharacterMetadata = (event: React.MouseEvent) => {
+        characterData.__times_accessed += 2;
+    }
+
 
 
     return (
@@ -37,8 +41,10 @@ const CharacterSelectCard = ({
                     padding: 3
                 }}
             >
-                <Typography variant={"h6"}>{characterData.characterName}</Typography>
-                <Typography variant={"body2"} color={"gray"}>Level {characterData.characterLevel} - {getClassesString(characterData.classes)}</Typography>
+                <Typography variant={characterData.characterName.length > 22 ? "body1" : "h6"}>{ characterData.characterName.length > 28 ? characterData.characterName.substring(0, 25).trimEnd() + "..." : characterData.characterName}</Typography>
+                <Typography variant={"body2"} color={"darkgray"}>Level {characterData.characterLevel} </Typography>
+                <Typography variant={"body2"} color={"darkgray"}>{getClassesString(characterData.classes)} </Typography>
+
             </Box>
             <Box
                 sx={{
@@ -46,7 +52,7 @@ const CharacterSelectCard = ({
                     alignItems: "center"
                 }}
             >
-                <IconButton component={Link} to={`/characters?id=${characterData._id}`}><ArrowForwardOutlined /></IconButton>
+                <IconButton component={Link} to={`/characters?id=${characterData._id}`} onClick={handleGoToCharacterMetadata}><ArrowForwardOutlined /></IconButton>
             </Box>
         </Card>
     )

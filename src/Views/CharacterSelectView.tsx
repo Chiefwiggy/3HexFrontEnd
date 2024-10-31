@@ -87,8 +87,8 @@ const CharacterSelectView = () => {
                 <Box
                     sx={{
                         display: 'grid',
-                        gridTemplateColumns: 'repeat(6, 1fr)',
-                        gap: 1,
+                        gridTemplateColumns: "repeat( auto-fill , max(264px, 15vw))",
+                        gridGap: "10px",
                         margin: 4
                     }}
                 >
@@ -96,6 +96,15 @@ const CharacterSelectView = () => {
                         allCharacters.filter(
                             char =>
                                 currentFilter ? (char.characterName.toLowerCase().includes(currentFilter.toLowerCase()) || char.classes.map(clz => clz.className.toLowerCase()).includes(currentFilter.toLowerCase())) : true)
+                            .sort((a, b) => {
+                                if (a.isMainCharacter != b.isMainCharacter) {
+                                    return b.isMainCharacter ? 1 : -1;
+                                } else if (b.__times_accessed != a.__times_accessed) {
+                                    return b.__times_accessed - a.__times_accessed
+                                } else {
+                                    return a.characterName.localeCompare(b.characterName);
+                                }
+                            })
                             .map((character: ICharacterBaseData) => {
                             return <CharacterSelectCard characterData={character} key={character.characterName}/>
                         })

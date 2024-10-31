@@ -8,6 +8,7 @@ import ClickPopup from "../Generic/ClickPopup";
 import {ISkillPointObject} from "../../Data/ICharacterData";
 import {AddCircleOutlined, RemoveCircleOutlined} from "@mui/icons-material";
 import {ISkillConfig, ISkillItemConfig, skill_config} from "../../Data/skill_config";
+import AddSubtractPanel from '../Generic/AddSubtractPanel';
 
 interface ISkillCellInput {
     skillName: string,
@@ -72,27 +73,41 @@ const SkillCell = ({
                                     gap: 2
                                 }}
                             >
-                                <IconButton
-                                    onClick={handleChangeSP(-1)}
-                                    disabled={currentSheet.data.skillPoints[skillName.toLowerCase() as keyof ISkillPointObject] <= 0}
-                                >
-                                    <RemoveCircleOutlined />
-                                </IconButton>
-                                <Typography
-                                    sx={ currentSheet.isSkillCapped(skillName.toLowerCase(), true) ? {
-                                        color: "red"
-                                    } : {}}
-                                >{getSkillFormat(skillValue)}</Typography>
-                                <IconButton
-                                    onClick={handleChangeSP(1)}
-                                    disabled={
+                                {/*<IconButton*/}
+                                {/*    onClick={handleChangeSP(-1)}*/}
+                                {/*    disabled={currentSheet.data.skillPoints[skillName.toLowerCase() as keyof ISkillPointObject] <= 0}*/}
+                                {/*>*/}
+                                {/*    <RemoveCircleOutlined />*/}
+                                {/*</IconButton>*/}
+                                {/*<Typography*/}
+                                {/*    sx={ currentSheet.isSkillCapped(skillName.toLowerCase(), true) ? {*/}
+                                {/*        color: "red"*/}
+                                {/*    } : {}}*/}
+                                {/*>{getSkillFormat(skillValue)}</Typography>*/}
+                                {/*<IconButton*/}
+                                {/*    onClick={handleChangeSP(1)}*/}
+                                {/*    disabled={*/}
+                                {/*        currentSheet.getSkillPointsUsed() >= currentSheet.getMaxSkillPoints()*/}
+                                {/*        ||*/}
+                                {/*        currentSheet.isSkillCapped(skillName.toLowerCase())*/}
+                                {/*    }*/}
+                                {/*>*/}
+                                {/*    <AddCircleOutlined />*/}
+                                {/*</IconButton>*/}
+                                <AddSubtractPanel
+                                    handleChange={handleChangeSP}
+                                    value={skillValue}
+                                    isAtCap={
                                         currentSheet.getSkillPointsUsed() >= currentSheet.getMaxSkillPoints()
                                         ||
                                         currentSheet.isSkillCapped(skillName.toLowerCase())
                                     }
-                                >
-                                    <AddCircleOutlined />
-                                </IconButton>
+                                    isAtBottom={
+                                        currentSheet.data.skillPoints[skillName.toLowerCase() as keyof ISkillPointObject] <= 0
+                                    }
+                                    textWidth={55}
+                                    textOverride={getSkillFormat(skillValue)}
+                                />
 
                                 <Typography variant={"body2"}>{currentSheet.data.skillPoints[skillName.toLowerCase() as keyof ISkillPointObject]} / {currentSheet.getCap(skillName.toLowerCase() as keyof ISkillPointObject)} {showPoints ? "pts." : ""}</Typography>
                                 <Box

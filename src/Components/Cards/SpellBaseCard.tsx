@@ -45,7 +45,7 @@ const SpellBaseCard = ({
                 }}
             >
                 <NumericIcon val={cardData.tetherCost} icon={WaterDropOutlined} align={"center"}/>
-                <NumericIcon val={getSkillFormat(cardData.baseSpellSet)} icon={AutoFixOffOutlined} align={"center"}/>
+                <NumericIcon val={getSkillFormat(cardData.baseSpellSet, false)} icon={AutoFixOffOutlined} align={"center"}/>
                 <NumericIcon val={getStatShorthand(cardData.saveType as UStat | "none" | "luck").toUpperCase()} icon={SaveAltOutlined} align={"center"}/>
                 <NumericIcon val={cardData.energyCost} icon={ElectricBoltOutlined} align={"center"}/>
             </Box>

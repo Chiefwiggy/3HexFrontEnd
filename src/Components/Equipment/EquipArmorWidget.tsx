@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Box, Divider, IconButton, MenuItem, Select, SelectChangeEvent, Typography} from "@mui/material";
 import {AddCircleOutlined, RemoveCircleOutlined} from "@mui/icons-material";
 import {getMaxArmorEnchant} from "../../Utils/ArmorCalc";
@@ -6,6 +6,7 @@ import ArmorElement from "../Armor/ArmorElement";
 import {IArmor} from "../../Data/IArmorData";
 import usePreloadedContent from "../../Hooks/usePreloadedContent/usePreloadedContent";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
+import {IEnchantmentData} from "../../Data/ICharacterData";
 
 interface IEquipArmorWidgetInput {
     currentArmor: IArmor | undefined,
@@ -18,7 +19,24 @@ const EquipArmorWidget = ({
 }: IEquipArmorWidgetInput) => {
 
     const { ArmorData} = usePreloadedContent();
-    const {currentSheet} = useCharacter();
+    const {currentSheet, charPing, isReady} = useCharacter();
+
+    const [currentArmorMax, setCurrentArmorMax] = useState(0);
+    const [currentEnchant, setCurrentEnchant] = useState(0);
+
+
+
+    useEffect(() => {
+        if (currentSheet && currentArmor) {
+            console.log("storen down");
+            setCurrentArmorMax(getMaxArmorEnchant(currentSheet, currentArmor.armorClass))
+            setCurrentEnchant(currentArmor.enchantmentLevel);
+            console.log(currentEnchant, currentArmorMax);
+        } else {
+            setCurrentArmorMax(0);
+            setCurrentEnchant(0);
+        }
+    }, [charPing, currentArmor, isReady, currentArmor?.enchantmentLevel]);
 
 
     const handleChangeEnchantment = (delta: number) => () => {
@@ -73,14 +91,14 @@ const EquipArmorWidget = ({
                         >
                             <IconButton
                                 onClick={handleChangeEnchantment(-1)}
-                                disabled={(currentArmor?.enchantmentLevel ?? 0) <= 0}
+                                disabled={currentEnchant <= 0}
                             >
                                 <RemoveCircleOutlined />
                             </IconButton>
-                            <Typography variant={"body1"} >{(currentArmor?.enchantmentLevel ?? 0)}</Typography>
+                            <Typography variant={"body1"} >{(currentEnchant)}</Typography>
                             <IconButton
                                 onClick={handleChangeEnchantment(1)}
-                                disabled={currentArmor ? currentArmor.enchantmentLevel >= getMaxArmorEnchant(currentSheet, currentArmor?.armorClass) : true}
+                                disabled={currentArmor ? currentEnchant >= currentArmorMax : true}
                             >
                                 <AddCircleOutlined />
                             </IconButton>

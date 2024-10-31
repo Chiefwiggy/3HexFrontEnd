@@ -45,7 +45,7 @@ class SpellCardCalculator extends AbstractCardCalculator {
             [
                 "spellSet",
                 {
-                    val: "+0 : 0",
+                    val: "0 : 0",
                     icon: AutoFixOffOutlined
                 }
             ],
@@ -77,7 +77,7 @@ class SpellCardCalculator extends AbstractCardCalculator {
             this.currentPower = finalSpellData.totalPower;
             this.currentRange = finalSpellData.range;
             this.updateVal("energyCost", finalSpellData.castTime.toString());
-            this.updateVal("spellSet", getSkillFormat(finalSpellData.spellSet))
+            this.updateVal("spellSet", getSkillFormat(finalSpellData.spellSet, false))
             this.updateVal("saveType", (getStatShorthand(((this.getCardOfType("spell.base") as ISpellBaseCardData).saveType) as UStat | "none" | "luck")).toUpperCase());
             this.updateVal("duration", finalSpellData.duration.toString());
         }

@@ -49,7 +49,7 @@ export const default_spell_cards: Array<ISpellTargetCardData|ISpellModifierCardD
         cardSubtype: "skill",
         effects: [
             {
-                "text": "This spell's Tether cost and Power are set to 0.",
+                "text": "This spell's Tether cost and Power are set to 1.",
                 "icon": {
                     "emblem": "priority",
                     "symbol": "",
@@ -67,10 +67,10 @@ export const default_spell_cards: Array<ISpellTargetCardData|ISpellModifierCardD
         ],
         prerequisites: [],
         tetherCostMod: {
-            override: 0
+            override: 1
         },
         powerMod: {
-            override: 0
+            override: 1
         }
     },
 ]

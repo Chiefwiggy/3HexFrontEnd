@@ -44,67 +44,6 @@ import SubtypeDamageIcon from '../Components/SmallComponents/SubtypeDamageIcon';
 
 const CharacterSheetFullView = () => {
 
-    const [spellPanelOpen, setSpellPanelOpen] = useState<boolean>(false);
-    const [eventPanelOpen, setEventPanelOpen] = useState<boolean>(false);
-    const [notesPanelOpen, setNotesPanelOpen] = useState<boolean>(false);
-    const [weaponsPanelOpen, setWeaponsPanelOpen] = useState<boolean>(false);
-    const [offhandWeaponsPanelOpen, setOffhandWeaponsPanelOpen] = useState<boolean>(false);
-    const [cardsPanelOpen, setCardsPanelOpen] = useState<boolean>(false);
-    const [currentTab, setCurrentTab] = useState<number>(0);
-    const [classSelectOpen, setClassSelectOpen] = useState<boolean>(false);
-    const [commanderPanelOpen, setCommanderPanelOpen] = useState<boolean>(false);
-    const [effectPanelOpen, setEffectPanelOpen] = useState<boolean>(false);
-    const [backpackPanelOpen, setBackpackPanelOpen] = useState<boolean>(false);
-    const [settingsPanelOpen, setSettingsPanelOpen] = useState<boolean>(false);
-
-    const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-        setCurrentTab(newValue);
-    }
-
-    const handleSpellPanel = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
-        setSpellPanelOpen(open)
-    }
-
-    const handleEventPanel = (open: boolean) => (event: React.MouseEvent) => {
-        setEventPanelOpen(open);
-    }
-
-    const handleNotesPanel = (open: boolean) => (event: React.MouseEvent) => {
-        setNotesPanelOpen(open);
-    }
-
-    const handleWeaponsPanel = (open: boolean) => (event: React.MouseEvent) => {
-        setWeaponsPanelOpen(open);
-    }
-
-    const handleOffhandWeaponsPanel = (open: boolean) => (event: React.MouseEvent) => {
-        setOffhandWeaponsPanelOpen(open);
-    }
-
-    const handleCardsPanel = (open: boolean) => (event: React.MouseEvent) => {
-        setCardsPanelOpen(open);
-    }
-
-    const handleClassSelectPanel = (open: boolean) => (event: React.MouseEvent) => {
-        setClassSelectOpen(open);
-    }
-
-    const handleCommanderSelectPanel = (open: boolean) => (event: React.MouseEvent) => {
-        setCommanderPanelOpen(open);
-    }
-
-    const handleConditionsPanel = (open: boolean) => (event: React.MouseEvent) => {
-        setEffectPanelOpen(open);
-    }
-
-    const handleBackpackPanel = (open: boolean) => (event: React.MouseEvent) => {
-        setBackpackPanelOpen(open);
-    }
-
-    const handleSettingsPanel = (open: boolean) => (event: React.MouseEvent) => {
-        setSettingsPanelOpen(open);
-    }
-
     const {currentSheet, SetCurrentSheet, isReady} = useCharacter();
 
     const navigate = useNavigate();

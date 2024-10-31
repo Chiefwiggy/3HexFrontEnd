@@ -283,7 +283,7 @@ class CharacterConnection {
           "preparedCards": [],
           "skillPoints": {},
             race: {
-              raceId: ""
+              raceId: "_"
             }
         }, this._getConfig()).then((resp) => {
             console.log(resp);

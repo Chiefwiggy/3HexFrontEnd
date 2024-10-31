@@ -20,6 +20,8 @@ import {
     SaveOutlined
 } from "@mui/icons-material";
 import PreparedSpellsPanel from "../Components/CardBuilder/PreparedSpellsPanel";
+import AddSubtractPanel from '../Components/Generic/AddSubtractPanel';
+import {getClassesString} from "../Utils/Shorthand";
 
 const CharacterSheetView = () => {
     const {
@@ -35,6 +37,8 @@ const CharacterSheetView = () => {
 
     const isSmallScreen = true;
 
+    const [classesLine, setClassesLine] = useState(currentSheet ? getClassesString(currentSheet.data.classes) : "")
+
 
     const handleEditClick = (doEdit: boolean) => (event: React.MouseEvent) => {
         if (currentSheet) {
@@ -47,9 +51,9 @@ const CharacterSheetView = () => {
         }
     }
 
-    const handleFullHeal = () => {
+    const handleFullHeal = async() => {
         if (currentSheet) {
-            currentSheet.rest();
+            await currentSheet.rest();
         }
     }
 
@@ -87,9 +91,16 @@ const CharacterSheetView = () => {
     }, [cancelPing]);
 
     const handleChangeLevel = (delta: number) => (event: React.MouseEvent) => {
-        setCurrentLevel(currentLevel + delta);
+        setCurrentLevel(currentLevel => {
+          return currentLevel + delta;
+        })
+    }
+
+    const handleAfterAllChanges = () => {
         if (currentSheet) {
-            currentSheet.data.characterLevel = currentLevel + delta;
+            currentSheet.data.characterLevel = currentLevel
+            setClassesLine(getClassesString(currentSheet.data.classes))
+            currentSheet.manualCharPing()
         }
     }
 
@@ -130,37 +141,20 @@ const CharacterSheetView = () => {
                                         gap: 2
                                     }}
                                 >
-                                    <IconButton
-                                        onClick={handleChangeLevel(-10)}
-                                        disabled={currentLevel < 10}
-                                    >
-                                        <RemoveCircleTwoTone/>
-                                    </IconButton>
-                                    <IconButton
-                                        onClick={handleChangeLevel(-1)}
-                                        disabled={currentLevel < 1}
-                                    >
-                                        <RemoveCircleOutlined/>
-                                    </IconButton>
-                                    <Typography variant={"subtitle2"}
-                                                textAlign={"center"}>Level {currentLevel} - {currentSheet.getClassesString()}
-                                    </Typography>
-                                    <IconButton
-                                        onClick={handleChangeLevel(1)}
-                                        disabled={currentLevel >= 325}
-                                    >
-                                        <AddCircleOutlined/>
-                                    </IconButton>
-                                    <IconButton
-                                        onClick={handleChangeLevel(10)}
-                                        disabled={currentLevel >= 315}
-                                    >
-                                        <AddCircleTwoTone />
-                                    </IconButton>
+                                    <AddSubtractPanel
+                                        handleChange={handleChangeLevel}
+                                        callAfterChange={handleAfterAllChanges}
+                                        value={currentLevel}
+                                        isAtCap={currentLevel >= 325}
+                                        isAtBottom={currentLevel <= 1}
+                                        textWidth={220}
+                                        textVariant={"subtitle2"}
+                                        textOverride={`Level ${currentLevel} - ${classesLine}`}
+                                    />
                                 </Box>
                                 :
                                 <Typography variant={"subtitle2"}
-                                            textAlign={"center"}>Level {currentLevel} - {currentSheet.getClassesString()}
+                                            textAlign={"center"}>Level {currentLevel} - {classesLine}
                                 </Typography>
                         }
 

@@ -32,7 +32,7 @@ const StatView = ({
         }
     }
 
-    const handleEditStat = (amount: number, stat: string) => (event: React.MouseEvent) => {
+    const handleEditStat = (amount: number, stat: string) => () => {
         if (statData && currentSheet) {
             currentSheet.editStat(amount, stat);
             setStatData(currentSheet.data.characterStats);

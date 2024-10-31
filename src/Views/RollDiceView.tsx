@@ -112,7 +112,7 @@ const RollDiceView = ({}: IRollDiceViewInput) => {
             </Box>
             <Button onClick={rollAll}>ROLL</Button>
 
-            <AddSubtractPanel handleChange={handleChangeDice} value={currentDice} valCap={7} valBottom={5} textOverride={rollTypes[currentDice-5]} textWidth={120}/>
+            <AddSubtractPanel handleChange={handleChangeDice} value={currentDice} isAtCap={currentDice >= 7} isAtBottom={currentDice <= 5} textOverride={rollTypes[currentDice-5]} textWidth={120}/>
             <Box
                 sx={{
                     display: "flex"
