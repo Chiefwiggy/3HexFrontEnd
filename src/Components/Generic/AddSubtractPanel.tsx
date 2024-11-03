@@ -29,7 +29,7 @@ const AddSubtractPanel = ({
 
     const [isLongPressing, setIsLongPressing] = useState(false);
     const [preLongPressTimeout, setPreLongPressTimeout] = useState<ReturnType<typeof setTimeout>>();
-    const [currentLongPressTimeout, setCurrentLongPressTimeout] = useState<ReturnType<typeof setTimeout>>();
+    const [currentLongPressTimeout, setCurrentLongPressTimeout] = useState<Array<ReturnType<typeof setTimeout>>>([]);
 
     const handleInitialClick = (delta: number) => (event: React.MouseEvent)  => {
         handleChange(delta)(event);
@@ -49,18 +49,24 @@ const AddSubtractPanel = ({
                 handleReleaseLongPress()
             }
         }, Math.max(12,100-(times*3)));
-        setCurrentLongPressTimeout(newEvent);
+        setCurrentLongPressTimeout(current => {
+            current.push(newEvent);
+            return current;
+        });
 
     }
 
     const handleReleaseLongPress = () => {
+        console.log("RELEASED");
         setIsLongPressing(false);
         if (preLongPressTimeout) {
             clearTimeout(preLongPressTimeout);
         }
-        if (currentLongPressTimeout) {
-            clearTimeout(currentLongPressTimeout);
+        for (let currentClear of currentLongPressTimeout) {
+            clearTimeout(currentClear);
         }
+        setCurrentLongPressTimeout([]);
+
         callAfterChange();
     }
 

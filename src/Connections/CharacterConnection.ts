@@ -156,7 +156,18 @@ class CharacterConnection {
             currentSpell: newData.currentSpell,
             currentWeapon: newData.currentWeapon,
             createdSpells: newData.createdSpells,
-            createdWeapons: newData.createdWeapons
+            createdWeapons: newData.createdWeapons,
+            knownSources: newData.knownSources
+        }, this._getConfig()).then((resp) => {
+            console.log(resp);
+        })
+    }
+
+    public async UpdateSource(charID: string, sourceData: Array<IPreparedSource>, tempSources: Array<IPreparedSource>) {
+        await Axios.put(this.GetRouteURL(`update/${charID}`), {
+            knownSources: sourceData,
+            temporarySources: tempSources,
+            currentSpell: null
         }, this._getConfig()).then((resp) => {
             console.log(resp);
         })

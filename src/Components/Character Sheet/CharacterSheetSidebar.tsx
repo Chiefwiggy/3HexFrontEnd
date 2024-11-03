@@ -13,6 +13,8 @@ interface ICharacterSheetSidebarInput {
     icon: React.ElementType,
     panelComponent: React.ComponentType<WithCloseSelf>
     doShow?: boolean,
+    placement?: "left" | "right" | "top" | "bottom",
+    darkenBackground?: boolean,
     [x:string]: any
 }
 
@@ -21,6 +23,8 @@ const CharacterSheetSidebar = ({
     icon,
     panelComponent,
     doShow = true,
+    placement = "right",
+    darkenBackground = true,
     ...rest
 }: ICharacterSheetSidebarInput) => {
 
@@ -39,9 +43,14 @@ const CharacterSheetSidebar = ({
                 <IconComponent />
             </IconButtonWithTooltip>
             <Drawer
-                anchor={"right"}
+                anchor={placement}
                 open={openSidebarPanel}
                 onClose={handleOpenSidebarPanel(false)}
+                slotProps={darkenBackground ? {} : {
+                    backdrop: {
+                        invisible: true
+                    }
+                }}
             >
                 <PanelComponent closeSelf={handleOpenSidebarPanel(false)} {...rest} />
             </Drawer>

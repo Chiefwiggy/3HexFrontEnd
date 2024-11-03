@@ -67,8 +67,9 @@ const SourceComponent = ({sourceData}: ISourceComponentInput) => {
         if (char) {
             char.knownSources.push({
                 sourceId: sourceData._id,
-                attunementLevel: 10
+                attunementLevel: 100
             })
+
             await CharacterAPI.UpdateSourceList(char._id, char.knownSources)
             navigate(`/characters?id=${char._id}`)
         }

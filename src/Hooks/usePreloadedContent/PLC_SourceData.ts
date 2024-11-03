@@ -16,13 +16,28 @@ class PLC_SourceData {
         return this.baseSourceData;
     }
 
-    public GetSourceDataForUser(userPermissions: string[]) {
+    public GetSourceById(sourceId: string) {
+        return this.baseSourceData.find(e => e._id == sourceId)
+    }
+
+    public GetSourceDataForUser(userPermissions: string[], dataRequested: "all" | "permanent" | "temporary") {
+        let finalList = [];
         if (userPermissions.includes("admin") || userPermissions.includes("sources_all")) {
-            return this.baseSourceData
+            finalList = this.baseSourceData
+        } else {
+            finalList = this.baseSourceData.filter(sd => {
+                return (sd.visibility === "all" || userPermissions.includes(`source_${sd._id}`));
+            })
         }
-        return this.baseSourceData.filter(sd => {
-            return (sd.visibility === "all" || userPermissions.includes(`source_${sd._id}`));
-        })
+        switch(dataRequested) {
+            case "all":
+                return finalList;
+            case "permanent":
+                return finalList.filter(e => !e.onlyTemporary)
+            case "temporary":
+                return finalList.filter(e => !e.neverTemporary)
+        }
+
 
     }
 }

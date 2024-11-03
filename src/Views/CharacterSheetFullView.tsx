@@ -110,7 +110,7 @@ const CharacterSheetFullView = () => {
                     zIndex: 10 // Ensure it's above other content
                 }}
             >
-                <CharacterSheetSidebar title={"Roll Dice"} icon={FaDice} panelComponent={RollDiceView} />
+                <CharacterSheetSidebar title={"Roll Dice"} icon={FaDice} panelComponent={RollDiceView} placement={"top"} darkenBackground={false} />
                 <CharacterSheetSidebar title={"Prepare Cards"} icon={ViewCarouselOutlined} panelComponent={CardPreparationView} />
                 <CharacterSheetSidebar title={"Create Spells"} icon={AutoFixHighOutlined} panelComponent={SpellCardBuilderView} />
                 <CharacterSheetSidebar title={"Create Attacks"} icon={GiAxeSword} panelComponent={WeaponCardBuilderView} />

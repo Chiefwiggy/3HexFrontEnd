@@ -27,9 +27,8 @@ class MinionSheet extends AbstractSheet {
         }
         //commander cards
         //final
-        return Math.floor((this.getStat("endurance")
- + this.getStat("vitality")
-)*0.5) + evadeArmorBonus;
+        return Math.floor(
+            (this.getStat("endurance") + this.getStat("vitality") )*0.5) + evadeArmorBonus;
     }
 
     public getBlockPDEF(): number {
@@ -37,7 +36,7 @@ class MinionSheet extends AbstractSheet {
         if (this.currentArmor) {
             blockArmorBonus = this.currentArmor.blockPDEFBonus;
         }
-        return this.getEvadePDEF()+3+blockArmorBonus;
+        return this.getEvadePDEF()+4+blockArmorBonus;
     }
     public getEvadeMDEF(): number {
         let evadeArmorBonus = 0;
@@ -55,7 +54,7 @@ class MinionSheet extends AbstractSheet {
         if (this.currentArmor) {
             blockArmorBonus = this.currentArmor.blockMDEFBonus;
         }
-        return this.getEvadeMDEF()+3+blockArmorBonus;
+        return this.getEvadeMDEF()+4+blockArmorBonus;
     }
 
     public getHealth(): number {

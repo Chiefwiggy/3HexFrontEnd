@@ -1,6 +1,7 @@
 import {IDowntimeActivity, IDowntimeFullScaledData} from "../../Data/IDowntime";
 import CharacterSheet from "../../Data/CharacterSheet";
 import {ScaleChainNonNumeric, ScaleChainNumeric} from "../../Utils/ConstructFinalWeapon";
+import {VArcanotype} from "../../Data/ISourceData";
 
 
 class PLC_DowntimeData {
@@ -49,6 +50,18 @@ class PLC_DowntimeData {
             }
             return null
         }).filter(dt => dt) as Array<IDowntimeFullScaledData>
+    }
+
+    public GetSourcesPerTypeForPlayer(currentSheet: CharacterSheet): Array<[string, number]> {
+        const onlyCommune = currentSheet.data.downtimeData.filter(e => e.activityId.includes("commune_"));
+        return VArcanotype.map(arcanotype => {
+            const aData = onlyCommune.find(e => e.activityId === `commune_${arcanotype}`);
+            if (aData) {
+                return [arcanotype, aData.proficiency + currentSheet.getAbilityBonuses(`${arcanotype}Sources`)]
+            } else {
+                return [arcanotype, currentSheet.getAbilityBonuses(`attune${arcanotype}`)]
+            }
+        })
     }
 
 

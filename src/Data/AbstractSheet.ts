@@ -217,18 +217,35 @@ abstract class AbstractSheet {
     }
 
     public setStance(stanceIndex: number) {
-        this.currentStance = stanceIndex == 0 ? "evade" : "block"
+        switch(stanceIndex) {
+            case 0:
+                this.currentStance = "evade"
+                break;
+            case 1:
+                this.currentStance = "block"
+                break;
+            case 2:
+                this.currentStance = "exposed"
+                break;
+        }
     }
 
     public getStanceIndex(): number {
-        return this.currentStance == "evade" ? 0 : 1;
+        switch(this.currentStance) {
+            case "evade":
+                return 0
+            case "block":
+                return 1
+            case "exposed":
+                return 2
+        }
     }
 
     public getPDEF(): number {
-        return this.currentStance == 'evade' ? this.getEvadePDEF() : this.getBlockPDEF();
+        return this.currentStance != 'block' ? this.getEvadePDEF() : this.getBlockPDEF();
     }
     public getMDEF(): number {
-        return this.currentStance == 'evade' ? this.getEvadeMDEF() : this.getBlockMDEF();
+        return this.currentStance != 'block' ? this.getEvadeMDEF() : this.getBlockMDEF();
     }
 
     public getDodge(): number {

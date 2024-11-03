@@ -2,7 +2,7 @@ import {
     IAffinities, IArcanaKeys,
     ICalculatedSpell,
     ICalculatedWeapon,
-    ICharacterBaseData, ICharacterStats, IClassData, IPreparedCard,
+    ICharacterBaseData, ICharacterStats, IClassData, IPreparedCard, IPreparedSource,
     ISkillPointObject,
     UStance
 } from "./ICharacterData";
@@ -577,6 +577,10 @@ class CharacterSheet extends AbstractSheet {
         }
     }
 
+    public ManualSetAllCards = async() => {
+        await this._setAllCards()
+    }
+
     private _setAllMinions = async() => {
         try {
             if (this.data.minionsOwned.length > 0) {
@@ -706,7 +710,15 @@ class CharacterSheet extends AbstractSheet {
 
 
     public getCardSlots(): number {
-        return 3 + Math.floor(this.data.characterStats.knowledge.value * 0.5) + this.getAbilityBonuses("cardSlots");
+        return 3 + Math.floor(this.getStat("knowledge") * 0.5) + this.getAbilityBonuses("cardSlots");
+    }
+
+    public getTempCardSlots(): number {
+        return 1 + this.getAbilityBonuses("tempCardSlots")
+    }
+
+    public getTempSourcesCanPrepare(): number {
+        return 1 + this.getAbilityBonuses("tempSourcesKnown")
     }
 
     public getAuthoritySlots(): number {
@@ -854,7 +866,7 @@ class CharacterSheet extends AbstractSheet {
             blockArmorBonus = this.currentArmor.blockMDEFBonus;
         }
         blockArmorBonus += this.getAbilityBonuses("mDEFBlock");
-        return this.getEvadeMDEF()+3+blockArmorBonus;
+        return this.getEvadeMDEF()+4+blockArmorBonus;
     }
 
     public getEvadePDEFBreakdown(): IDefenseBreakdown {
@@ -1063,6 +1075,14 @@ class CharacterSheet extends AbstractSheet {
         await this.initializeAsync();
         this._setAffinities()
         this._ping();
+    }
+
+    public async SaveCharacterSources(sourceData: Array<IPreparedSource>, tempSources: Array<IPreparedSource>) {
+        this.data.knownSources = sourceData;
+        this.data.temporarySources = tempSources;
+        this.data.currentSpell = null;
+        await this.API.CharacterAPI.UpdateSource(this.data._id, sourceData, tempSources)
+        this.manualCharPing()
     }
 
     public async healthPingExecute(doSend: boolean): Promise<void> {

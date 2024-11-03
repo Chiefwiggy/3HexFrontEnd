@@ -79,6 +79,7 @@ export interface ICharacterBaseData {
     knownBaseSpells: Array<string>,
     knownWeapons: Array<IEnchantmentData>,
     knownSources: Array<IPreparedSource>,
+    temporarySources: Array<IPreparedSource>,
     skillPoints: ISkillPointObject,
     minionsOwned: Array<{
         minionId: string,
@@ -232,4 +233,4 @@ export interface ICalculatedWeapon {
     weaponCardsIds: Array<string>
 }
 
-export type UStance = "block" | "evade"
+export type UStance = "block" | "evade" | "exposed"

@@ -37,7 +37,7 @@ const SpellBaseCard = ({
 } : ISpellBaseCardInput) => {
 
     return (
-        <GenericCardLayout cardData={cardData} sendBack={sendBack} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} canFavorite={canFavorite} overrideSubtitle={cardData.arcanotype.toUpperCase()} showPrerequisites={showPrerequisites} showAdd={showAdd}>
+        <GenericCardLayout cardData={cardData} sendBack={sendBack} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} canFavorite={canFavorite} overrideSubtitle={cardData.isFromTemporarySource ? "TEMPORARY" : cardData.arcanotype.toUpperCase()} showPrerequisites={showPrerequisites} showAdd={showAdd} bannerOverride={cardData.isFromTemporarySource ? "spell.base.temporary" : null}>
             <Box
                 sx={{
                     display: "flex",

@@ -39,7 +39,8 @@ interface IGenericCardLayoutInput {
     children: ReactNode,
     overrideSubtitle?: string | null,
     showPrerequisites?: boolean,
-    titleExtra?: string
+    titleExtra?: string,
+    bannerOverride?: string | null
 }
 
 export interface ICardSendbackData {
@@ -57,7 +58,8 @@ const GenericCardLayout = ({
     children,
     overrideSubtitle,
     showPrerequisites=false,
-    titleExtra = ""
+    titleExtra = "",
+    bannerOverride = null
 }: IGenericCardLayoutInput) => {
 
     const [expanded, setExpanded] = useState(isExpanded)
@@ -125,7 +127,7 @@ const GenericCardLayout = ({
                 textAlign: "center",
                 display: 'flex',
                 flexDirection: 'column',
-                borderTop: `4px outset ${CardGetColor(`${cardData.cardType}.${cardData.cardSubtype}`)}`,
+                borderTop: `4px outset ${ CardGetColor(bannerOverride ? bannerOverride : `${cardData.cardType}.${cardData.cardSubtype}`)}`,
                 borderRight: cardData.isUltimate ? "2px solid gold" : "0px solid black",
                 borderLeft: cardData.isUltimate ? "2px solid gold" : "0px solid black",
             }}

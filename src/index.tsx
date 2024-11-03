@@ -14,7 +14,7 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
       <UserProvider>
           <APIProvider>
               <PreloadedCharacterProvider>
@@ -26,7 +26,7 @@ root.render(
               </PreloadedCharacterProvider>
           </APIProvider>
       </UserProvider>
-  </React.StrictMode>
+  // </React.StrictMode>
 );
 
 

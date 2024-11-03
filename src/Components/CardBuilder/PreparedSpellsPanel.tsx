@@ -29,7 +29,7 @@ const PreparedSpellsPanel = ({}: IPreparedSpellsPanelInput) => {
     };
 
     useEffect(() => {
-
+        console.log("MISSED");
         if (currentSheet) {
             setCurrentSpell(currentSheet.data.currentSpell);
             setCurrentWeapon(currentSheet.data.currentWeapon);
@@ -52,9 +52,8 @@ const PreparedSpellsPanel = ({}: IPreparedSpellsPanelInput) => {
                     ?
                         <Tab label={"Offhand"} value={3} />
                         :
-                        <></>
+                        null
                 }
-                {/*<Tab label={"Counter"} value={3} />*/}
             </Tabs>
             <br />
                     <CustomTabPanel index={tabIndex} value={0}>

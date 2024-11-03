@@ -3,12 +3,20 @@ import {ICommonCardData, ISpellBaseCardData, ISpellModifierCardData} from "./ICa
 export interface ISourceData {
     _id: string,
     sourceName: string,
-    sourceArcanotype: string,
+    sourceArcanotype: UArcanotype,
     sourceTier: number,
     law: null | ILawData,
     sourceTiers: Array<ITierData>,
-    visibility: "all" | "restricted" | "admin"
+    visibility: "all" | "restricted" | "admin",
+    onlyTemporary: boolean,
+    neverTemporary: boolean
 }
+
+
+
+export const VArcanotype =  ["elemental", "divine", "mystical", "axum", "primal", "eonic", "animus", "esoteric"]
+
+export type UArcanotype = typeof VArcanotype[number]
 
 export interface ITierData {
     layer: number,

@@ -41,13 +41,14 @@ const DefenseWidget = ({
                 >
                     <Tab value={0} label="Evade" />
                     <Tab value={1} label="Block" />
+                    <Tab value={2} label={"Exposed"} />
                 </Tabs>
             </Box>
             <br />
             <Box
                 sx={{
                     display: 'grid',
-                    gridTemplateColumns: '1fr 2fr 2fr',
+                    gridTemplateColumns: '1fr 2fr 2fr 2fr',
                     textAlign: "center"
                 }}
             >
@@ -92,11 +93,30 @@ const DefenseWidget = ({
                         {sheet.getBlockPDEF()}
                     </GrayBox>
                 </ClickPopup>
+                <ClickPopup
+                    clickElement={
+                        <DefensiveStatPopover
+                            breakdown={sheet.getEvadePDEFBreakdown()}
+                        />
+                    }
+                    anchorOrigin={{
+                        vertical: "center",
+                        horizontal: "left"
+                    }}
+                    transformOrigin={{
+                        vertical: "center",
+                        horizontal: "right"
+                    }}
+                >
+                    <GrayBox index={2} currentTab={currentTab}>
+                        {sheet.getEvadePDEF()}
+                    </GrayBox>
+                </ClickPopup>
             </Box>
             <Box
                 sx={{
                     display: 'grid',
-                    gridTemplateColumns: '1fr 2fr 2fr',
+                    gridTemplateColumns: '1fr 2fr 2fr 2fr',
                     textAlign: "center"
                 }}
             >
@@ -141,11 +161,30 @@ const DefenseWidget = ({
                         {sheet.getBlockMDEF()}
                     </GrayBox>
                 </ClickPopup>
+                <ClickPopup
+                    clickElement={
+                        <DefensiveStatPopover
+                            breakdown={sheet.getEvadeMDEFBreakdown()}
+                        />
+                    }
+                    anchorOrigin={{
+                        vertical: "center",
+                        horizontal: "left"
+                    }}
+                    transformOrigin={{
+                        vertical: "center",
+                        horizontal: "right"
+                    }}
+                >
+                    <GrayBox index={2} currentTab={currentTab}>
+                        {sheet.getEvadeMDEF()}
+                    </GrayBox>
+                </ClickPopup>
             </Box>
             <Box
                 sx={{
                     display: 'grid',
-                    gridTemplateColumns: '1fr 2fr 2fr',
+                    gridTemplateColumns: '1fr 2fr 2fr 2fr',
                     textAlign: "center"
                 }}
             >
@@ -187,6 +226,25 @@ const DefenseWidget = ({
                     }}
                 >
                     <GrayBox index={1} currentTab={currentTab}>
+                        {getSkillFormat(sheet.getBlockDodge(), false)}
+                    </GrayBox>
+                </ClickPopup>
+                <ClickPopup
+                    clickElement={
+                        <DefensiveStatPopover
+                            breakdown={sheet.getBlockDodgeBreakdown()}
+                        />
+                    }
+                    anchorOrigin={{
+                        vertical: "center",
+                        horizontal: "right"
+                    }}
+                    transformOrigin={{
+                        vertical: "center",
+                        horizontal: "left"
+                    }}
+                >
+                    <GrayBox index={2} currentTab={currentTab}>
                         {getSkillFormat(sheet.getBlockDodge(), false)}
                     </GrayBox>
                 </ClickPopup>

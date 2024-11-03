@@ -1,12 +1,13 @@
 import {IDataModifiers, IPrerequisite} from "./GenericData";
 import {IAffinities} from "./ICharacterData";
+import {UArcanotype} from "./ISourceData";
 
 export type USpellTypes = "base" | "target" | "skill" | "edict" | null;
 export type UWeaponClass = "light" | "standard" | "heavy"
 export type UWeaponType = "axe" | "blade" | "bomb" | "bow" | "club" | "polearm" | "wand" | "spear" | "unarmed"
 export type UCritDie = "-" | "?" | "1" | "2" | "3" | "4" | "5" | "6"
 export interface ISpellBaseCardData extends ISpellModifierCardData {
-    arcanotype: string,
+    arcanotype: UArcanotype,
     basePower: number,
     potency: number,
     duration: number,
@@ -16,7 +17,8 @@ export interface ISpellBaseCardData extends ISpellModifierCardData {
     baseSpellSet: number,
     damageType: UDamageType,
     damageSubtype: UDamageSubtype,
-    saveType: string
+    saveType: string,
+    isFromTemporarySource: boolean
 }
 
 export interface ISpellTargetCardData extends ISpellModifierCardData {
