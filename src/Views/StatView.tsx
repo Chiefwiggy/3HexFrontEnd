@@ -21,10 +21,13 @@ const StatView = ({
     pivot
 }: IStatViewInput) => {
 
-    const {currentSheet , isInEditMode, cancelPing, statPing, isReady} = useCharacter();
+    const {currentSheet , isInEditMode, healthPing, statPing, isReady} = useCharacter();
 
     const [statData, setStatData] = useState<ICharacterStats|null>(null);
     const [statsUsed, setStatsUsed] = useState<number>(0);
+
+    const [resistances, setResistances] = useState<Array<string>>([]);
+    const [weaknesses, setWeaknesses] = useState<Array<string>>([]);
 
     const setStatDiff = () => {
         if (currentSheet && statData) {
@@ -53,6 +56,14 @@ const StatView = ({
             setStatDiff();
         }
     }, [statPing, currentSheet?.data.characterLevel]);
+
+    useEffect(() => {
+        if (currentSheet) {
+            const wkrs = currentSheet.getResistancesAndWeaknesses(true)
+            setResistances(wkrs.resistances);
+            setWeaknesses(wkrs.weaknesses);
+        }
+    }, [healthPing])
 
 
     return currentSheet ? (
@@ -126,12 +137,12 @@ const StatView = ({
                             }}
                         >
                             {
-                                currentSheet.getResistancesAndWeaknesses().resistances.map(res => (
-                                    <SubtypeDamageIcon damageSubtype={res as UDamageSubtype}/>
+                                resistances.map(res => (
+                                    <SubtypeDamageIcon key={res} damageSubtype={res as UDamageSubtype}/>
                                 ))
                             }
                             {
-                                currentSheet.getResistancesAndWeaknesses().resistances.length == 0 ?
+                                resistances.length == 0 ?
                                     <RxValueNone size={21} />
                                     : <></>
                             }
@@ -144,12 +155,12 @@ const StatView = ({
                             }}
                         >
                             {
-                                currentSheet.getResistancesAndWeaknesses().weaknesses.map(weak => (
-                                    <SubtypeDamageIcon damageSubtype={weak as UDamageSubtype}/>
+                                weaknesses.map(weak => (
+                                    <SubtypeDamageIcon key={weak} damageSubtype={weak as UDamageSubtype}/>
                                 ))
                             }
                             {
-                                currentSheet.getResistancesAndWeaknesses().weaknesses.length == 0 ?
+                                weaknesses.length == 0 ?
                                     <RxValueNone size={21} />
                                     : <></>
                             }

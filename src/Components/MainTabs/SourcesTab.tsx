@@ -206,13 +206,13 @@ const SourcesTab = ({}: ISourcesTabInput) => {
                     <Box
                         sx={{
                             display: 'grid',
-                            gridTemplateColumns: "repeat( auto-fill , max(224px, 19vw))",
+                            gridTemplateColumns: "repeat( auto-fill , max(224px, 18.7vw))",
                             gridGap: "10px",
                             padding: 2
                         }}
                     >
-                        <Box>
-                            <SourceByArcanotypeWidget sourceArcanotype={"temporary"} slots={currentSheet.getTempSourcesCanPrepare()} characterSourcesOfType={characterTemporarySources} />
+                        <Box key={"temp"}>
+                            <SourceByArcanotypeWidget  sourceArcanotype={"temporary"} slots={currentSheet.getTempSourcesCanPrepare()} characterSourcesOfType={characterTemporarySources} />
                         </Box>
                         {
                             DowntimeData.GetSourcesPerTypeForPlayer(currentSheet).sort(([_, valA], [__, valB]) => valB - valA).map(([sourceName, value]) => {

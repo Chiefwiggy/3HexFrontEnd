@@ -277,13 +277,11 @@ const CardBuilder = ({
                     justifyContent: 'center'
                 }}
             >
-                <Grid container spacing={2} justifyContent={"center"}>
-                    <CardBuilderGridList
-                        cardList={currentCards}
-                        cardTypes={cardTypes}
-                        sendBack={sendSetCard}
-                    />
-                </Grid>
+                <CardBuilderGridList
+                    cardList={currentCards}
+                    cardTypes={cardTypes}
+                    sendBack={sendSetCard}
+                />
             </Box>
         </Box>
     )

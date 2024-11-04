@@ -138,6 +138,7 @@ class CharacterSheet extends AbstractSheet {
     public setPreparedCommanderCards = (data: Array<string>) => {
         this.data.preparedCommanderCards = data;
         this._ping();
+        this._hping();
     }
 
     public getPreparedCardsIdList = () => {
@@ -238,7 +239,7 @@ class CharacterSheet extends AbstractSheet {
     public isUnlocked = (unlockType: string) => {
 
         try {
-            return this.allAbilities.reduce((pv, cv) => {
+            return [...this.allAbilities, ...this.getPreparedCommanderCards()].reduce((pv, cv) => {
                 if (pv) return pv;
                 const strSplit = unlockType.split(".");
                 let ability: any = cv.unlocks;
@@ -681,6 +682,9 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getMaxTether() {
+        if (this.isUnlocked("patronMagic")) {
+            return this.getAbilityBonuses("maxTether") + (3*this.getStat("presence")) + (2*this.getStat("authority"))
+        }
         return this.getAbilityBonuses("maxTether") + (5 * this.getStat("mind"));
     }
 
@@ -801,13 +805,20 @@ class CharacterSheet extends AbstractSheet {
 
 
     public getTetherRefresh(): number {
-        return (this.getStat("mind")*2) + (this.data.bonuses?.tetherRefresh ?? 0);
+        if (this.isUnlocked("patronMagic")) {
+            return (this.getStat("presence") + this.getStat("authority") + this.getAbilityBonuses("tetherRefresh"))
+        }
+        return (this.getStat("mind")*2) + this.getAbilityBonuses("tetherRefresh");
     }
 
-    public getResistancesAndWeaknesses() {
-        if (this._resistances === null && !this._weaknesses === null) {
+    public getResistancesAndWeaknesses(force = false) {
+        console.log(this._resistances, this._weaknesses);
+        if (force || (this._resistances == null && this._weaknesses == null)) {
+
+            console.log("egg");
 
             const resistances = VDamageSubtypes.filter(dst => {
+                console.log(dst);
                 return this.isUnlocked(`${dst}Resistance`)
             })
             const weaknesses = VDamageSubtypes.filter(dst => {

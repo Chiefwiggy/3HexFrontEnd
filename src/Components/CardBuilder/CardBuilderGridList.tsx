@@ -1,5 +1,5 @@
-import React from 'react';
-import {Box, Grid} from "@mui/material";
+import React, {useEffect, useState} from 'react';
+import {Box, Grid, TablePagination} from "@mui/material";
 import {ICommonCardData} from "../../Data/ICardData";
 import {ICardBuilderType} from "../../Layouts/CardBuilder";
 import CardBuilderGridItem from "./CardBuilderGridItem";
@@ -14,24 +14,62 @@ const CardBuilderGridList = ({
     cardTypes,
     sendBack = (num: number) => Function
 }: ICardBuilderGridListInput) => {
+
+    const [page, setPage] = useState(1);
+    const [rowsPerPage, setRowsPerPage] = useState(15);
+
+    const handleChangePage = (
+        event: React.MouseEvent<HTMLButtonElement> | null,
+        newPage: number
+    ) => {
+        setPage(newPage)
+    }
+
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    }
+
+    useEffect(() => {
+        setPage(0);
+    }, [cardList]);
+
     return (
-        <>
-            {
-                cardList.map((card: ICommonCardData) => {
-                    const typeIndex = cardTypes.findIndex((type) => card.cardSubtype === type.name.split(".")[1]);
-                    const type = cardTypes[typeIndex];
-                    return (
-                        <Grid item key={card.cardName}>
-                            <CardBuilderGridItem
-                                cardData={card}
-                                cardType={type}
-                                sendBack={sendBack(typeIndex)}
-                            />
-                        </Grid>
-                    )
-                })
-            }
-        </>
+        <Box
+            sx={{
+                width: "100%"
+            }}
+        >
+            <TablePagination
+                component={"div"}
+                count={cardList.length}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                rowsPerPageOptions={[5,10,15,20,25]}
+
+            />
+            <Grid container spacing={2} justifyContent={"center"}>
+                {
+                    cardList.slice(page*rowsPerPage,rowsPerPage+(rowsPerPage*page)).map((card: ICommonCardData) => {
+                        const typeIndex = cardTypes.findIndex((type) => card.cardSubtype === type.name.split(".")[1]);
+                        const type = cardTypes[typeIndex];
+                        return (
+                            <Grid item key={card.cardName}>
+                                <CardBuilderGridItem
+                                    cardData={card}
+                                    cardType={type}
+                                    sendBack={sendBack(typeIndex)}
+                                />
+                            </Grid>
+                        )
+                    })
+                }
+            </Grid>
+
+        </Box>
+
     )
 }
 

@@ -39,7 +39,7 @@ const SourceByArcanotypeWidget = ({
                 {
                     characterSourcesOfType.map((source, index) => {
                         return (
-                            <Paper elevation={3}
+                            <Paper elevation={3} key={source._id}
                                 sx={{
                                     padding: "6px",
                                     backgroundColor: index >= slots ? "darkred" : "#343434",
@@ -53,7 +53,7 @@ const SourceByArcanotypeWidget = ({
                     })
                 }
                 {
-                    slots > characterSourcesOfType.length ? [...Array(slots - characterSourcesOfType.length)].map(_ => {
+                    slots > characterSourcesOfType.length ? [...Array(slots - characterSourcesOfType.length)].map((_, index) => {
                         return (
                             <Paper elevation={3}
                                 sx={{
@@ -61,6 +61,7 @@ const SourceByArcanotypeWidget = ({
                                     flexBasis: "45%",
                                     margin: "2.5%"
                                 }}
+                                   key={index}
                             >
                                 <Typography variant={"subtitle2"} textAlign={"center"} color={"darkgray"}>[EMPTY]</Typography>
                             </Paper>
