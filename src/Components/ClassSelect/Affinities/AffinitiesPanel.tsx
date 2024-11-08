@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {Box, capitalize, Typography} from "@mui/material";
 import useCharacter from "../../../Hooks/useCharacter/useCharacter";
-import ArcanaLayout from "./ArcanaLayout"
-import {IAffinitiesAndArcana, IClassData} from "../../../Data/ICharacterData";
+import PathLayout from "./PathLayout"
+import {IAffinitiesAndPath, IClassData} from "../../../Data/ICharacterData";
 import {IFatelineData} from "../../../Data/IFatelineData";
-import {GetArcanaAndAffinitiesFromClassList} from "../../../Utils/CalculateAffinities";
+import {GetPathAndAffinitiesFromClassList} from "../../../Utils/CalculateAffinities";
 
 interface IAffinitiesPanelInput {
     myClasses: Array<IClassData>,
@@ -17,31 +17,39 @@ const AffinitiesPanel = ({
 }: IAffinitiesPanelInput) => {
 
 
-    const [affData, setAffData] = useState<IAffinitiesAndArcana>({
+    const [affData, setAffData] = useState<IAffinitiesAndPath>({
         affinities: {
-            focus: 0,
-            rune: 0,
-            soul: 0,
-            deft: 0,
+            nimble: 0,
             infantry: 0,
             guardian: 0,
+            focus: 0,
+            creation: 0,
+            alteration: 0,
             leadership: 0,
-            erudite: 0,
             supply: 0,
+            summoning: 0,
+            swift: 0,
+            riding: 0,
+            versatile: 0,
+            rune: 0,
+            sourcecraft: 0,
+            research: 0,
+            machinery: 0,
             biohacking: 0,
-            abjuration: 0,
-            machinery: 0
+            abjuration: 0
         },
-        arcana: {
-            arcane: 0,
+        path: {
             warrior: 0,
-            support: 0,
+            arcanist: 0,
+            commander: 0,
+            navigator: 0,
+            scholar: 0,
             hacker: 0
         }
     })
 
     useEffect(() => {
-        setAffData(GetArcanaAndAffinitiesFromClassList(myClasses, myFate));
+        setAffData(GetPathAndAffinitiesFromClassList(myClasses, myFate));
     }, [myClasses, myFate]);
 
     return (
@@ -53,10 +61,13 @@ const AffinitiesPanel = ({
             }}
         >
             <Typography variant={"h4"} textAlign={"center"}>Affinities</Typography>
-            <ArcanaLayout affData={affData} arcana={"warrior"} affinities={["deft", "infantry", "guardian"]}/>
-            <ArcanaLayout affData={affData} arcana={"arcane"} affinities={["focus", "soul", "rune"]}/>
-            <ArcanaLayout affData={affData} arcana={"support"} affinities={["leadership", "erudite", "supply"]}/>
-            <ArcanaLayout affData={affData} arcana={"hacker"} affinities={["machinery", "abjuration", "biohacking"]}/>
+            <PathLayout affData={affData} path={"warrior"} affinities={["nimble", "infantry", "guardian"]}/>
+            <PathLayout affData={affData} path={"arcanist"} affinities={["focus", "creation", "alteration"]}/>
+            <PathLayout affData={affData} path={"commander"} affinities={["leadership", "supply", "summoning"]}/>
+            <PathLayout affData={affData} path={"navigator"} affinities={["swift", "riding", "versatile"]}/>
+            <PathLayout affData={affData} path={"scholar"} affinities={["rune", "sourcecraft", "research"]}/>
+            <PathLayout affData={affData} path={"hacker"} affinities={["machinery", "abjuration", "biohacking"]}/>
+
 
         </Box>
     )

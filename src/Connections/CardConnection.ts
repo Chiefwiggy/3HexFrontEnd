@@ -61,8 +61,8 @@ class CardConnection {
         })
     }
 
-    public async GetArcanaCards(arcanaName: string) {
-         return await Axios.get(`${this._cardURL}get/arcana/${arcanaName}`, this._getConfig()).then((resp) => {
+    public async GetPathCards(pathName: string) {
+         return await Axios.get(`${this._cardURL}get/path/${pathName}`, this._getConfig()).then((resp) => {
             return resp.data
         }).catch((e) => {
             console.error(e)

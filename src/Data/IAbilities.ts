@@ -12,23 +12,31 @@ export interface IAbility {
     abilityRefreshTime: string,
     bonuses: {
         affinity?: {
-            focus?: number,
-            rune?: number,
-            soul?: number,
-            deft?: number,
+            nimble?: number,
             infantry?: number,
             guardian?: number,
+            focus?: number,
+            creation?: number,
+            alteration?: number,
             leadership?: number,
-            erudite?: number,
             supply?: number,
-            biohacking?: number,
+            summoning?: number,
+            swift?: number,
+            riding?: number,
+            versatile?: number,
+            rune?: number,
+            sourcecraft?: number,
+            research?: number,
+            machinery?: number,
             abjuration?: number,
-            machinery?: number
+            biohacking?: number,
         },
-        arcana?: {
-            arcane?: number,
+        path?: {
+            arcanist?: number,
             warrior?: number,
-            support?: number,
+            commander?: number,
+            navigator?: number,
+            scholar?: number,
             hacker?: number
         }
         pDEF?: number,

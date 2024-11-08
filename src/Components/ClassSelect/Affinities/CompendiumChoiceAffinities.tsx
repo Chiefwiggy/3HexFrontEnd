@@ -38,7 +38,7 @@ const CompendiumChoiceAffinities = ({choiceData}: ICompendiumChoiceAffinitiesInp
                             >
                                 <Typography
                                     sx={
-                                        cd.choiceType === "arcana" ?
+                                        cd.choiceType === "path" ?
                                             (
                                                 cd.choiceName == "any"
                                                     ? {

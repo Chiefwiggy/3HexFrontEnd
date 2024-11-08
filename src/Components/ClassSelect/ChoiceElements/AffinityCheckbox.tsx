@@ -10,7 +10,7 @@ import {
     SelectChangeEvent
 } from "@mui/material";
 import {IClassChoiceType} from "../../../Data/IClassMetaData";
-import {IAffinities, IArcanaKeys, IArcanaKeysPlusAny} from "../../../Data/ICharacterData";
+import {IAffinities, IPathKeys, IPathKeysPlusAny} from "../../../Data/ICharacterData";
 
 interface IAffinityCheckboxInput {
     choiceData: IClassChoiceType,
@@ -32,7 +32,7 @@ const AffinityCheckbox = ({
 
     const [disableNew, setDisableNew] = useState<boolean>(false);
 
-    const allAffinities = ["deft", "infantry", "guardian", "focus", "soul", "rune", "leadership", "erudite", "supply", "machinery", "abjuration", "biohacking"]
+    const allAffinities = ["nimble", "infantry", "guardian", "focus", "creation", "alteration", "leadership", "supply", "summoning", "swift", "riding", "versatile", "rune", "sourcecraft", "research", "biohacking", "abjuration", "machinery"]
 
     const [affDropdown, setAffDropdown] = useState<keyof IAffinities | "">("");
 
@@ -40,9 +40,11 @@ const AffinityCheckbox = ({
 
 
     const affDataHardCode = {
-        warrior: ["deft", "infantry", "guardian"],
-        arcane: ["focus", "soul", "rune"],
-        support: ["leadership", "erudite", "supply"],
+        warrior: ["nimble", "infantry", "guardian"],
+        arcanist: ["focus", "creation", "alteration"],
+        commander: ["leadership", "supply", "summoning"],
+        navigator: ["swift", "riding", "versatile"],
+        scholar: ["rune", "sourcecraft", "research"],
         hacker: ["machinery", "abjuration", "biohacking"]
     }
 
@@ -98,34 +100,34 @@ const AffinityCheckbox = ({
                         control={
                         <Checkbox
                             value={localCheckboxes[0]}
-                            onChange={handleChange(affDataHardCode[choiceData.choiceName as keyof IArcanaKeys][0] as keyof IAffinities)}
+                            onChange={handleChange(affDataHardCode[choiceData.choiceName as keyof IPathKeys][0] as keyof IAffinities)}
                             disabled={(disableNew || disableOuter )&& !localCheckboxes[0]}
                             name={`cb-${choiceNo}-0`}
                         />
                         }
-                        label={capitalize(affDataHardCode[choiceData.choiceName as keyof IArcanaKeys][0])}
+                        label={capitalize(affDataHardCode[choiceData.choiceName as keyof IPathKeys][0])}
                     />
                     <FormControlLabel
                         control={
                         <Checkbox
                             value={localCheckboxes[1]}
-                            onChange={handleChange(affDataHardCode[choiceData.choiceName as keyof IArcanaKeys][1] as keyof IAffinities)}
+                            onChange={handleChange(affDataHardCode[choiceData.choiceName as keyof IPathKeys][1] as keyof IAffinities)}
                             disabled={(disableNew || disableOuter )&& !localCheckboxes[1]}
                             name={`cb-${choiceNo}-1`}
                         />
                         }
-                        label={capitalize(affDataHardCode[choiceData.choiceName as keyof IArcanaKeys][1])}
+                        label={capitalize(affDataHardCode[choiceData.choiceName as keyof IPathKeys][1])}
                     />
                     <FormControlLabel
                         control={
                         <Checkbox
                             value={localCheckboxes[2]}
-                            onChange={handleChange(affDataHardCode[choiceData.choiceName as keyof IArcanaKeys][2] as keyof IAffinities)}
+                            onChange={handleChange(affDataHardCode[choiceData.choiceName as keyof IPathKeys][2] as keyof IAffinities)}
                             disabled={(disableNew || disableOuter )&& !localCheckboxes[2]}
                             name={`cb-${choiceNo}-2`}
                         />
                         }
-                        label={capitalize(affDataHardCode[choiceData.choiceName as keyof IArcanaKeys][2])}
+                        label={capitalize(affDataHardCode[choiceData.choiceName as keyof IPathKeys][2])}
                     />
                 </FormGroup> :
                 <FormControlLabel

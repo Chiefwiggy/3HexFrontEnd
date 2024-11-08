@@ -1,104 +1,135 @@
-import React, {useEffect, useState} from 'react';
-import {Box, Tab, Tabs, Typography} from "@mui/material";
+import React, { useEffect, useState } from 'react';
+import {Box, Divider, SxProps, Tab, Tabs, Typography} from "@mui/material";
 import usePreloadedContent from "../Hooks/usePreloadedContent/usePreloadedContent";
-import {useSearchParams} from "react-router-dom";
-import {IAffinities, IArcanaKeys} from "../Data/ICharacterData";
+import { useSearchParams } from "react-router-dom";
+import { IAffinities, IPathKeys } from "../Data/ICharacterData";
 import CompendiumAffinityElement from "../Components/Compendium/CompendiumAffinityElement";
-import {Helmet} from "react-helmet";
+import { Helmet } from "react-helmet";
 
-interface IAffinityCompendiumPageInput {
-
-}
+interface IAffinityCompendiumPageInput {}
 
 const AffinityCompendiumPage = ({}: IAffinityCompendiumPageInput) => {
+  const { isLoaded } = usePreloadedContent();
 
-    const {isLoaded} = usePreloadedContent();
+  const [currentTabValue, setCurrentTabValue] = useState<number>(0);
 
-    const [currentTabValue, setCurrentTabValue] = useState<number>(0);
+  const [searchParams, setSearchParams] = useSearchParams();
 
-    const [searchParams, setSearchParams] = useSearchParams();
+  const [isPath, setIsPath] = useState<boolean>(true);
 
-    const [isArcana, setIsArcana] = useState<boolean>(true);
+  const [currentName, setCurrentName] = useState<keyof IPathKeys | keyof IAffinities | "_">(
+    (searchParams.get("path") ?? searchParams.get("affinity") ?? "warrior") as keyof IPathKeys | keyof IAffinities | "_"
+  );
 
-    const [currentName, setCurrentName] = useState<keyof IArcanaKeys | keyof IAffinities | "_">((searchParams.get("arcana") ?? searchParams.get("affinity") ?? "warrior") as keyof IArcanaKeys | keyof IAffinities | "_");
+  const paths: Array<keyof IPathKeys> = ["warrior", "arcanist", "commander", "navigator", "scholar", "hacker"];
+  const affinities: Array<keyof IAffinities | "_"> = [
+    "_", "nimble", "infantry", "guardian", "_", "focus", "creation", "alteration", "_", "leadership", "supply", "summoning", "_", "swift", "riding", "versatile", "_", "rune", "sourcecraft", "research", "_", "machinery",  "abjuration", "biohacking"
+  ];
 
-    const arcanas: Array<keyof IArcanaKeys> = ["warrior", "arcane", "support", "hacker"]
-    const affinities: Array<keyof IAffinities | "_"> = ["_", "deft", "infantry", "guardian", "_", "focus", "rune", "soul", "_", "leadership", "erudite", "supply", "_", "machinery", "abjuration", "biohacking"]
-
-    useEffect(() => {
-        const arcana = searchParams.get("arcana") ?? "";
-        const affinity = searchParams.get("affinity") ?? "";
-        if (arcanas.includes(arcana as keyof IArcanaKeys)) {
-            setCurrentTabValue(arcanas.findIndex(e => e === arcana) * 4);
-            setIsArcana(true);
-        } else if (affinities.includes(affinity as keyof IAffinities)) {
-            setCurrentTabValue(affinities.findIndex(e => e === affinity));
-            setIsArcana(false);
-        }
-    }, [searchParams])
-
-    const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-        setCurrentTabValue(newValue);
-        if (newValue % 4 == 0) {
-            setIsArcana(true);
-            const newName = arcanas[Math.floor(newValue*0.25)]
-            setSearchParams({
-                arcana: newName
-            })
-            setCurrentName(newName);
-        } else {
-            setIsArcana(false);
-            setSearchParams({
-                affinity: affinities[newValue]
-            })
-            setCurrentName(affinities[newValue]);
-        }
+  useEffect(() => {
+    const path = searchParams.get("path") ?? "";
+    const affinity = searchParams.get("affinity") ?? "";
+    if (paths.includes(path as keyof IPathKeys)) {
+      setCurrentTabValue(paths.findIndex((e) => e === path) * 4);
+      setIsPath(true);
+    } else if (affinities.includes(affinity as keyof IAffinities)) {
+      setCurrentTabValue(affinities.findIndex((e) => e === affinity));
+      setIsPath(false);
     }
+  }, [searchParams]);
 
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setCurrentTabValue(newValue);
+    if (newValue % 4 === 0) {
+      setIsPath(true);
+      const newName = paths[Math.floor(newValue * 0.25)];
+      setSearchParams({
+        path: newName,
+      });
+      setCurrentName(newName);
+    } else {
+      setIsPath(false);
+      setSearchParams({
+        affinity: affinities[newValue],
+      });
+      setCurrentName(affinities[newValue]);
+    }
+  };
 
-    return isLoaded ? (
-        <Box
-            sx={{
-                display: "grid",
-                gridTemplateColumns: "1fr 9fr"
-            }}
+  const tabProperties: SxProps = {
+    padding: 0,
+  };
+
+  return isLoaded ? (
+    <Box
+      sx={{
+        display: "grid",
+        gridTemplateColumns: "1fr 1px 9fr",
+      }}
+    >
+      <Helmet>
+        <meta charSet={"utf-8"} />
+        <title>Affinities - Ursura</title>
+      </Helmet>
+
+      <Box
+        sx={{
+          height: "90vh",
+          overflowY: "auto",
+          scrollbarColor: '#6b6b6b #2b2b2b',
+          scrollbarWidth: 'thin',
+          direction: 'rtl'
+        }}
+      >
+
+        <Tabs
+          orientation="vertical"
+          variant="scrollable"
+          value={currentTabValue}
+          onChange={handleTabChange}
         >
-            <Helmet>
-                <meta charSet={"utf-8"} />
-                <title>Affinities - Ursura</title>
-            </Helmet>
-            <Tabs
-                orientation="vertical"
-                variant="scrollable"
-                value={currentTabValue}
-                onChange={handleTabChange}
-            >
-                <Tab label={<Typography variant={"h6"}>Warrior</Typography>}/>
-                <Tab label={"Deft"}/>
-                <Tab label={"Infantry"}/>
-                <Tab label={"Guardian"}/>
-                <Tab label={<Typography variant={"h6"}>Arcane</Typography>}/>
-                <Tab label={"Focus"}/>
-                <Tab label={"Rune"}/>
-                <Tab label={"Soul"}/>
-                <Tab label={<Typography variant={"h6"}>Support</Typography>}/>
-                <Tab label={"Leadership"}/>
-                <Tab label={"Erudite"}/>
-                <Tab label={"Supply"}/>
-                <Tab label={<Typography variant={"h6"}>Hacker</Typography>}/>
-                <Tab label={"Machinery"}/>
-                <Tab label={"Abjuration"}/>
-                <Tab label={"Biohacking"}/>
-            </Tabs>
-            <Box
-                sx={{
-                        padding: "12px"
-                    }}
-            >
-                <CompendiumAffinityElement elemName={currentName} isArcana={isArcana} description={""}/>
-            </Box>
-        </Box>
-    ) : <></>
-}
+          <Tab label={<Typography variant={"h6"}>Warrior</Typography>} sx={tabProperties} />
+          <Tab label={"Nimble"} sx={tabProperties} />
+          <Tab label={"Infantry"} sx={tabProperties} />
+          <Tab label={"Guardian"} sx={tabProperties} />
+          <Tab label={<Typography variant={"h6"}>Arcanist</Typography>} sx={tabProperties} />
+          <Tab label={"Focus"} sx={tabProperties} />
+          <Tab label={"Creation"} sx={tabProperties} />
+          <Tab label={"Alteration"} sx={tabProperties} />
+          <Tab label={<Typography variant={"h6"}>Commander</Typography>} sx={tabProperties} />
+          <Tab label={"Leadership"} sx={tabProperties} />
+          <Tab label={"Supply"} sx={tabProperties} />
+          <Tab label={"Summoning"} sx={tabProperties} />
+          <Tab label={<Typography variant={"h6"}>Navigator</Typography>} sx={tabProperties} />
+          <Tab label={"Swift"} sx={tabProperties} />
+          <Tab label={"Riding"} sx={tabProperties} />
+          <Tab label={"Versatile"} sx={tabProperties} />
+          <Tab label={<Typography variant={"h6"}>Scholar</Typography>} sx={tabProperties} />
+          <Tab label={"Rune"} sx={tabProperties} />
+          <Tab label={"Sourcecraft"} sx={tabProperties} />
+          <Tab label={"Research"} sx={tabProperties} />
+          <Tab label={<Typography variant={"h6"}>Hacker</Typography>} sx={tabProperties} />
+          <Tab label={"Machinery"} sx={tabProperties} />
+          <Tab label={"Abjuration"} sx={tabProperties} />
+          <Tab label={"Biohacking"} sx={tabProperties} />
+        </Tabs>
+
+      </Box>
+      <Divider orientation={"vertical"}/>
+
+      <Box sx={{
+        padding: "12px",
+        height: "90vh",
+        overflowY: "auto",
+        scrollbarColor: '#6b6b6b #2b2b2b',
+        scrollbarWidth: 'thin',
+      }}>
+        <CompendiumAffinityElement elemName={currentName} isPath={isPath} description={""} />
+      </Box>
+    </Box>
+  ) : (
+    <></>
+  );
+};
 
 export default AffinityCompendiumPage;

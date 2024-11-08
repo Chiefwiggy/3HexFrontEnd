@@ -1,6 +1,6 @@
 import {IAPIContext} from "../useAPI/APIProvider";
 import {ICommonCardData, UAffinity} from "../../Data/ICardData";
-import {IAffinities, IAffinitiesArray, IArcanaArray} from "../../Data/ICharacterData";
+import {IAffinities, IAffinitiesArray, IPathArray} from "../../Data/ICharacterData";
 import {IAbility} from "../../Data/IAbilities";
 import {IPrerequisite} from "../../Data/GenericData";
 
@@ -12,32 +12,44 @@ class PLC_AffinityData {
 
     constructor() {
         this.affinityCards = {
-            abjuration: [],
-            biohacking: [],
-            deft: [],
-            erudite: [],
+            nimble: [],
+            infantry: [],
             guardian: [],
             focus: [],
-            infantry: [],
+            creation: [],
+            alteration: [],
             leadership: [],
-            machinery: [],
+            supply: [],
+            summoning: [],
+            swift: [],
+            riding: [],
+            versatile: [],
             rune: [],
-            soul: [],
-            supply: []
+            sourcecraft: [],
+            research: [],
+            machinery: [],
+            abjuration: [],
+            biohacking: [],
         };
         this.affinityAbilities =  {
-            abjuration: [],
-            biohacking: [],
-            deft: [],
-            erudite: [],
+            nimble: [],
+            infantry: [],
             guardian: [],
             focus: [],
-            infantry: [],
+            creation: [],
+            alteration: [],
             leadership: [],
-            machinery: [],
+            supply: [],
+            summoning: [],
+            swift: [],
+            riding: [],
+            versatile: [],
             rune: [],
-            soul: [],
-            supply: []
+            sourcecraft: [],
+            research: [],
+            machinery: [],
+            abjuration: [],
+            biohacking: [],
         };
     }
 
@@ -46,10 +58,10 @@ class PLC_AffinityData {
         this.affinityAbilities = affinityAbilities
     }
 
-    private getRequiredLevel = (prereq: Array<IPrerequisite>, arcanaName: keyof IAffinities) => {
+    private getRequiredLevel = (prereq: Array<IPrerequisite>, pathName: keyof IAffinities) => {
         let retLevel = 0;
         prereq.forEach(e => {
-            if (e.prerequisiteType == "affinity" && e.skill == arcanaName) {
+            if (e.prerequisiteType == "affinity" && e.skill == pathName) {
                 retLevel = e.level;
                 return;
             }

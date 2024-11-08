@@ -138,77 +138,77 @@ export interface IClassData {
 }
 
 export interface IAffinities {
-    focus: number,
-    rune: number,
-    soul: number,
-    deft: number,
+    nimble: number,
     infantry: number,
     guardian: number,
+    focus: number,
+    creation: number,
+    alteration: number,
     leadership: number,
-    erudite: number,
     supply: number,
-    biohacking: number,
+    summoning: number,
+    swift: number,
+    riding: number,
+    versatile: number,
+    rune: number,
+    sourcecraft: number,
+    research: number,
+    machinery: number,
     abjuration: number,
-    machinery: number
+    biohacking: number
 }
 
-export interface IAffinitiesAndArcana {
-    affinities: {
-        focus: number,
-        rune: number,
-        soul: number,
-        deft: number,
-        infantry: number,
-        guardian: number,
-        leadership: number,
-        erudite: number,
-        supply: number,
-        biohacking: number,
-        abjuration: number,
-        machinery: number
-    },
-    arcana: {
-        arcane: number,
-        warrior: number,
-        support: number,
-        hacker: number
-    }
+export interface IAffinitiesAndPath {
+    affinities: IAffinities,
+    path: IPathKeys
 }
 
 export interface IAffinitiesArray<T> {
-    focus: Array<T>,
-    rune: Array<T>,
-    soul: Array<T>,
-    deft: Array<T>,
-    infantry: Array<T>
+    nimble: Array<T>,
+    infantry: Array<T>,
     guardian: Array<T>,
-    leadership: Array<T>
-    erudite: Array<T>,
-    supply: Array<T>
-    biohacking: Array<T>,
+    focus: Array<T>,
+    creation: Array<T>,
+    alteration: Array<T>,
+    leadership: Array<T>,
+    supply: Array<T>,
+    summoning: Array<T>,
+    swift: Array<T>,
+    riding: Array<T>,
+    versatile: Array<T>,
+    rune: Array<T>,
+    sourcecraft: Array<T>,
+    research: Array<T>,
+    machinery: Array<T>,
     abjuration: Array<T>,
-    machinery: Array<T>
+    biohacking: Array<T>
 }
 
-export interface IArcanaKeys {
+export interface IPathKeys {
     warrior: number,
-    arcane: number,
-    support: number,
+    arcanist: number,
+    commander: number,
+    navigator: number,
+    scholar: number,
     hacker: number
 }
 
-export interface IArcanaArray<T> {
+export interface IPathArray<T> {
     warrior: Array<T>,
-    arcane: Array<T>,
-    support: Array<T>,
+    arcanist: Array<T>,
+    commander: Array<T>,
+    navigator: Array<T>,
+    scholar: Array<T>,
     hacker: Array<T>
 }
 
-export interface IArcanaKeysPlusAny {
+export interface IPathKeysPlusAny {
     warrior: number,
-    arcane: number,
-    support: number,
-    hacker: number,
+    arcanist: number,
+    commander: number,
+    navigator: number,
+    scholar: number,
+    hacker: number
     any: number
 }
 

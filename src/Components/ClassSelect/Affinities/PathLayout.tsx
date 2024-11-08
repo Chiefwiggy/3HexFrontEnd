@@ -1,21 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import {Box, capitalize, Typography} from "@mui/material";
 import useCharacter from "../../../Hooks/useCharacter/useCharacter";
-import {IAffinities, IAffinitiesAndArcana, IArcanaKeys, IClassData} from "../../../Data/ICharacterData";
+import {IAffinities, IAffinitiesAndPath, IPathKeys, IClassData} from "../../../Data/ICharacterData";
 import {IFatelineData} from "../../../Data/IFatelineData";
-import {GetArcanaAndAffinitiesFromClassList} from "../../../Utils/CalculateAffinities";
+import {GetPathAndAffinitiesFromClassList} from "../../../Utils/CalculateAffinities";
 
-interface IArcanaLayoutInput {
-    arcana: string,
+interface IPathLayoutInput {
+    path: string,
     affinities: Array<string>,
-    affData: IAffinitiesAndArcana
+    affData: IAffinitiesAndPath
 }
 
-const ArcanaLayout = ({
-    arcana,
+const PathLayout = ({
+    path,
     affinities,
     affData
-}: IArcanaLayoutInput) => {
+}: IPathLayoutInput) => {
 
 
 
@@ -25,7 +25,7 @@ const ArcanaLayout = ({
                     padding: 2
                 }}
             >
-                <Typography textAlign="right" variant={"h5"}>{capitalize(arcana)}: {affData.arcana[arcana as keyof IArcanaKeys]}</Typography>
+                <Typography textAlign="right" variant={"h5"}>{capitalize(path)}: {affData.path[path as keyof IPathKeys]}</Typography>
                 {
                     affinities.map(aff => {
                         return (
@@ -39,4 +39,4 @@ const ArcanaLayout = ({
     )
 }
 
-export default ArcanaLayout
+export default PathLayout

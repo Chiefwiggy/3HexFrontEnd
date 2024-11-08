@@ -1,5 +1,5 @@
 import {
-    IAffinities, IArcanaKeys,
+    IAffinities, IPathKeys,
     ICalculatedSpell,
     ICalculatedWeapon,
     ICharacterBaseData, ICharacterStats, IClassData, IPreparedCard, IPreparedSource,
@@ -71,7 +71,7 @@ class CharacterSheet extends AbstractSheet {
     private dataBackup: ICharacterBaseData;
     public currentAttack: any
     public currentAffinities: IAffinities
-    public currentArcana: IArcanaKeys
+    public currentPath: IPathKeys
 
 
 
@@ -480,23 +480,31 @@ class CharacterSheet extends AbstractSheet {
         this.API = api;
         this.currentAttack = null;
         this.currentAffinities = {
-            focus: 0,
-            rune: 0,
-            soul: 0,
-            deft: 0,
+            nimble: 0,
             infantry: 0,
             guardian: 0,
+            focus: 0,
+            creation: 0,
+            alteration: 0,
             leadership: 0,
-            erudite: 0,
             supply: 0,
-            biohacking: 0,
+            summoning: 0,
+            swift: 0,
+            riding: 0,
+            versatile: 0,
+            rune: 0,
+            sourcecraft: 0,
+            research: 0,
+            machinery: 0,
             abjuration: 0,
-            machinery: 0
+            biohacking: 0,
         }
-        this.currentArcana = {
-            arcane: 0,
+        this.currentPath = {
             warrior: 0,
-            support: 0,
+            arcanist: 0,
+            commander: 0,
+            navigator: 0,
+            scholar: 0,
             hacker: 0
         }
         this._setAffinities()
@@ -638,18 +646,24 @@ class CharacterSheet extends AbstractSheet {
 
     private _setAffinities() {
         this.currentAffinities = {
-            focus: 0,
-            rune: 0,
-            soul: 0,
-            deft: 0,
+            nimble: 0,
             infantry: 0,
             guardian: 0,
+            focus: 0,
+            creation: 0,
+            alteration: 0,
             leadership: 0,
-            erudite: 0,
             supply: 0,
-            biohacking: 0,
+            summoning: 0,
+            swift: 0,
+            riding: 0,
+            versatile: 0,
+            rune: 0,
+            sourcecraft: 0,
+            research: 0,
+            machinery: 0,
             abjuration: 0,
-            machinery: 0
+            biohacking: 0,
         }
         this.data.classes.forEach((val) => {
             Object.entries(val.affinities).forEach(([key, value]) => {
@@ -662,11 +676,13 @@ class CharacterSheet extends AbstractSheet {
             })
         }
 
-        this.currentArcana = {
-            arcane: this.currentAffinities.focus + this.currentAffinities.soul + this.currentAffinities.rune,
-            warrior: this.currentAffinities.infantry + this.currentAffinities.guardian + this.currentAffinities.deft,
-            support: this.currentAffinities.leadership + this.currentAffinities.erudite + this.currentAffinities.supply,
-            hacker: this.currentAffinities.biohacking + this.currentAffinities.abjuration + this.currentAffinities.machinery
+        this.currentPath = {
+            warrior: this.currentAffinities.nimble + this.currentAffinities.infantry + this.currentAffinities.guardian,
+            arcanist: this.currentAffinities.focus + this.currentAffinities.creation + this.currentAffinities.alteration,
+            commander: this.currentAffinities.leadership + this.currentAffinities.supply + this.currentAffinities.summoning,
+            navigator: this.currentAffinities.swift + this.currentAffinities.riding + this.currentAffinities.versatile,
+            scholar: this.currentAffinities.rune + this.currentAffinities.research + this.currentAffinities.sourcecraft,
+            hacker: this.currentAffinities.abjuration + this.currentAffinities.machinery + this.currentAffinities.biohacking
         }
     }
 
@@ -756,7 +772,7 @@ class CharacterSheet extends AbstractSheet {
     public getWeaponClassAffinity(weaponClass: UWeaponClass) {
         switch (weaponClass){
             case "light":
-                return this.currentAffinities.deft;
+                return this.currentAffinities.nimble;
             case "standard":
                 return this.currentAffinities.infantry;
             case "heavy":

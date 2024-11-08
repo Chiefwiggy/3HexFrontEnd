@@ -3,11 +3,11 @@ import PreloadedCharacterContext from "./PreloadedContentContext"
 import PLC_ClassData from "./PLC_ClassData";
 import useAPI from "../useAPI/useAPI";
 import PLC_AffinityData from "./PLC_AffinityData";
-import PLC_ArcanaData from "./PLC_ArcanaData";
+import PLC_PathData from "./PLC_PathData";
 import PLC_WeaponData from "./PLC_WeaponData";
 import PLC_ArmorData from "./PLC_ArmorData";
 import Axios from "axios";
-import {IAffinitiesArray, IArcanaArray} from "../../Data/ICharacterData";
+import {IAffinitiesArray, IPathArray} from "../../Data/ICharacterData";
 import {ICommonCardData} from "../../Data/ICardData";
 import {IAbility} from "../../Data/IAbilities";
 import PLC_SourceData from "./PLC_SourceData";
@@ -24,7 +24,7 @@ interface IPreloadedContentProviderInput {
 export interface IPreloadedContentContextInput {
     ClassData: PLC_ClassData,
     AffinityData: PLC_AffinityData,
-    ArcanaData: PLC_ArcanaData,
+    PathData: PLC_PathData,
     WeaponData: PLC_WeaponData,
     ArmorData: PLC_ArmorData,
     SourceData: PLC_SourceData,
@@ -41,7 +41,7 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
 
     const [AffinityData, setAffinityData] = useState(new PLC_AffinityData());
 
-    const [ArcanaData, setArcanaData] = useState(new PLC_ArcanaData());
+    const [PathData, setPathData] = useState(new PLC_PathData());
 
     const [WeaponData, setWeaponData] = useState(new PLC_WeaponData());
 
@@ -72,7 +72,7 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
 
             await ClassData.Initialize(data.class.cards, data.class.abilities, classData);
             await AffinityData.Initialize(data.affinity.cards as IAffinitiesArray<ICommonCardData>, data.affinity.abilities as IAffinitiesArray<IAbility>);
-            await ArcanaData.Initialize(data.arcana.cards as IArcanaArray<ICommonCardData>, data.arcana.abilities as IArcanaArray<IAbility>);
+            await PathData.Initialize(data.path.cards as IPathArray<ICommonCardData>, data.path.abilities as IPathArray<IAbility>);
             await WeaponData.Initialize(data.weaponData);
             await ArmorData.Initialize(data.armorData);
             await SourceData.Initialize(data.sources);
@@ -88,7 +88,7 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
         <PreloadedCharacterContext.Provider
             value={{
                 ClassData,
-                ArcanaData,
+                PathData,
                 AffinityData,
                 WeaponData,
                 ArmorData,

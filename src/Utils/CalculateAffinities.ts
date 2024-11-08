@@ -1,25 +1,33 @@
-import {IAffinities, IClassData} from "../Data/ICharacterData";
+import {IAffinities, IPathKeys, IClassData} from "../Data/ICharacterData";
 import {IFatelineData} from "../Data/IFatelineData";
 
-export const GetArcanaAndAffinitiesFromClassList = (classes: Array<IClassData>, fate: IFatelineData|undefined)  => {
+export const GetPathAndAffinitiesFromClassList = (classes: Array<IClassData>, fate: IFatelineData|undefined)  => {
         const currentAffinities = { ...{
-            focus: 0,
-            rune: 0,
-            soul: 0,
-            deft: 0,
+            nimble: 0,
             infantry: 0,
             guardian: 0,
+            focus: 0,
+            creation: 0,
+            alteration: 0,
             leadership: 0,
-            erudite: 0,
             supply: 0,
-            biohacking: 0,
+            summoning: 0,
+            swift: 0,
+            riding: 0,
+            versatile: 0,
+            rune: 0,
+            sourcecraft: 0,
+            research: 0,
+            machinery: 0,
             abjuration: 0,
-            machinery: 0
+            biohacking: 0,
         }, ...fate?.affinities ?? {}}
-        let currentArcana = {
-            arcane: 0,
+        let currentPath: IPathKeys = {
             warrior: 0,
-            support: 0,
+            arcanist: 0,
+            commander: 0,
+            navigator: 0,
+            scholar: 0,
             hacker: 0
         }
         classes.forEach((val) => {
@@ -27,14 +35,16 @@ export const GetArcanaAndAffinitiesFromClassList = (classes: Array<IClassData>, 
                 currentAffinities[key as keyof IAffinities] += value;
             })
         })
-        currentArcana = {
-            arcane: currentAffinities.focus + currentAffinities.soul + currentAffinities.rune,
-            warrior: currentAffinities.infantry + currentAffinities.guardian + currentAffinities.deft,
-            support: currentAffinities.leadership + currentAffinities.erudite + currentAffinities.supply,
-            hacker: currentAffinities.biohacking + currentAffinities.abjuration + currentAffinities.machinery
+        currentPath = {
+            warrior: currentAffinities.nimble + currentAffinities.infantry + currentAffinities.guardian,
+            arcanist: currentAffinities.focus + currentAffinities.creation + currentAffinities.alteration,
+            commander: currentAffinities.leadership + currentAffinities.supply + currentAffinities.summoning,
+            navigator: currentAffinities.swift + currentAffinities.riding + currentAffinities.versatile,
+            scholar: currentAffinities.rune + currentAffinities.research + currentAffinities.sourcecraft,
+            hacker: currentAffinities.abjuration + currentAffinities.machinery + currentAffinities.biohacking
         }
         return {
-            arcana: currentArcana,
+            path: currentPath,
             affinities: currentAffinities
         }
     }

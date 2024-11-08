@@ -28,8 +28,8 @@ class AbilityConnection {
         })
     }
 
-    public async GetArcanaAbilities(arcanaName: string) {
-        return await Axios.get(`${this._abilityURL}get/arcana/${arcanaName}`, this._getConfig()).then((resp) => {
+    public async GetPathAbilities(pathName: string) {
+        return await Axios.get(`${this._abilityURL}get/path/${pathName}`, this._getConfig()).then((resp) => {
             return resp.data
         }).catch((e) => {
             console.error(e)

@@ -76,7 +76,7 @@ const GenericCardLayout = ({
                 return 1;
             case "fateline":
                 return 0;
-            case "arcana":
+            case "path":
                 return 3;
             default:
                 return 99;

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Box, capitalize, Typography} from "@mui/material";
-import {IAffinities, IAffinitiesArray, IArcanaKeys} from "../../Data/ICharacterData";
+import {IAffinities, IAffinitiesArray, IPathKeys} from "../../Data/ICharacterData";
 import usePreloadedContent from "../../Hooks/usePreloadedContent/usePreloadedContent";
 import {
     ICommanderCardData,
@@ -21,18 +21,18 @@ import CommanderCard from "../Cards/CommanderCard";
 import {disambiguateCard} from "../../Utils/DisambiguateCardType";
 
 interface ICompendiumAffinityElementInput {
-    elemName: keyof IAffinities | keyof IArcanaKeys | "_"
-    isArcana: boolean,
+    elemName: keyof IAffinities | keyof IPathKeys | "_"
+    isPath: boolean,
     description: string
 }
 
 const CompendiumAffinityElement = ({
    elemName,
-   isArcana,
+   isPath,
    description
 }: ICompendiumAffinityElementInput) => {
 
-    const {ArcanaData, AffinityData, isLoaded} = usePreloadedContent();
+    const {PathData, AffinityData, isLoaded} = usePreloadedContent();
 
     const [allCards, setAllCards] = useState<Map<number, Array<ICommonCardData>>>();
 
@@ -50,10 +50,10 @@ const CompendiumAffinityElement = ({
     }
 
     useEffect(() => {
-        if (isArcana) {
-            setAllCards(ArcanaData.getArcanaCardsByLevel(elemName as keyof IArcanaKeys));
-            setAllAbilities(ArcanaData.getArcanaAbilitiesByLevel(elemName as keyof IArcanaKeys));
-            setLevelArray(ArcanaData.getLevelArray(elemName as keyof IArcanaKeys));
+        if (isPath) {
+            setAllCards(PathData.getPathCardsByLevel(elemName as keyof IPathKeys));
+            setAllAbilities(PathData.getPathAbilitiesByLevel(elemName as keyof IPathKeys));
+            setLevelArray(PathData.getLevelArray(elemName as keyof IPathKeys));
         } else {
             setAllCards(AffinityData.getAffinityCardsByLevel(elemName as keyof IAffinities));
             setAllAbilities(AffinityData.getAffinityAbilitiesByLevel(elemName as keyof IAffinities));

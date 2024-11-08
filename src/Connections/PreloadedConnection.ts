@@ -16,7 +16,7 @@ export interface IPreloadedDataStruct {
         cards: Object,
         abilities: Object
     },
-    arcana: {
+    path: {
         cards: Object,
         abilities: Object
     },
@@ -45,7 +45,7 @@ class PreloadedConnection {
             return {
                 class: {},
                 affinity: {},
-                arcana: {},
+                path: {},
                 weaponData: [],
                 armorData: [],
                 sources: [],

@@ -28,36 +28,48 @@ const SelectAffinitiesDialog = ({
     useEffect(() => {
         if (open) {
             setBaseChoices(existingData ?? {
-            abjuration: 0,
-            biohacking: 0,
-            deft: 0,
-            erudite: 0,
+            nimble: 0,
+            infantry: 0,
             guardian: 0,
             focus: 0,
-            infantry: 0,
+            creation: 0,
+            alteration: 0,
             leadership: 0,
-            machinery: 0,
+            supply: 0,
+            summoning: 0,
+            swift: 0,
+            riding: 0,
+            versatile: 0,
             rune: 0,
-            soul: 0,
-            supply: 0
+            sourcecraft: 0,
+            research: 0,
+            machinery: 0,
+            abjuration: 0,
+            biohacking: 0,
         })
         }
     }, [open]);
 
     const [baseChoices, setBaseChoices] = useState<IAffinities>(existingData ??
         {
-            abjuration: 0,
-            biohacking: 0,
-            deft: 0,
-            erudite: 0,
+            nimble: 0,
+            infantry: 0,
             guardian: 0,
             focus: 0,
-            infantry: 0,
+            creation: 0,
+            alteration: 0,
             leadership: 0,
-            machinery: 0,
+            supply: 0,
+            summoning: 0,
+            swift: 0,
+            riding: 0,
+            versatile: 0,
             rune: 0,
-            soul: 0,
-            supply: 0
+            sourcecraft: 0,
+            research: 0,
+            machinery: 0,
+            abjuration: 0,
+            biohacking: 0,
         }
     )
 
