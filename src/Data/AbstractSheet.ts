@@ -1,6 +1,6 @@
 import {AttributeBarType, DamageType} from "./CharacterSheet";
 import React, {SetStateAction} from "react";
-import {IAttributeBar, ICharacterStats, UStance} from "./ICharacterData";
+import {IAttributeBar, ICharacterBaseData, ICharacterStats, UStance} from "./ICharacterData";
 import {IAPIContext} from "../Hooks/useAPI/APIProvider";
 import {ICommonCardData, UDamageType} from "./ICardData";
 import {IDefenseBreakdown} from "./IDefenses";
@@ -12,7 +12,7 @@ import WeaponBaseCard from "../Components/Cards/WeaponBaseCard";
 import WeaponModCard from "../Components/Cards/WeaponModCard";
 import {default_spell_cards, default_weapon_cards} from "./default_cards";
 import {IArmor} from "./IArmorData";
-import {IMinionData} from "./IMinionData";
+import {IMinionData, IMinionTemplateData} from "./IMinionData";
 import ConditionCard from "../Components/Cards/ConditionCard";
 
 
@@ -29,6 +29,8 @@ abstract class AbstractSheet {
     public weightPenalty: number = 0;
 
     public currentStance: UStance
+
+    public abstract data: ICharacterBaseData | IMinionData | IMinionTemplateData
 
     protected constructor( api: IAPIContext, ping: React.Dispatch<React.SetStateAction<boolean>>|undefined, hping: React.Dispatch<React.SetStateAction<boolean>>|undefined, sping: React.Dispatch<SetStateAction<boolean>>|undefined) {
         this.updateCharacter = ping;
@@ -67,6 +69,13 @@ abstract class AbstractSheet {
     public abstract getBlockMDEFBreakdown(): IDefenseBreakdown;
     public abstract getEvadeDodgeBreakdown(): IDefenseBreakdown;
     public abstract getBlockDodgeBreakdown(): IDefenseBreakdown;
+
+    public getHitBonus() {
+        return 0;
+    }
+    public getCritBonus() {
+        return 0;
+    }
 
     public abstract getAbilityBonuses(bonusType: string): number;
     public abstract getStat(statName: keyof ICharacterStats | "command"): number;

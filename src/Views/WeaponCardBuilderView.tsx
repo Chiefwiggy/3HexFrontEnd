@@ -153,6 +153,7 @@ const WeaponCardBuilderView = ({closeSelf, isOffhand = false}: IWeaponCardBuilde
                 sendEquipData={handleReceiveEquipCards}
                 sendCounterData={handleCounter}
                 canCounter={false}
+                owner={currentSheet}
             />
             <Dialog
                 open={saveWeaponDialog}

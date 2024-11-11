@@ -45,6 +45,7 @@ import {IPreloadedContentContextInput} from "../Hooks/usePreloadedContent/Preloa
 import {Utils} from "../Utils/LanguageLacking";
 import {IFatelineData} from "./IFatelineData";
 import {IDowntimePlayerData} from "./IDowntime";
+import {number} from "yup";
 
 export type AttributeBarType = "tether" | "stamina" | "health"
 export type DamageType = "physical" | "magical" | "raw" | "resistant"
@@ -81,6 +82,7 @@ class CharacterSheet extends AbstractSheet {
     public minionData: Array<MinionSheet> = [];
 
     private baseExpertiseDice = 3;
+    private expertiseDiceValues: Record<string, number> = {};
 
 
 
@@ -153,6 +155,14 @@ class CharacterSheet extends AbstractSheet {
         this.data.settings.dieColorId = dieColorId;
         await this.API.CharacterAPI.UpdateSettings(this.data._id, {...this.data.settings, dieColorId})
         this.manualCharPing()
+    }
+
+    public getHitBonus(): number {
+        return this.data.bonuses?.critBonus ?? 0;
+    }
+
+    public getCritBonus(): number {
+        return this.data.bonuses?.hitBonus ?? 0;
     }
 
     public getCumulativeCommanderCard = (): ICommanderCardData => {
@@ -305,7 +315,7 @@ class CharacterSheet extends AbstractSheet {
 
         return {
             value: pts > total*2 ? total * 3 : total + pts,
-            isExpert: this.data.classes.flatMap(clz => clz.classExpertises).includes(skillName.toLowerCase())
+            isExpert: this.expertiseDiceValues[skillName] > 0 ?? false
         }
     }
 
@@ -510,19 +520,27 @@ class CharacterSheet extends AbstractSheet {
         this._setAffinities()
         this.preloadedData = preloadedData;
         this.setArmor();
-        this.setExpertiseDice()
+
 
 
 
         this.initializeAsync().then(r => {
             this._canDualWield = this.isUnlocked("dualWielding");
             this._hasUnarmored = this.isUnlocked("unarmoredDefense");
+            this.setExpertiseDice()
         });
 
      }
      private setExpertiseDice () {
         const expertiseObject = this.data.classes.flatMap(clz => clz.classExpertises).reduce((acc, curr) => ({ ...acc, [curr]: (acc[curr] || 0) + 1 }), {} as Record<string, number>);
-        this.baseExpertiseDice = Object.values(expertiseObject).reduce((pv, cv) => {
+        const abilityBonuses = Object.keys(this.data.skillPoints).reduce((pv, cv) => {
+            pv[cv] = this.getAbilityBonuses(`${cv}Expertise`) + (expertiseObject[cv] ?? 0);
+            return pv;
+        }, {} as Record<string, number>);
+
+        this.expertiseDiceValues = abilityBonuses;
+
+        this.baseExpertiseDice = Object.values(abilityBonuses).reduce((pv, cv) => {
             if (cv > 1) {
                 return pv + cv - 1;
             }
@@ -578,7 +596,8 @@ class CharacterSheet extends AbstractSheet {
                 this.allCards.spells.targets.push(default_spell_cards[0]);
                 this.allCards.spells.modifiers.push(default_spell_cards[1]);
                 this.allCards.weapons.bases.push(default_weapon_cards[0]);
-                this.allCards.weapons.forms.push(default_weapon_cards[1]);
+                this.allCards.weapons.bases.push(default_weapon_cards[1]);
+                this.allCards.weapons.forms.push(default_weapon_cards[2]);
             }
             this.commanderCards = [...gotCards.commanderCards, ...default_commander_cards];
         } catch (error) {
@@ -742,18 +761,18 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getAuthoritySlots(): number {
-        return 1 + Math.floor(this.data.characterStats.authority.value * 0.25) + this.getAbilityBonuses("commanderCardSlots");
+        return 1 + Math.floor(this.getStat("authority") * 0.3334) + this.getAbilityBonuses("commanderCardSlots");
     }
 
 
 
 
     public getStaminaRefresh(): number {
-        return Math.floor(this.data.characterStats.endurance.value * 2) + (this.data.bonuses?.staminaRefresh ?? 0);
+        return Math.floor(this.getStat("endurance") * 2) + (this.data.bonuses?.staminaRefresh ?? 0) + this.getAbilityBonuses("staminaRefresh");
     }
 
     public getStaminaBreather(): number {
-        return this.getStaminaRefresh() + this.getAbilityBonuses("staminaBreather") + (this.isUnlocked("mindBreathing") ? Math.floor(this.data.characterStats.mind.value * 0.5): 0);
+        return this.getStaminaRefresh() + this.getAbilityBonuses("staminaBreather") + (this.isUnlocked("mindBreathing") ? Math.floor(this.getStat("mind") * 0.5): 0);
 
     }
 

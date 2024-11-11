@@ -12,6 +12,7 @@ interface ICharacterSheetSidebarInput {
     title: string,
     icon: React.ElementType,
     panelComponent: React.ComponentType<WithCloseSelf>
+    panelProps?: Record<string, any>;
     doShow?: boolean,
     placement?: "left" | "right" | "top" | "bottom",
     darkenBackground?: boolean,
@@ -22,6 +23,7 @@ const CharacterSheetSidebar = ({
     title,
     icon,
     panelComponent,
+    panelProps = {},
     doShow = true,
     placement = "right",
     darkenBackground = true,
@@ -52,7 +54,7 @@ const CharacterSheetSidebar = ({
                     }
                 }}
             >
-                <PanelComponent closeSelf={handleOpenSidebarPanel(false)} {...rest} />
+                <PanelComponent closeSelf={handleOpenSidebarPanel(false)} {...rest} {...panelProps} />
             </Drawer>
         </Box>
     ) : <></>

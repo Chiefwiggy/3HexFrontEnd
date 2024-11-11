@@ -11,6 +11,9 @@ import CalculatedCard from "../Components/CardBuilder/CalculatedCard";
 import cardConnection from "../Connections/CardConnection";
 import useAPI from "../Hooks/useAPI/useAPI";
 import usePreloadedContent from "../Hooks/usePreloadedContent/usePreloadedContent";
+import CharacterSheet from "../Data/CharacterSheet";
+import MinionSheet from "../Data/MinionSheet";
+import AbstractSheet from "../Data/AbstractSheet";
 
 
 
@@ -32,8 +35,10 @@ interface ICardBuilderInput {
     sendSaveData: (cards: Array<ICommonCardData|null>, spellCopy: React.ReactNode) => Promise<void>,
     sendEquipData: (cards: Array<ICommonCardData|null>) => Promise<void>
     sendCounterData: (cards: Array<ICommonCardData|null>) => Promise<void>
-    offhandData?: boolean
-    canCounter: boolean
+    offhandData?: boolean,
+    canSave?: boolean,
+    canCounter: boolean,
+    owner: AbstractSheet
 }
 const CardBuilder = ({
     GetAllCards,
@@ -45,7 +50,9 @@ const CardBuilder = ({
     sendEquipData,
     sendCounterData,
     offhandData = false,
-    canCounter
+    canSave = true,
+    canCounter,
+    owner
 }: ICardBuilderInput) => {
 
     const [cardData, setCardData] = useState<Array<ICommonCardData|null>>(new Array(cardTypes.length).fill(null));
@@ -74,14 +81,11 @@ const CardBuilder = ({
     }
 
     const handleSaveCard = async(event: React.MouseEvent): Promise<void> => {
-        if (currentSheet) {
-            await sendSaveData(cardData, <CalculatedCard
-                            cardCalculator={cardCalculator}
-                            depArray={cardData}
-                            owner={currentSheet}
-                        />);
-        }
-
+        await sendSaveData(cardData, <CalculatedCard
+                        cardCalculator={cardCalculator}
+                        depArray={cardData}
+                        owner={owner}
+                    />);
     }
 
     const handleCounterCard = async(event:React.MouseEvent): Promise<void> => {
@@ -134,7 +138,7 @@ const CardBuilder = ({
         }
     }, [allCards, currentFilter]);
 
-    const {currentSheet} = useCharacter();
+    // const {currentSheet} = useCharacter();
 
     useEffect(() => {
         const isCompleteLocal = cardTypes.reduce((previousValue, currentValue, currentIndex) => {
@@ -158,8 +162,9 @@ const CardBuilder = ({
             setIsCounterValid(isCounterValidLocal);
         }
 
-        if (isCompleteLocal && currentSheet) {
-            cardCalculator.sendCurrentCards(cardData, currentSheet);
+        if (isCompleteLocal) {
+
+            cardCalculator.sendCurrentCards(cardData, owner);
         }
         setIsComplete(isCompleteLocal);
 
@@ -203,11 +208,11 @@ const CardBuilder = ({
                     })
                 }
                 {
-                    isComplete && currentSheet ?
+                    isComplete ?
                         <CalculatedCard
                             cardCalculator={cardCalculator}
                             depArray={cardData}
-                            owner={currentSheet}
+                            owner={owner}
                         />
                         :
                         <Paper elevation={1} sx={{
@@ -240,14 +245,20 @@ const CardBuilder = ({
                         )
                     })
                 }
-                <Button
-                    variant={"contained"}
-                    color={"secondary"}
-                    onClick={handleSaveCard}
-                    disabled={!isComplete}
-                >
-                    Save
-                </Button>
+                {
+                    canSave ?
+                        <Button
+                            variant={"contained"}
+                            color={"secondary"}
+                            onClick={handleSaveCard}
+                            disabled={!isComplete}
+                        >
+                            Save
+                        </Button>
+                        :
+                        <></>
+                }
+
                 {
                     canCounter ?
                         <Button

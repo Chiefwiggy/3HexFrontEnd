@@ -21,6 +21,18 @@ import FormikSelect from "../../FormikHelpers/FormikSelect";
 import usePreloadedContent from "../../../Hooks/usePreloadedContent/usePreloadedContent";
 import VerticalLinearBar from "../../Generic/VerticalLinearBar";
 import PoleProgress from './PoleProgress';
+import CardBuilder from "../../../Layouts/CardBuilder";
+import { ICommonCardData } from '../../../Data/ICardData';
+import MinionWeaponBuilder from "../MinionWeaponBuilder";
+import {FaDice} from "react-icons/fa6";
+import RollDiceView from "../../../Views/RollDiceView";
+import CharacterSheetSidebar from "../../Character Sheet/CharacterSheetSidebar";
+import {GiAxeSword} from "react-icons/gi";
+import {AutoFixHighOutlined} from "@mui/icons-material";
+import MinionSpellBuilder from '../MinionSpellBuilder';
+import MinionSheet from "../../../Data/MinionSheet";
+import MinionTemplateSheet from "../../../Data/MinionTemplateSheet";
+import useAPI from "../../../Hooks/useAPI/useAPI";
 
 
 interface ICreateMinionTemplateInput {
@@ -29,9 +41,11 @@ interface ICreateMinionTemplateInput {
 
 const CreateMinionTemplate = ({}: ICreateMinionTemplateInput) => {
 
-    const {ArmorData, WeaponData} = usePreloadedContent();
+    const {ArmorData, WeaponData, isLoaded} = usePreloadedContent();
 
     const [currentXP, setCurrentXP] = useState(0);
+
+    const [currentMinionSheet, setCurrentMinionSheet] = useState<MinionTemplateSheet>();
 
 
 
@@ -90,22 +104,26 @@ const CreateMinionTemplate = ({}: ICreateMinionTemplateInput) => {
 
     })
 
+    const APIData = useAPI();
+
+    useEffect(() => {
+        setCurrentMinionSheet(new MinionTemplateSheet(APIData));
+    }, []);
+
+
     useEffect(() => {
         const xpFromStats = Object.values(formik.values.minionBaseStats).reduce((pv, cv) => {
             return pv + cv;
         }, 0)
-        const level = Math.max(0,xpFromStats - 35);
+        const level = Math.max(0, xpFromStats - 35);
         const maxStat = Object.values(formik.values.minionBaseStats).reduce((pv, cv) => {
             if (cv > pv) return cv;
             return pv;
         }, 0)
-        // console.log("LEVEL", level)
-        // console.log("MAX", maxStat);
-        const maxStatLevel = (maxStat - 10)*5;
-        // console.log("BARRIER LEVEL", maxStatLevel);
+        const maxStatLevel = (maxStat - 10) * 5;
 
         const minionActualLevel = Math.max(maxStatLevel, level);
-        console.log( "MINION LEVEL", minionActualLevel);
+        console.log("MINION LEVEL", minionActualLevel);
 
         const x1 = minionActualLevel + 10;
         const roughPlayerLevel = x1 * 1.25;
@@ -115,7 +133,9 @@ const CreateMinionTemplate = ({}: ICreateMinionTemplateInput) => {
 
         console.log("RPAUT:", playerMaxAUT);
 
-        setCurrentXP(playerMaxAUT*50);
+        setCurrentXP(playerMaxAUT * 50);
+
+        currentMinionSheet?.updateStats(formik.values.minionBaseStats)
 
     }, [formik.values]);
 
@@ -123,84 +143,6 @@ const CreateMinionTemplate = ({}: ICreateMinionTemplateInput) => {
         <Box>
             <br/>
             <form onSubmit={formik.handleSubmit}>
-                <Box
-                    sx={{
-                        display: "flex",
-                        justifyContent: "center"
-                    }}
-                >
-                    <Paper elevation={1} sx={{
-                        padding: 2,
-                        display: "flex",
-                        gap: "10px"
-                    }}>
-                        <FormikTextField formik={formik} fieldName={"minionTemplateName"} label={"Minion Name"}/>
-                        <FormikSelect formik={formik} fieldName={"minionRole"} options={[
-                            "brute", "tank", "soldier", "ranged", "magic", "support"
-                        ]} label={"Role"}/>
-                    </Paper>
-                </Box>
-                <Divider sx={{margin: 2}}/>
-                <Box
-                    sx={{
-                        display: "flex",
-                        justifyContent: "space-around"
-                    }}
-                >
-                    <Paper elevation={1} sx={{
-                        padding: 2
-                    }}>
-                        <FormikSelect
-                            formik={formik}
-                            fieldName={"currentArmorId"}
-                            label={"Armor Name"}
-                            options={ArmorData.GetAllBaseData().map(ad => ad._id)}
-                            optionNames={ArmorData.GetAllBaseData().map(ad => ad.armorName)}
-                        />
-                        <FormikNumericField formik={formik} fieldName={"currentArmorEnchantment"}
-                                            label={"Enchantment Level"} min={0} max={10}/>
-                    </Paper>
-                    <Paper elevation={1} sx={{
-                        padding: 2
-                    }}>
-                        <FormikSelect
-                            formik={formik}
-                            fieldName={"currentWeaponId"}
-                            label={"Weapon Name"}
-                            options={WeaponData.GetAllStandardWeapons().map(ad => ad._id)}
-                            optionNames={WeaponData.GetAllStandardWeapons().map(ad => ad.cardName)}
-                        />
-                        <FormikNumericField formik={formik} fieldName={"currentWeaponEnchantment"}
-                                            label={"Enchantment Level"} min={0} max={10}/>
-                    </Paper>
-                </Box>
-
-
-                <Box
-                    sx={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(5, 1fr)",
-                        padding: 4,
-                        gap: "10px"
-                    }}
-                >
-                    {
-                        Object.entries(formik.values.minionBaseStats).map(([key, stat]) => (
-                            <FormikNumericField
-                                formik={formik}
-                                fieldName={`minionBaseStats.${key}`}
-                                label={capitalize(key)}
-                                key={key}
-                                min={0}
-                                max={75}
-                            />
-                        ))
-                    }
-                </Box>
-                <Button type={"submit"}>test</Button>
-
-                <Divider />
-                test
                 <Box
                     sx={{
                         display: "grid",
@@ -212,37 +154,97 @@ const CreateMinionTemplate = ({}: ICreateMinionTemplateInput) => {
                         sx={{
                             display: "flex",
                             flexDirection: "column",
-                            alignItems: "center"
+                            alignItems: "center",
+                            padding: "12px"
                         }}
                         elevation={1}
                     >
                         <Box
                             sx={{
-                                display: "flex",
-                                gap: "12px",
-                                padding: "6px",
-                                justifyContent: "space-around"
+                                display: "grid",
+                                gridTemplateColumns: "1fr 1fr",
+                                gap: "10px"
                             }}
                         >
                             <FormikTextField formik={formik} fieldName={"minionTemplateName"} label={"Minion Name"}/>
                             <FormikSelect formik={formik} fieldName={"minionRole"} options={[
                                 "brute", "tank", "soldier", "ranged", "magic", "support"
                             ]} label={"Role"}/>
+                            <FormikSelect
+                                formik={formik}
+                                fieldName={"currentWeaponId"}
+                                label={"Weapon Name"}
+                                options={WeaponData.GetAllStandardWeapons().map(ad => ad._id)}
+                                optionNames={WeaponData.GetAllStandardWeapons().map(ad => ad.cardName)}
+                            />
+                            <FormikNumericField formik={formik} fieldName={"currentWeaponEnchantment"}
+                                                label={"Enchantment Level"} min={0} max={10}/>
+                            <FormikSelect
+                                formik={formik}
+                                fieldName={"currentArmorId"}
+                                label={"Armor Name"}
+                                options={ArmorData.GetAllBaseData().map(ad => ad._id)}
+                                optionNames={ArmorData.GetAllBaseData().map(ad => ad.armorName)}
+                            />
+                            <FormikNumericField formik={formik} fieldName={"currentArmorEnchantment"}
+                                                label={"Enchantment Level"} min={0} max={10}/>
 
+                        </Box>
+                        <br/>
+                        <Box
+                            sx={{
+                                display: "grid",
+                                gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+                                gridGap: "10px",
+                                padding: "12px"
+                            }}
+                        >
+                            {
+                                Object.entries(formik.values.minionBaseStats).map(([key, stat]) => (
+                                    <FormikNumericField
+                                        formik={formik}
+                                        fieldName={`minionBaseStats.${key}`}
+                                        label={capitalize(key)}
+                                        key={key}
+                                        min={0}
+                                        max={75}
+                                    />
+                                ))
+                            }
                         </Box>
                     </Paper>
                     <Paper
-                        sx={{
-
-                        }}
+                        sx={{}}
                         elevation={1}
                     >
-                        test2
+                        {
+                            isLoaded ?
+                                <Box>
+                                    <CharacterSheetSidebar
+                                        title={"Build Weapon"}
+                                        icon={GiAxeSword}
+                                        panelComponent={MinionWeaponBuilder}
+                                        placement={"right"}
+                                        panelProps={{
+                                            currentWeaponId: formik.values.currentWeaponId,
+                                            currentWeaponEnchantment: formik.values.currentWeaponEnchantment,
+                                            minionSheet: currentMinionSheet
+                                        }}
+                                    />
+                                    <CharacterSheetSidebar title={"Build Spell"} icon={AutoFixHighOutlined} panelComponent={MinionSpellBuilder} placement={"right"} panelProps={{
+                                        minionSheet: currentMinionSheet
+                                    }}/>
+                                </Box>
+                                :
+                                <></>
+                        }
+
                     </Paper>
                     <Box>
                         <PoleProgress currentXP={currentXP}/>
                     </Box>
                 </Box>
+                <Button type={"submit"}> test </Button>
 
 
             </form>

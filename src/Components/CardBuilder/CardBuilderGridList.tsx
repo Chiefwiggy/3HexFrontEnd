@@ -15,7 +15,7 @@ const CardBuilderGridList = ({
     sendBack = (num: number) => Function
 }: ICardBuilderGridListInput) => {
 
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(15);
 
     const handleChangePage = (

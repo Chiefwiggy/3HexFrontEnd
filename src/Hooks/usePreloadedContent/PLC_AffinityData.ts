@@ -82,6 +82,10 @@ class PLC_AffinityData {
         }
     }
 
+    public getAllAffinityCards(cardType: "spell" | "weapon"): Array<ICommonCardData> {
+        return Object.values(this.affinityCards).flatMap(e => e).filter(e => e.cardType === cardType);
+    }
+
     public getAffinityAbilities(affinityName: UAffinity): Array<IAbility> {
         try {
             if (this.affinityAbilities[affinityName]) {

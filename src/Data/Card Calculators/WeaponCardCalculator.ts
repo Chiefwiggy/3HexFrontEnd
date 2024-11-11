@@ -15,6 +15,7 @@ import {createRangeString} from "../../Utils/helper_functions";
 import CharacterSheet from "../CharacterSheet";
 import MinionSheet from "../MinionSheet";
 import {string} from "yup";
+import AbstractSheet from "../AbstractSheet";
 
 
 class WeaponCardCalculator extends AbstractCardCalculator {
@@ -57,7 +58,7 @@ class WeaponCardCalculator extends AbstractCardCalculator {
         return (this.getCardOfType("weapon.base") as IScaledWeaponBaseData)?.canThrow ?? false;
     }
 
-    protected invokeRecalculateData(char: CharacterSheet|MinionSheet): void {
+    protected invokeRecalculateData(char: AbstractSheet): void {
         if (this.cards.length > 0 && this.cards[0] != undefined) {
             const finalWeaponStats = GetFinalWeaponData(
                 this.getCardOfType("weapon.base") as IScaledWeaponBaseData,
@@ -74,7 +75,7 @@ class WeaponCardCalculator extends AbstractCardCalculator {
 
             this.updateVal("toHit", getSkillFormat(finalWeaponStats.toHit));
             this.updateVal("critDamage", (finalWeaponStats.crit+char.getAbilityBonuses("critDamage")).toString());
-            this.updateVal("handedness", getHandedness(char.data, baseCard.handedness));
+            this.updateVal("handedness", getHandedness(baseCard.handedness));
             this.updateVal("thrownDistance", (baseCard.canThrow) ? createRangeString(finalWeaponStats.thrownRange) : "-");
         }
     }

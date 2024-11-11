@@ -1,5 +1,6 @@
 import {IAPIContext} from "../useAPI/APIProvider";
 import {IClassMetaData, IClassServerOutput} from "../../Data/IClassMetaData";
+import {ICommonCardData} from "../../Data/ICardData";
 
 
 class PLC_ClassData {
@@ -38,6 +39,11 @@ class PLC_ClassData {
             console.error(className + " has no cards.")
             return []
         }
+    }
+
+    public getAllClassCards(cardType: "weapon" | "spell"): Array<ICommonCardData> {
+        // @ts-ignore
+        return Object.values(this.classCards).flatMap(e => e).filter(e => e.cardType === cardType);
     }
 
     public getClassAbilities(className: string): Array<any> {

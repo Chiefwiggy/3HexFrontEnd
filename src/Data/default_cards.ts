@@ -8,7 +8,7 @@ import {
 } from "./ICardData";
 
 
-export const default_spell_cards: Array<ISpellTargetCardData|ISpellModifierCardData> = [
+export const default_spell_cards: Array<ISpellTargetCardData | ISpellModifierCardData> = [
     {
         "_id": "___defaultSpellTarget",
         "cardName": "Touch",
@@ -75,7 +75,7 @@ export const default_spell_cards: Array<ISpellTargetCardData|ISpellModifierCardD
     },
 ]
 
-export const default_weapon_cards: Array<IWeaponCommonData|IWeaponBaseData> = [
+export const default_weapon_cards: Array<IWeaponCommonData | IWeaponBaseData> = [
     {
         cardName: "Fists",
         cardType: "weapon",
@@ -93,7 +93,7 @@ export const default_weapon_cards: Array<IWeaponCommonData|IWeaponBaseData> = [
             breakpointBonuses: []
         },
         potency: {
-            baseValue: 2.5,
+            baseValue: 3,
             breakpoints: [],
             breakpointBonuses: []
         },
@@ -107,45 +107,45 @@ export const default_weapon_cards: Array<IWeaponCommonData|IWeaponBaseData> = [
             breakpointBonuses: []
         },
         specialCrit:
-        {
-            baseValue: {
-            d1: "5",
-            d2: "5",
-            d3: "5",
-            d4: "?",
-            d5: "?",
-            d6: "-"
-        },
-            breakpoints: [],
-            breakpointBonuses: []
-        }
+            {
+                baseValue: {
+                    d1: "5",
+                    d2: "5",
+                    d3: "5",
+                    d4: "?",
+                    d5: "?",
+                    d6: "-"
+                },
+                breakpoints: [],
+                breakpointBonuses: []
+            }
 
 
-            ,
+        ,
         baseRange: {
             min: {
-            baseValue: 0,
-            breakpoints: [],
-            breakpointBonuses: []
-        },
+                baseValue: 0,
+                breakpoints: [],
+                breakpointBonuses: []
+            },
             max: {
-            baseValue: 0,
-            breakpoints: [],
-            breakpointBonuses: []
-        },
+                baseValue: 0,
+                breakpoints: [],
+                breakpointBonuses: []
+            },
             isMelee: true
         },
         thrownRange: {
             min: {
-            baseValue: 0,
-            breakpoints: [],
-            breakpointBonuses: []
-        },
+                baseValue: 0,
+                breakpoints: [],
+                breakpointBonuses: []
+            },
             max: {
-            baseValue: 0,
-            breakpoints: [],
-            breakpointBonuses: []
-        },
+                baseValue: 0,
+                breakpoints: [],
+                breakpointBonuses: []
+            },
             isMelee: true
         },
         canThrow: {
@@ -173,6 +173,99 @@ export const default_weapon_cards: Array<IWeaponCommonData|IWeaponBaseData> = [
         _id: "___defaultBaseWeapon"
     },
     {
+        cardName: "Improvised Weapon",
+        cardType: "weapon",
+        cardSubtype: "base",
+        effects: [],
+        prerequisites: [],
+        baseHit: {
+            baseValue: 10,
+            breakpoints: [],
+            breakpointBonuses: []
+        },
+        basePower: {
+            baseValue: 5,
+            breakpoints: [],
+            breakpointBonuses: []
+        },
+        potency: {
+            baseValue: 2.5,
+            breakpoints: [],
+            breakpointBonuses: []
+        },
+        weaponClass: "light",
+        weaponType: "unarmed",
+        damageType: "physical",
+        damageSubtype: "kinetic",
+        baseCrit: {
+            baseValue: 5,
+            breakpoints: [],
+            breakpointBonuses: []
+        },
+        specialCrit:
+            {
+                baseValue: {
+                    d1: "5",
+                    d2: "5",
+                    d3: "5",
+                    d4: "?",
+                    d5: "?",
+                    d6: "-"
+                },
+                breakpoints: [],
+                breakpointBonuses: []
+            },
+        baseRange: {
+            min: {
+                baseValue: 0,
+                breakpoints: [],
+                breakpointBonuses: []
+            },
+            max: {
+                baseValue: 0,
+                breakpoints: [],
+                breakpointBonuses: []
+            },
+            isMelee: true
+        },
+        thrownRange: {
+            min: {
+                baseValue: 0,
+                breakpoints: [],
+                breakpointBonuses: []
+            },
+            max: {
+                baseValue: 1,
+                breakpoints: [],
+                breakpointBonuses: []
+            },
+            isMelee: true
+        },
+        canThrow: {
+            baseValue: true,
+            breakpoints: [],
+            breakpointBonuses: []
+        },
+        skillRequirement: {
+            baseValue: 0,
+            breakpoints: [],
+            breakpointBonuses: []
+        },
+        staminaCost: {
+            baseValue: 0,
+            breakpoints: [],
+            breakpointBonuses: []
+        },
+        tetherCost: {
+            baseValue: 0,
+            breakpoints: [],
+            breakpointBonuses: []
+        },
+        weaponTags: ["unarmed"],
+        handedness: 1.0,
+        _id: "___defaultImprovisedWeapon"
+    },
+    {
         cardName: "Standard Attack",
         cardType: "weapon",
         cardSubtype: "form",
@@ -188,8 +281,6 @@ export const default_weapon_cards: Array<IWeaponCommonData|IWeaponBaseData> = [
         _id: "___defaultWeaponForm"
     }
 ]
-
-
 
 
 export const default_commander_cards: Array<ICommanderCardData> = [

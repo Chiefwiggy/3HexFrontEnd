@@ -1,4 +1,4 @@
-import {IAttributeBar, ICalculatedSpell, ICalculatedWeapon, IEnchantmentData} from "./ICharacterData";
+import {IAttributeBar, ICalculatedArmor, ICalculatedSpell, ICalculatedWeapon, IEnchantmentData} from "./ICharacterData";
 import {IModifiable} from "./GenericData";
 import {IArmor} from "./IArmorData";
 import {ICommonCardData} from "./ICardData";
@@ -14,6 +14,19 @@ export interface IMinionStats {
     presence: IModifiable,
     command: IModifiable,
     endurance: IModifiable
+}
+
+export interface IMinionTemplateStats {
+    might: number,
+    agility: number,
+    skill: number,
+    awareness: number,
+    vitality: number,
+    knowledge: number,
+    mind: number,
+    presence: number,
+    command: number,
+    endurance: number
 }
 export interface IMinionData {
     _id: string,
@@ -46,4 +59,15 @@ export interface IMinionData {
         hitBonus?: number,
         critBonus?: number
     }
+}
+
+export interface IMinionTemplateData {
+    _id: string,
+    minionTemplateName: string,
+    minionBaseStats: IMinionTemplateStats,
+    currentSpell: ICalculatedSpell|null,
+    currentWeapon: ICalculatedWeapon|null,
+    currentArmor: IEnchantmentData|null,
+    cardData: Array<ICommonCardData>,
+    bonuses: Object
 }

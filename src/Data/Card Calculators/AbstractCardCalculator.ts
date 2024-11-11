@@ -15,6 +15,7 @@ import {ConstructFinalWeapon} from "../../Utils/ConstructFinalWeapon";
 import CharacterSheet from "../CharacterSheet";
 import MinionSheet from "../MinionSheet";
 import {string} from "yup";
+import AbstractSheet from "../AbstractSheet";
 
 export interface IRangeData {
     min: number,
@@ -67,7 +68,8 @@ abstract class AbstractCardCalculator {
         return this.cards[this.cardTypes.findIndex((type) => type.name == inputType)];
     }
 
-    public sendCurrentCards(cards: Array<ICommonCardData|null>, char: CharacterSheet | MinionSheet) {
+    public sendCurrentCards(cards: Array<ICommonCardData|null>, char: AbstractSheet) {
+
         this.cards = cards.map(card => {
             if (card) {
                 if (card.cardType == "weapon" && card.cardSubtype == "base") {
@@ -80,7 +82,7 @@ abstract class AbstractCardCalculator {
         this.invokeRecalculateData(char);
     }
 
-    protected abstract invokeRecalculateData(char: CharacterSheet|MinionSheet): void;
+    protected abstract invokeRecalculateData(char: AbstractSheet): void;
     public abstract getTitle(): string;
     public getAllCardNames(): string {
         return this.cards.map(e => e ? e.cardName : "").join( " • ");

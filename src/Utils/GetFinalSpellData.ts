@@ -13,6 +13,7 @@ import {ICharacterBaseData} from "../Data/ICharacterData";
 import {IMinionData} from "../Data/IMinionData";
 import CharacterSheet from "../Data/CharacterSheet";
 import MinionSheet from "../Data/MinionSheet";
+import AbstractSheet from "../Data/AbstractSheet";
 
 export interface ITotalSpellStats {
     tetherCost: number,
@@ -46,7 +47,7 @@ export interface ITotalWeaponStats {
 
 }
 
-export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: ISpellTargetCardData, rest: Array<ISpellModifierCardData|null>, char: CharacterSheet|MinionSheet): ITotalSpellStats => {
+export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: ISpellTargetCardData, rest: Array<ISpellModifierCardData|null>, char: AbstractSheet): ITotalSpellStats => {
     try {
         let finalBasePower = StatChain(spellBase.basePower, [spellBase.basePowerMod, spellTarget.basePowerMod, ...rest.map(e => e?.basePowerMod)]);
         let finalPotencyPower = Math.floor(StatChain(spellBase.potency, [spellBase.potencyMod, spellTarget.potencyMod, ...rest.map(e => e?.potencyMod)]) * char.getStat("might"));
@@ -106,7 +107,9 @@ export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: IS
 
 
 
-export const GetFinalWeaponData = (weaponBase: IScaledWeaponBaseData, allCards: Array<IWeaponCommonData | null>, char: CharacterSheet|MinionSheet): ITotalWeaponStats => {
+export const GetFinalWeaponData = (weaponBase: IScaledWeaponBaseData, allCards: Array<IWeaponCommonData | null>, char: AbstractSheet): ITotalWeaponStats => {
+
+    console.log("CALCED");
 
     let might = 0;
     let skill = 0;
@@ -133,11 +136,11 @@ export const GetFinalWeaponData = (weaponBase: IScaledWeaponBaseData, allCards: 
     const isThrownMelee = weaponBase.thrownRange.isMelee
 
     const finalBaseCrit = StatChain(weaponBase.baseCrit, allCards.map(c => c?.baseCritMod));
-    const finalCrit = StatChain(skill + finalBaseCrit + (char.data.bonuses?.critBonus ?? 0), allCards.map(c => c?.critMod));
+    const finalCrit = StatChain(skill + finalBaseCrit + char.getCritBonus(), allCards.map(c => c?.critMod));
 
     const finalBaseHit = StatChain(weaponBase.baseHit, allCards.map(c => c?.baseHitMod));
 
-    const finalHitMod = StatChain(finalBaseHit + (awareness*2) + skill + (char.data.bonuses?.hitBonus ?? 0), allCards.map(c => c?.hitMod));
+    const finalHitMod = StatChain(finalBaseHit + (awareness*2) + skill + char.getCritBonus(), allCards.map(c => c?.hitMod));
 
     let finalDamageType: UDamageType = weaponBase.damageType;
     let finalDamageSubtype = weaponBase.damageSubtype;

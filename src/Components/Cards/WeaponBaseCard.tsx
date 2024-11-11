@@ -72,7 +72,7 @@ const WeaponBaseCard = ({
                 <NumericIcon val={`${createRangeString(constructedData.baseRange)}`} icon={LooksOutlined} />
                 <NumericIcon val={getSkillFormat(constructedData.baseHit)} icon={AdsClickOutlined} />
                 <NumericIcon val={constructedData.baseCrit} icon={CrisisAlertOutlined} />
-                <NumericIcon val={getHandedness(null, constructedData.handedness)} icon={AccessibilityNewOutlined} />
+                <NumericIcon val={getHandedness(constructedData.handedness)} icon={AccessibilityNewOutlined} />
                 {
                     cardData.canThrow ?
                         <NumericIcon val={createRangeString(constructedData.thrownRange)} icon={SportsHandballOutlined} />

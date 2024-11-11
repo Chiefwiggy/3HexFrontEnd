@@ -123,6 +123,7 @@ const SpellCardBuilderView = ({closeSelf}: ISpellCardBuilderView) => {
                 sendEquipData={handleEquip}
                 sendCounterData={handleCounter}
                 canCounter={false}
+                owner={currentSheet}
             />
             <Dialog
                 open={saveSpellDialog}

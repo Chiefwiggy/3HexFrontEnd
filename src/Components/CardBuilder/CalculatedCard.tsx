@@ -20,7 +20,7 @@ interface ICalculatedCardInput {
     depArray: Array<ICommonCardData|null>,
     overrideName?: string,
     overrideWidth?: number,
-    owner: CharacterSheet | MinionSheet
+    owner: AbstractSheet
 }
 const CalculatedCard = ({
     cardCalculator,
@@ -33,7 +33,7 @@ const CalculatedCard = ({
 
     const [effectArray, setEffectArray] = useState<Array<IEffectData>>([]);
 
-    const { isReady, charPing, statPing, cancelPing} = useCharacter();
+    const { charPing, statPing, cancelPing, isReady} = useCharacter();
 
     const [cardTitle, setCardTitle] = useState<string>("");
 
@@ -42,17 +42,14 @@ const CalculatedCard = ({
     const [conditionalCard, setConditionalCard] = useState(false);
 
     useEffect(() => {
-        if (isReady) {
-            cardCalculator.sendCurrentCards(depArray, owner);
-            setCardTitle(overrideName != "" ? overrideName : cardCalculator.getTitle())
-            setEffectArray(cardCalculator.getEffectList());
-            setValidCard(owner.areAllCardsPrepared(cardCalculator.getCards()))
-            setConditionalCard(depArray.filter(e => e?.cardType == "condition").length > 0)
-
-        }
+        cardCalculator.sendCurrentCards(depArray, owner);
+        setCardTitle(overrideName ? overrideName : cardCalculator.getTitle())
+        setEffectArray(cardCalculator.getEffectList());
+        setValidCard(owner.areAllCardsPrepared(cardCalculator.getCards()))
+        setConditionalCard(depArray.filter(e => e?.cardType == "condition").length > 0)
     }, [depArray, charPing, statPing, cancelPing, isReady]);
 
-    return isReady ? (
+    return owner ? (
         <Card
             sx={{
                 width: overrideWidth ? `${overrideWidth}vw` : "18vw",

@@ -46,6 +46,10 @@ class PLC_PathData {
         }
     }
 
+    public getAllPathCards(cardType: "weapon" | "spell"): Array<ICommonCardData> {
+        return Object.values(this.pathCards).flatMap(e => e).filter(e => e.cardType === cardType);
+    }
+
     public getPathAbilities(pathName: keyof IPathArray<IAbility>) {
         try {
             if (this.pathAbilities[pathName]) {

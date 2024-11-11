@@ -22,6 +22,7 @@ import {capitalize} from "@mui/material";
 import CharacterSheet from "../CharacterSheet";
 import MinionSheet from "../MinionSheet";
 import {string} from "yup";
+import AbstractSheet from "../AbstractSheet";
 
 class SpellCardCalculator extends AbstractCardCalculator {
 
@@ -65,7 +66,7 @@ class SpellCardCalculator extends AbstractCardCalculator {
             ]
         ]));
     }
-    protected invokeRecalculateData(char: CharacterSheet|MinionSheet): void {
+    protected invokeRecalculateData(char: AbstractSheet): void {
         if (this.cards.length > 0) {
             const finalSpellData = GetFinalSpellData(
                 this.getCardOfType("spell.base") as ISpellBaseCardData,
