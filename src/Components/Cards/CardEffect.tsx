@@ -9,6 +9,7 @@ import {
     WarningOutlined
 } from "@mui/icons-material";
 import HighlightType from "../Generic/HighlightType";
+import {FaMoneyBillWave} from "react-icons/fa6";
 
 interface ICardEffectInput {
     effectData: IEffectData,
@@ -80,6 +81,10 @@ const CardEffect = ({effectData, finalPower}: ICardEffectInput) => {
                 setEmblem(<LandscapeOutlined />);
                 setTintColor("rgba(20,255,20,0.15)");
                 break;
+            case 'money':
+                setEmblem(<Box sx={{paddingLeft: "2px", display: "flex", alignItems: "center"}}><FaMoneyBillWave /></Box>);
+                setTintColor("rgba(76,239,76,0.15)");
+                break;
         }
     }
 
@@ -110,9 +115,11 @@ const CardEffect = ({effectData, finalPower}: ICardEffectInput) => {
 
                 <Box
                     sx={{
-                        display: 'flex'
+                        display: 'flex',
+                        alignItems: "center",
                     }}
-                >{effectData.icon.text}{emblem}</Box>
+                >
+                    {effectData.icon.text} {emblem}</Box>
                 <Box
                     sx={{
                         fontSize: '0.8rem',

@@ -74,7 +74,11 @@ class SpellCardCalculator extends AbstractCardCalculator {
                 this.cards.filter(e => e?.cardSubtype != "target" && e?.cardSubtype != "base"),
                 char
             )
-            this.updateVal("tetherCost", finalSpellData.tetherCost.toString());
+            if (finalSpellData.moneyCost > 0) {
+                this.updateVal("tetherCost", `$${finalSpellData.moneyCost*finalSpellData.tetherCost}`)
+            } else {
+                this.updateVal("tetherCost", finalSpellData.tetherCost.toString());
+            }
             this.currentPower = finalSpellData.totalPower;
             this.currentRange = finalSpellData.range;
             this.updateVal("energyCost", finalSpellData.castTime.toString());

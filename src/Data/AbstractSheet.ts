@@ -14,6 +14,8 @@ import {default_spell_cards, default_weapon_cards} from "./default_cards";
 import {IArmor} from "./IArmorData";
 import {IMinionData, IMinionTemplateData} from "./IMinionData";
 import ConditionCard from "../Components/Cards/ConditionCard";
+import {getSkillFormat} from "../Utils/Shorthand";
+import {number} from "yup";
 
 
 abstract class AbstractSheet {
@@ -41,9 +43,20 @@ abstract class AbstractSheet {
     }
 
 
-    public abstract getMaxHealth(): number;
-    public abstract getMaxStamina(): number;
-    public abstract getMaxTether(): number;
+    public getMaxHealth(): number {
+        return 4 + this.getAbilityBonuses("maxHealth") +
+            (this.getAbilityBonuses("maxHealthScaling")+2)*this.getStat("vitality");
+    }
+    public getMaxStamina() {
+        return 10 + this.getAbilityBonuses("maxStamina") +
+            (this.getAbilityBonuses("maxStaminaScaling")+5)*this.getStat("endurance");
+    }
+    public getMaxTether() {
+        if (this.isUnlocked("patronMagic")) {
+            return this.getAbilityBonuses("maxTether") + (this.getAbilityBonuses("maxTetherScaling"))*this.getStat("mind") + (2*this.getStat("authority")) + (3*this.getStat("presence"));
+        }
+        return this.getAbilityBonuses("maxTether") + (this.getAbilityBonuses("maxTetherScaling")+5)*this.getStat("mind");
+    }
     public abstract getHealth(): number;
     public abstract getStamina(): number;
     public abstract getTether(): number;
@@ -53,22 +66,242 @@ abstract class AbstractSheet {
     public abstract healthPingExecute(doSend: boolean): Promise<void>;
     public abstract statPingExecute(): Promise<void>;
     public abstract charPingExecute(): Promise<void>;
-    public abstract getStaminaRefresh(): number;
-    public abstract getTetherRefresh(): number;
+    public getStaminaRefresh(): number {
+        return Math.floor(
+            this.getStat("endurance") * (2+(this.getAbilityBonuses("staminaRefreshScaling")))
+        ) + this.getAbilityBonuses("staminaRefresh")
+    }
+    public getTetherRefresh(): number {
+        if (this.isUnlocked("patronMagic")) {
+            return (this.getStat("mind")*((this.getAbilityBonuses("tetherRefreshScaling")))) + this.getAbilityBonuses("tetherRefresh") + this.getStat("authority") + this.getStat("presence");
+        }
 
-    public abstract getEvadePDEF(): number;
-    public abstract getBlockPDEF(): number;
-    public abstract getEvadeMDEF(): number;
-    public abstract getBlockMDEF(): number;
-    public abstract getEvadeDodge(): number;
-    public abstract getBlockDodge(): number;
+        return (this.getStat("mind")*(2+(this.getAbilityBonuses("tetherRefreshScaling")))) + this.getAbilityBonuses("tetherRefresh")
+    }
 
-    public abstract getEvadePDEFBreakdown(): IDefenseBreakdown;
-    public abstract getEvadeMDEFBreakdown(): IDefenseBreakdown;
-    public abstract getBlockPDEFBreakdown(): IDefenseBreakdown;
-    public abstract getBlockMDEFBreakdown(): IDefenseBreakdown;
-    public abstract getEvadeDodgeBreakdown(): IDefenseBreakdown;
-    public abstract getBlockDodgeBreakdown(): IDefenseBreakdown;
+    public getEvadePDEF(): number {
+        let evadeArmorBonus = this.getArmorPDEF("evade");
+        evadeArmorBonus += this.getAbilityBonuses("pDEF");
+        return Math.floor((this.getStat("vitality") + this.getStat("endurance"))*0.5) + evadeArmorBonus;
+    }
+    public getBlockPDEF(): number {
+        let blockArmorBonus = this.getArmorPDEF("blocking");
+        blockArmorBonus += this.getAbilityBonuses("pDEFBlock") + this.getAbilityBonuses("DEFBlock");
+        return this.getEvadePDEF()+4+blockArmorBonus;
+    }
+    public getEvadeMDEF(): number {
+        let evadeArmorBonus = this.getArmorMDEF("evade");
+        evadeArmorBonus += this.getAbilityBonuses("mDEF")
+        return Math.floor((this.getStat("mind") + this.getStat("presence"))*0.5) + evadeArmorBonus;
+    }
+    public getBlockMDEF(): number {
+        let blockArmorBonus = this.getArmorPDEF("blocking");
+        blockArmorBonus += this.getAbilityBonuses("mDEFBlock") + this.getAbilityBonuses("DEFBlock");
+        return this.getEvadeMDEF()+4+blockArmorBonus;
+    }
+    public getEvadeDodge(): number {
+        let dodgeAgility = (3 + this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("evadeAgilityDodgeScaling"))*this.getStat("agility");
+        let dodgeAwareness = (1 + this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("evadeAgilityDodgeScaling"))*this.getStat("awareness");
+        let weightPenaltyBonus = this.weightPenalty*5;
+
+        return 25 + (dodgeAgility + dodgeAwareness - weightPenaltyBonus) + this.getAbilityBonuses("evadeDodge") + this.getAbilityBonuses("dodge");
+
+
+    }
+    public getBlockDodge(): number {
+        let dodgeAgility = (2 + this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("blockAgilityDodgeScaling"))*this.getStat("agility");
+        let dodgeAwareness = (1 + this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("blockAgilityDodgeScaling"))*this.getStat("awareness");
+        let weightPenaltyBonus = this.weightPenalty*5;
+
+        return 15 + (dodgeAgility + dodgeAwareness - weightPenaltyBonus) + this.getAbilityBonuses("blockDodge") + this.getAbilityBonuses("dodge");
+    }
+
+    public getStepSpeed(): number {
+        return 2 + this.getAbilityBonuses("stepSpeed");
+    }
+
+    public getArmorPDEF(stance: "evade" | "blocking"): number {
+        if (this.currentArmor) {
+            if (stance === "blocking") {
+                return this.currentArmor.blockPDEFBonus + this.currentArmor.pDEFBonus
+            }
+             return this.currentArmor.pDEFBonus;
+        } else if (this.isUnlocked("unarmoredDefense")) {
+            return Math.floor(this.getStat("vitality") * 0.5)
+        }
+        return 0;
+    }
+    public getArmorMDEF(stance: "evade" | "blocking"): number {
+        if (this.currentArmor) {
+            if (stance === "blocking") {
+                return this.currentArmor.blockMDEFBonus + this.currentArmor.mDEFBonus
+            }
+             return this.currentArmor.mDEFBonus;
+        }
+        return 0;
+    }
+
+
+    public getEvadePDEFBreakdown(): IDefenseBreakdown {
+        return {
+            totalValue: this.getEvadePDEF(),
+            sources: [
+                {
+                    reason: "Vitality",
+                    value: Math.floor(0.5*this.getStat("vitality"))
+                },
+                {
+                    reason: "Endurance",
+                    value: Math.floor(0.5*this.getStat("endurance"))
+                },
+                {
+                    reason: "Armor",
+                    value: this.getArmorPDEF("evade")
+                },
+                {
+                    reason: "Other",
+                    value: this.getAbilityBonuses("pDEF")
+                }
+            ]
+        }
+    }
+    public getEvadeMDEFBreakdown(): IDefenseBreakdown {
+        return {
+            totalValue: this.getEvadeMDEF(),
+            sources: [
+                {
+                    reason: "Presence",
+                    value: this.getStat("presence") * 0.5
+                },
+                {
+                    reason: "Mind",
+                    value: this.getStat("mind") * 0.5
+                },
+                {
+                    reason: "Armor",
+                    value: this.getArmorMDEF("evade")
+                },
+                {
+                    reason: "Other Bonuses",
+                    value: this.getAbilityBonuses("mDEF")
+                }
+            ]
+        }
+    }
+    public getBlockPDEFBreakdown(): IDefenseBreakdown {
+        return {
+            totalValue: this.getBlockPDEF(),
+            sources: [
+                {
+                    reason: "Blocking",
+                    value: 3
+                },
+                {
+                    reason: "Vitality",
+                    value: this.getStat("vitality") * 0.5
+                },
+                {
+                    reason: "Endurance",
+                    value: this.getStat("endurance") * 0.5
+                },
+                {
+                    reason: "Armor",
+                    value: this.getArmorPDEF("blocking")
+                },
+                {
+                    reason: "Other Bonuses",
+                    value: this.getAbilityBonuses("pDEF") + this.getAbilityBonuses("pDEFBlock")
+                }
+            ]
+        }
+    }
+    public getBlockMDEFBreakdown(): IDefenseBreakdown {
+        return {
+            totalValue: this.getBlockMDEF(),
+            sources: [
+                {
+                    reason: "Blocking",
+                    value: 3
+                },
+                {
+                    reason: "Presence",
+                    value: this.getStat("presence") * 0.5
+                },
+                {
+                    reason: "Mind",
+                    value: this.getStat("mind") * 0.5
+                },
+                {
+                    reason: "Armor",
+                    value: this.getArmorMDEF("blocking")
+                },
+                {
+                    reason: "Other Bonuses",
+                    value: this.getAbilityBonuses("mDEF") + this.getAbilityBonuses("mDEFBlock")
+                }
+            ]
+        }
+    }
+    public getEvadeDodgeBreakdown(): IDefenseBreakdown {
+        const ret = {
+            totalValue: getSkillFormat(this.getEvadeDodge(), false),
+            sources: [
+                {
+                    reason: "Evade Stance",
+                    value: getSkillFormat(25, false)
+                },
+                {
+                    reason: "Agility",
+                    value: getSkillFormat((3 + this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("evadeAgilityDodgeScaling"))*this.getStat("agility"))
+                },
+                {
+                    reason: "Awareness",
+                    value: getSkillFormat((1 + this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("evadeAgilityDodgeScaling"))*this.getStat("awareness"))
+                },
+                {
+                    reason: "Other Bonuses",
+                    value: this.getAbilityBonuses("dodge") + this.getAbilityBonuses("evadeDodge")
+                }
+            ]
+        }
+        if (this.weightPenalty > 0) {
+            ret.sources.push({
+                reason: "Encumbered",
+                value: "-"+getSkillFormat(this.weightPenalty*5, false)
+            })
+        }
+        return ret;
+    }
+    public getBlockDodgeBreakdown(): IDefenseBreakdown {
+        const ret = {
+            totalValue: getSkillFormat(this.getBlockDodge(), false),
+            sources: [
+                {
+                    reason: "Block Stance",
+                    value: getSkillFormat(15, false)
+                },
+                {
+                    reason: "Agility",
+                    value: getSkillFormat((2 + this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("evadeAgilityDodgeScaling"))*this.getStat("agility"))
+                },
+                {
+                    reason: "Awareness",
+                    value: getSkillFormat((1 + this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("evadeAgilityDodgeScaling"))*this.getStat("awareness"))
+                },
+                {
+                    reason: "Other Bonuses",
+                    value: this.getAbilityBonuses("dodge") + this.getAbilityBonuses("blockDodge")
+                }
+            ]
+        }
+        if (this.weightPenalty > 0) {
+            ret.sources.push({
+                reason: "Encumbered",
+                value: "-"+getSkillFormat(this.weightPenalty*5, false)
+            })
+        }
+        return ret;
+    }
 
     public getHitBonus() {
         return 0;
@@ -79,6 +312,7 @@ abstract class AbstractSheet {
 
     public abstract getAbilityBonuses(bonusType: string): number;
     public abstract getStat(statName: keyof ICharacterStats | "command"): number;
+    public abstract isUnlocked(unlockType: string): boolean;
 
     public abstract getLevel(): number
     public currentArmor: IArmor | undefined = undefined;

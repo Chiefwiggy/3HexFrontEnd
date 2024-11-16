@@ -71,7 +71,7 @@ const MinionSimplePanel = ({
                     />
                 </Box>
             </Box>
-            <MinionAttributeBars minionData={minionData} />
+            {/*<MinionAttributeBars minionData={minionData} />*/}
             <Box>
                 <Typography>pDEF: {minionData.getPDEF()} • mDEF: {minionData.getMDEF()} • Dodge: {getSkillFormat(minionData.getDodge(), false)}</Typography>
             </Box>

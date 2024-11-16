@@ -17,6 +17,9 @@ import {StatChain} from "../Utils/GetFinalSpellData";
 
 
 class MinionSheet extends AbstractSheet {
+    public isUnlocked(unlockType: string): boolean {
+        return false;
+    }
 
 
 

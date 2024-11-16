@@ -3,9 +3,10 @@ import {Box, Typography} from "@mui/material";
 import MinionSheet from "../../Data/MinionSheet";
 import DefensesView from "../../Views/DefensesView";
 import DefenseWidget from "../Defenses/DefenseWidget";
+import AbstractSheet from "../../Data/AbstractSheet";
 
 interface IMinionDefensesInput {
-    minionData: MinionSheet
+    minionData: AbstractSheet
 }
 
 const MinionDefenses = ({

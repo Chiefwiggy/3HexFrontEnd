@@ -13,14 +13,17 @@ import WeaponCardCalculator from "../../Data/Card Calculators/WeaponCardCalculat
 import useUser from "../../Hooks/useUser/useUser";
 import MinionSheet from "../../Data/MinionSheet";
 import SpellCardCalculator from "../../Data/Card Calculators/SpellCardCalculator";
+import {ICalculatedSpell, ICalculatedWeapon} from "../../Data/ICharacterData";
 
 interface IMinionSpellBuilderInput {
     closeSelf?: (event: React.MouseEvent) => void,
+    receiveFinalData?: (data: ICalculatedSpell) => Promise<void>
     minionSheet?: MinionSheet
 }
 
 const MinionSpellBuilder = ({
     closeSelf = () => {},
+    receiveFinalData = async(data) => {},
     minionSheet
 }: IMinionSpellBuilderInput) => {
 
@@ -44,7 +47,20 @@ const MinionSpellBuilder = ({
     }
 
     const handleReceiveEquipCards = async(sentCards :Array<ICommonCardData|null>) => {
-
+        const cards: Array<ICommonCardData> = sentCards.filter(c => c !== null && c !== undefined) as ICommonCardData[];
+        const base = cards.find(e => e.cardSubtype == "base");
+        const target = cards.find(e => e.cardSubtype == "target");
+        const rest = cards.filter(e => e.cardSubtype != "base" && e.cardSubtype != "target");
+        if (base && target && rest) {
+            const spellCalcData: ICalculatedSpell = {
+                spellBaseId: base._id,
+                spellTargetId: target._id,
+                spellSkillsIds: rest.map(e => e._id)
+            }
+            await receiveFinalData(spellCalcData);
+            // @ts-ignore
+            closeSelf(null);
+        }
     }
 
     return minionSheet ? (

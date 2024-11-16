@@ -6,13 +6,16 @@ import { AttributeBarType, DamageType } from '../../Data/CharacterSheet';
 import MinionSheet from "../../Data/MinionSheet";
 import {UDamageType} from "../../Data/ICardData";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
+import MinionTemplateSheet from "../../Data/MinionTemplateSheet";
 
 interface IMinionAttributeBarsInput {
-    minionData: MinionSheet
+    minionData: MinionTemplateSheet,
+    manualPing?: boolean
 }
 
 const MinionAttributeBars = ({
- minionData
+    minionData,
+    manualPing = false
 }: IMinionAttributeBarsInput) => {
     
     const [progressHealth, setProgressHealth] = useState(99);
@@ -46,7 +49,7 @@ const MinionAttributeBars = ({
             setCurrentTether(minionData.getBarCurrent("tether"));
             setCurrentMaxTether(minionData.getMaxBar("tether"));
         }
-    }, [triggerPing, minionData, healthPing, charPing])
+    }, [triggerPing, minionData, healthPing, charPing, manualPing])
 
     useEffect(() => {
         triggerUpdate();

@@ -1,11 +1,14 @@
 import AbstractSheet from "./AbstractSheet";
-import { ICharacterStats } from "./ICharacterData";
+import {ICalculatedSpell, ICalculatedWeapon, ICharacterStats} from "./ICharacterData";
 import { IDefenseBreakdown } from "./IDefenses";
 import {IAPIContext} from "../Hooks/useAPI/APIProvider";
 import {IMinionData, IMinionTemplateData, IMinionTemplateStats} from "./IMinionData";
+import {number} from "yup";
+import {IArmor} from "./IArmorData";
 
 
 class MinionTemplateSheet extends AbstractSheet {
+
 
     public data: IMinionTemplateData = {
         _id: "",
@@ -30,6 +33,8 @@ class MinionTemplateSheet extends AbstractSheet {
             critBonus: 0
         }
     }
+
+
     constructor(api: IAPIContext) {
         super(api, undefined, undefined, undefined)
     }
@@ -37,24 +42,39 @@ class MinionTemplateSheet extends AbstractSheet {
     public updateStats(minionStats: IMinionTemplateStats) {
         this.data.minionBaseStats = minionStats;
     }
-    public getMaxHealth(): number {
-        throw new Error("Method not implemented.");
+
+    public updateName(name: string) {
+        this.data.minionTemplateName = name;
     }
-    public getMaxStamina(): number {
-        throw new Error("Method not implemented.");
+
+    public updateCards(currentWeapon: ICalculatedWeapon|null, currentSpell: ICalculatedSpell|null) {
+        this.data.currentSpell = currentSpell;
+        this.data.currentWeapon = currentWeapon;
     }
-    public getMaxTether(): number {
-        throw new Error("Method not implemented.");
+
+    public updateArmor(newArmor: IArmor|undefined){
+        this.currentArmor = newArmor;
     }
     public getHealth(): number {
-        throw new Error("Method not implemented.");
+        return this.getMaxHealth()
     }
     public getStamina(): number {
-        throw new Error("Method not implemented.");
+        return this.getMaxStamina()
     }
     public getTether(): number {
+        return this.getMaxTether()
+    }
+
+    public getAbilityBonuses(bonusType: string): number {
+        return 0;
+    }
+    public getStat(statName: "command" | keyof ICharacterStats): number {
+        return this.data.minionBaseStats[statName as keyof IMinionTemplateStats] ?? 0;
+    }
+    public getLevel(): number {
         throw new Error("Method not implemented.");
     }
+
     public setHealth(amount: number): void {
         throw new Error("Method not implemented.");
     }
@@ -73,56 +93,8 @@ class MinionTemplateSheet extends AbstractSheet {
     public charPingExecute(): Promise<void> {
         throw new Error("Method not implemented.");
     }
-    public getStaminaRefresh(): number {
-        throw new Error("Method not implemented.");
-    }
-    public getTetherRefresh(): number {
-        throw new Error("Method not implemented.");
-    }
-    public getEvadePDEF(): number {
-        throw new Error("Method not implemented.");
-    }
-    public getBlockPDEF(): number {
-        throw new Error("Method not implemented.");
-    }
-    public getEvadeMDEF(): number {
-        throw new Error("Method not implemented.");
-    }
-    public getBlockMDEF(): number {
-        throw new Error("Method not implemented.");
-    }
-    public getEvadeDodge(): number {
-        throw new Error("Method not implemented.");
-    }
-    public getBlockDodge(): number {
-        throw new Error("Method not implemented.");
-    }
-    public getEvadePDEFBreakdown(): IDefenseBreakdown {
-        throw new Error("Method not implemented.");
-    }
-    public getEvadeMDEFBreakdown(): IDefenseBreakdown {
-        throw new Error("Method not implemented.");
-    }
-    public getBlockPDEFBreakdown(): IDefenseBreakdown {
-        throw new Error("Method not implemented.");
-    }
-    public getBlockMDEFBreakdown(): IDefenseBreakdown {
-        throw new Error("Method not implemented.");
-    }
-    public getEvadeDodgeBreakdown(): IDefenseBreakdown {
-        throw new Error("Method not implemented.");
-    }
-    public getBlockDodgeBreakdown(): IDefenseBreakdown {
-        throw new Error("Method not implemented.");
-    }
-    public getAbilityBonuses(bonusType: string): number {
-        return 0;
-    }
-    public getStat(statName: "command" | keyof ICharacterStats): number {
-        return this.data.minionBaseStats[statName as keyof IMinionTemplateStats] ?? 0;
-    }
-    public getLevel(): number {
-        throw new Error("Method not implemented.");
+    public isUnlocked(unlockType: string): boolean {
+        return false;
     }
 
 }

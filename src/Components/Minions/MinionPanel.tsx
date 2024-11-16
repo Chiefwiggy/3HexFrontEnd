@@ -66,7 +66,7 @@ const MinionPanel = ({
                             minWidth: "262px"
                         }}
                     >
-                        <MinionAttributeBars minionData={minionData} />
+                        {/*<MinionAttributeBars minionData={minionData} />*/}
                         <MinionDefenses minionData={minionData} />
                         <MinionStatBar minionData={minionData}/>
                     </Box>

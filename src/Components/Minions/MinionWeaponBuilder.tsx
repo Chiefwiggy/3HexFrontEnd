@@ -15,6 +15,7 @@ interface IMinionWeaponBuilderInput {
     closeSelf?: (event: React.MouseEvent) => void
     currentWeaponId?: string,
     currentWeaponEnchantment?: number,
+    receiveFinalData?: (data: ICalculatedWeapon) => Promise<void>
     minionSheet?: MinionSheet
 }
 
@@ -22,6 +23,7 @@ const MinionWeaponBuilder = ({
     closeSelf = () => {},
     currentWeaponId = "",
     currentWeaponEnchantment = 0,
+    receiveFinalData = async(data) => {},
     minionSheet
 }: IMinionWeaponBuilderInput) => {
 
@@ -44,7 +46,23 @@ const MinionWeaponBuilder = ({
     }
 
     const handleReceiveEquipCards = async(sentCards :Array<ICommonCardData|null>) => {
-
+        const cards: Array<ICommonCardData> = sentCards.filter(c => c !== null && c !== undefined) as ICommonCardData[];
+        const base = cards.find(e => e.cardSubtype == "base");
+        const rest = cards.filter(e => e.cardSubtype != "base");
+        if (base && rest) {
+            const weaponCalcData: ICalculatedWeapon = {
+                // weaponBaseId: base._id,
+                weaponBaseData: {
+                    baseId: base._id,
+                    enchantmentLevel: 0
+                },
+                weaponCardsIds: rest.map(e => e._id)
+            };
+            console.log(weaponCalcData);
+            await receiveFinalData(weaponCalcData);
+            // @ts-ignore
+            closeSelf(null);
+        }
     }
 
     return minionSheet ? (

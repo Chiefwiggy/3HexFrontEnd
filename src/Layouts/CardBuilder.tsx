@@ -45,7 +45,6 @@ const CardBuilder = ({
     defaultCardList,
     cardTypes,
     cardCalculator,
-    closeSelf,
     sendSaveData,
     sendEquipData,
     sendCounterData,

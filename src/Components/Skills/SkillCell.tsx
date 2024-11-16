@@ -73,27 +73,6 @@ const SkillCell = ({
                                     gap: 2
                                 }}
                             >
-                                {/*<IconButton*/}
-                                {/*    onClick={handleChangeSP(-1)}*/}
-                                {/*    disabled={currentSheet.data.skillPoints[skillName.toLowerCase() as keyof ISkillPointObject] <= 0}*/}
-                                {/*>*/}
-                                {/*    <RemoveCircleOutlined />*/}
-                                {/*</IconButton>*/}
-                                {/*<Typography*/}
-                                {/*    sx={ currentSheet.isSkillCapped(skillName.toLowerCase(), true) ? {*/}
-                                {/*        color: "red"*/}
-                                {/*    } : {}}*/}
-                                {/*>{getSkillFormat(skillValue)}</Typography>*/}
-                                {/*<IconButton*/}
-                                {/*    onClick={handleChangeSP(1)}*/}
-                                {/*    disabled={*/}
-                                {/*        currentSheet.getSkillPointsUsed() >= currentSheet.getMaxSkillPoints()*/}
-                                {/*        ||*/}
-                                {/*        currentSheet.isSkillCapped(skillName.toLowerCase())*/}
-                                {/*    }*/}
-                                {/*>*/}
-                                {/*    <AddCircleOutlined />*/}
-                                {/*</IconButton>*/}
                                 <AddSubtractPanel
                                     handleChange={handleChangeSP}
                                     value={skillValue}

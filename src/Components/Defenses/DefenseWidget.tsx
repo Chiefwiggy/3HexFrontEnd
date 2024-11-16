@@ -21,6 +21,12 @@ const DefenseWidget = ({
 
     const [currentTab, setCurrentTab] = React.useState(sheet.getStanceIndex() ?? 0);
 
+    const [statsChanged, setStatsChanged] = useState(false);
+
+    useEffect(() => {
+        setStatsChanged(!statsChanged);
+    }, [sheet.data]);
+
     const handleTabChange = (event: React.SyntheticEvent, value: number) => {
         setCurrentTab(value);
         sheet.setStance(value);

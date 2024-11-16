@@ -33,6 +33,9 @@ import MinionSpellBuilder from '../MinionSpellBuilder';
 import MinionSheet from "../../../Data/MinionSheet";
 import MinionTemplateSheet from "../../../Data/MinionTemplateSheet";
 import useAPI from "../../../Hooks/useAPI/useAPI";
+import MinionStatPanel from '../MinionStatPanel';
+import minionSheet from "../../../Data/MinionSheet";
+import {ICalculatedSpell, ICalculatedWeapon} from "../../../Data/ICharacterData";
 
 
 interface ICreateMinionTemplateInput {
@@ -46,6 +49,12 @@ const CreateMinionTemplate = ({}: ICreateMinionTemplateInput) => {
     const [currentXP, setCurrentXP] = useState(0);
 
     const [currentMinionSheet, setCurrentMinionSheet] = useState<MinionTemplateSheet>();
+
+    const [manualPing, setManualPing] = useState(false);
+
+    const _mping = () => {
+        setManualPing(!manualPing);
+    }
 
 
 
@@ -90,6 +99,7 @@ const CreateMinionTemplate = ({}: ICreateMinionTemplateInput) => {
                 canSwim: false
             },
             currentSpell: null,
+            currentWeapon: null,
             currentWeaponId: "",
             currentWeaponEnchantment: 0,
             currentArmorId: "",
@@ -135,9 +145,26 @@ const CreateMinionTemplate = ({}: ICreateMinionTemplateInput) => {
 
         setCurrentXP(playerMaxAUT * 50);
 
-        currentMinionSheet?.updateStats(formik.values.minionBaseStats)
+        if (currentMinionSheet) {
+            currentMinionSheet.updateStats(formik.values.minionBaseStats)
+            currentMinionSheet.updateCards(formik.values.currentWeapon, formik.values.currentSpell);
+            currentMinionSheet.updateArmor(ArmorData.GetConstructedArmorById(formik.values.currentArmorId, formik.values.currentArmorEnchantment));
+            currentMinionSheet.updateName(formik.values.minionTemplateName);
+        }
+
+
+
+        _mping();
 
     }, [formik.values]);
+
+    const setCurrentWeapon = async(data: ICalculatedWeapon) => {
+        await formik.setFieldValue('currentWeapon', data);
+    }
+
+    const setCurrentSpell = async(data: ICalculatedSpell) => {
+        await formik.setFieldValue('currentSpell', data);
+    }
 
     return (
         <Box>
@@ -212,33 +239,36 @@ const CreateMinionTemplate = ({}: ICreateMinionTemplateInput) => {
                                 ))
                             }
                         </Box>
+                        <Box>
+                            {
+                                isLoaded ?
+                                    <Box>
+                                        <CharacterSheetSidebar
+                                            title={"Build Weapon"}
+                                            icon={GiAxeSword}
+                                            panelComponent={MinionWeaponBuilder}
+                                            placement={"right"}
+                                            panelProps={{
+                                                currentWeaponId: formik.values.currentWeaponId,
+                                                currentWeaponEnchantment: formik.values.currentWeaponEnchantment,
+                                                minionSheet: currentMinionSheet,
+                                                receiveFinalData: setCurrentWeapon
+                                            }}
+                                        />
+                                        <CharacterSheetSidebar title={"Build Spell"} icon={AutoFixHighOutlined} panelComponent={MinionSpellBuilder} placement={"right"} panelProps={{
+                                            minionSheet: currentMinionSheet,
+                                            receiveFinalData: setCurrentSpell
+                                        }}/>
+                                    </Box>
+                                    :
+                                    <></>
+                            }
+                        </Box>
                     </Paper>
                     <Paper
-                        sx={{}}
                         elevation={1}
                     >
-                        {
-                            isLoaded ?
-                                <Box>
-                                    <CharacterSheetSidebar
-                                        title={"Build Weapon"}
-                                        icon={GiAxeSword}
-                                        panelComponent={MinionWeaponBuilder}
-                                        placement={"right"}
-                                        panelProps={{
-                                            currentWeaponId: formik.values.currentWeaponId,
-                                            currentWeaponEnchantment: formik.values.currentWeaponEnchantment,
-                                            minionSheet: currentMinionSheet
-                                        }}
-                                    />
-                                    <CharacterSheetSidebar title={"Build Spell"} icon={AutoFixHighOutlined} panelComponent={MinionSpellBuilder} placement={"right"} panelProps={{
-                                        minionSheet: currentMinionSheet
-                                    }}/>
-                                </Box>
-                                :
-                                <></>
-                        }
-
+                        <MinionStatPanel minionSheet={currentMinionSheet} manualPing={manualPing}/>
                     </Paper>
                     <Box>
                         <PoleProgress currentXP={currentXP}/>

@@ -17,6 +17,7 @@ import AbstractSheet from "../Data/AbstractSheet";
 
 export interface ITotalSpellStats {
     tetherCost: number,
+    moneyCost: number,
     castTime: number,
     totalPower: number,
     duration: number,
@@ -78,6 +79,7 @@ export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: IS
 
         return {
             tetherCost: StatChain(spellBase.tetherCost, [spellBase.tetherCostMod, spellTarget.tetherCostMod, ...rest.map(e => e?.tetherCostMod)]),
+            moneyCost: StatChain(0, [spellBase.moneyCostMod, spellTarget.moneyCostMod, ...rest.map(e => e?.moneyCostMod)]),
             castTime: finalCost,
             totalPower: finalPower,
             duration: StatChain(spellBase.duration, [spellBase.durationMod, spellTarget.durationMod, ...rest.map(e => e?.durationMod)]),
@@ -91,6 +93,7 @@ export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: IS
     } catch (e) {
         return {
             tetherCost:0,
+            moneyCost: 0,
             castTime: 0,
             totalPower: 0,
             duration: 0,
