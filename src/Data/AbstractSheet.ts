@@ -87,7 +87,7 @@ abstract class AbstractSheet {
     public getBlockPDEF(): number {
         let blockArmorBonus = this.getArmorPDEF("blocking");
         blockArmorBonus += this.getAbilityBonuses("pDEFBlock") + this.getAbilityBonuses("DEFBlock");
-        return this.getEvadePDEF()+4+blockArmorBonus;
+        return this.getEvadePDEF()+1+blockArmorBonus;
     }
     public getEvadeMDEF(): number {
         let evadeArmorBonus = this.getArmorMDEF("evade");
@@ -97,7 +97,7 @@ abstract class AbstractSheet {
     public getBlockMDEF(): number {
         let blockArmorBonus = this.getArmorPDEF("blocking");
         blockArmorBonus += this.getAbilityBonuses("mDEFBlock") + this.getAbilityBonuses("DEFBlock");
-        return this.getEvadeMDEF()+4+blockArmorBonus;
+        return this.getEvadeMDEF()+1+blockArmorBonus;
     }
     public getEvadeDodge(): number {
         let dodgeAgility = (3 + this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("evadeAgilityDodgeScaling"))*this.getStat("agility");
@@ -148,11 +148,11 @@ abstract class AbstractSheet {
             sources: [
                 {
                     reason: "Vitality",
-                    value: Math.floor(0.5*this.getStat("vitality"))
+                    value: 0.5*this.getStat("vitality")
                 },
                 {
                     reason: "Endurance",
-                    value: Math.floor(0.5*this.getStat("endurance"))
+                    value: 0.5*this.getStat("endurance")
                 },
                 {
                     reason: "Armor",
@@ -194,7 +194,7 @@ abstract class AbstractSheet {
             sources: [
                 {
                     reason: "Blocking",
-                    value: 3
+                    value: 4
                 },
                 {
                     reason: "Vitality",
@@ -221,7 +221,7 @@ abstract class AbstractSheet {
             sources: [
                 {
                     reason: "Blocking",
-                    value: 3
+                    value: 4
                 },
                 {
                     reason: "Presence",

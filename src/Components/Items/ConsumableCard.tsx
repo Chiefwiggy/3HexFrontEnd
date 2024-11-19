@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {Box, capitalize, Collapse, Divider, Paper, Switch, Typography} from "@mui/material";
 import {EConsumableType, IConsumableTemplate} from "../../Data/IConsumable";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
-import { ICharacterStats } from "../../Data/ICharacterData";
+import {ICharacterStats} from "../../Data/ICharacterData";
 import {ExpandMoreOutlined, FlipOutlined, LinearScaleOutlined, WaterDropOutlined} from "@mui/icons-material";
 import {ExpandMore} from "../../Elements/ExpandMore";
 import {romanize} from "../../Utils/Shorthand";
@@ -55,6 +55,9 @@ const ConsumableCard = ({ consumableTemplate, defaultScaled = false }: IConsumab
                 case EConsumableType.TOTEM:
                     finalCost += currentSheet.getAbilityBonuses("totemSlotCost");
                     break;
+                case EConsumableType.MONEY:
+                    finalCost += currentSheet.getAbilityBonuses("moneySlotCost");
+                    break;
             }
         }
         return Math.max(1, finalCost + (currentSheet?.getAbilityBonuses("allSlotCost") ?? 0))
@@ -78,6 +81,9 @@ const ConsumableCard = ({ consumableTemplate, defaultScaled = false }: IConsumab
                     break;
                 case EConsumableType.TOTEM:
                     newT += currentSheet?.getAbilityBonuses("totemHealth")
+                    break;
+                case EConsumableType.MONEY:
+                    newT *= currentSheet?.getAbilityBonuses("moneyPouchCapacity");
                     break;
             }
             newT = Math.floor(newT);

@@ -7,7 +7,8 @@ export enum EConsumableType {
     BOMB = "bomb",
     TRAP = "trap",
     TOTEM = "totem",
-    FLAG = "flag"
+    FLAG = "flag",
+    MONEY = "money"
 }
 
 export interface IConsumableTemplate {
