@@ -184,8 +184,14 @@ export const getTrainingLevel = (trainingProf: number) => {
             return "expert";
         case 5:
             return "master";
-        default:
+        case 6:
             return "legend";
+        case 7:
+            return "legend+"
+        case 8:
+            return "legend++"
+        default:
+            return "???"
     }
 }
 

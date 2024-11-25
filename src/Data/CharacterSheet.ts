@@ -393,7 +393,13 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getDowntimeRanks = () => {
-        return 2 + Math.floor((this.getStat("knowledge") + this.getStat("skill"))/10) + this.getAbilityBonuses("downtimeRanks")
+        return 2 + Math.floor(
+            (
+                this.getStat("knowledge")*3 +
+                this.getStat("skill")*2 +
+                this.getLevel()
+                )
+            /15)  + this.getAbilityBonuses("downtimeRanks")
     }
 
     public getCurrentDowntimeRanks = () => {
@@ -403,7 +409,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getDowntimeMaxRank = () => {
-        return 2 + Math.floor(this.getLevel() / 30)
+        return this.isUnlocked("downtimeMaster") ? 8 : (this.isUnlocked("downtimeExpert") ? 6 : 4)
     }
 
     public getStatCap = () => {
