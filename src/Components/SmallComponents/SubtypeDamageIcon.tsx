@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Box, capitalize} from "@mui/material";
+import {Box, capitalize, SxProps} from "@mui/material";
 import {FaFire, FaFireAlt, FaSnowflake, FaWind} from "react-icons/fa";
 import {
     GiAcidTube, GiAngelOutfit,
@@ -23,6 +23,8 @@ import BoxWithTooltip from "../Generic/BoxWithTooltip";
 interface ISubtypeDamageIconInput {
     damageSubtype: UDamageSubtype,
     placement?: "top" | "bottom" | "left" | "right",
+    boxSx?: SxProps<typeof Box>,
+    component?: React.ElementType
 }
 
 const ElementIconProps = {
@@ -41,12 +43,16 @@ const ElementIconMap: { [key: string]: JSX.Element } = {
     sensory: <GiBrainstorm color={"#fb628c"}  {...ElementIconProps}/>,
     holy: <GiAngelOutfit color={"goldenrod"}  {...ElementIconProps}/>,
     curse: <GiCursedStar color={"#ff1a00"}  {...ElementIconProps}/>,
-    soul: <GiSparkSpirit color={"#0083e3"} {...ElementIconProps}/>,
+    soul: <GiSparkSpirit color={"#0083e3"} {...ElementIconProps} />,
     none: <></>
 }
 
-const SubtypeDamageIcon = ({damageSubtype, placement = "right"}: ISubtypeDamageIconInput) => {
-
+const SubtypeDamageIcon = ({
+    damageSubtype,
+    placement = "right",
+    boxSx = {},
+    component = "div"
+}: ISubtypeDamageIconInput) => {
     return (
         <BoxWithTooltip
             sx={{
@@ -54,16 +60,15 @@ const SubtypeDamageIcon = ({damageSubtype, placement = "right"}: ISubtypeDamageI
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                ...boxSx,
             }}
             placement={placement}
+            component={component} // Pass component to BoxWithTooltip
             title={capitalize(damageSubtype) + " Damage"}
         >
-                {ElementIconMap[damageSubtype] || <>({damageSubtype})</>}
+            {ElementIconMap[damageSubtype] || <>({damageSubtype})</>}
         </BoxWithTooltip>
-    )
-
-
-
-}
+    );
+};
 
 export default SubtypeDamageIcon

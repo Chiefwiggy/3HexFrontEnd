@@ -1,6 +1,6 @@
 import React from 'react';
 import {Box, IconButton, Typography} from "@mui/material";
-import {EConsumableType, IConsumableTemplate} from "../../Data/IConsumable";
+import {EConsumableCraftingType, EConsumableType, IConsumableTemplate} from "../../Data/IConsumable";
 import ConsumableCard from "./ConsumableCard";
 import {ArrowDropDown, ArrowDropUp} from "@mui/icons-material";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
@@ -42,7 +42,7 @@ const ConsumablePreparedCard = ({consumableTemplate, consumableData, slotsUsed, 
                 }}
             >
                 <IconButton onClick={handlePrepare(1)} disabled={(slotsUsed + consumableTemplate.slotCost) > currentSheet.getQuickSlots()}><ArrowDropUp /></IconButton>
-                <Typography sx={{userSelect: "none"}}>{consumableData.prepared + ((currentSheet.isUnlocked("freeFlag") && consumableTemplate.itemType == EConsumableType.FLAG) ? 1 : 0) }</Typography>
+                <Typography sx={{userSelect: "none"}}>{consumableData.prepared + ((currentSheet.isUnlocked("freeFlag") && consumableTemplate.craftingType == EConsumableCraftingType.FLAG) ? 1 : 0) }</Typography>
                 <IconButton onClick={handlePrepare(-1)} disabled={consumableData.prepared == 0}><ArrowDropDown /></IconButton>
             </Box>
         </Box>

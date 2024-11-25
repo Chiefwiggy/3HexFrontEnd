@@ -4,25 +4,49 @@ import {IRangeData} from "./Card Calculators/AbstractCardCalculator";
 
 export enum EConsumableType {
     HEALING = "healing",
-    BOMB = "bomb",
+    BUFF = "buff",
+    DAMAGE = "damage",
+    DEBUFF = "debuff",
+    CONTAINER = "container",
+    SUPPORT = "support",
+    OTHER = "other"
+}
+
+export enum EConsumableCraftingType {
+    POTION = "potion",
     TRAP = "trap",
     TOTEM = "totem",
+    GEM = "gem",
+    CURSE = "curse",
+    HOLY = "holy",
     FLAG = "flag",
-    MONEY = "money"
+    BOMB = "bomb",
+    MEDICAL = "medical",
+    NONE = "none"
 }
 
 export interface IConsumableTemplate {
     _id: string,
     itemName: string,
-    basePower: number,
-    potency: number,
-    skillScaling: keyof ICharacterStats | "none",
-    tetherCost?: number,
     itemType: EConsumableType,
+    craftingType: EConsumableCraftingType,
+    xVals: Array<{
+        basePower: number,
+        potency: number,
+        skillScaling: keyof ICharacterStats | "none",
+        abilityScaling: {
+            modifiers?: Array<string>,
+            multipliers?: Array<string>,
+            overrides?: Array<string>
+        }
+    }>,
+    tetherCost?: number,
     description: Array<string>,
     slotCost: number,
-    itemTier: number,
-    itemBaseHealth?: number
+    itemTier: number
+    itemCost: number,
+    materialCost: number
+
 }
 
 export interface IConsumableMergedData extends IConsumableTemplate {

@@ -87,7 +87,8 @@ abstract class AbstractSheet {
     public getBlockPDEF(): number {
         let blockArmorBonus = this.getArmorPDEF("blocking");
         blockArmorBonus += this.getAbilityBonuses("pDEFBlock") + this.getAbilityBonuses("DEFBlock");
-        return this.getEvadePDEF()+1+blockArmorBonus;
+        console.log(this.getEvadePDEF());
+        return this.getEvadePDEF()+4+blockArmorBonus;
     }
     public getEvadeMDEF(): number {
         let evadeArmorBonus = this.getArmorMDEF("evade");
@@ -97,7 +98,7 @@ abstract class AbstractSheet {
     public getBlockMDEF(): number {
         let blockArmorBonus = this.getArmorPDEF("blocking");
         blockArmorBonus += this.getAbilityBonuses("mDEFBlock") + this.getAbilityBonuses("DEFBlock");
-        return this.getEvadeMDEF()+1+blockArmorBonus;
+        return this.getEvadeMDEF()+4+blockArmorBonus;
     }
     public getEvadeDodge(): number {
         let dodgeAgility = (3 + this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("evadeAgilityDodgeScaling"))*this.getStat("agility");
@@ -123,10 +124,10 @@ abstract class AbstractSheet {
     public getArmorPDEF(stance: "evade" | "blocking"): number {
         if (this.currentArmor) {
             if (stance === "blocking") {
-                return this.currentArmor.blockPDEFBonus + this.currentArmor.pDEFBonus
+                return this.currentArmor.blockPDEFBonus
             }
              return this.currentArmor.pDEFBonus;
-        } else if (this.isUnlocked("unarmoredDefense")) {
+        } else if (this.isUnlocked("unarmoredDefense") && stance === "evade") {
             return Math.floor(this.getStat("vitality") * 0.5)
         }
         return 0;

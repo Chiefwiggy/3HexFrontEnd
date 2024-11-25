@@ -1,11 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import {Box, capitalize, Collapse, Divider, Paper, Switch, Typography} from "@mui/material";
-import {EConsumableType, IConsumableTemplate} from "../../Data/IConsumable";
+import {EConsumableCraftingType, EConsumableType, IConsumableTemplate} from "../../Data/IConsumable";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
 import {ICharacterStats} from "../../Data/ICharacterData";
 import {ExpandMoreOutlined, FlipOutlined, LinearScaleOutlined, WaterDropOutlined} from "@mui/icons-material";
 import {ExpandMore} from "../../Elements/ExpandMore";
 import {romanize} from "../../Utils/Shorthand";
+import SubtypeDamageIcon from '../SmallComponents/SubtypeDamageIcon';
+import {UDamageSubtype} from "../../Data/ICardData";
+import BoxWithTooltip from "../Generic/BoxWithTooltip";
+import { GiSparkSpirit } from 'react-icons/gi';
+import { FaGripfire } from 'react-icons/fa6';
 
 interface IConsumableCardInput {
     consumableTemplate: IConsumableTemplate,
@@ -43,20 +48,22 @@ const ConsumableCard = ({ consumableTemplate, defaultScaled = false }: IConsumab
         let finalCost = consumableTemplate.slotCost
         if (currentSheet) {
             switch (consumableTemplate.itemType) {
-                case EConsumableType.BOMB:
-                    finalCost += currentSheet.getAbilityBonuses("bombSlotCost");
-                    break;
-                case EConsumableType.TRAP:
-                    finalCost += currentSheet.getAbilityBonuses("trapSlotCost");
-                    break;
                 case EConsumableType.HEALING:
                     finalCost += currentSheet.getAbilityBonuses("healingSlotCost");
                     break;
-                case EConsumableType.TOTEM:
-                    finalCost += currentSheet.getAbilityBonuses("totemSlotCost");
-                    break;
-                case EConsumableType.MONEY:
+                case EConsumableType.CONTAINER:
                     finalCost += currentSheet.getAbilityBonuses("moneySlotCost");
+                    break;
+            }
+            switch (consumableTemplate.craftingType) {
+                case EConsumableCraftingType.BOMB:
+                    finalCost += currentSheet.getAbilityBonuses("bombSlotCost");
+                    break;
+                case EConsumableCraftingType.TRAP:
+                    finalCost += currentSheet.getAbilityBonuses("trapSlotCost");
+                    break;
+                case EConsumableCraftingType.TOTEM:
+                    finalCost += currentSheet.getAbilityBonuses("totemSlotCost");
                     break;
             }
         }
@@ -64,85 +71,145 @@ const ConsumableCard = ({ consumableTemplate, defaultScaled = false }: IConsumab
     }
 
     const GetScaledDescription = (desc: string, index: number) => {
-        let newT = consumableTemplate.basePower;
-        if (currentSheet) {
-            if (consumableTemplate.skillScaling !== "none") {
-                newT += (currentSheet.data.characterStats[consumableTemplate.skillScaling as keyof ICharacterStats].value ?? 0) * consumableTemplate.potency;
+        const newTVals: Array<string> = consumableTemplate.xVals.map((ct) => {
+            let newT = ct.basePower;
+            if (currentSheet) {
+                if (ct.skillScaling !== "none") {
+                    newT += (currentSheet.data.characterStats[ct.skillScaling as keyof ICharacterStats].value ?? 0) * ct.potency;
+                }
+                switch (consumableTemplate.itemType) {
+                    case EConsumableType.HEALING:
+                        newT += currentSheet?.getAbilityBonuses("consumableHealing")
+                        break;
+                    case EConsumableType.CONTAINER:
+                        newT *= currentSheet?.getAbilityBonuses("moneyPouchCapacity");
+                        break;
+                }
+                switch(consumableTemplate.craftingType) {
+                    case EConsumableCraftingType.BOMB:
+                        newT += currentSheet?.getAbilityBonuses("bombDamage")
+                        break;
+                    case EConsumableCraftingType.TRAP:
+                        newT += currentSheet?.getAbilityBonuses("trapDamage")
+                        break;
+                    case EConsumableCraftingType.TOTEM:
+                        newT += currentSheet?.getAbilityBonuses("totemHealth")
+                        break;
+                }
+                newT = Math.floor(newT);
             }
-            switch (consumableTemplate.itemType) {
-                case EConsumableType.HEALING:
-                    newT += currentSheet?.getAbilityBonuses("consumableHealing")
-                    break;
-                case EConsumableType.BOMB:
-                    newT += currentSheet?.getAbilityBonuses("bombDamage")
-                    break;
-                case EConsumableType.TRAP:
-                    newT += currentSheet?.getAbilityBonuses("trapDamage")
-                    break;
-                case EConsumableType.TOTEM:
-                    newT += currentSheet?.getAbilityBonuses("totemHealth")
-                    break;
-                case EConsumableType.MONEY:
-                    newT *= currentSheet?.getAbilityBonuses("moneyPouchCapacity");
-                    break;
+            return `${newT}` || ""
+        })
+
+
+
+        const scaled = desc.split(/(\[X\d+\]|\[damageType:[a-z]+\])/i).map((e, i) => {
+            const xMatch = e.match(/\[X(\d+)\]/); // Match [X<number>]
+            if (xMatch) {
+                const index = parseInt(xMatch[1], 10); // Extract the index number
+                return (
+                    <Typography
+                        key={`scaled-value-${index}-${i}`}
+                        color="primary"
+                        component="span"
+                        sx={{ fontSize: "inherit" }}
+                    >
+                        {newTVals[index - 1]}
+                    </Typography>
+                );
             }
-            newT = Math.floor(newT);
-        }
 
-        const scaled = desc.split("[X]").map((e, i) => (
-            <Typography key={`scaled-desc-${index}-${i}`} component={"span"} sx={{fontSize: "inherit"}}>{e}</Typography>
-        ));
+            const dtMatch = e.match(/\[damageType:([a-z]+)\]/i); // Match [DT:<type>]
+            if (dtMatch) {
+                const damageType = dtMatch[1];
+                return (
+                    <Typography
+                        key={`unscaled-desc-${i}`}
+                        component="span"
+                        sx={{ fontSize: "inherit" }}
+                    >
+                        <SubtypeDamageIcon damageSubtype={damageType as UDamageSubtype} component="span" boxSx={{display: "inline-flex"}}/>
+                    </Typography>
+                );
+            }
 
-        const newScaled = scaled.reduce((pv: any, cv: any, i) => {
-            if (i < scaled.length - 1) {
-                return [...pv, cv, <Typography
-                    color={"primary"}
-                    component={"span"}
-                    key={`scaled-value-${index}-${i}`} sx={{fontSize: "inherit"}}
+            return (
+                <Typography
+                    key={`scaled-desc-${i}`}
+                    component="span"
+                    sx={{ fontSize: "inherit" }}
                 >
-                    {newT}
-                </Typography>]
-            }
-            return [...pv, cv]
-        }, []);
+                    {e}
+                </Typography>
+            );
+        });
+
 
         return (
             <Typography key={`scaled-${index}`} sx={{ textAlign: "center", fontSize: "16px" }}>
-                {newScaled}
+                {scaled}
             </Typography>
         );
     }
 
     const GetUnscaledDescription = (desc: string, index: number) => {
-        let newT = `${consumableTemplate.basePower}`;
-        if (consumableTemplate.potency > 0 && consumableTemplate.skillScaling !== "none") {
-            newT += " + ("
-            if (consumableTemplate.potency !== 1) {
-                newT += `${consumableTemplate.potency} * `
+        const newTVals: Array<string> = consumableTemplate.xVals.map((ct) => {
+            let newT = `${ct.basePower}`;
+            if (ct.potency > 0 && ct.skillScaling !== "none") {
+                newT += " + ("
+                if (ct.potency !== 1) {
+                    newT += `${ct.potency} * `
+                }
+                newT += `your ${capitalize(ct.skillScaling)})`
             }
-            newT += `your ${capitalize(consumableTemplate.skillScaling)})`
-        }
+            return newT
+        })
 
-        const unscaled = desc.split("[X]").map((e, i) => (
-            <Typography key={`unscaled-desc-${index}-${i}`} component={"span"}  sx={{fontSize: "inherit"}}>{e}</Typography>
-        ));
 
-        const newUnscaled = unscaled.reduce((pv: any, cv: any, i) => {
-            if (i < unscaled.length - 1) {
-                return [...pv, cv, <Typography
-                    color={"secondary"}
-                    component={"span"}
-                    key={`unscaled-value-${index}-${i}`} sx={{fontSize: "inherit"}}
+        const unscaled = desc.split(/(\[X\d+\]|\[damageType:[a-z]+\])/i).map((e, i) => {
+            const xMatch = e.match(/\[X(\d+)\]/); // Match [X<number>]
+            if (xMatch) {
+                const index = parseInt(xMatch[1], 10);
+                return (
+                    <Typography
+                        key={`unscaled-value-${index}-${i}`}
+                        color="secondary"
+                        component="span"
+                        sx={{ fontSize: "inherit" }}
+                    >
+                        {newTVals[index - 1]}
+                    </Typography>
+                );
+            }
+
+            const dtMatch = e.match(/\[damageType:([a-z]+)\]/i); // Match [DT:<type>]
+            if (dtMatch) {
+                const damageType = dtMatch[1];
+                return (
+                    <Typography
+                        key={`unscaled-desc-${i}`}
+                        component="span"
+                        sx={{ fontSize: "inherit" }}
+                    >
+                        <SubtypeDamageIcon damageSubtype={damageType as UDamageSubtype} component="span" boxSx={{display: "inline-flex"}}/>
+                    </Typography>
+                );
+            }
+
+            return (
+                <Typography
+                    key={`unscaled-desc-${i}`}
+                    component="span"
+                    sx={{ fontSize: "inherit" }}
                 >
-                    {newT}
-                </Typography>]
-            }
-            return [...pv, cv]
-        }, []);
+                    {e}
+                </Typography>
+            );
+        });
 
         return (
-            <Typography key={`unscaled-${index}`} sx={{fontSize: "16px"}}>
-                {newUnscaled}
+            <Typography key={`unscaled`} sx={{ fontSize: "16px" }}>
+                {unscaled}
             </Typography>
         );
     }
@@ -193,7 +260,7 @@ const ConsumableCard = ({ consumableTemplate, defaultScaled = false }: IConsumab
                         }}>{consumableTemplate.itemName}</Typography>
                         <Typography variant={"subtitle1"} sx={{
                             color: "darkgray"
-                        }}>TIER {romanize(consumableTemplate.itemTier)} ITEM • {consumableTemplate.itemType.toUpperCase()}</Typography>
+                        }}>{consumableTemplate.craftingType.toUpperCase()} • {consumableTemplate.itemType.toUpperCase()}</Typography>
                     </Box>
                     <Box>
                         {
@@ -232,8 +299,7 @@ const ConsumableCard = ({ consumableTemplate, defaultScaled = false }: IConsumab
                 </Box>
                 <Divider sx={{
                     width: "90%",
-                    paddingTop: "4px",
-                    marginBottom: "4px"
+                    paddingTop: "4px"
                 }} />
 
                 <Collapse
@@ -246,12 +312,32 @@ const ConsumableCard = ({ consumableTemplate, defaultScaled = false }: IConsumab
                         padding: 1
                     }}
                 >
+                    {
+                            consumableTemplate.itemCost
+                                ?
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center"
+                                    }}
+                                >
+                                    <Typography sx={{
+                                        marginTop: "-10px",
+                                        marginBottom: "4px",
+                                        color: "darkgray",
+                                        fontSize: "0.9rem"
+                                    }}>${consumableTemplate.itemCost} / ${consumableTemplate.materialCost}</Typography>
+                                </Box>
+                                :
+                                <></>
+                        }
                     {currentSheet && isScaled
                         ? scaledDescriptions.map((e, index) => (
-                            <Box key={`scaled-box-${index}`} sx={{ textAlign: "center", paddingBottom: "2px" }}>{e}</Box>
+                            <Paper elevation={1} key={`scaled-box-${index}`} sx={{ textAlign: "center", paddingBottom: "2px", padding: "12px"}}>{e}</Paper>
                         ))
                         : unscaledDescriptions.map((e, index) => (
-                            <Box key={`unscaled-box-${index}`} sx={{ textAlign: "center", paddingBottom: "2px" }}>{e}</Box>
+                            <Paper elevation={1} key={`unscaled-box-${index}`} sx={{ textAlign: "center", paddingBottom: "2px", padding: "12px"}}>{e}</Paper>
                         ))
                     }
                 </Collapse>
