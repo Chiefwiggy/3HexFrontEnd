@@ -29,7 +29,7 @@ const PrebuiltWeaponCardWrapper = ({
 
     useEffect(() => {
         if (currentSheet) {
-            const newCalc = new WeaponCardCalculator(currentSheet.weaponCalculatorTypes)
+            const newCalc = new WeaponCardCalculator(currentSheet.getWeaponCalculatorTypes())
             setWeaponCalc(newCalc)
             _setWeaponData(newCalc);
         }

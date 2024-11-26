@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography} from "@mui/material";
 import useAPI from "../Hooks/useAPI/useAPI";
 import useCharacter from "../Hooks/useCharacter/useCharacter";
@@ -18,7 +18,7 @@ interface ISpellCardBuilderView {
 const SpellCardBuilderView = ({closeSelf}: ISpellCardBuilderView) => {
 
     const {CardAPI, CharacterAPI} = useAPI();
-    const {currentSheet} = useCharacter();
+    const {currentSheet, charPing} = useCharacter();
 
     const [standbyCards, setStandbyCards] = useState<ICalculatedSpell|null>(null);
     const [standbyStyle, setStandbyStyle] = useState<React.ReactNode>(<></>);
@@ -116,7 +116,7 @@ const SpellCardBuilderView = ({closeSelf}: ISpellCardBuilderView) => {
             <CardBuilder
                 GetAllCards={GetAllCards}
                 defaultCardList={default_spell_cards}
-                cardTypes={currentSheet.spellCalculatorTypes}
+                cardTypes={currentSheet.getSpellCalculatorTypes()}
                 cardCalculator={currentSheet.spellCalculator}
                 closeSelf={closeSelf}
                 sendSaveData={handleReceiveSaveCards}

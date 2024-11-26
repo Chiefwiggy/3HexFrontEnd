@@ -313,7 +313,9 @@ abstract class AbstractSheet {
 
     public abstract getAbilityBonuses(bonusType: string): number;
     public abstract getStat(statName: keyof ICharacterStats | "command"): number;
-    public abstract isUnlocked(unlockType: string): boolean;
+    public isUnlocked(unlockType: string) {
+        return false;
+    }
 
     public abstract getLevel(): number
     public currentArmor: IArmor | undefined = undefined;
@@ -496,93 +498,107 @@ abstract class AbstractSheet {
         return this.currentStance == "evade" ? this.getEvadeDodge() : this.getBlockDodge();
     }
 
+    public getSpellCalculatorTypes = () => {
+        return [
+            {
+                name: "spell.base",
+                display: "base",
+                component: SpellBaseCard,
+                required: true,
+                count: 1
+            },
+            {
+                name: "spell.target",
+                display: "target",
+                component: SpellTargetCard,
+                required: true,
+                count: 1
+            },
+            {
+                name: "spell.skill",
+                display: "skill",
+                component: SpellModifierCard,
+                required: true,
+                count: this.isUnlocked("secondSkill") ? 2 : 1
+            },
+            {
+                name: "spell.edict",
+                display: "edict",
+                component: SpellModifierCard,
+                required: false,
+                count: 1
+            },
+            {
+                name: "condition.buff",
+                display: "buff",
+                component: ConditionCard,
+                required: false,
+                counterRequired: false,
+                counterInvalid: true,
+                count: 1
+            },
+            {
+                name: "condition.debuff",
+                display: "debuff",
+                component: ConditionCard,
+                required: false,
+                counterRequired: false,
+                counterInvalid: true,
+                count: 1
+            }
+        ]
+    }
 
-        public spellCalculatorTypes: Array<ICardBuilderType> = [
-        {
-            name: "spell.base",
-            display: "base",
-            component: SpellBaseCard,
-            required: true
-        },
-        {
-            name: "spell.target",
-            display: "target",
-            component: SpellTargetCard,
-            required: true
-        },
-        {
-            name: "spell.skill",
-            display: "skill",
-            component: SpellModifierCard,
-            required: true
-        },
-        {
-            name: "spell.edict",
-            display: "edict",
-            component: SpellModifierCard,
-            required: false
-        },
-        {
-            name: "condition.buff",
-            display: "buff",
-            component: ConditionCard,
-            required: false,
-            counterRequired: false,
-            counterInvalid: true
-        },
-        {
-            name: "condition.debuff",
-            display: "debuff",
-            component: ConditionCard,
-            required: false,
-            counterRequired: false,
-            counterInvalid: true
-        }
-    ]
+    public getWeaponCalculatorTypes = () => {
+        return [
+            {
+                name: "weapon.base",
+                display: "base",
+                component: WeaponBaseCard,
+                required: true,
+                counterRequired: true,
+                counterInvalid: false,
+                count: 1
+            },
+            {
+                name: "weapon.form",
+                display: "form",
+                component: WeaponModCard,
+                required: true,
+                counterRequired: true,
+                counterInvalid: false,
+                count: this.isUnlocked("secondForm") ? 2 : 1
+            },
 
-    public weaponCalculatorTypes: Array<ICardBuilderType> = [
-        {
-            name: "weapon.base",
-            display: "base",
-            component: WeaponBaseCard,
-            required: true,
-            counterRequired: true,
-            counterInvalid: false
-        },
-        {
-            name: "weapon.form",
-            display: "form",
-            component: WeaponModCard,
-            required: true,
-            counterRequired: true,
-            counterInvalid: false
-        },
-
-        {
-            name: "weapon.skill",
-            display: "skill",
-            component: WeaponModCard,
-            required: false,
-            counterRequired: false,
-            counterInvalid: true
-        },
-        {
-            name: "condition.buff",
-            display: "buff",
-            component: ConditionCard,
-            required: false,
-            counterRequired: false,
-            counterInvalid: true
-        },
-        {
-            name: "condition.debuff",
-            display: "debuff",
-            component: ConditionCard,
-            required: false,
-            counterRequired: false,
-            counterInvalid: true
-        }
-    ]
+            {
+                name: "weapon.skill",
+                display: "skill",
+                component: WeaponModCard,
+                required: false,
+                counterRequired: false,
+                counterInvalid: true,
+                count: 1
+            },
+            {
+                name: "condition.buff",
+                display: "buff",
+                component: ConditionCard,
+                required: false,
+                counterRequired: false,
+                counterInvalid: true,
+                count: 1
+            },
+            {
+                name: "condition.debuff",
+                display: "debuff",
+                component: ConditionCard,
+                required: false,
+                counterRequired: false,
+                counterInvalid: true,
+                count: 1
+            }
+        ]
+    }
 
 
 

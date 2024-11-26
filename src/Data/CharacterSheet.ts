@@ -87,8 +87,8 @@ class CharacterSheet extends AbstractSheet {
 
 
 
-    public spellCalculator = new SpellCardCalculator(this.spellCalculatorTypes);
-    public weaponCalculator = new WeaponCardCalculator(this.weaponCalculatorTypes);
+    public spellCalculator = new SpellCardCalculator(this.getSpellCalculatorTypes());
+    public weaponCalculator = new WeaponCardCalculator(this.getWeaponCalculatorTypes());
 
 
     public allAbilities: Array<IAbility> = [];

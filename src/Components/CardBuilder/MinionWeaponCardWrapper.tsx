@@ -29,7 +29,7 @@ const MinionWeaponCardWrapper = ({
 
     useEffect(() => {
         if (minionData) {
-            const newCalc = new WeaponCardCalculator(minionData.weaponCalculatorTypes)
+            const newCalc = new WeaponCardCalculator(minionData.getWeaponCalculatorTypes())
             setWeaponCalc(newCalc)
             _setWeaponData(newCalc);
         }

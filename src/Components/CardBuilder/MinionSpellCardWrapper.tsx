@@ -27,7 +27,7 @@ const MinionSpellCardWrapper = ({
 
     useEffect(() => {
         if (minionData) {
-            const newCalc = new SpellCardCalculator(minionData.spellCalculatorTypes)
+            const newCalc = new SpellCardCalculator(minionData.getSpellCalculatorTypes())
             setSpellCalc(newCalc)
             _setSpellData(newCalc);
         }

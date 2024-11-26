@@ -35,7 +35,7 @@ const PrebuiltSpellCardWrapper = ({
 
     useEffect(() => {
         if (currentSheet) {
-            const newCalc = new SpellCardCalculator(currentSheet.spellCalculatorTypes)
+            const newCalc = new SpellCardCalculator(currentSheet.getSpellCalculatorTypes())
             setSpellCalc(newCalc)
             _setSpellData(newCalc);
         }

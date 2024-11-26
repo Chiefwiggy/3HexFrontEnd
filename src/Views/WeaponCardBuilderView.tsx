@@ -145,7 +145,7 @@ const WeaponCardBuilderView = ({closeSelf, isOffhand = false}: IWeaponCardBuilde
             <CardBuilder
                 GetAllCards={GetAllCards}
                 defaultCardList={default_weapon_cards}
-                cardTypes={currentSheet.weaponCalculatorTypes}
+                cardTypes={currentSheet.getWeaponCalculatorTypes()}
                 offhandData={isOffhand}
                 cardCalculator={currentSheet.weaponCalculator}
                 closeSelf={closeSelf}

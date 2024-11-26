@@ -24,7 +24,8 @@ export interface ICardBuilderType {
     component: React.FC<any>,
     required?: boolean,
     counterRequired?: boolean,
-    counterInvalid?: boolean
+    counterInvalid?: boolean,
+    count: number
 }
 interface ICardBuilderInput {
     GetAllCards: () => Promise<Array<ICommonCardData>>
@@ -54,7 +55,9 @@ const CardBuilder = ({
     owner
 }: ICardBuilderInput) => {
 
-    const [cardData, setCardData] = useState<Array<ICommonCardData|null>>(new Array(cardTypes.length).fill(null));
+    const [cardData, setCardData] = useState<Array<ICommonCardData|null>>(new Array(
+        cardTypes.reduce((pv, cv) => { return pv + cv.count }, 0)
+    ).fill(null));
 
     const { CharacterAPI } = useAPI();
 
@@ -63,7 +66,22 @@ const CardBuilder = ({
     const sendSetCard = (cardIndex: number) => (data: ICardSendbackData) => {
         const newState = [...cardData];
         if (data.action == 'add') {
-            newState[cardIndex] = data.cardData;
+            let startingIndex = cardTypes.slice(0, cardIndex).reduce((pv, cv) => {
+                return cv.count + pv;
+            }, 0)
+            let finalIndex = startingIndex + cardTypes[cardIndex].count;
+            console.log(newState);
+            const openSpots = newState.slice(startingIndex, finalIndex).reduce((pv, cv) => {
+                if (cv) return pv;
+                return pv + 1;
+            }, 0)
+            console.log(openSpots);
+            if (openSpots) {
+                newState[finalIndex-openSpots] = data.cardData
+            } else {
+                // newState[startingIndex]
+                newState[finalIndex-1] = data.cardData;
+            }
         } else {
             newState[cardIndex] = null;
         }
@@ -193,18 +211,25 @@ const CardBuilder = ({
                   }}
             >
                 {
-                    cardTypes.map((data, index) => {
-                        return (
-                            <CardSkeleton
-                                placeholderText={data.display.toUpperCase()}
-                                CardElement={data.component}
-                                cardData={cardData[index]}
-                                sendBack={sendSetCard(index)}
-                                type={data.name}
-                                key={data.name}
-                            />
-                        )
-                    })
+                    (() => {
+                        let runningIndex = 0; // Initialize running index
+                        return cardTypes.map((data) => {
+                            return Array.from({ length: data.count }).map((_, i) => {
+                                const currentIndex = runningIndex++; // Use and increment the running index inline
+                                return (
+                                    <CardSkeleton
+                                        placeholderText={data.display.toUpperCase()}
+                                        CardElement={data.component}
+                                        cardData={cardData[currentIndex]} // Access the correct index
+                                        sendBack={sendSetCard(currentIndex)} // Use the correct index
+                                        type={data.name}
+                                        key={`${data.name}-${i}`}
+                                        index={i} // Pass the correct overall index
+                                    />
+                                );
+                            });
+                        });
+                    })()
                 }
                 {
                     isComplete ?

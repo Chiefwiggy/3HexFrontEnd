@@ -13,7 +13,8 @@ export const DEFAULT_WEAPON_CALC_TYPES: Array<ICardBuilderType> = [
         component: WeaponBaseCard,
         required: true,
         counterRequired: true,
-        counterInvalid: false
+        counterInvalid: false,
+        count: 1
     },
     {
         name: "weapon.form",
@@ -21,7 +22,8 @@ export const DEFAULT_WEAPON_CALC_TYPES: Array<ICardBuilderType> = [
         component: WeaponModCard,
         required: true,
         counterRequired: true,
-        counterInvalid: false
+        counterInvalid: false,
+        count: 1
     },
 
     {
@@ -30,7 +32,8 @@ export const DEFAULT_WEAPON_CALC_TYPES: Array<ICardBuilderType> = [
         component: WeaponModCard,
         required: false,
         counterRequired: false,
-        counterInvalid: true
+        counterInvalid: true,
+        count: 1
     },
     {
         name: "condition.buff",
@@ -38,7 +41,8 @@ export const DEFAULT_WEAPON_CALC_TYPES: Array<ICardBuilderType> = [
         component: ConditionCard,
         required: false,
         counterRequired: false,
-        counterInvalid: true
+        counterInvalid: true,
+        count: 1
     },
     {
         name: "condition.debuff",
@@ -46,7 +50,8 @@ export const DEFAULT_WEAPON_CALC_TYPES: Array<ICardBuilderType> = [
         component: ConditionCard,
         required: false,
         counterRequired: false,
-        counterInvalid: true
+        counterInvalid: true,
+        count: 1
     }
 ]
 
@@ -55,25 +60,29 @@ export const DEFAULT_SPELL_CALC_TYPES: Array<ICardBuilderType> = [
         name: "spell.base",
         display: "base",
         component: SpellBaseCard,
-        required: true
+        required: true,
+        count: 1
     },
     {
         name: "spell.target",
         display: "target",
         component: SpellTargetCard,
-        required: true
+        required: true,
+        count: 1
     },
     {
         name: "spell.skill",
         display: "skill",
         component: SpellModifierCard,
-        required: true
+        required: true,
+        count: 1
     },
     {
         name: "spell.edict",
         display: "edict",
         component: SpellModifierCard,
-        required: false
+        required: false,
+        count: 1
     },
     {
         name: "condition.buff",
@@ -81,7 +90,8 @@ export const DEFAULT_SPELL_CALC_TYPES: Array<ICardBuilderType> = [
         component: ConditionCard,
         required: false,
         counterRequired: false,
-        counterInvalid: true
+        counterInvalid: true,
+        count: 1
     },
     {
         name: "condition.debuff",
@@ -89,7 +99,8 @@ export const DEFAULT_SPELL_CALC_TYPES: Array<ICardBuilderType> = [
         component: ConditionCard,
         required: false,
         counterRequired: false,
-        counterInvalid: true
+        counterInvalid: true,
+        count: 1
     }
 ]
 
@@ -98,18 +109,21 @@ export const MINION_SPELL_CALC_TYPES: Array<ICardBuilderType> = [
         name: "spell.base",
         display: "base",
         component: SpellBaseCard,
-        required: true
+        required: true,
+        count: 1
     },
     {
         name: "spell.target",
         display: "target",
         component: SpellTargetCard,
         required: true,
+        count: 1
     },
     {
         name: "spell.skill",
         display: "skill",
         component: SpellModifierCard,
-        required: true
+        required: true,
+        count: 1
     }
 ]

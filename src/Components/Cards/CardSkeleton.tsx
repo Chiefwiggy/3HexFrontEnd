@@ -9,14 +9,16 @@ interface ICardSkeletonInput {
     CardElement: React.FC<any>
     cardData: ICommonCardData | null
     sendBack: (data: ICardSendbackData) => void
-    type: string
+    type: string,
+    index: number
 }
 const CardSkeleton = ({
     placeholderText,
     CardElement,
     cardData,
     sendBack,
-    type
+    type,
+    index
 }: ICardSkeletonInput) => {
 
     return cardData ? (
@@ -36,7 +38,8 @@ const CardSkeleton = ({
             alignItems: 'center',
             borderTop: `4px outset ${CardGetColor(type)}`
         }}>
-            <Typography variant={"h5"}>{placeholderText}</Typography>
+            <Typography variant={"h5"}>{placeholderText} {index == 0 ? "" : `#${index+1}`}</Typography>
+
         </Paper>
     ))
 }
