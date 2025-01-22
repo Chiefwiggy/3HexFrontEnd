@@ -207,18 +207,7 @@ const GenericCardLayout = ({
                             <RemoveCircleOutlined/>
                         </IconButton>
                 ) : <></>}
-                {
-                    canFavorite
-                        ?
-                        <IconButton
-                            aria-label={"favorite"}
-                            onClick={handleFavorite}
-                        >
-                            {isFavorite ? <FavoriteOutlined /> : <FavoriteBorderOutlined />}
-                        </IconButton>
-                        :
-                        <></>
-                }
+
                 {
                     canToggleExpand
                     ?

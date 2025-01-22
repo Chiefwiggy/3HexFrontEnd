@@ -57,7 +57,7 @@ class PLC_DowntimeData {
         return VArcanotype.map(arcanotype => {
             const aData = onlyCommune.find(e => e.activityId === `commune_${arcanotype}`);
             if (aData) {
-                return [arcanotype, aData.proficiency + currentSheet.getAbilityBonuses(`${arcanotype}Sources`)]
+                return [arcanotype, (aData.proficiency*2)-1 + currentSheet.getAbilityBonuses(`${arcanotype}Sources`)]
             } else {
                 return [arcanotype, currentSheet.getAbilityBonuses(`attune${arcanotype}`)]
             }

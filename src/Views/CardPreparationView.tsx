@@ -134,7 +134,26 @@ const CardPreparationView = ({closeSelf}: ICardPreparationViewInput) => {
                     header={
                         <>
                             <Typography variant={"h5"}>Cards Prepared</Typography>
-                            <Typography>Card Slots: {currentPreparedCards.filter(e => !(e as ISpellBaseCardData).isFromTemporarySource ?? true).length} / {currentSheet.getCardSlots()} • Temporary Slots: {currentPreparedCards.filter(e => (e as ISpellBaseCardData).isFromTemporarySource ?? false).length} / {currentSheet.getTempCardSlots()} </Typography>
+                            <Typography>Card Slots: {
+                                currentPreparedCards.length -
+                                Math.max(
+                                    Math.min(
+                                        currentPreparedCards.filter(e => e.cardSubtype == "base" ).length,
+                                        currentSheet.getBaseCardSlots()
+                                    ),
+                                    currentPreparedCards.filter(e => (e as ISpellBaseCardData).isFromTemporarySource ?? false).length
+                                )
+                            } / {
+                                currentSheet.getCardSlots()
+                            } • Base Slots: {
+                                Math.max(
+                                    Math.min(
+                                        currentPreparedCards.filter(e => e.cardSubtype == "base").length,
+                                        currentSheet.getBaseCardSlots()
+                                    ),
+                                    currentPreparedCards.filter(e => (e as ISpellBaseCardData).isFromTemporarySource ?? false).length
+                                )
+                            } / {currentSheet.getBaseCardSlots()} </Typography>
                         </>
 
                     }
