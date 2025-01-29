@@ -777,7 +777,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getMaxWeaponForClass(weaponClass: UWeaponClass, handedness: number) {
-        let affTotal = this.getWeaponClassAffinity(weaponClass);
+        let affTotal = this.getWeaponClassAffinity(weaponClass) + this.getAbilityBonuses("weaponPrestigeRequirement")
         if (handedness == 1.5 && this.isUnlocked("ironGrasp")) {
             return affTotal + 1;
         }
@@ -799,12 +799,15 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getSkillRequirementString(weaponData: IWeaponBaseData, enchantmentLevel: number) {
-        const normal = ScaleChainNumeric(weaponData.skillRequirement, enchantmentLevel)
+        let normal = ScaleChainNumeric(weaponData.skillRequirement, enchantmentLevel) - this.getAbilityBonuses("weaponRequirement")
+        if (normal < 0) {
+            normal = 0;
+        }
         let upped = 0
         if (weaponData.handedness == 1.5 && this.isUnlocked("ironGrasp") && enchantmentLevel) {
-            upped = ScaleChainNumeric(weaponData.skillRequirement, Math.max(enchantmentLevel-1, 0))
+            upped = ScaleChainNumeric(weaponData.skillRequirement, Math.max(enchantmentLevel-1, 0)) - this.getAbilityBonuses("weaponRequirement");
         }
-        if (this.getWeaponClassAffinity(weaponData.weaponClass) < enchantmentLevel) {
+        if (this.getWeaponClassAffinity(weaponData.weaponClass) + this.getAbilityBonuses("weaponPrestigeRequirement") < enchantmentLevel ) {
             return `${upped}`
         }
         if (upped > 0 && upped < normal) {

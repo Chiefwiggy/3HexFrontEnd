@@ -11,7 +11,7 @@ import {
 import {ConstructFinalWeapon, ScaleChainNumeric} from "../../Utils/ConstructFinalWeapon";
 import useAPI from "../../Hooks/useAPI/useAPI";
 import {IEnchantmentData} from "../../Data/ICharacterData";
-import {getArmorAffinityRequirement, getSkillFormat, getWeaponAffinityRequirement} from "../../Utils/Shorthand";
+import {getSkillFormat, getWeaponAffinityRequirement} from "../../Utils/Shorthand";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
 import {UArmorClass} from "../../Data/IArmorData";
 
@@ -61,7 +61,7 @@ const WeaponEnchantmentCard = ({
                         <Typography variant={"body2"} sx={{ userSelect: "none"}}>{currentSheet.getHandedness(weaponData.weaponClass, weaponData.handedness, weaponMetadata.enchantmentLevel)}</Typography>
                         <Typography variant={"subtitle2"} sx={{
                             color: "darkgray"
-                        }}>{getWeaponAffinityRequirement(weaponData.weaponClass, weaponMetadata.enchantmentLevel, weaponData.handedness, currentSheet.isUnlocked("ironGrasp"), false)}</Typography>
+                        }}>{getWeaponAffinityRequirement(weaponData.weaponClass, weaponMetadata.enchantmentLevel, weaponData.handedness, currentSheet.isUnlocked("ironGrasp"), currentSheet.getAbilityBonuses("weaponPrestigeRequirement"), false)}</Typography>
                         <Typography variant={"subtitle2"} sx={{
                             color: "darkgray"
                         }}>{weaponData.damageType == "physical" ? "Skill" : "Mind"} {currentSheet.getSkillRequirementString(weaponData, weaponMetadata.enchantmentLevel)}</Typography>

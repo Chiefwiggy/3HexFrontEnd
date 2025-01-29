@@ -2,6 +2,7 @@ import React from 'react';
 import {Box, Divider, Paper, Typography} from "@mui/material";
 import {IArmor} from "../../Data/IArmorData";
 import {getArmorAffinityRequirement} from "../../Utils/Shorthand";
+import useCharacter from "../../Hooks/useCharacter/useCharacter";
 
 interface IArmorElementInput {
     armor: IArmor,
@@ -9,6 +10,8 @@ interface IArmorElementInput {
 }
 
 const ArmorElement = ({armor, enchantmentLevel}: IArmorElementInput) => {
+
+    const {currentSheet} = useCharacter();
 
 
     return (
@@ -29,7 +32,7 @@ const ArmorElement = ({armor, enchantmentLevel}: IArmorElementInput) => {
                     paddingBottom: "4px"
                 }}>
                     <Typography variant={"h6"}>{armor.armorName} +{enchantmentLevel}</Typography>
-                    <Typography variant={"body2"} sx={{color: "darkgray"}}>VIT {armor.vitalityRequirement} {getArmorAffinityRequirement(armor.armorClass, enchantmentLevel)} </Typography>
+                    <Typography variant={"body2"} sx={{color: "darkgray"}}>VIT {armor.vitalityRequirement} {getArmorAffinityRequirement(armor.armorClass, enchantmentLevel, currentSheet?.getAbilityBonuses("armorAffinityRequirement") ?? 0)} </Typography>
                 </Box>
                 <Divider />
                 <Box>

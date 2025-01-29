@@ -30,6 +30,7 @@ const EquipArmorWidget = ({
         if (currentSheet && currentArmor) {
             console.log("storen down");
             setCurrentArmorMax(getMaxArmorEnchant(currentSheet, currentArmor.armorClass))
+
             setCurrentEnchant(currentArmor.enchantmentLevel);
             console.log(currentEnchant, currentArmorMax);
         } else {
@@ -37,6 +38,10 @@ const EquipArmorWidget = ({
             setCurrentEnchant(0);
         }
     }, [charPing, currentArmor, isReady, currentArmor?.enchantmentLevel]);
+
+    useEffect(() => {
+        console.log("cam:" + currentArmorMax);
+    }, [currentArmorMax])
 
 
     const handleChangeEnchantment = (delta: number) => () => {
