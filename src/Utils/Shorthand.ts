@@ -38,17 +38,17 @@ export const getStatShorthand = (stat: UStat | "none" | "luck" | "command"): str
     }
 }
 
-export const getSkillFormat = (value: number, showSign: boolean = true) : string => {
+export const getSkillFormat = (value: number, showSign: boolean = true, isSubtractive = false) : string => {
     let val = value;
-    if (val < 0) {
+    if (val < 0 && !isSubtractive) {
         let x = Math.abs(value);
         let a = Math.floor((x - 1) / 10);
         val = -((a+1)*20-x);
     }
 
     let prefix = val.toString().slice(0, -1);
-    if (prefix == "") {
-        prefix = "0";
+    if (prefix == "" || prefix == "-") {
+        prefix += "0";
     }
     let postfix = val.toString().slice(-1);
     let sign = ""

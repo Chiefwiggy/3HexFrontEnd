@@ -1,7 +1,7 @@
 import React from 'react';
 import {Box, Divider, Paper, Typography} from "@mui/material";
 import {IArmor} from "../../Data/IArmorData";
-import {getArmorAffinityRequirement} from "../../Utils/Shorthand";
+import {getArmorAffinityRequirement, getSkillFormat} from "../../Utils/Shorthand";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
 
 interface IArmorElementInput {
@@ -38,6 +38,16 @@ const ArmorElement = ({armor, enchantmentLevel}: IArmorElementInput) => {
                 <Box>
                     <Typography variant={"h6"}>pDEF {armor.pDEFBonus} <em>(+{armor.blockPDEFBonus})</em></Typography>
                     <Typography variant={"h6"}>mDEF {armor.mDEFBonus} <em>(+{armor.blockMDEFBonus})</em></Typography>
+                    <Typography variant={"h6"}>Dodge {armor.armorClass == "heavy" ? "-" : "+"}{getSkillFormat(armor.armorClass == "standard" ? 0 : 8, false)}</Typography>
+                    {
+                        armor.armorClass == "heavy"
+                        ?
+                            <>
+                                <Typography variant={"body1"}>Dash Steps -1</Typography>
+                                <Typography variant={"body1"}>Cannot Evade</Typography>
+                            </>
+                            :<></>
+                    }
                 </Box>
 
             </Box>

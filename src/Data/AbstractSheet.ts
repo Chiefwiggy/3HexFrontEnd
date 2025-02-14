@@ -100,6 +100,19 @@ abstract class AbstractSheet {
         blockArmorBonus += this.getAbilityBonuses("mDEFBlock") + this.getAbilityBonuses("DEFBlock");
         return this.getEvadeMDEF()+4+blockArmorBonus;
     }
+
+    private getArmorDodgeBonus() {
+        if (this.currentArmor) {
+            if (this.currentArmor.armorClass == "light") {
+                return 8
+            } else if (this.currentArmor.armorClass == "heavy") {
+                return -8;
+            }
+            return 0;
+        } else {
+            return 12;
+        }
+    }
     public getEvadeDodge(): number {
         let dodgeAgility = (3 + this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("evadeAgilityDodgeScaling"))*this.getStat("agility");
         let dodgeAwareness = (1 + this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("evadeAgilityDodgeScaling"))*this.getStat("awareness");
@@ -109,7 +122,10 @@ abstract class AbstractSheet {
             abilityBonuses += this.getStat("presence");
         }
 
-        return 25 + (dodgeAgility + dodgeAwareness + abilityBonuses - weightPenaltyBonus) + this.getAbilityBonuses("evadeDodge") + this.getAbilityBonuses("dodge");
+        let armorBonus = this.getArmorDodgeBonus();
+
+
+        return 25 + (dodgeAgility + dodgeAwareness + abilityBonuses + armorBonus - weightPenaltyBonus) + this.getAbilityBonuses("evadeDodge") + this.getAbilityBonuses("dodge");
 
 
     }
@@ -118,7 +134,9 @@ abstract class AbstractSheet {
         let dodgeAwareness = (1 + this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("blockAgilityDodgeScaling"))*this.getStat("awareness");
         let weightPenaltyBonus = this.weightPenalty*5;
 
-        return 15 + (dodgeAgility + dodgeAwareness - weightPenaltyBonus) + this.getAbilityBonuses("blockDodge") + this.getAbilityBonuses("dodge");
+        let armorBonus = this.getArmorDodgeBonus();
+
+        return 15 + (dodgeAgility + dodgeAwareness + armorBonus - weightPenaltyBonus) + this.getAbilityBonuses("blockDodge") + this.getAbilityBonuses("dodge");
     }
 
     public getStepSpeed(): number {
@@ -264,6 +282,10 @@ abstract class AbstractSheet {
                     value: getSkillFormat((1 + this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("evadeAgilityDodgeScaling"))*this.getStat("awareness"))
                 },
                 {
+                    reason: "Armor",
+                    value: getSkillFormat(this.getArmorDodgeBonus(),true,true)
+                },
+                {
                     reason: "Other Bonuses",
                     value: getSkillFormat(this.getAbilityBonuses("dodge") + this.getAbilityBonuses("evadeDodge") + (this.isUnlocked("bladeHarmony") ? this.getStat("presence") : 0))
                 }
@@ -292,6 +314,10 @@ abstract class AbstractSheet {
                 {
                     reason: "Awareness",
                     value: getSkillFormat((1 + this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("evadeAgilityDodgeScaling"))*this.getStat("awareness"))
+                },
+                {
+                    reason: "Armor",
+                    value: getSkillFormat(this.getArmorDodgeBonus(), true, true)
                 },
                 {
                     reason: "Other Bonuses",
