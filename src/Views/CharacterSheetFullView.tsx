@@ -7,7 +7,7 @@ import {
     ArrowBackIosNewOutlined,
     AutoFixHighOutlined,
     AutoFixNormalOutlined, BackpackOutlined,
-    ChatOutlined,
+    ChatOutlined, Diversity3Outlined,
     EditNoteOutlined,
     EngineeringOutlined,
     FlareOutlined,
@@ -41,6 +41,7 @@ import SavedCardsView from "./SavedCardsView";
 import {FaDice} from "react-icons/fa6";
 import RollDiceView from "./RollDiceView";
 import SubtypeDamageIcon from '../Components/SmallComponents/SubtypeDamageIcon';
+import BattalionAssignmentView from "./BattalionAssignmentView";
 
 const CharacterSheetFullView = () => {
 
@@ -117,6 +118,7 @@ const CharacterSheetFullView = () => {
                 <CharacterSheetSidebar title={"Create Offhand Attacks"} icon={GiDaggers} panelComponent={WeaponCardBuilderView}  doShow={currentSheet.canDualWield()} isOffhand={true}/>
                 <CharacterSheetSidebar title={"Saved Cards"} icon={GiSave} panelComponent={SavedCardsView} />
                 <CharacterSheetSidebar title={"Prepare Commander Cards"} icon={MilitaryTechOutlined} panelComponent={CommanderCardPrepView} />
+                <CharacterSheetSidebar title={"Prepare Battalion"} icon={Diversity3Outlined} panelComponent={BattalionAssignmentView} />
                 <CharacterSheetSidebar title={"Conditions"} icon={FlareOutlined} panelComponent={ConditionsPanelView} />
                 <CharacterSheetSidebar title={"Backpack"} icon={BackpackOutlined} panelComponent={BackpackView} />
                 <CharacterSheetSidebar title={"Classes & Affinities"} icon={EngineeringOutlined} panelComponent={ClassSelectView} />

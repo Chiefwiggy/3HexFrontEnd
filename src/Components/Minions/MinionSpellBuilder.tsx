@@ -17,13 +17,13 @@ import {ICalculatedSpell, ICalculatedWeapon} from "../../Data/ICharacterData";
 
 interface IMinionSpellBuilderInput {
     closeSelf?: (event: React.MouseEvent) => void,
-    receiveFinalData?: (data: ICalculatedSpell) => Promise<void>
+    receiveFinalData?: (data: ICalculatedSpell, cards: Array<ICommonCardData>) => Promise<void>
     minionSheet?: MinionSheet
 }
 
 const MinionSpellBuilder = ({
     closeSelf = () => {},
-    receiveFinalData = async(data) => {},
+    receiveFinalData = async(data, cards) => {},
     minionSheet
 }: IMinionSpellBuilderInput) => {
 
@@ -57,7 +57,7 @@ const MinionSpellBuilder = ({
                 spellTargetId: target._id,
                 spellSkillsIds: rest.map(e => e._id)
             }
-            await receiveFinalData(spellCalcData);
+            await receiveFinalData(spellCalcData, cards);
             // @ts-ignore
             closeSelf(null);
         }

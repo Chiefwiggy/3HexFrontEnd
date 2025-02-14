@@ -35,7 +35,7 @@ import MinionTemplateSheet from "../../../Data/MinionTemplateSheet";
 import useAPI from "../../../Hooks/useAPI/useAPI";
 import MinionStatPanel from '../MinionStatPanel';
 import minionSheet from "../../../Data/MinionSheet";
-import {ICalculatedSpell, ICalculatedWeapon} from "../../../Data/ICharacterData";
+import {ESkill, ICalculatedSpell, ICalculatedWeapon, ISkillPointObject} from "../../../Data/ICharacterData";
 
 
 interface ICreateMinionTemplateInput {
@@ -44,7 +44,7 @@ interface ICreateMinionTemplateInput {
 
 const CreateMinionTemplate = ({}: ICreateMinionTemplateInput) => {
 
-    const {ArmorData, WeaponData, isLoaded} = usePreloadedContent();
+    const {ArmorData, WeaponData, DowntimeData, isLoaded} = usePreloadedContent();
 
     const [currentXP, setCurrentXP] = useState(0);
 
@@ -100,10 +100,16 @@ const CreateMinionTemplate = ({}: ICreateMinionTemplateInput) => {
             },
             currentSpell: null,
             currentWeapon: null,
+            currentWeaponCards: [],
+            currentSpellCards: [],
             currentWeaponId: "",
             currentWeaponEnchantment: 0,
             currentArmorId: "",
             currentArmorEnchantment: 0,
+            primarySkill: "athletics" as keyof ISkillPointObject,
+            secondarySkill: "handling" as keyof ISkillPointObject,
+            tertiarySkill: "stealth" as keyof ISkillPointObject,
+            downtimeSkill: "commune_elemental",
             baseBonuses: {}
         },
         validationSchema,
@@ -147,9 +153,11 @@ const CreateMinionTemplate = ({}: ICreateMinionTemplateInput) => {
 
         if (currentMinionSheet) {
             currentMinionSheet.updateStats(formik.values.minionBaseStats)
-            currentMinionSheet.updateCards(formik.values.currentWeapon, formik.values.currentSpell);
+            currentMinionSheet.updateCards(formik.values.currentWeapon, formik.values.currentSpell, [...formik.values.currentWeaponCards, ...formik.values.currentSpellCards]);
             currentMinionSheet.updateArmor(ArmorData.GetConstructedArmorById(formik.values.currentArmorId, formik.values.currentArmorEnchantment));
             currentMinionSheet.updateName(formik.values.minionTemplateName);
+            currentMinionSheet.updateBaseAuthorityRequirement(Math.floor(playerMaxAUT*0.25));
+            currentMinionSheet.updateSkills(formik.values.primarySkill, formik.values.secondarySkill, formik.values.tertiarySkill, formik.values.downtimeSkill)
         }
 
 
@@ -158,12 +166,14 @@ const CreateMinionTemplate = ({}: ICreateMinionTemplateInput) => {
 
     }, [formik.values]);
 
-    const setCurrentWeapon = async(data: ICalculatedWeapon) => {
+    const setCurrentWeapon = async(data: ICalculatedWeapon, cards: Array<ICommonCardData>) => {
         await formik.setFieldValue('currentWeapon', data);
+        await formik.setFieldValue('currentWeaponCards', cards);
     }
 
-    const setCurrentSpell = async(data: ICalculatedSpell) => {
+    const setCurrentSpell = async(data: ICalculatedSpell, cards: Array<ICommonCardData>) => {
         await formik.setFieldValue('currentSpell', data);
+        await formik.setFieldValue('currentSpellCards', cards)
     }
 
     return (
@@ -217,6 +227,7 @@ const CreateMinionTemplate = ({}: ICreateMinionTemplateInput) => {
                                                 label={"Enchantment Level"} min={0} max={10}/>
 
                         </Box>
+
                         <br/>
                         <Box
                             sx={{
@@ -238,6 +249,50 @@ const CreateMinionTemplate = ({}: ICreateMinionTemplateInput) => {
                                     />
                                 ))
                             }
+                        </Box>
+                        <Box
+                            sx={{
+                                padding: "4px",
+                                width: "100%",
+                                display: "flex",
+                                justifyContent: "space-around"
+                            }}
+                        >
+                            <FormikSelect
+                                formik={formik}
+                                fieldName={"primarySkill"}
+                                label={"Primary Skill"}
+                                options={ESkill}
+                                optionNames={ESkill.map(e => capitalize(e))}
+                            />
+                            <FormikSelect
+                                formik={formik}
+                                fieldName={"secondarySkill"}
+                                label={"Secondary Skill"}
+                                options={ESkill}
+                                optionNames={ESkill.map(e => capitalize(e))}
+                            />
+                            <FormikSelect
+                                formik={formik}
+                                fieldName={"tertiarySkill"}
+                                label={"Tertiary Skill"}
+                                options={ESkill}
+                                optionNames={ESkill.map(e => capitalize(e))}
+                            />
+                        </Box>
+                        <Box
+                            sx={{
+                                padding: "6px"
+                            }}
+                        >
+                            <FormikSelect
+                                formik={formik}
+                                fieldName={"downtimeSkill"}
+                                label={"Downtime Skill"}
+                                options={DowntimeData.GetDowntimeData().map(e => e.activityId)}
+                                optionNames={DowntimeData.GetDowntimeData().map(e => e.activityName)}
+                                widthOverride={"300px"}
+                            />
                         </Box>
                         <Box>
                             {
@@ -264,6 +319,7 @@ const CreateMinionTemplate = ({}: ICreateMinionTemplateInput) => {
                                     <></>
                             }
                         </Box>
+
                     </Paper>
                     <Paper
                         elevation={1}

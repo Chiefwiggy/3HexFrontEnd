@@ -15,7 +15,7 @@ interface IMinionWeaponBuilderInput {
     closeSelf?: (event: React.MouseEvent) => void
     currentWeaponId?: string,
     currentWeaponEnchantment?: number,
-    receiveFinalData?: (data: ICalculatedWeapon) => Promise<void>
+    receiveFinalData?: (data: ICalculatedWeapon, cards: Array<ICommonCardData>) => Promise<void>
     minionSheet?: MinionSheet
 }
 
@@ -59,7 +59,7 @@ const MinionWeaponBuilder = ({
                 weaponCardsIds: rest.map(e => e._id)
             };
             console.log(weaponCalcData);
-            await receiveFinalData(weaponCalcData);
+            await receiveFinalData(weaponCalcData, cards);
             // @ts-ignore
             closeSelf(null);
         }

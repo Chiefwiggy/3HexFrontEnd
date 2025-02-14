@@ -2,6 +2,7 @@ import {IDowntimeActivity, IDowntimeFullScaledData} from "../../Data/IDowntime";
 import CharacterSheet from "../../Data/CharacterSheet";
 import {ScaleChainNonNumeric, ScaleChainNumeric} from "../../Utils/ConstructFinalWeapon";
 import {VArcanotype} from "../../Data/ISourceData";
+import {capitalize} from "@mui/material";
 
 
 class PLC_DowntimeData {
@@ -17,6 +18,15 @@ class PLC_DowntimeData {
 
     public GetDowntimeData = () => {
         return this.downtimeData;
+    }
+
+    public GetDowntimeNameById = (downtimeId: string) => {
+        const dta: IDowntimeActivity | undefined = this.downtimeData.find(e => e.activityId === downtimeId);
+        if (dta) {
+            return dta.activityName;
+        } else {
+            return capitalize(downtimeId);
+        }
     }
 
     public GetDowntimesPlayerLacks(currentSheet: CharacterSheet) {

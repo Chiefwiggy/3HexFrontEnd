@@ -8,7 +8,8 @@ interface IFormikSwitchInput {
     options: Array<string>,
     optionNames?: Array<string>,
     variant?: "outlined" | "filled" | "standard"
-    label?: string
+    label?: string,
+    widthOverride?: string
 }
 
 const FormikSelect = ({
@@ -17,7 +18,8 @@ const FormikSelect = ({
     options,
     optionNames,
     variant = "outlined",
-    label = ""
+    label = "",
+    widthOverride = "200px"
 }: IFormikSwitchInput) => {
 
 
@@ -34,7 +36,7 @@ const FormikSelect = ({
                 onBlur={formik.handleBlur}
                 error={formik.touched[fieldName] && Boolean(formik.errors[fieldName])}
                 sx={{
-                    width: "200px"
+                    width: widthOverride
                 }}
             >
                 <MenuItem value={""} disabled>Select an option</MenuItem>

@@ -1,10 +1,11 @@
 import AbstractSheet from "./AbstractSheet";
-import {ICalculatedSpell, ICalculatedWeapon, ICharacterStats} from "./ICharacterData";
+import {ICalculatedSpell, ICalculatedWeapon, ICharacterStats, ISkillPointObject} from "./ICharacterData";
 import { IDefenseBreakdown } from "./IDefenses";
 import {IAPIContext} from "../Hooks/useAPI/APIProvider";
 import {IMinionData, IMinionTemplateData, IMinionTemplateStats} from "./IMinionData";
 import {number} from "yup";
 import {IArmor} from "./IArmorData";
+import {ICommonCardData} from "./ICardData";
 
 
 class MinionTemplateSheet extends AbstractSheet {
@@ -29,6 +30,11 @@ class MinionTemplateSheet extends AbstractSheet {
         currentWeapon: null,
         currentArmor: null,
         cardData: [],
+        baseAuthorityRequirement: 3,
+        primarySkill: "athletics",
+        secondarySkill: "handling",
+        tertiarySkill: "stealth",
+        downtimeSkill: "",
         bonuses: {
             critBonus: 0
         }
@@ -47,9 +53,21 @@ class MinionTemplateSheet extends AbstractSheet {
         this.data.minionTemplateName = name;
     }
 
-    public updateCards(currentWeapon: ICalculatedWeapon|null, currentSpell: ICalculatedSpell|null) {
+    public updateBaseAuthorityRequirement(requirement: number) {
+        this.data.baseAuthorityRequirement = requirement;
+    }
+
+    public updateSkills(primarySkill: keyof ISkillPointObject, secondarySkill: keyof ISkillPointObject, tertiarySkill: keyof ISkillPointObject, downtimeSkill: string) {
+        this.data.primarySkill = primarySkill;
+        this.data.secondarySkill = secondarySkill;
+        this.data.tertiarySkill = tertiarySkill;
+        this.data.downtimeSkill = downtimeSkill;
+    }
+
+    public updateCards(currentWeapon: ICalculatedWeapon|null, currentSpell: ICalculatedSpell|null, allCards: Array<ICommonCardData>) {
         this.data.currentSpell = currentSpell;
         this.data.currentWeapon = currentWeapon;
+        this.data.cardData = allCards;
     }
 
     public updateArmor(newArmor: IArmor|undefined){
@@ -95,6 +113,18 @@ class MinionTemplateSheet extends AbstractSheet {
     }
     public isUnlocked(unlockType: string): boolean {
         return false;
+    }
+
+    public GetSimpleWeapon() {
+
+        if (this.data.currentWeapon) {
+            let simpleWeapon = {...this.data.currentWeapon};
+            simpleWeapon.weaponBaseData.enchantmentLevel = 0;
+            simpleWeapon.weaponCardsIds = [];
+            return simpleWeapon;
+        }
+        return null;
+
     }
 
 }

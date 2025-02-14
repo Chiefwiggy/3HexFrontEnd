@@ -1,4 +1,11 @@
-import {IAttributeBar, ICalculatedArmor, ICalculatedSpell, ICalculatedWeapon, IEnchantmentData} from "./ICharacterData";
+import {
+    IAttributeBar,
+    ICalculatedArmor,
+    ICalculatedSpell,
+    ICalculatedWeapon,
+    IEnchantmentData,
+    ISkillPointObject
+} from "./ICharacterData";
 import {IModifiable} from "./GenericData";
 import {IArmor} from "./IArmorData";
 import {ICommonCardData} from "./ICardData";
@@ -69,5 +76,10 @@ export interface IMinionTemplateData {
     currentWeapon: ICalculatedWeapon|null,
     currentArmor: IEnchantmentData|null,
     cardData: Array<ICommonCardData>,
+    baseAuthorityRequirement: number,
+    primarySkill: keyof ISkillPointObject,
+    secondarySkill: keyof ISkillPointObject,
+    tertiarySkill: keyof ISkillPointObject,
+    downtimeSkill: string,
     bonuses: Object
 }

@@ -104,8 +104,12 @@ abstract class AbstractSheet {
         let dodgeAgility = (3 + this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("evadeAgilityDodgeScaling"))*this.getStat("agility");
         let dodgeAwareness = (1 + this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("evadeAgilityDodgeScaling"))*this.getStat("awareness");
         let weightPenaltyBonus = this.weightPenalty*5;
+        let abilityBonuses = 0;
+        if (this.isUnlocked("bladeHarmony")) {
+            abilityBonuses += this.getStat("presence");
+        }
 
-        return 25 + (dodgeAgility + dodgeAwareness - weightPenaltyBonus) + this.getAbilityBonuses("evadeDodge") + this.getAbilityBonuses("dodge");
+        return 25 + (dodgeAgility + dodgeAwareness + abilityBonuses - weightPenaltyBonus) + this.getAbilityBonuses("evadeDodge") + this.getAbilityBonuses("dodge");
 
 
     }
@@ -261,7 +265,7 @@ abstract class AbstractSheet {
                 },
                 {
                     reason: "Other Bonuses",
-                    value: this.getAbilityBonuses("dodge") + this.getAbilityBonuses("evadeDodge")
+                    value: getSkillFormat(this.getAbilityBonuses("dodge") + this.getAbilityBonuses("evadeDodge") + (this.isUnlocked("bladeHarmony") ? this.getStat("presence") : 0))
                 }
             ]
         }
@@ -291,7 +295,7 @@ abstract class AbstractSheet {
                 },
                 {
                     reason: "Other Bonuses",
-                    value: this.getAbilityBonuses("dodge") + this.getAbilityBonuses("blockDodge")
+                    value: getSkillFormat(this.getAbilityBonuses("dodge") + this.getAbilityBonuses("blockDodge"))
                 }
             ]
         }

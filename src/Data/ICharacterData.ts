@@ -124,6 +124,8 @@ export interface ISkillPointObject {
     society: number
 }
 
+export const ESkill = ["athletics", "handling", "stealth", "deduction", "identify", "science", "technology", "biology", "metaphysics", "spellcraft", "survival", "perception" ,"streetwise", "discovery", "diplomacy", "hostility", "guile", "lore", "occult", "society"]
+
 export interface IAttributeBar {
     current: number,
     scaling: IModifiable
@@ -157,6 +159,8 @@ export interface IAffinities {
     abjuration: number,
     biohacking: number
 }
+
+
 
 export interface IAffinitiesAndPath {
     affinities: IAffinities,
