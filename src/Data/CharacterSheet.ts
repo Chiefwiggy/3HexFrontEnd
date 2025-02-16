@@ -18,7 +18,7 @@ import {
     UCharacterStat, UDamageSubtype, UDamageType, UWeaponClass, VDamageSubtypes
 } from "./ICardData";
 import {IAPIContext} from "../Hooks/useAPI/APIProvider";
-import {IArmor} from "./IArmorData";
+import {IArmor, IShield} from "./IArmorData";
 import {IDefenseBreakdown} from "./IDefenses";
 import React, {SetStateAction, useState} from "react";
 import {ICardBuilderType} from "../Layouts/CardBuilder";
@@ -526,7 +526,8 @@ class CharacterSheet extends AbstractSheet {
         }
         this._setAffinities()
         this.preloadedData = preloadedData;
-        this.setArmor();
+        this.setArmorAndShield();
+
 
 
 
@@ -569,14 +570,18 @@ class CharacterSheet extends AbstractSheet {
         }
      }
 
-     private setArmor(timeout = 0) {
+     private setArmorAndShield(timeout = 0) {
         if (this.data.currentArmor) {
             this.currentArmor = this.preloadedData.ArmorData.GetConstructedArmorById(this.data.currentArmor.baseId, this.data.currentArmor.enchantmentLevel);
             this._setWeightPenalty()
         }
+        if (this.data.currentShield) {
+            this.currentShield = this.preloadedData.ShieldData.GetConstructedShieldById(this.data.currentShield.baseId, this.data.currentShield.enchantmentLevel);
+            this._setWeightPenalty()
+        }
      }
 
-     public UpdateArmor(newArmor: IArmor|undefined) {
+    public UpdateArmor(newArmor: IArmor|undefined) {
         this.currentArmor = newArmor;
         this._setWeightPenalty();
 
@@ -591,7 +596,27 @@ class CharacterSheet extends AbstractSheet {
 
         this._ping();
         return this.data.currentArmor;
-     }
+    }
+
+    public UpdateShield(newShield: IShield|undefined) {
+        this.currentShield = newShield;
+        this._setWeightPenalty();
+
+        if (newShield) {
+            this.data.currentShield = {
+                baseId: newShield._id,
+                enchantmentLevel: newShield.enchantmentLevel,
+            }
+        } else {
+            this.data.currentShield = null
+        }
+
+        this._ping();
+        return this.data.currentShield;
+    }
+
+
+
 
     private _setAllCards = async() => {
         try {
@@ -765,7 +790,10 @@ class CharacterSheet extends AbstractSheet {
 
 
 
-    public getWeaponClassAffinity(weaponClass: UWeaponClass) {
+    public getWeaponClassAffinity(weaponClass: UWeaponClass, damageType: UDamageType) {
+        if (damageType == "magical") {
+            return this.currentAffinities.focus;
+        }
         switch (weaponClass){
             case "light":
                 return this.currentAffinities.nimble;
@@ -776,8 +804,8 @@ class CharacterSheet extends AbstractSheet {
         }
     }
 
-    public getMaxWeaponForClass(weaponClass: UWeaponClass, handedness: number) {
-        let affTotal = this.getWeaponClassAffinity(weaponClass) + this.getAbilityBonuses("weaponPrestigeRequirement")
+    public getMaxWeaponForClass(weaponClass: UWeaponClass, handedness: number, damageType: UDamageType) {
+        let affTotal = this.getWeaponClassAffinity(weaponClass, damageType) + this.getAbilityBonuses("weaponPrestigeRequirement")
         if (handedness == 1.5 && this.isUnlocked("ironGrasp")) {
             return affTotal + 1;
         }
@@ -790,7 +818,7 @@ class CharacterSheet extends AbstractSheet {
         } else if (handedness >= 2) {
             return "Two-Handed"
         }
-        let affTotal = this.getWeaponClassAffinity(weaponClass);
+        let affTotal = this.getWeaponClassAffinity(weaponClass, "physical");
         if (this.isUnlocked("ironGrasp") && currentEnchant > affTotal) {
             return "Two-Handed"
         } else {
@@ -807,7 +835,7 @@ class CharacterSheet extends AbstractSheet {
         if (weaponData.handedness == 1.5 && this.isUnlocked("ironGrasp") && enchantmentLevel) {
             upped = ScaleChainNumeric(weaponData.skillRequirement, Math.max(enchantmentLevel-1, 0)) - this.getAbilityBonuses("weaponRequirement");
         }
-        if (this.getWeaponClassAffinity(weaponData.weaponClass) + this.getAbilityBonuses("weaponPrestigeRequirement") < enchantmentLevel ) {
+        if (this.getWeaponClassAffinity(weaponData.weaponClass, weaponData.damageType) + this.getAbilityBonuses("weaponPrestigeRequirement") < enchantmentLevel ) {
             return `${upped}`
         }
         if (upped > 0 && upped < normal) {
@@ -853,6 +881,10 @@ class CharacterSheet extends AbstractSheet {
 
     public getStat(stat: UStat): number {
         return StatChain(this.data.characterStats[stat].value, [this.data.characterStats[stat].modifiers])
+    }
+
+    public getSave(stat: UStat): number {
+        return this.getStat(stat)*2 + Math.ceil(this.getStat("knowledge")*0.5) + this.getAbilityBonuses("allSaves") + this.getAbilityBonuses(`${stat}Saves`)
     }
 
 

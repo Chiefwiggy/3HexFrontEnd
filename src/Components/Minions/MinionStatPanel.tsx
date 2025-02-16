@@ -59,8 +59,8 @@ const MinionStatPanel = ({
                 >
                     <Tab value={0} label={`Ally - [${0}]`} />
                     <Tab value={1} label={`Follower - [${minionSheet.data.baseAuthorityRequirement}]`} />
-                    <Tab value={2} label={`Comrade - [${Math.floor(minionSheet.data.baseAuthorityRequirement * 1.5 + 3)}]`}  />
-                    <Tab value={3} label={`Adjutant - [${Math.floor(minionSheet.data.baseAuthorityRequirement * 2 + 7)}]`} />
+                    <Tab value={2} label={`Adjutant - [${Math.floor(minionSheet.data.baseAuthorityRequirement * 1.5 + 3)}]`}  />
+                    <Tab value={3} label={`Lieutenant - [${Math.floor(minionSheet.data.baseAuthorityRequirement * 2 + 7)}]`} />
                 </Tabs>
             </Box>
             {

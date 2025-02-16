@@ -61,7 +61,7 @@ const WeaponEnchantmentCard = ({
                         <Typography variant={"body2"} sx={{ userSelect: "none"}}>{currentSheet.getHandedness(weaponData.weaponClass, weaponData.handedness, weaponMetadata.enchantmentLevel)}</Typography>
                         <Typography variant={"subtitle2"} sx={{
                             color: "darkgray"
-                        }}>{getWeaponAffinityRequirement(weaponData.weaponClass, weaponMetadata.enchantmentLevel, weaponData.handedness, currentSheet.isUnlocked("ironGrasp"), currentSheet.getAbilityBonuses("weaponPrestigeRequirement"), false)}</Typography>
+                        }}>{getWeaponAffinityRequirement(weaponData.weaponClass, weaponMetadata.enchantmentLevel, weaponData.handedness, weaponData.damageType, currentSheet.isUnlocked("ironGrasp"), currentSheet.getAbilityBonuses("weaponPrestigeRequirement"), false)}</Typography>
                         <Typography variant={"subtitle2"} sx={{
                             color: "darkgray"
                         }}>{weaponData.damageType == "physical" ? "Skill" : "Mind"} {currentSheet.getSkillRequirementString(weaponData, weaponMetadata.enchantmentLevel)}</Typography>
@@ -103,7 +103,7 @@ const WeaponEnchantmentCard = ({
                             </Box>
                             <IconButton
                                 onClick={handleEditEnchantment(1)}
-                                disabled={weaponMetadata.enchantmentLevel >= currentSheet.getMaxWeaponForClass(weaponData.weaponClass, weaponData.handedness)}
+                                disabled={weaponMetadata.enchantmentLevel >= currentSheet.getMaxWeaponForClass(weaponData.weaponClass, weaponData.handedness, weaponData.damageType)}
                             >
                                 <AddCircleOutlined />
                             </IconButton>

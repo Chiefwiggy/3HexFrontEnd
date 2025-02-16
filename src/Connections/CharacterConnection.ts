@@ -193,10 +193,11 @@ class CharacterConnection {
         })
     }
 
-    public async UpdateWeaponsAndArmorList(charID: string, weapons: Array<IEnchantmentData>, armor: IEnchantmentData|null) {
+    public async UpdateWeaponsAndArmorList(charID: string, weapons: Array<IEnchantmentData>, armor: IEnchantmentData|null, shield: IEnchantmentData|null) {
         await Axios.put(this.GetRouteURL(`update/${charID}`), {
             knownWeapons: weapons,
-            currentArmor: armor
+            currentArmor: armor,
+            currentShield: shield
         }, this._getConfig()).then((resp) => {
             console.log(resp);
         })

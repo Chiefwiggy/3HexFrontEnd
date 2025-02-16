@@ -29,6 +29,10 @@ class PLC_WeaponData {
         return this.baseWeaponCards.filter(weapon => weapon.prerequisites.length == 0)
     }
 
+    public GetUserSpecialWeapons() {
+
+    }
+
     public GetCardPreparedStruct(prepStruct: Array<{
         baseId: string,
         enchantmentLevel: number

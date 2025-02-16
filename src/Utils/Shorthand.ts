@@ -103,7 +103,7 @@ export const getArmorAffinityRequirement = (armorClass: UArmorClass, enchantment
     }
 }
 
-export const getWeaponAffinityRequirement = (weaponClass: UWeaponClass, enchantmentLevel: number, handedness: number, hasIronGrasp: boolean, prestigeLower: number = 0, showBullet: boolean = true): string => {
+export const getWeaponAffinityRequirement = (weaponClass: UWeaponClass, enchantmentLevel: number, handedness: number, damageType: UDamageType, hasIronGrasp: boolean, prestigeLower: number = 0, showBullet: boolean = true): string => {
     let retVal = ""
     if (showBullet) {
         retVal = "• "
@@ -118,17 +118,23 @@ export const getWeaponAffinityRequirement = (weaponClass: UWeaponClass, enchantm
     if (enchantmentLevelMod < 0) {
         return retVal;
     }
-    switch (weaponClass) {
-        case "light":
-            retVal += `Deft ${enchantmentLevelMod}`
-            break;
-        case "standard":
-            retVal += `Infantry ${enchantmentLevelMod}`
-            break;
-        case "heavy":
-            retVal += `Guardian ${enchantmentLevelMod}`
-            break;
+
+    if (damageType == "magical") {
+        retVal += `Focus ${enchantmentLevelMod}`
+    } else {
+        switch (weaponClass) {
+            case "light":
+                retVal += `Deft ${enchantmentLevelMod}`
+                break;
+            case "standard":
+                retVal += `Infantry ${enchantmentLevelMod}`
+                break;
+            case "heavy":
+                retVal += `Guardian ${enchantmentLevelMod}`
+                break;
+        }
     }
+
     if (hasIronGrasp) {
         if (handedness > 1.2 && handedness < 2.0) {
             retVal += `/${enchantmentLevel - prestigeLower}`

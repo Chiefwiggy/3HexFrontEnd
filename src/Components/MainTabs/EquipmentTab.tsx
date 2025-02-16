@@ -12,15 +12,12 @@ import {
 } from "@mui/material";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
 import usePreloadedContent from "../../Hooks/usePreloadedContent/usePreloadedContent";
-import WeaponEnchantmentCard from "../Equipment/WeaponEnchantmentCard";
 import {IEnchantmentData} from "../../Data/ICharacterData";
 import useAPI from "../../Hooks/useAPI/useAPI";
-import ArmorElement from "../Armor/ArmorElement";
-import {IArmor} from "../../Data/IArmorData";
-import {AddCircleOutlined, RemoveCircleOutlined} from "@mui/icons-material";
-import {getMaxArmorEnchant} from "../../Utils/ArmorCalc";
+import {IArmor, IShield} from "../../Data/IArmorData";
 import EquipArmorWidget from "../Equipment/EquipArmorWidget";
 import EquipWeaponsWidget from '../Equipment/EquipWeaponsWidget';
+import EquipShieldWidget from "../Equipment/EquipShieldWidget";
 
 interface IEquipmentTabInput {
 
@@ -30,16 +27,22 @@ const EquipmentTab = ({}: IEquipmentTabInput) => {
 
     const {currentSheet} = useCharacter();
 
-    const {WeaponData, ArmorData} = usePreloadedContent();
+    const {WeaponData, ArmorData, ShieldData} = usePreloadedContent();
 
     const [currentWeaponMetadata, setCurrentWeaponMetadata] = useState<Array<IEnchantmentData>>([])
     const [currentArmor, setCurrentArmor] = useState<IArmor | undefined>(undefined);
+    const [currentShield, setCurrentShield] = useState<IShield | undefined>(undefined);
 
     const [justUpdated, setJustUpdated] = useState(true);
     const [showStatus, setShowStatus] = useState(false);
 
     const handleChangeSelectedArmor = (enchantment: number, armorId: string | undefined) => {
         setCurrentArmor(ArmorData.GetConstructedArmorById(armorId ?? "", enchantment) ?? undefined)
+        setJustUpdated(false);
+    }
+
+    const handleChangeSelectedShield = (enchantment: number, shieldId: string | undefined) => {
+        setCurrentShield(ShieldData.GetConstructedShieldById(shieldId ?? "", enchantment) ?? undefined);
         setJustUpdated(false);
     }
 
@@ -53,6 +56,7 @@ const EquipmentTab = ({}: IEquipmentTabInput) => {
             const weaponDataCopy = currentSheet.data.knownWeapons.map(weapon => ({ ...weapon }));
             setCurrentWeaponMetadata(weaponDataCopy);
             setCurrentArmor(currentSheet.currentArmor);
+            setCurrentShield(currentSheet.currentShield)
         }
     }, []);
 
@@ -66,7 +70,8 @@ const EquipmentTab = ({}: IEquipmentTabInput) => {
             const newWeaponArray: Array<IEnchantmentData> = currentWeaponMetadata;
             currentSheet.data.knownWeapons = newWeaponArray
             const nArmorData = currentSheet.UpdateArmor(currentArmor);
-            await CharacterAPI.UpdateWeaponsAndArmorList(currentSheet.data._id, newWeaponArray, nArmorData);
+            const nShieldData = currentSheet.UpdateShield(currentShield);
+            await CharacterAPI.UpdateWeaponsAndArmorList(currentSheet.data._id, newWeaponArray, nArmorData, nShieldData);
             setCurrentWeaponMetadata(newWeaponArray);
             currentSheet.manualCharPing()
             setJustUpdated(true);
@@ -111,7 +116,11 @@ const EquipmentTab = ({}: IEquipmentTabInput) => {
                 }}
             >
                 <EquipWeaponsWidget currentWeaponMetadata={currentWeaponMetadata} setWeaponData={handleChangeSelectedWeapons} />
-                <EquipArmorWidget currentArmor={currentArmor} handleChangeSelectedArmor={handleChangeSelectedArmor}  />
+                <Box>
+                    <EquipArmorWidget currentArmor={currentArmor} handleChangeSelectedArmor={handleChangeSelectedArmor}  />
+                    <EquipShieldWidget currentShield={currentShield} handleChangeSelectedShield={handleChangeSelectedShield} />
+                </Box>
+
             </Box>
 
 

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {Box, capitalize, Card, CardContent, CardHeader, IconButton, Popover, Typography} from "@mui/material";
 import {IModifiable} from "../../Data/GenericData";
 import {StatChain} from "../../Utils/GetFinalSpellData";
-import {getSkillFormat} from "../../Utils/Shorthand";
+import {getSkillFormat, UStat} from "../../Utils/Shorthand";
 import {
   Unstable_NumberInput as BaseNumberInput,
   NumberInputProps,
@@ -85,7 +85,7 @@ const StatBox = ({
         }
     }, [value.value, value.modifiers?.modifier, value.modifiers?.override, value.modifiers?.multiplier]);
 
-    return (
+    return currentSheet ? (
         <Box>
             <Box
                 onClick={handlePop}
@@ -98,47 +98,54 @@ const StatBox = ({
                 }}
             >
                 <Typography variant={"h6"}>{capitalize(stat)}</Typography>
+
                 {
                     editMode ?
-                        <AddSubtractPanel
-                            handleChange={handleEditStat}
-                            callAfterChange={handlePushEdits}
-                            value={currentValue}
-                            textVariant={"h6"}
-                            isAtBottom={currentValue < 1}
-                            isAtCap={currentValue >= statCap}
-                            textWidth={30}
-                        />
+                        <>
+                            <AddSubtractPanel
+                                handleChange={handleEditStat}
+                                callAfterChange={handlePushEdits}
+                                value={currentValue}
+                                textVariant={"h6"}
+                                isAtBottom={currentValue < 1}
+                                isAtCap={currentValue >= statCap}
+                                textWidth={30}
+                            />
+                            <Typography variant={"body1"} color={"grey"}>[{getSkillFormat(currentSheet.getSave(stat as UStat))}]</Typography>
+                        </>
                         :
-                        <Typography variant={"h6"} color={statRelativeColor}>{statValue}</Typography>
+                        <>
+                            <Typography variant={"h6"} color={statRelativeColor}>{statValue}</Typography>
+                            <Typography variant={"body1"} color={"grey"}>[{getSkillFormat(currentSheet.getSave(stat as UStat))}]</Typography>
+                        </>
                 }
 
             </Box>
-            <Popover
-                open={isPopped}
-                anchorEl={popAnchor}
-                onClose={handleClosePop}
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'center',
-                  }}
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'center',
-                  }}
-            >
-                <Box
-                    sx={{
-                        padding: '24px',
-                        textAlign: "center"
-                    }}
-                >
-                    <Typography>Base {capitalize(stat)} [ {value.value} ]  </Typography>
-                    <Typography>{capitalize(stat)} Save [ {getSkillFormat(statValue*2)} ]</Typography>
-                </Box>
-            </Popover>
+            {/*<Popover*/}
+            {/*    open={isPopped}*/}
+            {/*    anchorEl={popAnchor}*/}
+            {/*    onClose={handleClosePop}*/}
+            {/*    anchorOrigin={{*/}
+            {/*        vertical: 'bottom',*/}
+            {/*        horizontal: 'center',*/}
+            {/*      }}*/}
+            {/*      transformOrigin={{*/}
+            {/*        vertical: 'top',*/}
+            {/*        horizontal: 'center',*/}
+            {/*      }}*/}
+            {/*>*/}
+            {/*    <Box*/}
+            {/*        sx={{*/}
+            {/*            padding: '24px',*/}
+            {/*            textAlign: "center"*/}
+            {/*        }}*/}
+            {/*    >*/}
+            {/*        <Typography>Base {capitalize(stat)} [ {value.value} ]  </Typography>*/}
+            {/*        <Typography>{capitalize(stat)} Save [ {getSkillFormat(currentSheet.getSave(stat as UStat))} ]</Typography>*/}
+            {/*    </Box>*/}
+            {/*</Popover>*/}
         </Box>
-    )
+    ) : <></>
 }
 
 export default StatBox

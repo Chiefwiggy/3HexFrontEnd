@@ -11,7 +11,7 @@ import SpellModifierCard from "../Components/Cards/SpellModifierCard";
 import WeaponBaseCard from "../Components/Cards/WeaponBaseCard";
 import WeaponModCard from "../Components/Cards/WeaponModCard";
 import {default_spell_cards, default_weapon_cards} from "./default_cards";
-import {IArmor} from "./IArmorData";
+import {IArmor, IShield} from "./IArmorData";
 import {IMinionData, IMinionTemplateData} from "./IMinionData";
 import ConditionCard from "../Components/Cards/ConditionCard";
 import {getSkillFormat} from "../Utils/Shorthand";
@@ -81,24 +81,29 @@ abstract class AbstractSheet {
 
     public getEvadePDEF(): number {
         let evadeArmorBonus = this.getArmorPDEF("evade");
+        let evadeShieldBonus = this.getShieldPDEF("evade");
         evadeArmorBonus += this.getAbilityBonuses("pDEF");
         return Math.floor((this.getStat("vitality") + this.getStat("endurance"))*0.5) + evadeArmorBonus;
     }
     public getBlockPDEF(): number {
         let blockArmorBonus = this.getArmorPDEF("blocking");
+        let blockShieldBonus = this.getShieldPDEF("blocking");
         blockArmorBonus += this.getAbilityBonuses("pDEFBlock") + this.getAbilityBonuses("DEFBlock");
+        blockShieldBonus += this.getAbilityBonuses("shieldPDEF") + this.getAbilityBonuses("shieldDEF");
         console.log(this.getEvadePDEF());
-        return this.getEvadePDEF()+4+blockArmorBonus;
+        return this.getEvadePDEF()+4+blockArmorBonus+blockShieldBonus;
     }
     public getEvadeMDEF(): number {
         let evadeArmorBonus = this.getArmorMDEF("evade");
+        let evadeShieldBonus = this.getShieldMDEF("evade");
         evadeArmorBonus += this.getAbilityBonuses("mDEF")
-        return Math.floor((this.getStat("mind") + this.getStat("presence"))*0.5) + evadeArmorBonus;
+        return Math.floor((this.getStat("mind") + this.getStat("presence"))*0.5) + evadeArmorBonus + evadeShieldBonus;
     }
     public getBlockMDEF(): number {
-        let blockArmorBonus = this.getArmorPDEF("blocking");
+        let blockArmorBonus = this.getArmorMDEF("blocking");
+        let blockShieldBonus = this.getShieldMDEF("blocking");
         blockArmorBonus += this.getAbilityBonuses("mDEFBlock") + this.getAbilityBonuses("DEFBlock");
-        return this.getEvadeMDEF()+4+blockArmorBonus;
+        return this.getEvadeMDEF()+4+blockArmorBonus+blockShieldBonus;
     }
 
     private getArmorDodgeBonus() {
@@ -113,6 +118,20 @@ abstract class AbstractSheet {
             return 12;
         }
     }
+
+    private getShieldDodgeBonus() {
+        if (this.currentShield) {
+            switch(this.currentShield.armorClass) {
+                case "light":
+                    return -4;
+                case "standard":
+                    return -8;
+                case "heavy":
+                    return -16
+            }
+        }
+        return 0;
+    }
     public getEvadeDodge(): number {
         let dodgeAgility = (3 + this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("evadeAgilityDodgeScaling"))*this.getStat("agility");
         let dodgeAwareness = (1 + this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("evadeAgilityDodgeScaling"))*this.getStat("awareness");
@@ -123,9 +142,10 @@ abstract class AbstractSheet {
         }
 
         let armorBonus = this.getArmorDodgeBonus();
+        let shieldBonus = this.getShieldDodgeBonus();
 
 
-        return 25 + (dodgeAgility + dodgeAwareness + abilityBonuses + armorBonus - weightPenaltyBonus) + this.getAbilityBonuses("evadeDodge") + this.getAbilityBonuses("dodge");
+        return 25 + (dodgeAgility + dodgeAwareness + abilityBonuses + armorBonus + shieldBonus - weightPenaltyBonus) + this.getAbilityBonuses("evadeDodge") + this.getAbilityBonuses("dodge");
 
 
     }
@@ -135,8 +155,9 @@ abstract class AbstractSheet {
         let weightPenaltyBonus = this.weightPenalty*5;
 
         let armorBonus = this.getArmorDodgeBonus();
+        let shieldBonus = this.getShieldDodgeBonus();
 
-        return 15 + (dodgeAgility + dodgeAwareness + armorBonus - weightPenaltyBonus) + this.getAbilityBonuses("blockDodge") + this.getAbilityBonuses("dodge");
+        return 15 + (dodgeAgility + dodgeAwareness + armorBonus + shieldBonus - weightPenaltyBonus) + this.getAbilityBonuses("blockDodge") + this.getAbilityBonuses("dodge");
     }
 
     public getStepSpeed(): number {
@@ -164,6 +185,26 @@ abstract class AbstractSheet {
         return 0;
     }
 
+    public getShieldPDEF(stance: "evade" | "blocking"): number {
+        if (this.currentShield) {
+            if (stance === "blocking") {
+                return this.currentShield.blockPDEFBonus
+            }
+             return this.currentShield.pDEFBonus;
+        }
+        return 0;
+    }
+
+    public getShieldMDEF(stance: "evade" | "blocking"): number {
+        if (this.currentShield) {
+            if (stance === "blocking") {
+                return this.currentShield.blockMDEFBonus + this.currentShield.mDEFBonus
+            }
+             return this.currentShield.mDEFBonus;
+        }
+        return 0;
+    }
+
 
     public getEvadePDEFBreakdown(): IDefenseBreakdown {
         return {
@@ -180,6 +221,10 @@ abstract class AbstractSheet {
                 {
                     reason: "Armor",
                     value: this.getArmorPDEF("evade")
+                },
+                {
+                    reason: "Shield",
+                    value: this.getShieldPDEF("evade")
                 },
                 {
                     reason: "Other",
@@ -203,6 +248,10 @@ abstract class AbstractSheet {
                 {
                     reason: "Armor",
                     value: this.getArmorMDEF("evade")
+                },
+                {
+                    reason: "Shield",
+                    value: this.getShieldMDEF("evade")
                 },
                 {
                     reason: "Other Bonuses",
@@ -232,6 +281,10 @@ abstract class AbstractSheet {
                     value: this.getArmorPDEF("blocking")
                 },
                 {
+                    reason: "Shield",
+                    value: this.getShieldPDEF("blocking")
+                },
+                {
                     reason: "Other Bonuses",
                     value: this.getAbilityBonuses("pDEF") + this.getAbilityBonuses("pDEFBlock")
                 }
@@ -259,6 +312,10 @@ abstract class AbstractSheet {
                     value: this.getArmorMDEF("blocking")
                 },
                 {
+                    reason: "Shield",
+                    value: this.getShieldMDEF("blocking")
+                },
+                {
                     reason: "Other Bonuses",
                     value: this.getAbilityBonuses("mDEF") + this.getAbilityBonuses("mDEFBlock")
                 }
@@ -284,6 +341,10 @@ abstract class AbstractSheet {
                 {
                     reason: "Armor",
                     value: getSkillFormat(this.getArmorDodgeBonus(),true,true)
+                },
+                {
+                    reason: "Shield",
+                    value: getSkillFormat(this.getShieldDodgeBonus(), true, true)
                 },
                 {
                     reason: "Other Bonuses",
@@ -320,6 +381,10 @@ abstract class AbstractSheet {
                     value: getSkillFormat(this.getArmorDodgeBonus(), true, true)
                 },
                 {
+                    reason: "Shield",
+                    value: getSkillFormat(this.getShieldDodgeBonus(), true, true)
+                },
+                {
                     reason: "Other Bonuses",
                     value: getSkillFormat(this.getAbilityBonuses("dodge") + this.getAbilityBonuses("blockDodge"))
                 }
@@ -349,6 +414,7 @@ abstract class AbstractSheet {
 
     public abstract getLevel(): number
     public currentArmor: IArmor | undefined = undefined;
+    public currentShield: IShield | undefined = undefined;
 
     public static canPingHealth = true;
 

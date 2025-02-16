@@ -16,6 +16,7 @@ import PLC_FatelineData from "./PLC_FatelineData";
 import PLC_ConditionData from "./PLC_ConditionData";
 import PLC_DowntimeData from "./PLC_DowntimeData";
 import PLC_SettingsData from "./PLC_SettingsData";
+import PLC_ShieldData from "./PLC_ShieldData";
 
 interface IPreloadedContentProviderInput {
     children: any
@@ -27,6 +28,7 @@ export interface IPreloadedContentContextInput {
     PathData: PLC_PathData,
     WeaponData: PLC_WeaponData,
     ArmorData: PLC_ArmorData,
+    ShieldData: PLC_ShieldData,
     SourceData: PLC_SourceData,
     ConsumableData: PLC_ConsumableData,
     FatelineData: PLC_FatelineData,
@@ -59,6 +61,8 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
 
     const [SettingsData, setSettingsData] = useState(new PLC_SettingsData());
 
+    const [ShieldData, setShieldData] = useState(new PLC_ShieldData());
+
     const [isLoaded, setIsLoaded] = useState(false);
 
     const API = useAPI();
@@ -75,6 +79,7 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
             await PathData.Initialize(data.path.cards as IPathArray<ICommonCardData>, data.path.abilities as IPathArray<IAbility>);
             await WeaponData.Initialize(data.weaponData);
             await ArmorData.Initialize(data.armorData);
+            await ShieldData.Initialize(data.shieldData)
             await SourceData.Initialize(data.sources);
             await ConsumableData.Initialize(data.consumableData);
             await FatelineData.Initialize(data.fatelineData);
@@ -92,6 +97,7 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
                 AffinityData,
                 WeaponData,
                 ArmorData,
+                ShieldData,
                 SourceData,
                 ConsumableData,
                 FatelineData,

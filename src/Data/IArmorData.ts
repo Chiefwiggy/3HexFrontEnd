@@ -17,6 +17,8 @@ export interface IArmor {
     enchantmentLevel: number
 }
 
+
+
 export interface IBaseArmorData {
     _id: string,
     armorName: string,
@@ -29,11 +31,28 @@ export interface IBaseArmorData {
     blockMDEFBonus: IScalingData<number>
 }
 
+
 export interface IShield {
+    _id: string,
     shieldName: string,
-    shieldClass: UArmorClass,
-    vitalityRequirement: number,
-    additionalPrerequisites: Array<IPrerequisite>
+    armorClass: UArmorClass,
+    skillRequirement: number,
     pDEFBonus: number,
-    mDEFBonus: number
+    mDEFBonus: number,
+    blockPDEFBonus: number,
+    blockMDEFBonus: number,
+    enchantmentLevel: number
+
 }
+
+export interface IBaseShieldData {
+    _id: string,
+    shieldName: string,
+    armorClass: UArmorClass,
+    skillRequirement: IScalingData<number>,
+    pDEFBonus: IScalingData<number>,
+    mDEFBonus: IScalingData<number>,
+    blockPDEFBonus: IScalingData<number>,
+    blockMDEFBonus: IScalingData<number>
+}
+

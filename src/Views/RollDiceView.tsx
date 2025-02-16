@@ -11,9 +11,14 @@ import BoxWithTooltip from "../Components/Generic/BoxWithTooltip";
 interface IRollDiceViewInput {}
 
 const rollTypes = [
+    "2 Dice",
+    "3 Dice",
+    "4 Dice",
     "DISADVANTAGE",
     "STANDARD",
-    "ADVANTAGE"
+    "ADVANTAGE",
+    "8 Dice",
+    "9 Dice"
 ];
 
 const PAIR_TYPES = [
@@ -128,7 +133,7 @@ const RollDiceView: React.FC<IRollDiceViewInput> = () => {
     };
 
     const handleChangeDice = (delta: number) => () => {
-        setCurrentDice((prev) => Math.max(5, Math.min(prev + delta, 7)));
+        setCurrentDice((prev) => Math.max(2, Math.min(prev + delta, 9)));
     };
 
     return currentSheet ? (
@@ -155,9 +160,9 @@ const RollDiceView: React.FC<IRollDiceViewInput> = () => {
                 <AddSubtractPanel
                     handleChange={handleChangeDice}
                     value={currentDice}
-                    isAtCap={currentDice >= 7}
-                    isAtBottom={currentDice <= 5}
-                    textOverride={rollTypes[currentDice - 5]}
+                    isAtCap={currentDice >= 9}
+                    isAtBottom={currentDice <= 2}
+                    textOverride={rollTypes[currentDice - 2]}
                     textWidth={120}
                 />
             </Box>

@@ -74,6 +74,7 @@ export interface ICharacterBaseData {
     currentOffhandWeapon: ICalculatedWeapon | null,
     counterWeapon: ICalculatedWeapon | null,
     currentArmor: IEnchantmentData | null,
+    currentShield: IEnchantmentData | null,
     knownConsumables: Array<IConsumablePlayerData>,
     knownArmor: Array<IEnchantmentData>,
     knownBaseSpells: Array<string>,

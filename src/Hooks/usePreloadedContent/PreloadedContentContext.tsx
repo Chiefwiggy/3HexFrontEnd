@@ -12,6 +12,7 @@ import PLC_FatelineData from "./PLC_FatelineData";
 import PLC_ConditionData from "./PLC_ConditionData";
 import PLC_DowntimeData from "./PLC_DowntimeData";
 import PLC_SettingsData from "./PLC_SettingsData";
+import PLC_ShieldData from "./PLC_ShieldData";
 
 
 
@@ -21,6 +22,7 @@ const PreloadedContentContext =     createContext<IPreloadedContentContextInput>
         AffinityData: new PLC_AffinityData(),
         WeaponData: new PLC_WeaponData(),
         ArmorData: new PLC_ArmorData(),
+        ShieldData: new PLC_ShieldData(),
         SourceData: new PLC_SourceData(),
         ConsumableData: new PLC_ConsumableData(),
         FatelineData: new PLC_FatelineData(),

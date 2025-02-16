@@ -1,5 +1,5 @@
 import {IScaledWeaponBaseData, IScalingData, IWeaponBaseData} from "../Data/ICardData";
-import {IArmor, IBaseArmorData} from "../Data/IArmorData";
+import {IArmor, IBaseArmorData, IBaseShieldData, IShield} from "../Data/IArmorData";
 
 
 export const ConstructFinalWeapon = (baseWeaponData: IWeaponBaseData, enchantment: number): IScaledWeaponBaseData => {
@@ -46,6 +46,21 @@ export const ConstructFinalArmor = (baseArmorData: IBaseArmorData, enchantment: 
         mDEFBonus: ScaleChainNumeric(baseArmorData.mDEFBonus, enchantment),
         blockPDEFBonus: ScaleChainNumeric(baseArmorData.blockPDEFBonus, enchantment),
         blockMDEFBonus: ScaleChainNumeric(baseArmorData.blockMDEFBonus, enchantment),
+        enchantmentLevel: enchantment
+    }
+}
+
+export const ConstructFinalShield = (baseShieldData: IBaseShieldData, enchantment: number): IShield => {
+    return {
+        ...baseShieldData,
+        _id: baseShieldData._id,
+        shieldName: baseShieldData.shieldName,
+        armorClass: baseShieldData.armorClass,
+        skillRequirement: ScaleChainNumeric(baseShieldData.skillRequirement, enchantment),
+        pDEFBonus: ScaleChainNumeric(baseShieldData.pDEFBonus, enchantment),
+        mDEFBonus: ScaleChainNumeric(baseShieldData.mDEFBonus, enchantment),
+        blockPDEFBonus: ScaleChainNumeric(baseShieldData.blockPDEFBonus, enchantment),
+        blockMDEFBonus: ScaleChainNumeric(baseShieldData.blockMDEFBonus, enchantment),
         enchantmentLevel: enchantment
 
     }

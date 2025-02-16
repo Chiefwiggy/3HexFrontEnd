@@ -1,5 +1,5 @@
 import Axios, {AxiosRequestConfig} from "axios";
-import {IBaseArmorData} from "../Data/IArmorData";
+import {IBaseArmorData, IBaseShieldData} from "../Data/IArmorData";
 import {IConditionCard, IWeaponBaseData} from "../Data/ICardData";
 import {ISourceData} from "../Data/ISourceData";
 import {IConsumableTemplate} from "../Data/IConsumable";
@@ -22,6 +22,7 @@ export interface IPreloadedDataStruct {
     },
     weaponData: Array<IWeaponBaseData>,
     armorData: Array<IBaseArmorData>,
+    shieldData: Array<IBaseShieldData>,
     sources: Array<ISourceData>,
     consumableData: Array<IConsumableTemplate>
     fatelineData: Array<IFatelineFullData>,
@@ -48,6 +49,7 @@ class PreloadedConnection {
                 path: {},
                 weaponData: [],
                 armorData: [],
+                shieldData: [],
                 sources: [],
                 consumableData: []
             }
