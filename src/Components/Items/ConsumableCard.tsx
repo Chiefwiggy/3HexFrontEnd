@@ -5,12 +5,8 @@ import useCharacter from "../../Hooks/useCharacter/useCharacter";
 import {ICharacterStats} from "../../Data/ICharacterData";
 import {ExpandMoreOutlined, FlipOutlined, LinearScaleOutlined, WaterDropOutlined} from "@mui/icons-material";
 import {ExpandMore} from "../../Elements/ExpandMore";
-import {romanize} from "../../Utils/Shorthand";
 import SubtypeDamageIcon from '../SmallComponents/SubtypeDamageIcon';
 import {UDamageSubtype} from "../../Data/ICardData";
-import BoxWithTooltip from "../Generic/BoxWithTooltip";
-import { GiSparkSpirit } from 'react-icons/gi';
-import { FaGripfire } from 'react-icons/fa6';
 
 interface IConsumableCardInput {
     consumableTemplate: IConsumableTemplate,
@@ -94,6 +90,9 @@ const ConsumableCard = ({ consumableTemplate, defaultScaled = false }: IConsumab
                         break;
                     case EConsumableCraftingType.TOTEM:
                         newT += currentSheet?.getAbilityBonuses("totemHealth")
+                        break;
+                    case EConsumableCraftingType.GEM:
+                        newT += currentSheet?.getAbilityBonuses("gemPower");
                         break;
                 }
                 newT = Math.floor(newT);

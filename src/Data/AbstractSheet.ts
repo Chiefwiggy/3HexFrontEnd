@@ -164,9 +164,12 @@ abstract class AbstractSheet {
         return 2 + this.getAbilityBonuses("stepSpeed");
     }
 
-    public getArmorPDEF(stance: "evade" | "blocking"): number {
+    public getArmorPDEF(stance: "evade" | "blocking", display=false): number {
         if (this.currentArmor) {
             if (stance === "blocking") {
+                if (display) {
+                    return this.currentArmor.blockPDEFBonus + this.currentArmor.pDEFBonus
+                }
                 return this.currentArmor.blockPDEFBonus
             }
              return this.currentArmor.pDEFBonus;
@@ -175,19 +178,25 @@ abstract class AbstractSheet {
         }
         return 0;
     }
-    public getArmorMDEF(stance: "evade" | "blocking"): number {
+    public getArmorMDEF(stance: "evade" | "blocking", display=false): number {
         if (this.currentArmor) {
             if (stance === "blocking") {
-                return this.currentArmor.blockMDEFBonus + this.currentArmor.mDEFBonus
+                if (display) {
+                    return this.currentArmor.blockMDEFBonus + this.currentArmor.mDEFBonus
+                }
+                return this.currentArmor.blockMDEFBonus 
             }
              return this.currentArmor.mDEFBonus;
         }
         return 0;
     }
 
-    public getShieldPDEF(stance: "evade" | "blocking"): number {
+    public getShieldPDEF(stance: "evade" | "blocking", display=false): number {
         if (this.currentShield) {
             if (stance === "blocking") {
+                if (display) {
+                    return this.currentShield.blockPDEFBonus + this.currentShield.pDEFBonus
+                }
                 return this.currentShield.blockPDEFBonus
             }
              return this.currentShield.pDEFBonus;
@@ -195,9 +204,12 @@ abstract class AbstractSheet {
         return 0;
     }
 
-    public getShieldMDEF(stance: "evade" | "blocking"): number {
+    public getShieldMDEF(stance: "evade" | "blocking",display=false): number {
         if (this.currentShield) {
             if (stance === "blocking") {
+                if (display) {
+                    return this.currentShield.blockMDEFBonus + this.currentShield.mDEFBonus
+                }
                 return this.currentShield.blockMDEFBonus + this.currentShield.mDEFBonus
             }
              return this.currentShield.mDEFBonus;
@@ -220,7 +232,7 @@ abstract class AbstractSheet {
                 },
                 {
                     reason: "Armor",
-                    value: this.getArmorPDEF("evade")
+                    value: this.getArmorPDEF("evade", true)
                 },
                 {
                     reason: "Shield",
@@ -247,7 +259,7 @@ abstract class AbstractSheet {
                 },
                 {
                     reason: "Armor",
-                    value: this.getArmorMDEF("evade")
+                    value: this.getArmorMDEF("evade", true)
                 },
                 {
                     reason: "Shield",
@@ -278,7 +290,7 @@ abstract class AbstractSheet {
                 },
                 {
                     reason: "Armor",
-                    value: this.getArmorPDEF("blocking")
+                    value: this.getArmorPDEF("blocking", true)
                 },
                 {
                     reason: "Shield",
@@ -309,7 +321,7 @@ abstract class AbstractSheet {
                 },
                 {
                     reason: "Armor",
-                    value: this.getArmorMDEF("blocking")
+                    value: this.getArmorMDEF("blocking", true)
                 },
                 {
                     reason: "Shield",

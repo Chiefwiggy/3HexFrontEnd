@@ -48,9 +48,7 @@ class MinionSheet extends AbstractSheet {
         }
         //commander cards
         //final
-        return Math.floor((this.getStat("mind")
- + this.getStat("presence")
-)*0.5) + evadeArmorBonus;
+        return Math.floor((this.getStat("mind") + this.getStat("presence"))*0.5) + evadeArmorBonus;
     }
     public getBlockMDEF(): number {
         let blockArmorBonus = 0;
