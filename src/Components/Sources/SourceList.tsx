@@ -1,6 +1,7 @@
 import React from 'react';
 import {Box, List, ListItem, Typography} from "@mui/material";
 import {ISourceData} from "../../Data/ISourceData";
+import useUser from "../../Hooks/useUser/useUser";
 
 interface ISourceListInput {
     sourceData: ISourceData,
@@ -10,12 +11,16 @@ interface ISourceListInput {
 
 const SourceList = ({sourceData, handleSetIndex, currentIndex}: ISourceListInput) => {
 
+    const {userPermissions} = useUser();
+
 
     return (
         <Box>
             <List dense>
                 {
-                    sourceData.sourceTiers.map((tier, index) => {
+                    sourceData.sourceTiers.filter((elem) => {
+                        return !elem.isSecret || userPermissions.includes("admin") || userPermissions.includes(`spell_${elem.cardData._id}_src_${sourceData._id}`)
+                    }).map((tier, index) => {
                         return (
                             <ListItem
                                 key={tier.cardData._id}

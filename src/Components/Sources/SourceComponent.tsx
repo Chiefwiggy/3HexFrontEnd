@@ -121,10 +121,11 @@ const SourceComponent = ({sourceData}: ISourceComponentInput) => {
                             }}
                         >
                             {
-                                sourceData.sourceTiers[currentIndex].cardType == "base" ?
+
+                                (sourceData.sourceTiers[currentIndex].cardType == "base" ?
                                     <SpellBaseCard cardData={sourceData.sourceTiers[currentIndex].cardData as ISpellBaseCardData} sendBack={()=>{}} canFavorite={false} isExpanded={true} canToggleExpand={false} showAdd={false}/>
                                     :
-                                    <SpellModifierCard cardData={sourceData.sourceTiers[currentIndex].cardData as ISpellModifierCardData} sendBack={() => {}} canFavorite={false}  isExpanded={true} canToggleExpand={false} showAdd={false}/>
+                                    <SpellModifierCard cardData={sourceData.sourceTiers[currentIndex].cardData as ISpellModifierCardData} sendBack={() => {}} canFavorite={false}  isExpanded={true} canToggleExpand={false} showAdd={false}/>)
                             }
 
                         </Box>

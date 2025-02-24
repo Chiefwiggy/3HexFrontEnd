@@ -223,6 +223,6 @@ export interface IConditionCard extends IWeaponCommonData, ISpellModifierCardDat
 
 
 
-export type UPrerequisiteType = "attribute" | "affinity" | "class" | "path" | "nodefault" | "race" | "fateline" | "secret"
+export type UPrerequisiteType = "attribute" | "affinity" | "class" | "path" | "nodefault" | "race" | "fateline" | "secret" | "subrace"
 export type UCharacterStat = "might" | "agility" | "skill" | "awareness" | "vitality" | "knowledge" | "mind" | "presence" | "authority" | "endurance"
 export type UAffinity = `${keyof IAffinities}`

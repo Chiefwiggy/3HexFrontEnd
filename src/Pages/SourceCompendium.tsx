@@ -28,6 +28,7 @@ const SourceCompendium = ({}: ISourceCompendiumInput) => {
                 <meta charSet={"utf-8"} />
                 <title>Sources - Ursura</title>
             </Helmet>
+
             {SourceData.GetSourceDataForUser(userPermissions, "all").map((data) => {
                 return (
                     <Box key={data._id}>

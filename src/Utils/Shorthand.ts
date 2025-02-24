@@ -99,7 +99,7 @@ export const getArmorAffinityRequirement = (armorClass: UArmorClass, enchantment
         case "standard":
             return `• Infantry ${enchantmentLevelMod}`
         case "heavy":
-            return `• Guardian ${enchantmentLevelMod}`
+            return `• Guardian ${enchantmentLevelMod > 0 ? enchantmentLevel : 1}`
     }
 }
 
@@ -120,19 +120,20 @@ export const getWeaponAffinityRequirement = (weaponClass: UWeaponClass, enchantm
     }
 
     if (damageType == "magical") {
-        retVal += `Focus ${enchantmentLevelMod}`
+        retVal += `Arcanist ${enchantmentLevelMod}`
     } else {
-        switch (weaponClass) {
-            case "light":
-                retVal += `Deft ${enchantmentLevelMod}`
-                break;
-            case "standard":
-                retVal += `Infantry ${enchantmentLevelMod}`
-                break;
-            case "heavy":
-                retVal += `Guardian ${enchantmentLevelMod}`
-                break;
-        }
+        retVal += `Warrior ${enchantmentLevelMod}`
+        // switch (weaponClass) {
+        //     case "light":
+        //         retVal += `Deft ${enchantmentLevelMod}`
+        //         break;
+        //     case "standard":
+        //         retVal += `Infantry ${enchantmentLevelMod}`
+        //         break;
+        //     case "heavy":
+        //         retVal += `Guardian ${enchantmentLevelMod}`
+        //         break;
+        // }
     }
 
     if (hasIronGrasp) {
