@@ -52,6 +52,32 @@ const ConditionTooltip = ({
         }
     }
 
+    const getConditionBorderColor = () => {
+        if (conditionData.conditionType == "buff") {
+            switch(conditionData.conditionTier) {
+                case 1:
+                    return "#3d6a8e";
+                case 2:
+                    return "#30ca1f";
+                case 3:
+                    return "#c5b413";
+                default:
+                    return "black"
+            }
+        } else {
+            switch(conditionData.conditionTier) {
+                case 1:
+                    return "#813c34";
+                case 2:
+                    return "#da2e3f";
+                case 3:
+                    return "#8b25bf";
+                default:
+                    return "black"
+            }
+        }
+    }
+
 
     return (
         <Tooltip
@@ -62,7 +88,7 @@ const ConditionTooltip = ({
                     <Typography variant={"body2"}>{GetPopulatedDescription()}</Typography>
                     <hr />
                     {
-                        <Typography sx={{fontSize: "1em"}} variant={"body2"}>{GetCountdownDescription()}</Typography>
+                        <Typography sx={{fontSize: "1.1em"}} variant={"body2"} color={"lightgrey"}>{GetCountdownDescription()}</Typography>
                     }
                 </Box>
             }
@@ -70,6 +96,8 @@ const ConditionTooltip = ({
                 tooltip: {
                   sx: {
                     bgcolor: '#232323',
+                      border: `4px double ${getConditionBorderColor()}`,
+                      padding: "14px",
                     '& .MuiTooltip-arrow': {
                       color: '#121212',
                     },

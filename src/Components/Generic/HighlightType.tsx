@@ -3,6 +3,8 @@ import {capitalize, Typography} from "@mui/material";
 import usePreloadedContent from "../../Hooks/usePreloadedContent/usePreloadedContent";
 import BoxWithTooltip from "./BoxWithTooltip";
 import ConditionTooltip from "../Conditions/ConditionTooltip";
+import SubtypeDamageIcon from "../SmallComponents/SubtypeDamageIcon";
+import {GiFlyingDagger} from "react-icons/gi";
 
 interface IHighlightTypeInput {
     text: string;
@@ -22,6 +24,11 @@ const HighlightType = ({ text, xval }: IHighlightTypeInput) => {
             const condData = ConditionData.GetConditionTagById(tagParts[1]);
             if (condData.conditionId == "unknown") return <Typography sx={{ fontSize: "0.8rem" }} color="error" component={"span"}>{capitalize(tagParts[1])}</Typography>;
             return <ConditionTooltip placement={"top"} conditionData={condData} >{condData.conditionName}</ConditionTooltip>
+        } else if (tagParts[0] == "damageType") {
+            return <SubtypeDamageIcon damageSubtype={tagParts[1]} component={"span"} boxSx={{
+                display: "inline",
+                padding: 0,
+            }} size={14}/>
         }
 
         return <>{tag}</>

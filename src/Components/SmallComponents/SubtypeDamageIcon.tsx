@@ -24,34 +24,41 @@ interface ISubtypeDamageIconInput {
     damageSubtype: UDamageSubtype,
     placement?: "top" | "bottom" | "left" | "right",
     boxSx?: SxProps<typeof Box>,
-    component?: React.ElementType
+    component?: React.ElementType,
+    size?: number
 }
 
-const ElementIconProps = {
-    size: 21
-}
 
-const ElementIconMap: { [key: string]: JSX.Element } = {
-    // force: <GiWindHole  color={"#c8ff90"}   {...ElementIconProps}/>,
-    pierce: <GiFlyingDagger color={"#ff5757"}  {...ElementIconProps}/>,
-    slash: <GiAxeSwing color={"silver"}  {...ElementIconProps}/>,
-    kinetic: <GiPunchBlast color={"brown"}  {...ElementIconProps}/>,
-    burn: <FaGripfire color={"#ff9d09"} {...ElementIconProps}/>,
-    frost: <FaSnowflake color={"lightblue"}  {...ElementIconProps}/>,
-    shock: <GiLightningBranches color={"#f6e410"} {...ElementIconProps}/>,
-    corrosive: <GiDustCloud color={"#165c08"} {...ElementIconProps}/>,
-    sensory: <GiBrainstorm color={"#fb628c"}  {...ElementIconProps}/>,
-    holy: <GiAngelOutfit color={"goldenrod"}  {...ElementIconProps}/>,
-    curse: <GiCursedStar color={"#ff1a00"}  {...ElementIconProps}/>,
-    soul: <GiSparkSpirit color={"#0083e3"} {...ElementIconProps} />,
-    none: <></>
+
+const getElementIcon = (damageSubtype: string, size: number) => {
+    const ElementIconProps = {
+        size: size
+    }
+    const ElementIconMap: { [key: string]: JSX.Element} = {
+        // force: <GiWindHole  color={"#c8ff90"}   {...ElementIconProps}/>,
+        pierce: <GiFlyingDagger color={"#ff5757"}  {...ElementIconProps}/>,
+        slash: <GiAxeSwing color={"silver"}  {...ElementIconProps}/>,
+        kinetic: <GiPunchBlast color={"brown"}  {...ElementIconProps}/>,
+        burn: <FaGripfire color={"#ff9d09"} {...ElementIconProps}/>,
+        frost: <FaSnowflake color={"lightblue"}  {...ElementIconProps}/>,
+        shock: <GiLightningBranches color={"#f6e410"} {...ElementIconProps}/>,
+        corrosive: <GiDustCloud color={"#165c08"} {...ElementIconProps}/>,
+        sensory: <GiBrainstorm color={"#fb628c"}  {...ElementIconProps}/>,
+        holy: <GiAngelOutfit color={"goldenrod"}  {...ElementIconProps}/>,
+        curse: <GiCursedStar color={"#ff1a00"}  {...ElementIconProps}/>,
+        soul: <GiSparkSpirit color={"#0083e3"} {...ElementIconProps} />,
+        none: <></>
+    }
+
+    return ElementIconMap[damageSubtype] || <>({damageSubtype})</>
 }
 
 const SubtypeDamageIcon = ({
     damageSubtype,
     placement = "right",
     boxSx = {},
-    component = "div"
+    component = "div",
+    size = 21
 }: ISubtypeDamageIconInput) => {
     return (
         <BoxWithTooltip
@@ -66,7 +73,7 @@ const SubtypeDamageIcon = ({
             component={component} // Pass component to BoxWithTooltip
             title={capitalize(damageSubtype) + " Damage"}
         >
-            {ElementIconMap[damageSubtype] || <>({damageSubtype})</>}
+            {getElementIcon(damageSubtype, size)}
         </BoxWithTooltip>
     );
 };
