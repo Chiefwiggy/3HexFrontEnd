@@ -26,9 +26,10 @@ const CardEffect = ({effectData, finalPower}: ICardEffectInput) => {
     const getFinalText = () => {
         if (effectData.powerX && finalPower) {
             const xpower = Math.floor(finalPower / effectData.powerX);
-            return <HighlightType text={effectData.text} number={xpower} />
+            return <HighlightType text={effectData.text} xval={xpower} />
+        } else {
+            return <HighlightType text={effectData.text} xval={undefined} />
         }
-        return <Typography sx={{fontSize: "0.8rem"}}>{effectData.text}</Typography>
     }
 
     const setIconData = () => {

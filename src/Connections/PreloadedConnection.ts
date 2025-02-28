@@ -1,6 +1,6 @@
 import Axios, {AxiosRequestConfig} from "axios";
 import {IBaseArmorData, IBaseShieldData} from "../Data/IArmorData";
-import {IConditionCard, IWeaponBaseData} from "../Data/ICardData";
+import {IConditionCard, IConditionTag, IWeaponBaseData} from "../Data/ICardData";
 import {ISourceData} from "../Data/ISourceData";
 import {IConsumableTemplate} from "../Data/IConsumable";
 import {IFatelineFullData} from "../Data/IFatelineData";
@@ -27,7 +27,8 @@ export interface IPreloadedDataStruct {
     consumableData: Array<IConsumableTemplate>
     fatelineData: Array<IFatelineFullData>,
     conditionCards: Array<IConditionCard>,
-    downtimeActivitiesData: Array<IDowntimeActivity>
+    downtimeActivitiesData: Array<IDowntimeActivity>,
+    conditionTags: Array<IConditionTag>
 }
 class PreloadedConnection {
     private _preloadedURL: string;

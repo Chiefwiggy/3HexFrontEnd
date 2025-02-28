@@ -83,7 +83,7 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
             await SourceData.Initialize(data.sources);
             await ConsumableData.Initialize(data.consumableData);
             await FatelineData.Initialize(data.fatelineData);
-            await ConditionData.Initialize(data.conditionCards);
+            await ConditionData.Initialize(data.conditionCards, data.conditionTags);
             await DowntimeData.Initialize(data.downtimeActivitiesData)
             setIsLoaded(true);
         })();

@@ -1,31 +1,51 @@
-import React from 'react'
-import {Typography} from "@mui/material";
+import React from 'react';
+import {capitalize, Typography} from "@mui/material";
+import usePreloadedContent from "../../Hooks/usePreloadedContent/usePreloadedContent";
+import BoxWithTooltip from "./BoxWithTooltip";
+import ConditionTooltip from "../Conditions/ConditionTooltip";
 
 interface IHighlightTypeInput {
-    text: string,
-    number: number
+    text: string;
+    xval: number | undefined
 }
-const HighlightType = ({
-    text,
-    number
-}: IHighlightTypeInput) => {
-    const parts = text.split(/(X)/);
 
-  return (
-    <Typography
-        sx={{fontSize: "0.8rem"}}
-    >
-      {parts.map((part, index) =>
-        part === 'X' ? (
-          <Typography key={index} component="span" color="primary">
-            {number}*
-          </Typography>
-        ) : (
-          part
-        )
-      )}
-    </Typography>
-  );
+const HighlightType = ({ text, xval }: IHighlightTypeInput) => {
+    const parts = text.split(/(X|\[\[.*?\]\])/g);
+
+    const {ConditionData} = usePreloadedContent();
+
+    const GetTooltipText = (tag: string): React.ReactElement => {
+
+        const newTag = tag.replace(/^\[\[(.*)]]$/, '$1');
+        const tagParts = newTag.split(".");
+        if (tagParts[0] == "condition") {
+            const condData = ConditionData.GetConditionTagById(tagParts[1]);
+            if (condData.conditionId == "unknown") return <Typography sx={{ fontSize: "0.8rem" }} color="error" component={"span"}>{capitalize(tagParts[1])}</Typography>;
+            return <ConditionTooltip placement={"top"} conditionData={condData} >{condData.conditionName}</ConditionTooltip>
+        }
+
+        return <>{tag}</>
+    }
+
+    return (
+        <Typography sx={{ fontSize: "0.8rem" }}>
+            {parts.map((part, index) =>
+                (part === 'X' && xval != undefined) ? (
+                    <Typography key={index} component="span" color="primary">
+                        {xval}*
+                    </Typography>
+                ) : part.startsWith("[[") && part.endsWith("]]") ? (
+                    <Typography key={index} component="span" color="secondary" sx={{ fontSize: "0.8rem" }}>
+                        {
+                            GetTooltipText(part)
+                        }
+                    </Typography>
+                ) : (
+                    part
+                )
+            )}
+        </Typography>
+    );
 };
 
-export default HighlightType
+export default HighlightType;

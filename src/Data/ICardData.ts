@@ -221,6 +221,18 @@ export interface IConditionCard extends IWeaponCommonData, ISpellModifierCardDat
     }
 }
 
+export interface IConditionTag {
+    conditionId: string,
+    conditionName: string,
+    conditionType: string
+    conditionCountdownType: "uses" | "decay10" | "decay1" | "rounds" | "onWounding" | "perFight" | "singleUse" | "untilSaved"
+    description: Array<string>,
+    xVals: Array<{
+        basePower: number
+    }>,
+    conditionTier: number
+}
+
 
 
 export type UPrerequisiteType = "attribute" | "affinity" | "class" | "path" | "nodefault" | "race" | "fateline" | "secret" | "subrace"
