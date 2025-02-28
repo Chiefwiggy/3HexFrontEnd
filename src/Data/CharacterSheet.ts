@@ -315,7 +315,7 @@ class CharacterSheet extends AbstractSheet {
         const pts = this.data.skillPoints[skillName.toLowerCase() as keyof ISkillPointObject] as number;
 
         return {
-            value: pts > total*2 ? total * 3 : total + pts,
+            value: total + pts,
             isExpert: this.expertiseDiceValues[skillName] > 0 ?? false
         }
     }
