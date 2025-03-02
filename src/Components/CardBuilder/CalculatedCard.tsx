@@ -3,7 +3,7 @@ import {Box, capitalize, Card, CardContent, CardHeader, Divider, Typography} fro
 import AbstractCardCalculator from "../../Data/Card Calculators/AbstractCardCalculator";
 import CardEffect from "../Cards/CardEffect";
 import {ICommonCardData, IEffectData} from "../../Data/ICardData";
-import {FlareOutlined, LooksOutlined, SportsMmaOutlined} from "@mui/icons-material";
+import {FlareOutlined, LooksOutlined, SportsMmaOutlined, WaterDropOutlined} from "@mui/icons-material";
 import NumericIcon from "../Cards/NumericIcon";
 import CritNumberBox from "../SmallComponents/CritNumberBox";
 import {createRangeString} from "../../Utils/helper_functions";
@@ -15,7 +15,7 @@ import MinionSheet from "../../Data/MinionSheet";
 import CharacterSheet from "../../Data/CharacterSheet";
 import SubtypeDamageIcon from "../SmallComponents/SubtypeDamageIcon";
 import BoxWithTooltip from "../Generic/BoxWithTooltip";
-import {FaHeartbeat} from "react-icons/fa";
+import {FaHeartbeat, FaRunning} from "react-icons/fa";
 import {GiArcheryTarget, GiBorderedShield, GiBrokenShield, GiFist, GiRun} from "react-icons/gi";
 import {FaRegClock} from "react-icons/fa6";
 
@@ -139,23 +139,52 @@ const CalculatedCard = ({
                                     title={`Max Health`}
                                 >
                                     <Typography sx={{fontSize: "16px", paddingRight: "4px"}}>{cardCalculator.getSummonData().maxHealth}</Typography><FaHeartbeat />
+
                                 </BoxWithTooltip>
+                                <BoxWithTooltip
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: "center"
+                                    }}
+                                    placement={"top"}
+                                    title={`Max Health`}
+                                >
+                                    <Typography sx={{fontSize: "16px", paddingRight: "4px"}}>{cardCalculator.getIconValue("tetherCost")}</Typography><WaterDropOutlined />
+
+                                </BoxWithTooltip>
+
+
+
 
                             </Box>
                             <Divider sx={{flexGrow: 1}} />
                             <Box
                                 sx={{
                                     display: "grid",
-                                    gridTemplateColumns: "1fr 1fr 1fr"
+                                    gridTemplateColumns: "repeat(3, 1fr)"
                                 }}
                             >
-                                <NumericIcon val={cardCalculator.getFinalPower()}  icon={GiFist} postText={getDamageShorthand(cardCalculator.getDamageType())} postIcon={<SubtypeDamageIcon damageSubtype={cardCalculator.getDamageSubtype()} />}/>
-                                <NumericIcon fontSize={"16px"} align="center" val={`${getSkillFormat(parseInt(cardCalculator.getIconValue("spellSet")))}`} icon={GiArcheryTarget} title={`To Hit`} />
-                                <NumericIcon fontSize={"16px"} align="right" val={` ${cardCalculator.getIconValue("duration")}`} icon={FaRegClock} title={`Duration (rounds)`} iconColor={(parseInt(cardCalculator.getIconValue("duration")) > 0) ? "white" : "red"} textColor={(parseInt(cardCalculator.getIconValue("duration")) > 0) ? "white" : "red"}/>
+                                <Box sx={{gridColumn: "span 2"}}>
+                                    <NumericIcon val={cardCalculator.getFinalPower()}  icon={GiFist} postText={getDamageShorthand(cardCalculator.getDamageType())} postIcon={<SubtypeDamageIcon damageSubtype={cardCalculator.getDamageSubtype()}  />}/>
+                                </Box>
+                                <NumericIcon fontSize={"16px"} align="right" val={`+${cardCalculator.getIconValue("spellSet")}`} icon={GiArcheryTarget} title={`To Hit`} />
+                                {/*<>{cardCalculator.getIconValue("spellSet")}</>*/}
 
-                                <NumericIcon fontSize={"16px"} val={cardCalculator.getSummonData().pDEF} icon={GiBorderedShield} title={`pDEF`} />
+                                <NumericIcon fontSize={"16px"} align="left" val={cardCalculator.getSummonData().pDEF} icon={GiBorderedShield} title={`pDEF`} />
                                 <NumericIcon fontSize={"16px"} align="center" val={cardCalculator.getSummonData().mDEF} icon={GiBrokenShield} title={`mDEF`} />
-                                <NumericIcon fontSize={"16px"} align="right" val={cardCalculator.getSummonData().movement} icon={GiRun} title={`Movement`}/>
+                                <NumericIcon fontSize={"16px"} align="right" val={getSkillFormat(cardCalculator.getSummonData().dodge,false)} icon={FaRunning} title={`Dodge`} />
+
+                                <NumericIcon fontSize={"16px"} align="left" val={cardCalculator.getSummonData().movement} icon={GiRun} title={`Movement`}/>
+                                <NumericIcon fontSize={"16px"} align="center" val={` ${cardCalculator.getIconValue("duration")}`} icon={FaRegClock} title={`Duration (rounds)`} iconColor={(parseInt(cardCalculator.getIconValue("duration")) > 0) ? "white" : "red"} textColor={(parseInt(cardCalculator.getIconValue("duration")) > 0) ? "white" : "red"}/>
+                                <NumericIcon
+                                    align={"right"}
+                                    fontSize={"16px"}
+                                    val={`${createRangeString(cardCalculator.getFinalRange())}`}
+                                    icon={LooksOutlined}
+                                />
+
+
+
                             </Box>
 
                         </Box>

@@ -3,9 +3,9 @@ import {Box, Divider, Typography} from "@mui/material";
 import {ISpellTargetCardData} from "../../Data/ICardData";
 import GenericCardLayout, {ICardSendbackData} from "../../Layouts/GenericCardLayout";
 import StatShieldWithSecondary from "../SmallComponents/StatShieldWithSecondary";
-import {FaHeartbeat} from "react-icons/fa";
+import {FaHeartbeat, FaRunning} from "react-icons/fa";
 import BoxWithTooltip from "../Generic/BoxWithTooltip";
-import {BackHandOutlined} from "@mui/icons-material";
+import {BackHandOutlined, LooksOutlined, WaterDropOutlined} from "@mui/icons-material";
 import NumericIcon from "./NumericIcon";
 import {
     GiArcheryTarget,
@@ -18,6 +18,7 @@ import {
 } from "react-icons/gi";
 import {getSkillFormat} from "../../Utils/Shorthand";
 import {FaRegClock} from "react-icons/fa6";
+import {createRangeString} from "../../Utils/helper_functions";
 
 interface ISpellTargetSummonCardInput {
     cardData: ISpellTargetCardData
@@ -69,7 +70,17 @@ const SpellTargetSummonCard = ({
                         placement={"top"}
                         title={`Summon Health = ${cardData.summonData.maxHealth.scalingStat} + ${cardData.summonData.maxHealth.baseValue}`}
                     >
-                        <Typography sx={{fontSize: "16px", paddingRight: "4px"}}>+{cardData.summonData.maxHealth.baseValue}</Typography><FaHeartbeat />
+                        <Typography sx={{fontSize: "16px", paddingRight: "4px"}}>{cardData.summonData.maxHealth.baseValue < 0 ? "" : "+"}{cardData.summonData.maxHealth.baseValue}</Typography><FaHeartbeat />
+                    </BoxWithTooltip>
+                    <BoxWithTooltip
+                        sx={{
+                            display: 'flex',
+                            alignItems: "center"
+                        }}
+                        placement={"top"}
+                        title={`Tether Cost`}
+                    >
+                        <Typography sx={{fontSize: "16px", paddingRight: "4px"}}>{(cardData.tetherCostMod?.modifier ?? 0) < 0 ? "" : "+"}{cardData.tetherCostMod?.modifier ?? 0}</Typography><WaterDropOutlined />
                     </BoxWithTooltip>
 
                 </Box>
@@ -81,14 +92,29 @@ const SpellTargetSummonCard = ({
                     }}
                 >
 
+                    <Box sx={{gridColumn: "span 2"}}>
+                        <NumericIcon fontSize={"16px"} val={`${(cardData.powerMod?.modifier ?? 0) < 0 ? "" : "+"}${cardData.powerMod?.modifier ?? 0}`} icon={GiFist} title={`damage = ${cardData.powerMod?.modifier ?? 0 } + spell's Power (potency is halved for ALL summoning spells)`} />
+                    </Box>
 
-                    <NumericIcon fontSize={"16px"} val={`+${cardData.powerMod?.modifier ?? 0}`} icon={GiFist} title={`damage = ${cardData.powerMod?.modifier ?? 0 }`} />
-                    <NumericIcon fontSize={"16px"} align="center" val={`${getSkillFormat(cardData.spellSetMod?.modifier ?? 0)}`} icon={GiArcheryTarget} title={`To Hit = ${getSkillFormat(cardData.spellSetMod?.modifier ?? 0)}`} />
-                    <NumericIcon fontSize={"16px"} align="right" val={` +${cardData.durationMod?.modifier ?? 0}`} icon={FaRegClock} title={`duration += ${cardData.durationMod?.modifier ?? 0}`}/>
 
-                    <NumericIcon fontSize={"16px"} val={cardData.summonData.pDEF.baseValue} icon={GiBorderedShield} title={`pDEF = ${cardData.summonData.pDEF.baseValue }`} />
-                    <NumericIcon fontSize={"16px"} align="center" val={cardData.summonData.mDEF.baseValue} icon={GiBrokenShield} title={`mDEF = ${cardData.summonData.mDEF.baseValue }`} />
-                    <NumericIcon fontSize={"16px"} align="right" val={cardData.summonData.movement.baseValue} icon={GiRun} title={`Base Movement = ${cardData.summonData.movement.baseValue }`}/>
+                    <NumericIcon fontSize={"16px"} align="right" val={`${getSkillFormat(cardData.spellSetMod?.modifier ?? 0)}`} icon={GiArcheryTarget} title={`To Hit = ${getSkillFormat(cardData.spellSetMod?.modifier ?? 0)}`} />
+
+
+
+
+                    <NumericIcon fontSize={"16px"} val={cardData.summonData.pDEF.baseValue} icon={GiBorderedShield} title={`pDEF = ${cardData.summonData.pDEF.baseValue } + 10 (if spell deals Physical damage)`} />
+                    <NumericIcon fontSize={"16px"} align="center" val={cardData.summonData.mDEF.baseValue} icon={GiBrokenShield} title={`mDEF = ${cardData.summonData.mDEF.baseValue } + 10 (if spell deals Magical damage)`} />
+                    <NumericIcon fontSize={"16px"} align="right" val={`${cardData.summonData.dodge.baseValue < 0 ? "" : "+"}${getSkillFormat(cardData.summonData.dodge.baseValue, false)}`} icon={FaRunning} title={`dodge = ${cardData.summonData.dodge.baseValue }`} />
+
+                    <NumericIcon fontSize={"16px"} align="left" val={cardData.summonData.movement.baseValue} icon={GiRun} title={`Base Movement = ${cardData.summonData.movement.baseValue }`}/>
+                    <NumericIcon fontSize={"16px"} align="center" val={` ${(cardData.durationMod?.modifier ?? 0) < 0 ? "" : "+"}${cardData.durationMod?.modifier ?? 0}`} icon={FaRegClock} title={`duration += ${cardData.durationMod?.modifier ?? 0}`}/>
+                    <NumericIcon
+                        align={"right"}
+                        fontSize={"16px"}
+                        val={`${createRangeString(cardData.baseRange)}`}
+                        icon={LooksOutlined}
+                    />
+
                 </Box>
 
             </Box>

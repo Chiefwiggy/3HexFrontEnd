@@ -31,6 +31,7 @@ export interface ITotalSpellStats {
         pDEF: number,
         mDEF: number,
         movement: number,
+        dodge: number,
         maxHealth: number,
         simpleName: string
     }
@@ -55,10 +56,35 @@ export interface ITotalWeaponStats {
 
 }
 
+const GetSummonScaler = (scalingTerm: string, char: AbstractSheet, power: number, spellSet: number, tetherCost: number) => {
+    const splitTerm = scalingTerm.split(".");
+
+    switch(splitTerm[0]) {
+        case "bar":
+            if (splitTerm[1] === "maxTether") {
+                return char.getMaxTether()
+            } else if (splitTerm[1] === "maxStamina") {
+                return char.getMaxStamina()
+            } else {
+                return char.getMaxHealth()
+            }
+        case "spell":
+            if (splitTerm[1] === "power") {
+                return power
+            } else if (splitTerm[1] == "spellSet") {
+                return spellSet;
+            } else {
+                return tetherCost
+            }
+        default:
+            return char.getMaxTether()
+    }
+}
+
 export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: ISpellTargetCardData, rest: Array<ISpellModifierCardData|null>, char: AbstractSheet): ITotalSpellStats => {
     try {
         let finalBasePower = StatChain(spellBase.basePower, [spellBase.basePowerMod, spellTarget.basePowerMod, ...rest.map(e => e?.basePowerMod)]);
-        let finalPotencyPower = Math.floor(StatChain(spellBase.potency, [spellBase.potencyMod, spellTarget.potencyMod, ...rest.map(e => e?.potencyMod)], false) * char.getStat("might"));
+        let finalPotencyPower = Math.floor(StatChain(spellBase.potency, [spellBase.potencyMod, spellTarget.potencyMod, ...rest.map(e => e?.potencyMod)], false) * char.getStat("might")) * (spellTarget.summonData ? 0.5 : 1);
         const finalPower = StatChain(finalBasePower + finalPotencyPower, [spellBase.powerMod, spellTarget.powerMod, ...rest.map(e => e?.powerMod)]);
         const minRange = StatChain(spellTarget.baseRange.min, [spellBase.minRangeMod, spellTarget.minRangeMod, ...rest.map(e => e?.minRangeMod)]);
         const maxRange = StatChain(spellTarget.baseRange.max, [spellBase.maxRangeMod, spellTarget.maxRangeMod, ...rest.map(e => e?.maxRangeMod)]);
@@ -84,29 +110,33 @@ export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: IS
 
         const finalCost = StatChain(spellBase.energyCost, [spellBase.castTimeMod, spellTarget.castTimeMod, ...rest.map(e => e?.castTimeMod)])
 
+        const tetherCost = StatChain(spellBase.tetherCost, [spellBase.tetherCostMod, spellTarget.tetherCostMod, ...rest.map(e => e?.tetherCostMod)])
+
         let summonPDEF = 0;
         let summonMDEF = 0;
         let summonMovement = 0;
         let summonHealth = 0;
         let summonBasicName = ""
+        let summonDodge = 0;
 
         if (spellTarget.summonData) {
-            summonPDEF = spellTarget.summonData.pDEF.baseValue
+            summonPDEF = spellTarget.summonData.pDEF.baseValue + (spellBase.damageType == "physical" ? 10 : 0)
                 // + spellTarget.summonData.pDEF.potency * 0)
-            summonMDEF = spellTarget.summonData.mDEF.baseValue
+            summonMDEF = spellTarget.summonData.mDEF.baseValue + (spellBase.damageType == "magical" ? 10 : 0)
             summonMovement = spellTarget.summonData.movement.baseValue
-            summonHealth = spellTarget.summonData.maxHealth.baseValue + char.getMaxTether();
+            summonHealth = spellTarget.summonData.maxHealth.baseValue + (GetSummonScaler(spellTarget.summonData.maxHealth.scalingStat, char, finalPower, finalBaseSet, tetherCost) * (spellTarget.summonData.maxHealth.potency ?? 1));
             summonBasicName = spellTarget.summonData.simpleName
+            summonDodge = spellTarget.summonData.dodge.baseValue + char.getBlockDodge()
         }
 
 
 
         return {
-            tetherCost: StatChain(spellBase.tetherCost, [spellBase.tetherCostMod, spellTarget.tetherCostMod, ...rest.map(e => e?.tetherCostMod)]),
+            tetherCost: tetherCost,
             moneyCost: StatChain(0, [spellBase.moneyCostMod, spellTarget.moneyCostMod, ...rest.map(e => e?.moneyCostMod)]),
             castTime: finalCost,
             totalPower: finalPower,
-            duration: StatChain(spellBase.duration, [spellBase.durationMod, spellTarget.durationMod, ...rest.map(e => e?.durationMod)]),
+            duration: StatChain(spellBase.duration, [spellBase.durationMod, ...rest.map(e => e?.durationMod)]),
             range: {
                 min: minRangeFinal,
                 max: maxRangeFinal,
@@ -118,7 +148,8 @@ export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: IS
                 mDEF: summonMDEF,
                 movement: summonMovement,
                 maxHealth: summonHealth,
-                simpleName: summonBasicName
+                simpleName: summonBasicName,
+                dodge: summonDodge
             }
         }
     } catch (e) {
@@ -139,7 +170,8 @@ export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: IS
                 mDEF: 0,
                 movement: 0,
                 maxHealth: 0,
-                simpleName: ""
+                simpleName: "",
+                dodge: 0
             }
         }
     }

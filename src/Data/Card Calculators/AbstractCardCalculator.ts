@@ -48,13 +48,15 @@ abstract class AbstractCardCalculator {
         mDEF: number,
         movement: number,
         maxHealth: number,
+        dodge: number,
         simpleName: string
     } = {
         pDEF: 0,
         mDEF: 0,
         movement: 0,
         maxHealth: 0,
-        simpleName: ""
+        simpleName: "",
+        dodge: 0
     }
 
     protected currentPower;

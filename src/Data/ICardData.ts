@@ -37,6 +37,7 @@ export interface ISpellTargetCardData extends ISpellModifierCardData {
         maxHealth: ITargetSummonScaling,
         pDEF: ITargetSummonScaling,
         mDEF: ITargetSummonScaling,
+        dodge: ITargetSummonScaling,
         movement: ITargetSummonScaling,
         simpleName: string,
         summonSize: string
