@@ -5,21 +5,22 @@ import ConditionCard from "../../Components/Cards/ConditionCard";
 import SpellBaseCard from "../../Components/Cards/SpellBaseCard";
 import SpellTargetCard from "../../Components/Cards/SpellTargetCard";
 import SpellModifierCard from "../../Components/Cards/SpellModifierCard";
+import SpellTargetSummonCard from "../../Components/Cards/SpellTargetSummonCard";
 
 export const DEFAULT_WEAPON_CALC_TYPES: Array<ICardBuilderType> = [
     {
-        name: "weapon.base",
+        name: ["weapon.base"],
         display: "base",
-        component: WeaponBaseCard,
+        component: [WeaponBaseCard],
         required: true,
         counterRequired: true,
         counterInvalid: false,
         count: 1
     },
     {
-        name: "weapon.form",
+        name: ["weapon.form"],
         display: "form",
-        component: WeaponModCard,
+        component: [WeaponModCard],
         required: true,
         counterRequired: true,
         counterInvalid: false,
@@ -27,27 +28,27 @@ export const DEFAULT_WEAPON_CALC_TYPES: Array<ICardBuilderType> = [
     },
 
     {
-        name: "weapon.skill",
+        name: ["weapon.skill"],
         display: "skill",
-        component: WeaponModCard,
+        component: [WeaponModCard],
         required: false,
         counterRequired: false,
         counterInvalid: true,
         count: 1
     },
     {
-        name: "condition.buff",
+        name: ["condition.buff"],
         display: "buff",
-        component: ConditionCard,
+        component: [ConditionCard],
         required: false,
         counterRequired: false,
         counterInvalid: true,
         count: 1
     },
     {
-        name: "condition.debuff",
+        name: ["condition.debuff"],
         display: "debuff",
-        component: ConditionCard,
+        component: [ConditionCard],
         required: false,
         counterRequired: false,
         counterInvalid: true,
@@ -57,46 +58,46 @@ export const DEFAULT_WEAPON_CALC_TYPES: Array<ICardBuilderType> = [
 
 export const DEFAULT_SPELL_CALC_TYPES: Array<ICardBuilderType> = [
     {
-        name: "spell.base",
+        name: ["spell.base"],
         display: "base",
-        component: SpellBaseCard,
+        component: [SpellBaseCard],
         required: true,
         count: 1
     },
     {
-        name: "spell.target",
+        name: ["spell.target", "spell.summon"],
         display: "target",
-        component: SpellTargetCard,
+        component: [SpellTargetCard, SpellTargetSummonCard],
         required: true,
         count: 1
     },
     {
-        name: "spell.skill",
+        name: ["spell.skill"],
         display: "skill",
-        component: SpellModifierCard,
+        component: [SpellModifierCard],
         required: true,
         count: 1
     },
     {
-        name: "spell.edict",
+        name: ["spell.edict"],
         display: "edict",
-        component: SpellModifierCard,
+        component: [SpellModifierCard],
         required: false,
         count: 1
     },
     {
-        name: "condition.buff",
+        name: ["condition.buff"],
         display: "buff",
-        component: ConditionCard,
+        component: [ConditionCard],
         required: false,
         counterRequired: false,
         counterInvalid: true,
         count: 1
     },
     {
-        name: "condition.debuff",
+        name: ["condition.debuff"],
         display: "debuff",
-        component: ConditionCard,
+        component: [ConditionCard],
         required: false,
         counterRequired: false,
         counterInvalid: true,
@@ -106,23 +107,23 @@ export const DEFAULT_SPELL_CALC_TYPES: Array<ICardBuilderType> = [
 
 export const MINION_SPELL_CALC_TYPES: Array<ICardBuilderType> = [
     {
-        name: "spell.base",
+        name: ["spell.base"],
         display: "base",
-        component: SpellBaseCard,
+        component: [SpellBaseCard],
         required: true,
         count: 1
     },
     {
-        name: "spell.target",
+        name: ["spell.target"],
         display: "target",
-        component: SpellTargetCard,
+        component: [SpellTargetCard],
         required: true,
         count: 1
     },
     {
-        name: "spell.skill",
+        name: ["spell.skill"],
         display: "skill",
-        component: SpellModifierCard,
+        component: [SpellModifierCard],
         required: true,
         count: 1
     }

@@ -85,6 +85,7 @@ class SpellCardCalculator extends AbstractCardCalculator {
             this.updateVal("spellSet", getSkillFormat(finalSpellData.spellSet, false))
             this.updateVal("saveType", (getStatShorthand(((this.getCardOfType("spell.base") as ISpellBaseCardData).saveType) as UStat | "none" | "luck")).toUpperCase());
             this.updateVal("duration", finalSpellData.duration.toString());
+            this.summonData = finalSpellData.summon;
         }
 
 

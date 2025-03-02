@@ -53,7 +53,7 @@ const CardBuilderGridList = ({
             <Grid container spacing={2} justifyContent={"center"}>
                 {
                     cardList.slice(page*rowsPerPage,rowsPerPage+(rowsPerPage*page)).map((card: ICommonCardData) => {
-                        const typeIndex = cardTypes.findIndex((type) => card.cardSubtype === type.name.split(".")[1]);
+                        const typeIndex = cardTypes.findIndex((type) => type.name.map(e => e.split(".")[1]).includes(card.cardSubtype));
                         const type = cardTypes[typeIndex];
                         return (
                             <Grid item key={card.cardName}>

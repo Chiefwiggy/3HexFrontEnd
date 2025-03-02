@@ -19,6 +19,7 @@ const _AssignValueToSubtype = (subtype: string): number => {
         case "base":
             return 1;
         case "target":
+        case "summon":
         case "form":
             return 2;
         case "modifier":

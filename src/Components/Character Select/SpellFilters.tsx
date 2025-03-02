@@ -45,6 +45,7 @@ const SpellFilters = ({
                 </IconButton>
                 <Button variant={currentFilter == "base" ? "outlined" : "text"} onClick={handleFilterButton("base")}>Bases</Button>
                 <Button variant={currentFilter == "target" ? "outlined" : "text"} onClick={handleFilterButton("target")}>Targets</Button>
+                <Button variant={currentFilter == "target" ? "outlined" : "text"} onClick={handleFilterButton("summon")}>Summons</Button>
                 <Button variant={currentFilter == "skill" ? "outlined" : "text"} onClick={handleFilterButton("skill")}>Skills</Button>
                 <Button variant={currentFilter == "edict" ? "outlined" : "text"} onClick={handleFilterButton("edict")}>Edicts</Button>
                 <Button variant={"contained"} onClick={createSpellCallback()} disabled={!canCreateSpell}>Create Spell</Button>

@@ -15,7 +15,11 @@ const CardBuilderGridItem = ({
 }: ICardBuilderGridItemInput) => {
 
     if (cardType) {
-        const SpellCard = cardType.component
+        const SpellCard = cardType.component[cardType.name.findIndex(elem => elem.split(".")[1] == cardData.cardSubtype) ?? 0]
+        // const SpellCard = cardType.component[0]
+        // console.log(cardType.name.findIndex(elem => elem.split(".")[1] == cardData.cardSubtype))
+        // console.log(cardType)
+
 
         return (
             <Box>

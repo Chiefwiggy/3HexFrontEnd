@@ -43,6 +43,19 @@ abstract class AbstractCardCalculator {
     protected currentIcons: Map<string, INumericIconData>;
     protected finalDamageType: UDamageType;
     protected finalDamageSubtype: UDamageSubtype;
+    protected summonData: {
+        pDEF: number,
+        mDEF: number,
+        movement: number,
+        maxHealth: number,
+        simpleName: string
+    } = {
+        pDEF: 0,
+        mDEF: 0,
+        movement: 0,
+        maxHealth: 0,
+        simpleName: ""
+    }
 
     protected currentPower;
     protected constructor(cardTypes: Array<ICardBuilderType>, initialIcons: Map<string,INumericIconData>) {
@@ -65,7 +78,11 @@ abstract class AbstractCardCalculator {
     }
 
     protected getCardOfType(inputType: string) {
-        return this.cards[this.cardTypes.findIndex((type) => type.name == inputType)];
+        return this.cards[this.cardTypes.findIndex((type) => type.name.includes(inputType))];
+    }
+
+    public isSummon() {
+        return this.getCardOfType("spell.summon")?.cardSubtype == "summon" ?? false
     }
 
     public sendCurrentCards(cards: Array<ICommonCardData|null>, char: AbstractSheet) {
@@ -115,6 +132,10 @@ abstract class AbstractCardCalculator {
         return this.currentPower;
     }
 
+    public getSummonData() {
+        return this.summonData;
+    }
+
     public abstract getDamageType(): UDamageType
     public abstract getDamageSubtype(): UDamageSubtype
 
@@ -134,6 +155,15 @@ abstract class AbstractCardCalculator {
             }
         });
         return ret;
+    }
+
+    public getIconValue(key: string) {
+        const icons = this.getFinalIcons();
+        const iconFound = icons.find(e => e.key == key)
+        if (iconFound) {
+            return iconFound.val;
+        }
+        return "N/A"
     }
     public getEffectList(): Array<IEffectData> {
         const normalEffects =this.cards.reduce((pv: Array<IEffectData>, cv) => {

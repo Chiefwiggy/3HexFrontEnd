@@ -14,6 +14,7 @@ import {ICardSendbackData} from "../../Layouts/GenericCardLayout";
 import WeaponBaseCard from "./WeaponBaseCard";
 import WeaponModCard from "./WeaponModCard";
 import {ConstructFinalWeapon} from "../../Utils/ConstructFinalWeapon";
+import SpellTargetSummonCard from './SpellTargetSummonCard';
 
 
 interface ICardListInput {
@@ -52,6 +53,14 @@ const CardList = ({
                                 return (
                                     <Grid item key={val.cardName}>
                                         <SpellTargetCard cardData={val as ISpellTargetCardData} sendBack={onClickButton}
+                                                         isExpanded={isExpanded} canToggleExpand={canToggleExpand}
+                                                         isAdd={isAdd} canFavorite={canFavorite}/>
+                                    </Grid>
+                                )
+                            case 'summon':
+                                return (
+                                    <Grid item key={val.cardName}>
+                                        <SpellTargetSummonCard cardData={val as ISpellTargetCardData} sendBack={onClickButton}
                                                          isExpanded={isExpanded} canToggleExpand={canToggleExpand}
                                                          isAdd={isAdd} canFavorite={canFavorite}/>
                                     </Grid>

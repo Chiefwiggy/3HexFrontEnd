@@ -44,10 +44,10 @@ const SpellBaseCard = ({
                     justifyContent: "space-around"
                 }}
             >
-                <NumericIcon val={cardData.tetherCost} icon={WaterDropOutlined} align={"center"}/>
-                <NumericIcon val={getSkillFormat(cardData.baseSpellSet, false)} icon={AutoFixOffOutlined} align={"center"}/>
-                <NumericIcon val={getStatShorthand(cardData.saveType as UStat | "none" | "luck").toUpperCase()} icon={SaveAltOutlined} align={"center"}/>
-                <NumericIcon val={cardData.energyCost} icon={ElectricBoltOutlined} align={"center"}/>
+                <NumericIcon val={cardData.tetherCost} icon={WaterDropOutlined} align={"center"} title={"Tether Cost"}/>
+                <NumericIcon val={getSkillFormat(cardData.baseSpellSet, false)} icon={AutoFixOffOutlined} align={"center"} title={"Base Spell Set"}/>
+                <NumericIcon val={getStatShorthand(cardData.saveType as UStat | "none" | "luck").toUpperCase()} icon={SaveAltOutlined} align={"center"} title={"Save Type"}/>
+                <NumericIcon val={cardData.energyCost} icon={ElectricBoltOutlined} align={"center"} title={"Action Cost"}/>
             </Box>
             <br />
             <Box
@@ -57,9 +57,9 @@ const SpellBaseCard = ({
                 }}
             >
                 <Box>
-                    <NumericIcon val={cardData.basePower} icon={SportsMmaOutlined} postText={getDamageShorthand(cardData.damageType as UDamageType)} postIcon={<SubtypeDamageIcon damageSubtype={cardData.damageSubtype}/>} />
-                    <NumericIcon val={"x" + cardData.potency} icon={FitnessCenterOutlined} />
-                    <NumericIcon val={cardData.duration} icon={AccessTimeOutlined} />
+                    <NumericIcon val={cardData.basePower} title="Base Power" icon={SportsMmaOutlined} postText={getDamageShorthand(cardData.damageType as UDamageType)} postIcon={<SubtypeDamageIcon damageSubtype={cardData.damageSubtype}/>} />
+                    <NumericIcon val={"x" + cardData.potency} icon={FitnessCenterOutlined} title={"Potency. Multiply your Might by this value and add that to the spell's Power."} />
+                    <NumericIcon val={cardData.duration} icon={AccessTimeOutlined} title={"Duration"}/>
                 </Box>
                 <Box>
                     <Typography>Environment Bonus</Typography>

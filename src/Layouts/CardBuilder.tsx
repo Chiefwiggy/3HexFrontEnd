@@ -19,9 +19,9 @@ import AbstractSheet from "../Data/AbstractSheet";
 
 
 export interface ICardBuilderType {
-    name: string,
+    name: Array<string>,
     display: string,
-    component: React.FC<any>,
+    component: Array<React.FC<any>>,
     required?: boolean,
     counterRequired?: boolean,
     counterInvalid?: boolean,
@@ -138,7 +138,7 @@ const CardBuilder = ({
                     return true;
                 })
             }
-            const conditions: Array<IConditionCard> = cardTypes[0].name.split(".")[0] === "weapon" ?  ConditionData.GetAttackConditions() : ConditionData.GetSpellConditions()
+            const conditions: Array<IConditionCard> = cardTypes[0].name[0].split(".")[0] === "weapon" ?  ConditionData.GetAttackConditions() : ConditionData.GetSpellConditions()
             setAllCards([...cards, ...conditions].sort(SortCardList));
         })();
     }, []);
@@ -150,7 +150,7 @@ const CardBuilder = ({
             setCurrentCards([]);
         } else {
             setCurrentCards(allCards.filter((card) => {
-                return card.cardSubtype == cardTypes[currentFilter].name.split(".")[1];
+                return card.cardSubtype == cardTypes[currentFilter].name[0].split(".")[1];
             }))
         }
     }, [allCards, currentFilter]);
@@ -214,16 +214,18 @@ const CardBuilder = ({
                     (() => {
                         let runningIndex = 0; // Initialize running index
                         return cardTypes.map((data) => {
+                            console.log(cardTypes)
                             return Array.from({ length: data.count }).map((_, i) => {
                                 const currentIndex = runningIndex++; // Use and increment the running index inline
+                                console.log(data)
                                 return (
                                     <CardSkeleton
                                         placeholderText={data.display.toUpperCase()}
-                                        CardElement={data.component}
+                                        CardElement={data.component[data.name.findIndex(e => e.split('.')[1] === cardData[currentIndex]?.cardSubtype ?? 0)]}
                                         cardData={cardData[currentIndex]} // Access the correct index
                                         sendBack={sendSetCard(currentIndex)} // Use the correct index
-                                        type={data.name}
-                                        key={`${data.name}-${i}`}
+                                        type={`${data.name[0]}.${cardData[currentIndex]?.cardSubtype}`}
+                                        key={`${data.name[0]}-${i}`}
                                         index={i} // Pass the correct overall index
                                     />
                                 );
@@ -262,7 +264,7 @@ const CardBuilder = ({
                             <Button
                                 variant={currentFilter == index ? "contained" : "outlined"}
                                 onClick={handleFilterCards(index)}
-                                key={type.name}
+                                key={type.name[0]}
                             >
                                 {type.display.toUpperCase()}
                             </Button>

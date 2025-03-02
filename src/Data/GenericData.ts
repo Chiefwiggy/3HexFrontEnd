@@ -3,7 +3,7 @@ import {UPrerequisiteType} from "./ICardData";
 export interface IDataModifiers {
     modifier?: number,
     multiplier?: number,
-    override?: number
+    override?: number,
 }
 
 export interface IModifiable {

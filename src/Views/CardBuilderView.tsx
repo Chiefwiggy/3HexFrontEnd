@@ -15,7 +15,6 @@ import CumulativeSpellCard from "../Components/Cards/CumulativeSpellCard";
 import CardList from "../Components/Cards/CardList";
 import {ICardSendbackData} from "../Layouts/GenericCardLayout";
 import CardSkeleton from "../Components/Cards/CardSkeleton";
-import SpellFilters from "../Components/Character Select/SpellFilters";
 import useAPI from "../Hooks/useAPI/useAPI";
 import {default_spell_cards} from "../Data/default_cards";
 import {SortCardList} from "../Utils/CardSorting";

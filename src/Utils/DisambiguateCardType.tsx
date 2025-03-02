@@ -14,6 +14,7 @@ import React from "react";
 import {ConstructFinalWeapon} from "./ConstructFinalWeapon";
 import {Box} from "@mui/material";
 import ConditionCard from "../Components/Cards/ConditionCard";
+import SpellTargetSummonCard from "../Components/Cards/SpellTargetSummonCard";
 
 
 export const disambiguateCard = (allCards: Array<ICommonCardData>, compendiumProps: Object) => {
@@ -31,6 +32,15 @@ export const disambiguateCard = (allCards: Array<ICommonCardData>, compendiumPro
             "target"
         :
             return (<Box key = {card.cardName}><SpellTargetCard cardData = {card as ISpellTargetCardData}
+            sendBack = {()=>{} }
+            {...
+                compendiumProps
+            }
+            /></Box>)
+        case
+            "summon"
+        :
+            return (<Box key = {card.cardName}><SpellTargetSummonCard cardData = {card as ISpellTargetCardData}
             sendBack = {()=>{} }
             {...
                 compendiumProps

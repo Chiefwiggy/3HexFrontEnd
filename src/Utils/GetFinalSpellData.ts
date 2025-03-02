@@ -26,7 +26,14 @@ export interface ITotalSpellStats {
         max: number,
         isMelee: boolean
     },
-    spellSet: number
+    spellSet: number,
+    summon: {
+        pDEF: number,
+        mDEF: number,
+        movement: number,
+        maxHealth: number,
+        simpleName: string
+    }
 }
 
 export interface ITotalWeaponStats {
@@ -77,6 +84,23 @@ export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: IS
 
         const finalCost = StatChain(spellBase.energyCost, [spellBase.castTimeMod, spellTarget.castTimeMod, ...rest.map(e => e?.castTimeMod)])
 
+        let summonPDEF = 0;
+        let summonMDEF = 0;
+        let summonMovement = 0;
+        let summonHealth = 0;
+        let summonBasicName = ""
+
+        if (spellTarget.summonData) {
+            summonPDEF = spellTarget.summonData.pDEF.baseValue
+                // + spellTarget.summonData.pDEF.potency * 0)
+            summonMDEF = spellTarget.summonData.mDEF.baseValue
+            summonMovement = spellTarget.summonData.movement.baseValue
+            summonHealth = spellTarget.summonData.maxHealth.baseValue + char.getMaxTether();
+            summonBasicName = spellTarget.summonData.simpleName
+        }
+
+
+
         return {
             tetherCost: StatChain(spellBase.tetherCost, [spellBase.tetherCostMod, spellTarget.tetherCostMod, ...rest.map(e => e?.tetherCostMod)]),
             moneyCost: StatChain(0, [spellBase.moneyCostMod, spellTarget.moneyCostMod, ...rest.map(e => e?.moneyCostMod)]),
@@ -88,7 +112,14 @@ export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: IS
                 max: maxRangeFinal,
                 isMelee: isMelee ? true : isRanged ? false : spellTarget.baseRange.isMelee
             },
-            spellSet: finalSet
+            spellSet: finalSet,
+            summon: {
+                pDEF: summonPDEF,
+                mDEF: summonMDEF,
+                movement: summonMovement,
+                maxHealth: summonHealth,
+                simpleName: summonBasicName
+            }
         }
     } catch (e) {
         return {
@@ -102,7 +133,14 @@ export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: IS
                 max: 0,
                 isMelee: true
             },
-            spellSet: 0
+            spellSet: 0,
+            summon: {
+                pDEF: 0,
+                mDEF: 0,
+                movement: 0,
+                maxHealth: 0,
+                simpleName: ""
+            }
         }
     }
 

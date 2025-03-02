@@ -15,6 +15,8 @@ export const CardGetColor = (type: string) => {
                 return '#b5beff'
             case 'spell.target':
                 return '#710EB0';
+            case 'spell.summon':
+                return '#c888f4';
             case 'spell.skill':
                 return '#f13060';
             case 'spell.edict':

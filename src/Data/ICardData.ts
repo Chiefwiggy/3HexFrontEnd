@@ -2,7 +2,7 @@ import {IDataModifiers, IPrerequisite} from "./GenericData";
 import {IAffinities} from "./ICharacterData";
 import {UArcanotype} from "./ISourceData";
 
-export type USpellTypes = "base" | "target" | "skill" | "edict" | null;
+export type USpellTypes = "base" | "target" | "skill" | "edict" | "summon" | null;
 export type UWeaponClass = "light" | "standard" | "heavy"
 export type UWeaponType = "axe" | "blade" | "bomb" | "bow" | "club" | "polearm" | "wand" | "spear" | "unarmed"
 export type UCritDie = "-" | "?" | "1" | "2" | "3" | "4" | "5" | "6"
@@ -21,12 +21,26 @@ export interface ISpellBaseCardData extends ISpellModifierCardData {
     isFromTemporarySource: boolean
 }
 
+export interface ITargetSummonScaling {
+    potency: number,
+    scalingStat: string,
+    baseValue: number
+}
+
 export interface ISpellTargetCardData extends ISpellModifierCardData {
     baseRange: {
         min: number,
         max: number,
         isMelee: boolean
     },
+    summonData?: {
+        maxHealth: ITargetSummonScaling,
+        pDEF: ITargetSummonScaling,
+        mDEF: ITargetSummonScaling,
+        movement: ITargetSummonScaling,
+        simpleName: string,
+        summonSize: string
+    }
 }
 
 
