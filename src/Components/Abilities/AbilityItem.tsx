@@ -4,6 +4,7 @@ import {IAbility} from "../../Data/IAbilities";
 import {ExpandMoreOutlined} from "@mui/icons-material";
 import {ExpandMore} from "../../Elements/ExpandMore";
 import {GetPrerequisiteString} from "../../Utils/PrerequisiteString";
+import HighlightType from "../Generic/HighlightType";
 
 interface IAbilityItemInput {
     abilityData: IAbility,
@@ -70,11 +71,12 @@ const AbilityItem = ({abilityData, showPrerequisites = false}: IAbilityItemInput
                     >
                         {
                             abilityData.description.map((desc, index) => {
-                                return <Typography variant={"body2"} sx={{
-                                    fontSize: "14px",
-                                    textAlign: "left",
-                                    paddingBottom: "2px"
-                                }} key={index}>{desc}</Typography>
+                                // return <Typography variant={"body2"} sx={{
+                                //     fontSize: "14px",
+                                //     textAlign: "left",
+                                //     paddingBottom: "2px"
+                                // }} key={index}>{desc}</Typography>
+                                return <HighlightType text={desc} xval={0} />
                             })
                         }
                     </Paper>

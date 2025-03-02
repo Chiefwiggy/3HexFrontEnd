@@ -10,6 +10,7 @@ import {
 } from "@mui/icons-material";
 import {getTrainingLevel} from "../../Utils/Shorthand";
 import {ExpandMore} from "../../Elements/ExpandMore";
+import HighlightType from "../Generic/HighlightType";
 
 interface IDowntimeCardInput {
     downtimeData: IDowntimeFullScaledData
@@ -87,7 +88,7 @@ const DowntimeCard = ({
                 <Paper elevation={2} sx={{
                     padding: "6px"
                 }}>
-                    <Typography variant={"body2"} textAlign={"center"}>{downtimeData.description}</Typography>
+                    <HighlightType text={downtimeData.description} xval={0} />
                 </Paper>
 
             </Collapse>
