@@ -84,7 +84,7 @@ const GetSummonScaler = (scalingTerm: string, char: AbstractSheet, power: number
 export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: ISpellTargetCardData, rest: Array<ISpellModifierCardData|null>, char: AbstractSheet): ITotalSpellStats => {
     try {
         let finalBasePower = StatChain(spellBase.basePower, [spellBase.basePowerMod, spellTarget.basePowerMod, ...rest.map(e => e?.basePowerMod)]);
-        let finalPotencyPower = Math.floor(StatChain(spellBase.potency, [spellBase.potencyMod, spellTarget.potencyMod, ...rest.map(e => e?.potencyMod)], false) * char.getStat("might")) * (spellTarget.summonData ? 0.5 : 1);
+        let finalPotencyPower = Math.floor(StatChain(spellBase.potency, [spellBase.potencyMod, spellTarget.potencyMod, {"multiplier": spellTarget.summonData?.simpleName ? 0.5 : 1}, ...rest.map(e => e?.potencyMod)], false) * char.getStat("might"))
         const finalPower = StatChain(finalBasePower + finalPotencyPower, [spellBase.powerMod, spellTarget.powerMod, ...rest.map(e => e?.powerMod)]);
         const minRange = StatChain(spellTarget.baseRange.min, [spellBase.minRangeMod, spellTarget.minRangeMod, ...rest.map(e => e?.minRangeMod)]);
         const maxRange = StatChain(spellTarget.baseRange.max, [spellBase.maxRangeMod, spellTarget.maxRangeMod, ...rest.map(e => e?.maxRangeMod)]);
