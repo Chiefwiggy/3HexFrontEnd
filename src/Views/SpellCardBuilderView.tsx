@@ -61,8 +61,8 @@ const SpellCardBuilderView = ({closeSelf}: ISpellCardBuilderView) => {
     const handleEquip = async(sentCards: Array<ICommonCardData|null>) => {
         const cards: Array<ICommonCardData> = sentCards.filter(c => c !== null && c !== undefined) as ICommonCardData[];
         const base = cards.find(e => e.cardSubtype == "base");
-        const target = cards.find(e => e.cardSubtype == "target");
-        const rest = cards.filter(e => e.cardSubtype != "base" && e.cardSubtype != "target");
+        const target = cards.find(e => e.cardSubtype == "target" || e.cardSubtype == "summon") ;
+        const rest = cards.filter(e => e.cardSubtype != "base" && (e.cardSubtype != "target" && e.cardSubtype != "summon"));
         if (base && target && rest && currentSheet) {
             const spellCalcData: ICalculatedSpell = {
                 spellBaseId: base._id,

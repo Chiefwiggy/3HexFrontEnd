@@ -67,8 +67,6 @@ interface IAllCardsData {
 
 
 class CharacterSheet extends AbstractSheet {
-
-
     public data: ICharacterBaseData
     private dataBackup: ICharacterBaseData;
     public currentAttack: any
