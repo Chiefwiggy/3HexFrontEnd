@@ -70,8 +70,8 @@ class SpellCardCalculator extends AbstractCardCalculator {
         if (this.cards.length > 0) {
             const finalSpellData = GetFinalSpellData(
                 this.getCardOfType("spell.base") as ISpellBaseCardData,
-                this.getCardOfType("spell.target") as ISpellTargetCardData,
-                this.cards.filter(e => e?.cardSubtype != "target" && e?.cardSubtype != "base"),
+                this.getCardOfType("spell.target") as ISpellTargetCardData ?? this.getCardOfType("spell.summon") as ISpellTargetCardData,
+                this.cards.filter(e => (e?.cardSubtype != "target" && e?.cardSubtype != "summon") && e?.cardSubtype != "base"),
                 char
             )
             if (finalSpellData.moneyCost > 0) {

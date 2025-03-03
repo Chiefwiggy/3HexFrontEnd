@@ -136,7 +136,7 @@ export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: IS
             moneyCost: StatChain(0, [spellBase.moneyCostMod, spellTarget.moneyCostMod, ...rest.map(e => e?.moneyCostMod)]),
             castTime: finalCost,
             totalPower: finalPower,
-            duration: StatChain(spellBase.duration, [spellBase.durationMod, ...rest.map(e => e?.durationMod)]),
+            duration: StatChain(spellBase.duration, [spellBase.durationMod, spellTarget.durationMod, ...rest.map(e => e?.durationMod)]),
             range: {
                 min: minRangeFinal,
                 max: maxRangeFinal,
