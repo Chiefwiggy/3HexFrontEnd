@@ -16,10 +16,11 @@ import CritNumberBox from "../SmallComponents/CritNumberBox";
 import {createRangeString} from "../../Utils/helper_functions";
 import {ConstructFinalWeapon} from "../../Utils/ConstructFinalWeapon";
 import SubtypeDamageIcon from "../SmallComponents/SubtypeDamageIcon";
+import {IEnchantmentData} from "../../Data/ICharacterData";
 
 interface IWeaponBaseCardInput {
     cardData: IWeaponBaseData,
-    enchantmentData: number,
+    enchantmentData: IEnchantmentData,
     sendBack: (cardData: ICardSendbackData) => void,
     isExpanded?: boolean,
     canToggleExpand?: boolean,
@@ -40,10 +41,10 @@ const WeaponBaseCard = ({
     showPrerequisites=false
 }: IWeaponBaseCardInput) => {
 
-    const [constructedData, setConstructedData] = useState<IScaledWeaponBaseData>(ConstructFinalWeapon(cardData, enchantmentData));
+    const [constructedData, setConstructedData] = useState<IScaledWeaponBaseData>(ConstructFinalWeapon(cardData, enchantmentData ?? {enchantmentLevel: 0, baseId: ""}));
 
     useEffect(() => {
-        setConstructedData(ConstructFinalWeapon(cardData, cardData.tempEnchantValue ?? 0));
+        setConstructedData(ConstructFinalWeapon(cardData, cardData.tempEnchantValue ?? {enchantmentLevel: 0, baseId: ""}));
     }, [cardData, enchantmentData]);
 
     const handleCustomSendBack = (cd: ICardSendbackData) => {
@@ -56,13 +57,14 @@ const WeaponBaseCard = ({
 
     return cardData.specialCrit ? (
         <GenericCardLayout cardData={constructedData} sendBack={handleCustomSendBack} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} showAdd={showAdd} canFavorite={canFavorite} overrideSubtitle={cardData.weaponType.toUpperCase() + " • " + cardData.weaponClass.toUpperCase()} showPrerequisites={showPrerequisites}
-                           titleExtra={constructedData.enchantmentLevel ? ("+" + constructedData.enchantmentLevel) : ""}>
+                           titleExtra={`+${constructedData.enchantmentData.enchantmentLevel} ${constructedData.enchantmentData.efficientUse ? "2H" : ""}${(constructedData.enchantmentData?.improvements ?? 0) > 0 ? `-S${(constructedData.enchantmentData.improvements ?? 0) > 1 ? "+" : ""}` : ""}`}>
             <Box
                 sx={{
                     display: "grid",
                     gridTemplateColumns: "1fr 1fr"
                 }}
             >
+
 
                 <NumericIcon val={constructedData.basePower} icon={SportsMmaOutlined}  postText={getDamageShorthand(cardData.damageType as UDamageType)}
                     postIcon={<SubtypeDamageIcon damageSubtype={cardData.damageSubtype}/>}

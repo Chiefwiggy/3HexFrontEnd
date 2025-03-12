@@ -1,31 +1,34 @@
 import {IScaledWeaponBaseData, IScalingData, IWeaponBaseData} from "../Data/ICardData";
 import {IArmor, IBaseArmorData, IBaseShieldData, IShield} from "../Data/IArmorData";
+import {IEnchantmentData} from "../Data/ICharacterData";
 
 
-export const ConstructFinalWeapon = (baseWeaponData: IWeaponBaseData, enchantment: number): IScaledWeaponBaseData => {
+export const ConstructFinalWeapon = (baseWeaponData: IWeaponBaseData, enchantmentData: IEnchantmentData): IScaledWeaponBaseData => {
+
+    const improvements = enchantmentData.enchantmentLevel + (enchantmentData?.improvements ?? 0) + (enchantmentData?.efficientUse ? 1 : 0);
 
     return {
         ...baseWeaponData,
         _id: baseWeaponData._id,
-        baseCrit: ScaleChainNumeric(baseWeaponData.baseCrit, enchantment),
-        baseHit: ScaleChainNumeric(baseWeaponData.baseHit, enchantment),
-        basePower: ScaleChainNumeric(baseWeaponData.basePower, enchantment),
-        baseRange: {isMelee: baseWeaponData.baseRange.isMelee, max: ScaleChainNumeric(baseWeaponData.baseRange.max, enchantment), min: ScaleChainNumeric(baseWeaponData.baseRange.min, enchantment)},
-        canThrow: ScaleChainNonNumeric(baseWeaponData.canThrow, enchantment),
+        baseCrit: ScaleChainNumeric(baseWeaponData.baseCrit, improvements),
+        baseHit: ScaleChainNumeric(baseWeaponData.baseHit, improvements),
+        basePower: ScaleChainNumeric(baseWeaponData.basePower, improvements),
+        baseRange: {isMelee: baseWeaponData.baseRange.isMelee, max: ScaleChainNumeric(baseWeaponData.baseRange.max, improvements), min: ScaleChainNumeric(baseWeaponData.baseRange.min, improvements)},
+        canThrow: ScaleChainNonNumeric(baseWeaponData.canThrow, improvements),
         cardName: baseWeaponData.cardName,
         cardSubtype: baseWeaponData.cardSubtype,
         cardType: baseWeaponData.cardType,
         damageSubtype: baseWeaponData.damageSubtype,
         damageType: baseWeaponData.damageType,
         effects: baseWeaponData.effects,
-        enchantmentLevel: enchantment,
-        potency: ScaleChainNumeric(baseWeaponData.potency, enchantment, false),
+        enchantmentData: enchantmentData,
+        potency: ScaleChainNumeric(baseWeaponData.potency, improvements, false),
         prerequisites: baseWeaponData.prerequisites,
-        skillRequirement: ScaleChainNumeric(baseWeaponData.skillRequirement, enchantment),
-        specialCrit: ScaleChainNonNumeric(baseWeaponData.specialCrit, enchantment),
-        staminaCost: ScaleChainNumeric(baseWeaponData.staminaCost, enchantment),
-        tetherCost: ScaleChainNumeric(baseWeaponData.tetherCost, enchantment),
-        thrownRange: {isMelee: baseWeaponData.thrownRange.isMelee, max: ScaleChainNumeric(baseWeaponData.thrownRange.max, enchantment), min: ScaleChainNumeric(baseWeaponData.thrownRange.min, enchantment)},
+        skillRequirement: ScaleChainNumeric(baseWeaponData.skillRequirement, improvements),
+        specialCrit: ScaleChainNonNumeric(baseWeaponData.specialCrit, improvements),
+        staminaCost: ScaleChainNumeric(baseWeaponData.staminaCost, improvements),
+        tetherCost: ScaleChainNumeric(baseWeaponData.tetherCost, improvements),
+        thrownRange: {isMelee: baseWeaponData.thrownRange.isMelee, max: ScaleChainNumeric(baseWeaponData.thrownRange.max, improvements), min: ScaleChainNumeric(baseWeaponData.thrownRange.min, improvements)},
         weaponClass: baseWeaponData.weaponClass,
         weaponTags: baseWeaponData.weaponTags,
         weaponType: baseWeaponData.weaponType,

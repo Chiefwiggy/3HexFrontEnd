@@ -18,6 +18,7 @@ import {getMaxArmorEnchant} from "../../Utils/ArmorCalc";
 import ArmorElement from "../Armor/ArmorElement";
 import {IWeaponBaseData} from "../../Data/ICardData";
 import {IEnchantmentData} from "../../Data/ICharacterData";
+import WeaponEnchantmentCard_New from "./WeaponEnchantmentCard_New";
 
 interface IEquipWeaponsWidgetInput {
     currentWeaponMetadata: Array<IEnchantmentData>,
@@ -68,12 +69,14 @@ const EquipWeaponsWidget = ({
         setWeaponData(enchantmentData);
     }
 
-    const handleChangeEnchantment = (delta: number, id: string) => {
+    const handleChangeEnchantment = (delta: number, twoHanded: boolean, sharpened: boolean, id: string) => {
         const newWeaponsArray = currentWeaponMetadata.map(e => {
             if (e.baseId === id) {
                 return {
                     baseId: e.baseId,
-                    enchantmentLevel: e.enchantmentLevel + delta
+                    enchantmentLevel: e.enchantmentLevel + delta,
+                    improvements: sharpened ? 1 : 0,
+                    efficientUse: twoHanded
                 }
             } else {
                 return e
@@ -143,9 +146,10 @@ const EquipWeaponsWidget = ({
                     {
                         WeaponData.GetCardPreparedStruct(currentWeaponMetadata).map((e, index) => {
                             return (
-                                <WeaponEnchantmentCard key={e._id} weaponData={e} weaponMetadata={currentWeaponMetadata.find(md => md.baseId === e._id) ?? {baseId: e._id, enchantmentLevel: 0}} callback={handleChangeEnchantment} />
+                                <WeaponEnchantmentCard_New key={e._id} weaponData={e} weaponMetadata={currentWeaponMetadata.find(md => md.baseId === e._id) ?? {baseId: e._id, enchantmentLevel: 0}} callback={handleChangeEnchantment} />
                             )
                         })
+
                     }
 
                 </Box>

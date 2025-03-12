@@ -33,17 +33,14 @@ class PLC_WeaponData {
 
     }
 
-    public GetCardPreparedStruct(prepStruct: Array<{
-        baseId: string,
-        enchantmentLevel: number
-    }>): Array<IWeaponBaseData> {
+    public GetCardPreparedStruct(prepStruct: Array<IEnchantmentData>): Array<IWeaponBaseData> {
 
-        const a = prepStruct.map(({ baseId, enchantmentLevel }) => {
-            const card = this.GetCardById(baseId);
+        const a = prepStruct.map((data) => {
+            const card = this.GetCardById(data.baseId);
             if (card) {
                 return {
                     ...card,
-                    tempEnchantValue: enchantmentLevel
+                    tempEnchantValue: data
                 } as IWeaponBaseData; // Ensure type is consistent
             }
             return undefined; // Explicitly handle undefined case

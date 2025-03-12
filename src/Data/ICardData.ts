@@ -1,5 +1,5 @@
 import {IDataModifiers, IPrerequisite} from "./GenericData";
-import {IAffinities} from "./ICharacterData";
+import {IAffinities, IEnchantmentData} from "./ICharacterData";
 import {UArcanotype} from "./ISourceData";
 
 export type USpellTypes = "base" | "target" | "skill" | "edict" | "summon" | null;
@@ -179,7 +179,7 @@ export interface IScaledWeaponBaseData extends IWeaponCommonData {
     tetherCost: number,
     staminaCost: number,
     skillRequirement: number
-    enchantmentLevel: number
+    enchantmentData: IEnchantmentData
     weaponTags: Array<string>
 }
 
@@ -216,7 +216,7 @@ export interface IWeaponBaseData extends IWeaponCommonData {
     staminaCost: IScalingData<number>,
     skillRequirement: IScalingData<number>
     weaponTags: Array<string>
-    tempEnchantValue?: number
+    tempEnchantValue?: IEnchantmentData
 }
 
 export interface IEffectData {

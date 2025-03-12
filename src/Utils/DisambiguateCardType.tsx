@@ -58,7 +58,7 @@ export const disambiguateCard = (allCards: Array<ICommonCardData>, compendiumPro
         }
         } else if (card.cardType == "weapon") {
             if (card.cardSubtype == "base") {
-                return (<Box key = {card.cardName}><WeaponBaseCard cardData = {card as IWeaponBaseData} enchantmentData={0}
+                return (<Box key = {card.cardName}><WeaponBaseCard cardData = {card as IWeaponBaseData} enchantmentData={{enchantmentLevel: 0, baseId: ""}}
                 sendBack = {()=>{} }
                 {...
                     compendiumProps

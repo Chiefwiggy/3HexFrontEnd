@@ -36,7 +36,7 @@ const MinionWeaponBuilder = ({
         if (currentWeaponId) {
             const myWeapon = WeaponData.GetCardById(currentWeaponId)
             if (myWeapon) {
-                myWeapon.tempEnchantValue = currentWeaponEnchantment;
+                myWeapon.tempEnchantValue = {enchantmentLevel: currentWeaponEnchantment, baseId: ""};
                 finalWeaponTARRAY.push(myWeapon);
             }
         }

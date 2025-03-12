@@ -83,7 +83,7 @@ const CardList = ({
                             case 'base':
                                 return (
                                     <Grid item key={val.cardName}>
-                                        <WeaponBaseCard cardData={val as IWeaponBaseData} enchantmentData={0} sendBack={onClickButton}
+                                        <WeaponBaseCard cardData={val as IWeaponBaseData} enchantmentData={(val as IWeaponBaseData).tempEnchantValue ?? {enchantmentLevel: 0, baseId: ""}} sendBack={onClickButton}
                                                         isExpanded={isExpanded} canToggleExpand={canToggleExpand}
                                                         isAdd={isAdd} canFavorite={canFavorite}/>
                                     </Grid>

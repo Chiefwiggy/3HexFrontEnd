@@ -92,7 +92,7 @@ abstract class AbstractCardCalculator {
         this.cards = cards.map(card => {
             if (card) {
                 if (card.cardType == "weapon" && card.cardSubtype == "base") {
-                    return ConstructFinalWeapon(card as IWeaponBaseData, (card as IWeaponBaseData)?.tempEnchantValue ?? 0);
+                    return ConstructFinalWeapon(card as IWeaponBaseData, (card as IWeaponBaseData)?.tempEnchantValue ?? {enchantmentLevel: 0, baseId: ""});
                 }
             }
             return card;

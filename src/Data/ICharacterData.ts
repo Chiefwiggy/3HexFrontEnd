@@ -93,7 +93,9 @@ export interface ICharacterBaseData {
 
 export interface IEnchantmentData {
     baseId: string,
-    enchantmentLevel: number
+    enchantmentLevel: number,
+    improvements?: number,
+    efficientUse?: boolean
 }
 
 export interface IConsumablePlayerData {
@@ -231,10 +233,7 @@ export interface ICalculatedArmor {
 
 export interface ICalculatedWeapon {
     customName?: string,
-    weaponBaseData: {
-        baseId: string,
-        enchantmentLevel: number
-    },
+    weaponBaseData: IEnchantmentData,
     weaponCardsIds: Array<string>
 }
 

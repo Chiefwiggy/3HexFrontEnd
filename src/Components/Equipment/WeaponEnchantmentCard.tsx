@@ -18,7 +18,7 @@ import {UArmorClass} from "../../Data/IArmorData";
 interface IWeaponEnchantmentCardInput {
     weaponData: IWeaponBaseData,
     weaponMetadata: IEnchantmentData,
-    callback: (delta: number, id: string) => void,
+    callback: (delta: number, improvements: number, id: string) => void,
 }
 
 const WeaponEnchantmentCard = ({
@@ -30,7 +30,7 @@ const WeaponEnchantmentCard = ({
 
 
     const handleEditEnchantment = (delta: number) => (event: React.MouseEvent) => {
-        callback(delta, weaponData._id);
+        callback(delta, 0, weaponData._id);
     }
 
 

@@ -55,7 +55,7 @@ const BarracksWeapon = ({
 
     const handleEditEnchantment = (delta: number) => (event: React.MouseEvent) => {
         setCurrentScaling(currentScaling + delta);
-        weaponData.tempEnchantValue = currentScaling + delta;
+        weaponData.tempEnchantValue = {enchantmentLevel: currentScaling + delta, baseId: ""};
     }
 
     const handleCloseDialog = () => {
@@ -116,7 +116,7 @@ const BarracksWeapon = ({
                     <AddCircleOutlined />
                 </IconButton>
             </Box>
-            <WeaponBaseCard cardData={weaponData} enchantmentData={currentScaling} sendBack={handleSendback} canFavorite={false} />
+            <WeaponBaseCard cardData={weaponData} enchantmentData={{enchantmentLevel: currentScaling, baseId: ""}} sendBack={handleSendback} canFavorite={false} />
         </Box>
         <Dialog
             open={dialogOpen}

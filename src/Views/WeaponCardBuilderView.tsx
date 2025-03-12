@@ -49,11 +49,9 @@ const WeaponCardBuilderView = ({closeSelf, isOffhand = false}: IWeaponCardBuilde
         const base = cards.find(e => e.cardSubtype == "base") as IScaledWeaponBaseData;
         const rest = cards.filter(e => e.cardSubtype != "base");
         if (base && rest && currentSheet) {
+            // BAD
             const weaponCalcData: ICalculatedWeapon = {
-                weaponBaseData: {
-                    baseId: base._id,
-                    enchantmentLevel: base.enchantmentLevel
-                },
+                weaponBaseData: base.enchantmentData,
                 weaponCardsIds: rest.map(e => e._id)
             };
             setStandbyCards(weaponCalcData);
