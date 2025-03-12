@@ -84,8 +84,8 @@ const GetSummonScaler = (scalingTerm: string, char: AbstractSheet, power: number
 export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: ISpellTargetCardData, rest: Array<ISpellModifierCardData|null>, char: AbstractSheet): ITotalSpellStats => {
     try {
         let finalBasePower = StatChain(spellBase.basePower, [spellBase.basePowerMod, spellTarget.basePowerMod, ...rest.map(e => e?.basePowerMod)]);
-        let finalPotencyPower = Math.floor(StatChain(spellBase.potency, [spellBase.potencyMod, spellTarget.potencyMod, {"multiplier": spellTarget.summonData?.simpleName ? 0.5 : 1}, ...rest.map(e => e?.potencyMod)], false) * char.getStat("might"))
-        const finalPower = StatChain(finalBasePower + finalPotencyPower, [spellBase.powerMod, spellTarget.powerMod, ...rest.map(e => e?.powerMod)]);
+        let finalPotencyPower = Math.floor(StatChain(spellBase.potency, [spellBase.potencyMod, spellTarget.potencyMod, ...rest.map(e => e?.potencyMod)], false) * char.getStat((spellTarget.summonData?.simpleName && !rest.find(e => e?._id == "67d1e2ec08eca40980cfee29")) ? "authority" : "might"))
+        const finalPower = StatChain(finalBasePower + finalPotencyPower, [spellBase.powerMod, spellTarget.powerMod, {modifier: char.getAbilityBonuses("spellDamage")}, ...rest.map(e => e?.powerMod)]);
         const minRange = StatChain(spellTarget.baseRange.min, [spellBase.minRangeMod, spellTarget.minRangeMod, ...rest.map(e => e?.minRangeMod)]);
         const maxRange = StatChain(spellTarget.baseRange.max, [spellBase.maxRangeMod, spellTarget.maxRangeMod, ...rest.map(e => e?.maxRangeMod)]);
         const minRangeFinal = StatChain(minRange, [spellBase.fullRangeMod, spellTarget.fullRangeMod, ...rest.map(e => e?.fullRangeMod)]);
@@ -124,7 +124,7 @@ export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: IS
                 // + spellTarget.summonData.pDEF.potency * 0)
             summonMDEF = spellTarget.summonData.mDEF.baseValue + (spellBase.damageType == "magical" ? 10 : 0)
             summonMovement = spellTarget.summonData.movement.baseValue
-            summonHealth = spellTarget.summonData.maxHealth.baseValue + (GetSummonScaler(spellTarget.summonData.maxHealth.scalingStat, char, finalPower, finalBaseSet, tetherCost) * (spellTarget.summonData.maxHealth.potency ?? 1));
+            summonHealth = StatChain( tetherCost * (spellTarget.summonData.maxHealth.potency ?? 1), [spellBase.summonHealthMod, ...rest.map(e => e?.summonHealthMod)])
             summonBasicName = spellTarget.summonData.simpleName
             summonDodge = spellTarget.summonData.dodge.baseValue + char.getBlockDodge()
         }
@@ -193,7 +193,7 @@ export const GetFinalWeaponData = (weaponBase: IScaledWeaponBaseData, allCards: 
 
     let finalBasePower = StatChain(weaponBase.basePower, allCards.map(c => c?.basePowerMod));
     let finalPotencyPower = Math.floor(StatChain(weaponBase.potency, allCards.map(c => c?.potencyMod), false) * might);
-    const finalPower = StatChain(finalBasePower + finalPotencyPower, allCards.map(c => c?.powerMod));
+    const finalPower = StatChain(finalBasePower + finalPotencyPower, [...allCards.map(c => c?.powerMod), {modifier: char.getAbilityBonuses("weaponDamage")}]);
     const minRange = StatChain(weaponBase.baseRange.min, allCards.map(c => c?.minRangeMod));
     const maxRange = StatChain(weaponBase.baseRange.max, allCards.map(c => c?.maxRangeMod));
     const minRangeFinal = StatChain(minRange, allCards.map(c => c?.fullRangeMod));

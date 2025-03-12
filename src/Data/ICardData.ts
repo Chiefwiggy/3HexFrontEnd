@@ -51,7 +51,8 @@ export interface ISpellModifierCardData extends ICommonCardData {
     tetherCostMod?: IDataModifiers,
     moneyCostMod?: IDataModifiers,
     baseSpellSetMod?: IDataModifiers,
-    spellSetMod?: IDataModifiers
+    spellSetMod?: IDataModifiers,
+    summonHealthMod?: IDataModifiers,
     forceMelee?: boolean,
     forceRanged?: boolean
 }

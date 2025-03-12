@@ -3,7 +3,13 @@ import {Box, capitalize, Card, CardContent, CardHeader, Divider, Typography} fro
 import AbstractCardCalculator from "../../Data/Card Calculators/AbstractCardCalculator";
 import CardEffect from "../Cards/CardEffect";
 import {ICommonCardData, IEffectData} from "../../Data/ICardData";
-import {FlareOutlined, LooksOutlined, SportsMmaOutlined, WaterDropOutlined} from "@mui/icons-material";
+import {
+    ElectricBoltOutlined,
+    FlareOutlined,
+    LooksOutlined,
+    SportsMmaOutlined,
+    WaterDropOutlined
+} from "@mui/icons-material";
 import NumericIcon from "../Cards/NumericIcon";
 import CritNumberBox from "../SmallComponents/CritNumberBox";
 import {createRangeString} from "../../Utils/helper_functions";
@@ -130,26 +136,50 @@ const CalculatedCard = ({
                                         {capitalize(cardCalculator.getSummonData().simpleName)} {capitalize(cardCalculator.getDamageSubtype() == "none" ? "" : cardCalculator.getDamageSubtype())} Summon
                                     </Typography>
                                 </Box>
+
+
                                 <BoxWithTooltip
                                     sx={{
                                         display: 'flex',
                                         alignItems: "center"
                                     }}
                                     placement={"top"}
-                                    title={`Max Health`}
+                                    title={cardCalculator.getSummonData().maxHealth === parseInt(cardCalculator.getIconValue("tetherCost")) ? `Max Health/Tether Cost` : `Max Health`}
                                 >
                                     <Typography sx={{fontSize: "16px", paddingRight: "4px"}}>{cardCalculator.getSummonData().maxHealth}</Typography><FaHeartbeat />
+                                    {
+                                        cardCalculator.getSummonData().maxHealth === parseInt(cardCalculator.getIconValue("tetherCost")) ?
+                                        <WaterDropOutlined /> : <></>
+                                    }
 
                                 </BoxWithTooltip>
+
+                                {
+                                        cardCalculator.getSummonData().maxHealth !== parseInt(cardCalculator.getIconValue("tetherCost"))
+                                            ?
+                                        <BoxWithTooltip
+                                            sx={{
+                                                display: 'flex',
+                                                alignItems: "center"
+                                            }}
+                                            placement={"top"}
+                                            title={`Tether Cost`}
+                                        >
+                                            <Typography sx={{fontSize: "16px", paddingRight: "4px"}}>{cardCalculator.getIconValue("tetherCost")}</Typography><WaterDropOutlined />
+
+                                        </BoxWithTooltip>
+                                            :
+                                            <></>
+                                    }
                                 <BoxWithTooltip
                                     sx={{
                                         display: 'flex',
                                         alignItems: "center"
                                     }}
                                     placement={"top"}
-                                    title={`Max Health`}
+                                    title={`Action Cost`}
                                 >
-                                    <Typography sx={{fontSize: "16px", paddingRight: "4px"}}>{cardCalculator.getIconValue("tetherCost")}</Typography><WaterDropOutlined />
+                                    <Typography sx={{fontSize: "16px", paddingRight: "4px"}}>{cardCalculator.getIconValue("energyCost")}</Typography><ElectricBoltOutlined />
 
                                 </BoxWithTooltip>
 

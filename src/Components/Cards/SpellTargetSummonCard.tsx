@@ -68,9 +68,9 @@ const SpellTargetSummonCard = ({
                             alignItems: "center"
                         }}
                         placement={"top"}
-                        title={`Summon Health = ${cardData.summonData.maxHealth.scalingStat} + ${cardData.summonData.maxHealth.baseValue}`}
+                        title={`Health Multiplier`}
                     >
-                        <Typography sx={{fontSize: "16px", paddingRight: "4px"}}>{cardData.summonData.maxHealth.baseValue < 0 ? "" : "+"}{cardData.summonData.maxHealth.baseValue}</Typography><FaHeartbeat />
+                        <FaHeartbeat /> <Typography sx={{fontSize: "16px", paddingLeft: "4px"}}>x{cardData.summonData.maxHealth.potency}</Typography>
                     </BoxWithTooltip>
                     <BoxWithTooltip
                         sx={{
@@ -78,9 +78,9 @@ const SpellTargetSummonCard = ({
                             alignItems: "center"
                         }}
                         placement={"top"}
-                        title={`Tether Cost`}
+                        title={`+Max Health/Tether Cost`}
                     >
-                        <Typography sx={{fontSize: "16px", paddingRight: "4px"}}>{(cardData.tetherCostMod?.modifier ?? 0) < 0 ? "" : "+"}{cardData.tetherCostMod?.modifier ?? 0}</Typography><WaterDropOutlined />
+                        <Typography sx={{fontSize: "16px", paddingRight: "4px"}}>{(cardData.tetherCostMod?.modifier ?? 0) < 0 ? "" : "+"}{cardData.tetherCostMod?.modifier ?? 0}</Typography><FaHeartbeat /><WaterDropOutlined />
                     </BoxWithTooltip>
 
                 </Box>
@@ -93,7 +93,7 @@ const SpellTargetSummonCard = ({
                 >
 
                     <Box sx={{gridColumn: "span 2"}}>
-                        <NumericIcon fontSize={"16px"} val={`${(cardData.powerMod?.modifier ?? 0) < 0 ? "" : "+"}${cardData.powerMod?.modifier ?? 0}`} icon={GiFist} title={`damage = ${cardData.powerMod?.modifier ?? 0 } + spell's Power (potency is halved for ALL summoning spells)`} />
+                        <NumericIcon fontSize={"16px"} val={`${(cardData.powerMod?.modifier ?? 0) < 0 ? "" : "+"}${cardData.powerMod?.modifier ?? 0}`} icon={GiFist} title={`damage = ${cardData.powerMod?.modifier ?? 0 } + (Authority * Potency)`} />
                     </Box>
 
 
