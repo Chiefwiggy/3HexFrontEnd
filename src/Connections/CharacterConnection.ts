@@ -110,8 +110,9 @@ class CharacterConnection {
         })
     }
 
-    public async AddPrepWeapon(charID: string, spellData: ICalculatedWeapon) {
-        await Axios.post(this.GetRouteURL(`prep/${charID}/weapon/add`), spellData, this._getConfig()).then((resp) => {
+    public async AddPrepWeapon(charID: string, weaponData: ICalculatedWeapon) {
+        console.log("sdata", weaponData)
+        await Axios.post(this.GetRouteURL(`prep/${charID}/weapon/add`), weaponData, this._getConfig()).then((resp) => {
             console.log(resp);
         })
     }

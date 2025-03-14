@@ -46,12 +46,13 @@ const WeaponCardBuilderView = ({closeSelf, isOffhand = false}: IWeaponCardBuilde
 
     const handleReceiveSaveCards = async(sentCards: Array<ICommonCardData|null>, spellCopy: React.ReactNode) => {
         const cards: Array<ICommonCardData> = sentCards.filter(c => c !== null && c !== undefined) as ICommonCardData[];
-        const base = cards.find(e => e.cardSubtype == "base") as IScaledWeaponBaseData;
+        const base = cards.find(e => e.cardSubtype == "base") as IWeaponBaseData
         const rest = cards.filter(e => e.cardSubtype != "base");
         if (base && rest && currentSheet) {
             // BAD
+            console.log("baid", base);
             const weaponCalcData: ICalculatedWeapon = {
-                weaponBaseData: base.enchantmentData,
+                weaponBaseData: base.tempEnchantValue ?? (base as unknown as IScaledWeaponBaseData).enchantmentData,
                 weaponCardsIds: rest.map(e => e._id)
             };
             setStandbyCards(weaponCalcData);
