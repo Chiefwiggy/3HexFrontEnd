@@ -91,7 +91,7 @@ class MinionSheet extends AbstractSheet {
     }
 
      public getEvadeDodge(): number {
-        return 25+(3*this.getStat("agility")
+        return 30+(3*this.getStat("agility")
 )+this.getStat("awareness")
 -(this.weightPenalty*5);
     }
@@ -265,7 +265,7 @@ class MinionSheet extends AbstractSheet {
             sources: [
                 {
                     reason: "Evade Stance",
-                    value: getSkillFormat(25, false)
+                    value: getSkillFormat(30, false)
                 },
                 {
                     reason: "Agility",

@@ -72,7 +72,7 @@ const WeaponEnchantmentCard_New = ({
                                     <Typography fontSize={14} component={"span"} color={"grey"} sx={{paddingLeft: "4px"}}>{currentSheet.getHandedness(weaponData.weaponClass, weaponData.handedness, weaponMetadata.enchantmentLevel)}</Typography>
                                 </Typography>
 
-                                <Typography fontSize={14} color={"grey"} textAlign={"center"}>Warrior {weaponMetadata.enchantmentLevel} • {weaponData.damageType == "magical" ? "Presence" : "Skill"} {ScaleChainNumeric(weaponData.skillRequirement, weaponMetadata.enchantmentLevel)}</Typography>
+                                <Typography fontSize={14} color={"grey"} textAlign={"center"}>{weaponData.damageType == "magical" ? "Arcanist" : "Warrior"} {weaponMetadata.enchantmentLevel} • {weaponData.damageType == "magical" ? "Presence" : "Skill"} {ScaleChainNumeric(weaponData.skillRequirement, weaponMetadata.enchantmentLevel)}</Typography>
                             </Box>
                             <Box
                                 sx={{
@@ -109,7 +109,7 @@ const WeaponEnchantmentCard_New = ({
                             }}
                         >
                             <Typography fontSize={"1.3rem"}>{weaponData.cardName} +{weaponMetadata.enchantmentLevel}</Typography>
-                            <Typography variant={"body2"}>{currentSheet.getHandedness(weaponData.weaponClass, weaponData.handedness, weaponMetadata.enchantmentLevel)} • Warrior {weaponMetadata.enchantmentLevel} </Typography>
+                            <Typography variant={"body2"}>{currentSheet.getHandedness(weaponData.weaponClass, weaponData.handedness, weaponMetadata.enchantmentLevel)} • {weaponData.damageType == "magical" ? "Arcanist" : "Warrior"} {weaponMetadata.enchantmentLevel} </Typography>
                             <BoxWithTooltip title={weaponData.damageType == "magical" ? "Presence Requirement" : "Skill Requirement"} placement={"bottom"}>
                                 <Box
                                     sx={{

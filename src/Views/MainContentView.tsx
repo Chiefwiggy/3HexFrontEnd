@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Tab, Tabs, Typography} from "@mui/material";
+import {Badge, Box, Tab, Tabs, Typography} from "@mui/material";
 import {Settings, SettingsOutlined} from "@mui/icons-material";
 import CustomTabPanel from "../Utils/CustomTabPanel";
 import AbilityTab from "../Components/MainTabs/AbilityTab";
@@ -11,9 +11,11 @@ import DowntimeTab from "../Components/MainTabs/DowntimeTab";
 import SettingsTab from "../Components/MainTabs/SettingsTab";
 import ArmorTab from "../Components/MainTabs/ArmorTab";
 import SourcesTab from "../Components/MainTabs/SourcesTab";
+import useCharacter from "../Hooks/useCharacter/useCharacter";
 
 const MainContentView = () => {
 
+    const {currentSheet} = useCharacter();
 
     const [currentTab, setCurrentTab] = React.useState(0);
 
@@ -21,7 +23,7 @@ const MainContentView = () => {
         setCurrentTab(newValue);
     };
 
-    return (
+    return currentSheet ? (
         <Box
             sx={{
                 padding: 3
@@ -34,8 +36,22 @@ const MainContentView = () => {
                 }}
             >
                 <Tabs value={currentTab} onChange={handleTabChange}>
-                    <Tab label={"Skills"} value={0} />
-                    <Tab label={"Downtime"} value={1} />
+                    <Tab label={
+                        <Badge invisible={currentSheet.getSkillPointsUsed() === currentSheet.getMaxSkillPoints()} color={"secondary"} variant={"dot"} sx={{
+                            paddingRight: "5px"
+                        }}>
+                            <Typography variant={"body2"}>Skills</Typography>
+                        </Badge>
+                    } value={0} />
+                    <Tab label={
+                        <Badge invisible={currentSheet.getDowntimeRanks() === currentSheet.data.downtimeData.reduce((pv, cv) => {
+                            return pv + cv.proficiency;
+                        }, 0)} color={"secondary"} variant={"dot"} sx={{
+                            paddingRight: "5px"
+                        }}>
+                            <Typography variant={"body2"}>Downtime</Typography>
+                        </Badge>
+                    } value={1} />
                     <Tab label={"Abilities"} value={2} />
                     <Tab label={"Equipment"} value={3} />
                     <Tab label={"Sources"} value={4} />
@@ -52,7 +68,7 @@ const MainContentView = () => {
             <CustomTabPanel index={currentTab} value={6}> <BattalionTab /> </CustomTabPanel>
 
         </Box>
-    )
+    ) : <></>
 
 }
 

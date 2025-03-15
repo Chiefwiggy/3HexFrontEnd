@@ -118,7 +118,7 @@ const CharacterSheetFullView = () => {
                 <CharacterSheetSidebar title={"Create Offhand Attacks"} icon={GiDaggers} panelComponent={WeaponCardBuilderView}  doShow={currentSheet.canDualWield()} isOffhand={true}/>
                 <CharacterSheetSidebar title={"Saved Cards"} icon={GiSave} panelComponent={SavedCardsView} />
                 <CharacterSheetSidebar title={"Prepare Commander Cards"} icon={MilitaryTechOutlined} panelComponent={CommanderCardPrepView} />
-                <CharacterSheetSidebar title={"Prepare Battalion"} icon={Diversity3Outlined} panelComponent={BattalionAssignmentView} />
+                {/*<CharacterSheetSidebar title={"Prepare Battalion"} icon={Diversity3Outlined} panelComponent={BattalionAssignmentView} />*/}
                 <CharacterSheetSidebar title={"Conditions"} icon={FlareOutlined} panelComponent={ConditionsPanelView} />
                 <CharacterSheetSidebar title={"Backpack"} icon={BackpackOutlined} panelComponent={BackpackView} />
                 <CharacterSheetSidebar title={"Classes & Affinities"} icon={EngineeringOutlined} panelComponent={ClassSelectView} />

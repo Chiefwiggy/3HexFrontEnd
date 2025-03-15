@@ -54,7 +54,7 @@ abstract class AbstractSheet {
     }
     public getMaxTether() {
         if (this.isUnlocked("patronMagic")) {
-            return this.getAbilityBonuses("maxTether") + (this.getAbilityBonuses("maxTetherScaling"))*this.getStat("mind") + (2*this.getStat("authority")) + (3*this.getStat("presence"));
+            return this.getAbilityBonuses("maxTether") + (this.getAbilityBonuses("maxTetherScaling"))*this.getStat("mind") + (3*this.getStat("authority")) + (3*this.getStat("presence"));
         }
         return this.getAbilityBonuses("maxTether") + (this.getAbilityBonuses("maxTetherScaling")+5)*this.getStat("mind");
     }
@@ -146,7 +146,7 @@ abstract class AbstractSheet {
         let shieldBonus = this.getShieldDodgeBonus();
 
 
-        return 25 + (dodgeAgility + dodgeAwareness + abilityBonuses + armorBonus + shieldBonus - weightPenaltyBonus) + this.getAbilityBonuses("evadeDodge") + this.getAbilityBonuses("dodge");
+        return 30 + (dodgeAgility + dodgeAwareness + abilityBonuses + armorBonus + shieldBonus - weightPenaltyBonus) + this.getAbilityBonuses("evadeDodge") + this.getAbilityBonuses("dodge");
 
 
     }
@@ -341,7 +341,7 @@ abstract class AbstractSheet {
             sources: [
                 {
                     reason: "Evade Stance",
-                    value: getSkillFormat(25, false)
+                    value: getSkillFormat(30, false)
                 },
                 {
                     reason: "Agility",

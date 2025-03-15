@@ -49,8 +49,6 @@ const WeaponCardBuilderView = ({closeSelf, isOffhand = false}: IWeaponCardBuilde
         const base = cards.find(e => e.cardSubtype == "base") as IWeaponBaseData
         const rest = cards.filter(e => e.cardSubtype != "base");
         if (base && rest && currentSheet) {
-            // BAD
-            console.log("baid", base);
             const weaponCalcData: ICalculatedWeapon = {
                 weaponBaseData: base.tempEnchantValue ?? (base as unknown as IScaledWeaponBaseData).enchantmentData,
                 weaponCardsIds: rest.map(e => e._id)

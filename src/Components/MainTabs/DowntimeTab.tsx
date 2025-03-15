@@ -1,6 +1,6 @@
 import React, {HTMLInputAutoCompleteAttribute, SyntheticEvent, useEffect, useState} from 'react';
 import {
-    Autocomplete,
+    Autocomplete, Badge,
     Box,
     Button,
     Checkbox, Chip,
@@ -144,7 +144,14 @@ const DowntimeTab = ({}: IDowntimeTabInput) => {
                 }}
             >
                 <Button onClick={handleDialog(true)}>Add Activities</Button>
-                <Button onClick={handleRankDialog(true)}>Rank Up</Button>
+                <Button onClick={handleRankDialog(true)}>
+
+                    <Badge invisible={currentRankTotal == currentSheet.getDowntimeRanks()} color={"secondary"} variant={"dot"} sx={{
+                        paddingRight: "5px"
+                    }}>
+                        <Typography variant={"body2"}>Rank Up</Typography>
+                    </Badge>
+                </Button>
             </Paper>
             <Box
                 sx={{
