@@ -244,7 +244,8 @@ export interface IConditionTag {
     conditionCountdownType: "uses" | "decay10" | "decay1" | "rounds" | "onWounding" | "perFight" | "singleUse" | "untilSaved"
     description: Array<string>,
     xVals: Array<{
-        basePower: number
+        basePower: number,
+        tierScaling: number
     }>,
     conditionTier: number
 }

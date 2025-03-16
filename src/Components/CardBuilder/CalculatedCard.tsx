@@ -55,7 +55,7 @@ const CalculatedCard = ({
         cardCalculator.sendCurrentCards(depArray, owner);
         setCardTitle(overrideName ? overrideName : cardCalculator.getTitle())
         setEffectArray(cardCalculator.getEffectList());
-        setValidCard(owner.areAllCardsPrepared(cardCalculator.getCards()))
+        setValidCard(cardCalculator.isValid() && owner.areAllCardsPrepared(cardCalculator.getCards()))
         setConditionalCard(depArray.filter(e => e?.cardType == "condition").length > 0)
     }, [depArray, charPing, statPing, cancelPing, isReady]);
 

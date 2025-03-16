@@ -83,7 +83,9 @@ class SpellCardCalculator extends AbstractCardCalculator {
             this.currentRange = finalSpellData.range;
             this.updateVal("energyCost", finalSpellData.castTime.toString());
             this.updateVal("spellSet", getSkillFormat(finalSpellData.spellSet, false))
-            this.updateVal("saveType", (getStatShorthand(((this.getCardOfType("spell.base") as ISpellBaseCardData).saveType) as UStat | "none" | "luck")).toUpperCase());
+            if (this.getCardOfType("spell.base")) {
+                this.updateVal("saveType", (getStatShorthand(((this.getCardOfType("spell.base") as ISpellBaseCardData).saveType) as UStat | "none" | "luck")).toUpperCase());
+            }
             this.updateVal("duration", finalSpellData.duration.toString());
             this.summonData = finalSpellData.summon;
         }
@@ -92,6 +94,10 @@ class SpellCardCalculator extends AbstractCardCalculator {
     }
     protected sortEffects(a: IEffectData, b: IEffectData): number {
         return 0;
+    }
+
+    public isValid() {
+        return this.getCardOfType("spell.base") !== undefined
     }
 
     getTitle(): string {

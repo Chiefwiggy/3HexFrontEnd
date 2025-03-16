@@ -21,10 +21,14 @@ const ConditionTooltip = ({
 }: IConditionTooltipInput) => {
 
     const GetPopulatedDescription = () => {
-        const nCondData = conditionData.xVals.map(e => e.basePower);
+        const nCondData = conditionData.xVals.map(e => e);
         const output = conditionData.description[0].replace(/\[X(\d+)\]/g, (_: any, match: any) => {
           const index = parseInt(match, 10);
-          return nCondData[index]?.toString() || "";
+          const elem = conditionData.xVals[index];
+          if (elem.basePower && elem.tierScaling) {
+              return `${elem.basePower} (+${elem.tierScaling} per Prestige)`
+          }
+          return elem.basePower.toString() || "";
         });
         return output;
     }

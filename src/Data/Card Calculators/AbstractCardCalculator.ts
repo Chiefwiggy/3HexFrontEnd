@@ -83,6 +83,10 @@ abstract class AbstractCardCalculator {
         return this.cards[this.cardTypes.findIndex((type) => type.name.includes(inputType))];
     }
 
+    public isValid() {
+        return true;
+    }
+
     public isSummon() {
         return this.getCardOfType("spell.summon")?.cardSubtype == "summon" ?? false
     }
