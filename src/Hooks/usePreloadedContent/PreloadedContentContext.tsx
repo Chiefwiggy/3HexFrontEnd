@@ -13,6 +13,7 @@ import PLC_ConditionData from "./PLC_ConditionData";
 import PLC_DowntimeData from "./PLC_DowntimeData";
 import PLC_SettingsData from "./PLC_SettingsData";
 import PLC_ShieldData from "./PLC_ShieldData";
+import PLC_MountData from "./PLC_MountData";
 
 
 
@@ -29,6 +30,7 @@ const PreloadedContentContext =     createContext<IPreloadedContentContextInput>
         ConditionData: new PLC_ConditionData(),
         DowntimeData: new PLC_DowntimeData(),
         SettingsData: new PLC_SettingsData(),
+        MountData: new PLC_MountData(),
         isLoaded: false
     }
 );

@@ -17,6 +17,7 @@ import PLC_ConditionData from "./PLC_ConditionData";
 import PLC_DowntimeData from "./PLC_DowntimeData";
 import PLC_SettingsData from "./PLC_SettingsData";
 import PLC_ShieldData from "./PLC_ShieldData";
+import PLC_MountData from "./PLC_MountData";
 
 interface IPreloadedContentProviderInput {
     children: any
@@ -35,6 +36,7 @@ export interface IPreloadedContentContextInput {
     ConditionData: PLC_ConditionData,
     DowntimeData: PLC_DowntimeData,
     SettingsData: PLC_SettingsData,
+    MountData: PLC_MountData,
     isLoaded: boolean
 }
 const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) => {
@@ -63,6 +65,8 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
 
     const [ShieldData, setShieldData] = useState(new PLC_ShieldData());
 
+    const [MountData, setMountData] = useState(new PLC_MountData());
+
     const [isLoaded, setIsLoaded] = useState(false);
 
     const API = useAPI();
@@ -86,6 +90,7 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
             await ConditionData.Initialize(data.conditionCards, data.conditionTags);
             await DowntimeData.Initialize(data.downtimeActivitiesData)
             setIsLoaded(true);
+            await MountData.Initialize(data.mountData)
         })();
     }, []);
 
@@ -104,6 +109,7 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
                 ConditionData,
                 DowntimeData,
                 SettingsData,
+                MountData,
                 isLoaded
             }}
         >

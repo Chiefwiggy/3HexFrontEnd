@@ -223,7 +223,7 @@ export interface IEffectData {
     text: string,
     icon: {
         emblem: string,
-        symbol: string,
+        symbol?: string,
         text: string
     },
     powerX?: number

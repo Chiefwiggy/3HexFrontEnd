@@ -5,6 +5,7 @@ import {ISourceData} from "../Data/ISourceData";
 import {IConsumableTemplate} from "../Data/IConsumable";
 import {IFatelineFullData} from "../Data/IFatelineData";
 import {IDowntimeActivity} from "../Data/IDowntime";
+import {IMountBaseModel} from "../Data/IMountData";
 
 export interface IPreloadedDataStruct {
     class: {
@@ -28,6 +29,7 @@ export interface IPreloadedDataStruct {
     fatelineData: Array<IFatelineFullData>,
     conditionCards: Array<IConditionCard>,
     downtimeActivitiesData: Array<IDowntimeActivity>,
+    mountData: Array<IMountBaseModel>,
     conditionTags: Array<IConditionTag>
 }
 class PreloadedConnection {
