@@ -213,7 +213,7 @@ export const GetFinalWeaponData = (weaponBase: IScaledWeaponBaseData, allCards: 
 
     const finalBaseHit = StatChain(weaponBase.baseHit, allCards.map(c => c?.baseHitMod));
 
-    const finalHitMod = StatChain(finalBaseHit + (awareness*2) + skill + char.getCritBonus(), allCards.map(c => c?.hitMod));
+    const finalHitMod = StatChain(finalBaseHit + Math.floor(awareness*2.5) + skill + char.getCritBonus(), allCards.map(c => c?.hitMod));
 
     let finalDamageType: UDamageType = weaponBase.damageType;
     let finalDamageSubtype = weaponBase.damageSubtype;
