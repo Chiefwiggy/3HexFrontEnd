@@ -92,7 +92,7 @@ export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: IS
         const maxRangeFinal = StatChain(maxRange, [spellBase.fullRangeMod, spellTarget.fullRangeMod, ...rest.map(e => e?.fullRangeMod)]);
 
         let finalBaseSet = StatChain(spellBase.baseSpellSet, [spellBase.baseSpellSetMod, spellTarget.baseSpellSetMod, ...rest.map(e => e?.baseSpellSetMod)])
-        let finalSet = StatChain(finalBaseSet + char.getStat("presence")*3, [spellBase.spellSetMod, spellTarget.spellSetMod, ...rest.map(e => e?.spellSetMod)])
+        let finalSet = StatChain(finalBaseSet + char.getStat("presence")*3 + char.getStat("knowledge"), [spellBase.spellSetMod, spellTarget.spellSetMod, ...rest.map(e => e?.spellSetMod)])
 
         const isMelee = [spellBase.forceMelee, spellTarget.forceMelee, ...rest.map(e => e?.forceMelee)].reduce((pv: boolean, cv: boolean | undefined) => {
             if (cv) {
@@ -186,13 +186,15 @@ export const GetFinalWeaponData = (weaponBase: IScaledWeaponBaseData, allCards: 
 
     let might = 0;
     let skill = 0;
+    let auth = 0;
     let awareness = 0;
     might = char.getStat("might");
+    auth = char.getStat("authority")
     skill = char.getStat("skill");
     awareness = char.getStat("awareness");
 
     let finalBasePower = StatChain(weaponBase.basePower, allCards.map(c => c?.basePowerMod));
-    let finalPotencyPower = Math.floor(StatChain(weaponBase.potency, allCards.map(c => c?.potencyMod), false) * might);
+    let finalPotencyPower = Math.floor(StatChain(weaponBase.potency, allCards.map(c => c?.potencyMod), false) * (weaponBase.isCreatureWeapon ? auth : might));
     const finalPower = StatChain(finalBasePower + finalPotencyPower, [...allCards.map(c => c?.powerMod), {modifier: char.getAbilityBonuses("weaponDamage")}]);
     const minRange = StatChain(weaponBase.baseRange.min, allCards.map(c => c?.minRangeMod));
     const maxRange = StatChain(weaponBase.baseRange.max, allCards.map(c => c?.maxRangeMod));
@@ -213,7 +215,7 @@ export const GetFinalWeaponData = (weaponBase: IScaledWeaponBaseData, allCards: 
 
     const finalBaseHit = StatChain(weaponBase.baseHit, allCards.map(c => c?.baseHitMod));
 
-    const finalHitMod = StatChain(finalBaseHit + Math.floor(awareness*2.5) + skill + char.getCritBonus(), allCards.map(c => c?.hitMod));
+    const finalHitMod = StatChain(finalBaseHit + Math.floor(awareness) + skill + char.getCritBonus(), allCards.map(c => c?.hitMod));
 
     let finalDamageType: UDamageType = weaponBase.damageType;
     let finalDamageSubtype = weaponBase.damageSubtype;

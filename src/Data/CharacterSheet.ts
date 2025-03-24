@@ -882,7 +882,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getSave(stat: UStat): number {
-        return this.getStat(stat)*2 + Math.ceil(this.getStat("knowledge")*0.5) + this.getAbilityBonuses("allSaves") + this.getAbilityBonuses(`${stat}Saves`)
+        return this.getStat(stat)*3 + Math.ceil(this.getStat("knowledge")) + this.getAbilityBonuses("allSaves") + this.getAbilityBonuses(`${stat}Saves`)
     }
 
 

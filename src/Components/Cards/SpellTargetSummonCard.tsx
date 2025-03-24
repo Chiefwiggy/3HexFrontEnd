@@ -12,7 +12,7 @@ import {
     GiBorderedShield,
     GiBrokenShield,
     GiClockwork,
-    GiFist,
+    GiFist, GiMagicShield,
     GiRun,
     GiRuneSword
 } from "react-icons/gi";
@@ -103,7 +103,7 @@ const SpellTargetSummonCard = ({
 
 
                     <NumericIcon fontSize={"16px"} val={cardData.summonData.pDEF.baseValue} icon={GiBorderedShield} title={`pDEF = ${cardData.summonData.pDEF.baseValue } + 10 (if spell deals Physical damage)`} />
-                    <NumericIcon fontSize={"16px"} align="center" val={cardData.summonData.mDEF.baseValue} icon={GiBrokenShield} title={`mDEF = ${cardData.summonData.mDEF.baseValue } + 10 (if spell deals Magical damage)`} />
+                    <NumericIcon fontSize={"16px"} align="center" val={cardData.summonData.mDEF.baseValue} icon={GiMagicShield} title={`mDEF = ${cardData.summonData.mDEF.baseValue } + 10 (if spell deals Magical damage)`} />
                     <NumericIcon fontSize={"16px"} align="right" val={`${cardData.summonData.dodge.baseValue < 0 ? "" : "+"}${getSkillFormat(cardData.summonData.dodge.baseValue, false)}`} icon={FaRunning} title={`dodge = ${cardData.summonData.dodge.baseValue }`} />
 
                     <NumericIcon fontSize={"16px"} align="left" val={cardData.summonData.movement.baseValue} icon={GiRun} title={`Base Movement = ${cardData.summonData.movement.baseValue }`}/>

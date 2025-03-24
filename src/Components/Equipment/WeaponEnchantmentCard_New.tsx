@@ -4,12 +4,12 @@ import {IEnchantmentData} from "../../Data/ICharacterData";
 import {IWeaponBaseData} from "../../Data/ICardData";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
 import {BackHandOutlined, KeyboardArrowDown, KeyboardArrowUp} from "@mui/icons-material";
-import {GiAnvilImpact, GiRearAura, GiSwordHilt, GiSwordSmithing} from "react-icons/gi";
+import {GiAnvilImpact, GiRearAura, GiStarMedal, GiSwordHilt, GiSwordSmithing} from "react-icons/gi";
 import CkSwordTwoHanded from '../Icons/CkSwordTwoHanded';
 import IconButtonWithTooltip from "../Generic/IconButtonWithTooltip";
 import BoxWithTooltip from "../Generic/BoxWithTooltip";
 import {FaCircleInfo} from "react-icons/fa6";
-import {MdReadMore} from "react-icons/md";
+import {MdMilitaryTech, MdReadMore} from "react-icons/md";
 import {PiKeyReturn} from "react-icons/pi";
 import {ScaleChainNumeric} from "../../Utils/ConstructFinalWeapon";
 import {getSkillFormat} from "../../Utils/Shorthand";
@@ -72,7 +72,7 @@ const WeaponEnchantmentCard_New = ({
                                     <Typography fontSize={14} component={"span"} color={"grey"} sx={{paddingLeft: "4px"}}>{currentSheet.getHandedness(weaponData.weaponClass, weaponData.handedness, weaponMetadata.enchantmentLevel)}</Typography>
                                 </Typography>
 
-                                <Typography fontSize={14} color={"grey"} textAlign={"center"}>{weaponData.damageType == "magical" ? "Arcanist" : "Warrior"} {weaponMetadata.enchantmentLevel} • {weaponData.damageType == "magical" ? "Presence" : "Skill"} {ScaleChainNumeric(weaponData.skillRequirement, weaponMetadata.enchantmentLevel)}</Typography>
+                                <Typography fontSize={14} color={"grey"} textAlign={"center"}>{weaponData.isCreatureWeapon ? "Commander" : (weaponData.damageType == "magical" ? "Arcanist" : "Warrior")} {weaponMetadata.enchantmentLevel} • {weaponData.damageType == "magical" ? "Presence" : "Skill"} {ScaleChainNumeric(weaponData.skillRequirement, weaponMetadata.enchantmentLevel)}</Typography>
                             </Box>
                             <Box
                                 sx={{
@@ -109,8 +109,8 @@ const WeaponEnchantmentCard_New = ({
                             }}
                         >
                             <Typography fontSize={"1.3rem"}>{weaponData.cardName} +{weaponMetadata.enchantmentLevel}</Typography>
-                            <Typography variant={"body2"}>{currentSheet.getHandedness(weaponData.weaponClass, weaponData.handedness, weaponMetadata.enchantmentLevel)} • {weaponData.damageType == "magical" ? "Arcanist" : "Warrior"} {weaponMetadata.enchantmentLevel} </Typography>
-                            <BoxWithTooltip title={weaponData.damageType == "magical" ? "Presence Requirement" : "Skill Requirement"} placement={"bottom"}>
+                            <Typography variant={"body2"}>{currentSheet.getHandedness(weaponData.weaponClass, weaponData.handedness, weaponMetadata.enchantmentLevel)} • {weaponData.isCreatureWeapon ? "Commander" : (weaponData.damageType == "magical" ? "Arcanist" : "Warrior")} {weaponMetadata.enchantmentLevel} </Typography>
+                            <BoxWithTooltip title={weaponData.isCreatureWeapon ? "Authority Requirement" : (weaponData.damageType == "magical" ? "Presence Requirement" : "Skill Requirement")} placement={"bottom"}>
                                 <Box
                                     sx={{
                                         display: "flex",
@@ -120,11 +120,15 @@ const WeaponEnchantmentCard_New = ({
                                     }}
                                 >
                                     {
+                                        weaponData.isCreatureWeapon ?
+                                            <MdMilitaryTech size={24}/>
+                                            : (
                                         weaponData.damageType == "magical"
                                         ?
                                             <GiRearAura size={24}/>
                                             :
                                             <GiSwordHilt size={24}/>
+                                            )
                                     }
                                     <Typography>{ScaleChainNumeric(weaponData.skillRequirement, weaponMetadata.enchantmentLevel)}</Typography>
 

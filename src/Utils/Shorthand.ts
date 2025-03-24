@@ -95,15 +95,14 @@ export const getArmorAffinityRequirement = (armorClass: UArmorClass, enchantment
     let enchantmentLevelMod  = enchantmentLevel - armorAffinityBonus
     switch (armorClass) {
         case "light":
-            return `• Deft ${enchantmentLevelMod}`
         case "standard":
-            return `• Infantry ${enchantmentLevelMod}`
+            return `• Warrior ${enchantmentLevelMod}`
         case "heavy":
-            return `• Guardian ${enchantmentLevelMod > 0 ? enchantmentLevel : 1}`
+            return `• Guardian 1 & Warrior ${enchantmentLevelMod}`
     }
 }
 
-export const getWeaponAffinityRequirement = (weaponClass: UWeaponClass, enchantmentLevel: number, handedness: number, damageType: UDamageType, hasIronGrasp: boolean, prestigeLower: number = 0, showBullet: boolean = true): string => {
+export const getWeaponAffinityRequirement = (weaponClass: UWeaponClass, enchantmentLevel: number, handedness: number, damageType: UDamageType, isCreature: boolean, hasIronGrasp: boolean, prestigeLower: number = 0, showBullet: boolean = true): string => {
     let retVal = ""
     if (showBullet) {
         retVal = "• "
@@ -119,7 +118,9 @@ export const getWeaponAffinityRequirement = (weaponClass: UWeaponClass, enchantm
         return retVal;
     }
 
-    if (damageType == "magical") {
+    if (isCreature) {
+        retVal += `Commander ${enchantmentLevelMod}`
+    } else if (damageType == "magical") {
         retVal += `Arcanist ${enchantmentLevelMod}`
     } else {
         retVal += `Warrior ${enchantmentLevelMod}`

@@ -157,6 +157,7 @@ export interface IScaledWeaponBaseData extends IWeaponCommonData {
     damageType: UDamageType,
     damageSubtype: UDamageSubtype,
     handedness: number,
+    isCreatureWeapon: boolean,
     specialCrit: {
         d1: UCritDie,
         d2: UCritDie,
@@ -193,6 +194,7 @@ export interface IWeaponBaseData extends IWeaponCommonData {
     damageType: UDamageType,
     damageSubtype: UDamageSubtype,
     handedness: number,
+    isCreatureWeapon: boolean,
     specialCrit: IScalingData<{
         d1: UCritDie,
         d2: UCritDie,

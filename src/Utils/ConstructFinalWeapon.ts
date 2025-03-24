@@ -32,7 +32,8 @@ export const ConstructFinalWeapon = (baseWeaponData: IWeaponBaseData, enchantmen
         weaponClass: baseWeaponData.weaponClass,
         weaponTags: baseWeaponData.weaponTags,
         weaponType: baseWeaponData.weaponType,
-        handedness: baseWeaponData.handedness
+        handedness: baseWeaponData.handedness,
+        isCreatureWeapon: baseWeaponData.isCreatureWeapon
     }
 }
 

@@ -68,16 +68,33 @@ abstract class AbstractSheet {
     public abstract statPingExecute(): Promise<void>;
     public abstract charPingExecute(): Promise<void>;
     public getStaminaRefresh(): number {
+        let staminaMultiplier = 2.0;
+        if (!this.currentArmor || this.currentArmor.armorClass == "light") {
+            staminaMultiplier = 3.0
+        } else if (this.currentArmor && this.currentArmor.armorClass == "heavy") {
+            staminaMultiplier = 1.0
+        }
+        staminaMultiplier += this.getAbilityBonuses("staminaRefreshScaling")
+
         return Math.floor(
-            this.getStat("endurance") * (2+(this.getAbilityBonuses("staminaRefreshScaling")))
+            this.getStat("endurance") * staminaMultiplier
         ) + this.getAbilityBonuses("staminaRefresh")
     }
     public getTetherRefresh(): number {
+        let tetherMultiplier = 2.0;
+        if (!this.currentArmor || this.currentArmor.armorClass == "light") {
+            tetherMultiplier = 3.0
+        } else if (this.currentArmor && this.currentArmor.armorClass == "heavy") {
+            tetherMultiplier = 1.0
+        }
+        tetherMultiplier += this.getAbilityBonuses("tetherRefreshScaling")
         if (this.isUnlocked("patronMagic")) {
-            return (this.getStat("mind")*((this.getAbilityBonuses("tetherRefreshScaling")))) + this.getAbilityBonuses("tetherRefresh") + this.getStat("authority") + this.getStat("presence");
+            return Math.floor(Math.max(0,this.getStat("mind")*(tetherMultiplier-2)) + this.getAbilityBonuses("tetherRefresh") + this.getStat("authority")*(tetherMultiplier*0.5) + this.getStat("presence")*(tetherMultiplier*0.5));
         }
 
-        return (this.getStat("mind")*(2+(this.getAbilityBonuses("tetherRefreshScaling")))) + this.getAbilityBonuses("tetherRefresh")
+
+
+        return (this.getStat("mind")*tetherMultiplier) + this.getAbilityBonuses("tetherRefresh")
     }
 
     public getEvadePDEF(): number {
@@ -107,34 +124,25 @@ abstract class AbstractSheet {
         return this.getEvadeMDEF()+4+blockArmorBonus+blockShieldBonus;
     }
 
-    private getArmorDodgeBonus() {
-        if (this.currentArmor) {
-            if (this.currentArmor.armorClass == "light") {
-                return 8
-            } else if (this.currentArmor.armorClass == "heavy") {
-                return -8;
-            }
-            return 0;
-        } else {
-            return 12;
+    public getAgilityScalingBonus() {
+        let agilityScalingBonus = 2.0;
+        if (!this.currentArmor || this.currentArmor.armorClass == "light" ) {
+            agilityScalingBonus = 2.5
+        } else if (this.currentArmor.armorClass == "heavy") {
+            agilityScalingBonus = 1.0
         }
+        agilityScalingBonus += this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("evadeAgilityDodgeScaling");
+        return agilityScalingBonus;
     }
 
-    private getShieldDodgeBonus() {
-        if (this.currentShield) {
-            switch(this.currentShield.armorClass) {
-                case "light":
-                    return -4;
-                case "standard":
-                    return -8;
-                case "heavy":
-                    return -16
-            }
-        }
-        return 0;
-    }
+
     public getEvadeDodge(): number {
-        let dodgeAgility = (3 + this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("evadeAgilityDodgeScaling"))*this.getStat("agility");
+
+
+        const agilityScalingBonus = this.getAgilityScalingBonus();
+
+
+        let dodgeAgility = agilityScalingBonus*this.getStat("agility");
         let dodgeAwareness = (1 + this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("evadeAgilityDodgeScaling"))*this.getStat("awareness");
         let weightPenaltyBonus = this.weightPenalty*5;
         let abilityBonuses = 0;
@@ -142,27 +150,31 @@ abstract class AbstractSheet {
             abilityBonuses += this.getStat("presence");
         }
 
-        let armorBonus = this.getArmorDodgeBonus();
-        let shieldBonus = this.getShieldDodgeBonus();
 
 
-        return 30 + (dodgeAgility + dodgeAwareness + abilityBonuses + armorBonus + shieldBonus - weightPenaltyBonus) + this.getAbilityBonuses("evadeDodge") + this.getAbilityBonuses("dodge");
+        return Math.floor(30 + (dodgeAgility + dodgeAwareness + abilityBonuses - weightPenaltyBonus) + this.getAbilityBonuses("evadeDodge") + this.getAbilityBonuses("dodge"));
 
 
     }
     public getBlockDodge(): number {
-        let dodgeAgility = (2 + this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("blockAgilityDodgeScaling"))*this.getStat("agility");
+
+
+
+        let agilityScalingBonus= this.getAgilityScalingBonus()
+
+        let dodgeAgility = (agilityScalingBonus-1)*this.getStat("agility");
         let dodgeAwareness = (1 + this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("blockAgilityDodgeScaling"))*this.getStat("awareness");
         let weightPenaltyBonus = this.weightPenalty*5;
 
-        let armorBonus = this.getArmorDodgeBonus();
-        let shieldBonus = this.getShieldDodgeBonus();
-
-        return 15 + (dodgeAgility + dodgeAwareness + armorBonus + shieldBonus - weightPenaltyBonus) + this.getAbilityBonuses("blockDodge") + this.getAbilityBonuses("dodge");
+        return Math.floor(15 + (dodgeAgility + dodgeAwareness - weightPenaltyBonus) + this.getAbilityBonuses("blockDodge") + this.getAbilityBonuses("dodge"));
     }
 
     public getStepSpeed(): number {
-        return 2 + this.getAbilityBonuses("stepSpeed");
+        let armorBonus = 1;
+        if (this.currentArmor && this.currentArmor.armorClass == "heavy" && !this.isUnlocked("heavyArmorSprinter")) {
+            armorBonus = 0
+        }
+        return 1 + armorBonus + this.getAbilityBonuses("stepSpeed");
     }
 
     public getArmorPDEF(stance: "evade" | "blocking", display=false): number {
@@ -345,19 +357,15 @@ abstract class AbstractSheet {
                 },
                 {
                     reason: "Agility",
-                    value: getSkillFormat((3 + this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("evadeAgilityDodgeScaling"))*this.getStat("agility"))
+                    value:  getSkillFormat(Math.floor((this.getAgilityScalingBonus())*this.getStat("agility")))
+                },
+                {
+                    reason: "Agility Scaling",
+                    value: `x${this.getAgilityScalingBonus()}`
                 },
                 {
                     reason: "Awareness",
                     value: getSkillFormat((1 + this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("evadeAgilityDodgeScaling"))*this.getStat("awareness"))
-                },
-                {
-                    reason: "Armor",
-                    value: getSkillFormat(this.getArmorDodgeBonus(),true,true)
-                },
-                {
-                    reason: "Shield",
-                    value: getSkillFormat(this.getShieldDodgeBonus(), true, true)
                 },
                 {
                     reason: "Other Bonuses",
@@ -383,19 +391,15 @@ abstract class AbstractSheet {
                 },
                 {
                     reason: "Agility",
-                    value: getSkillFormat((2 + this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("evadeAgilityDodgeScaling"))*this.getStat("agility"))
+                    value: getSkillFormat(Math.floor((this.getAgilityScalingBonus()-1)*this.getStat("agility")))
+                },
+                {
+                    reason: "Agility Scaling",
+                    value: `x${this.getAgilityScalingBonus()-1}`
                 },
                 {
                     reason: "Awareness",
                     value: getSkillFormat((1 + this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("evadeAgilityDodgeScaling"))*this.getStat("awareness"))
-                },
-                {
-                    reason: "Armor",
-                    value: getSkillFormat(this.getArmorDodgeBonus(), true, true)
-                },
-                {
-                    reason: "Shield",
-                    value: getSkillFormat(this.getShieldDodgeBonus(), true, true)
                 },
                 {
                     reason: "Other Bonuses",

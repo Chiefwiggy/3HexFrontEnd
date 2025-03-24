@@ -22,7 +22,7 @@ import CharacterSheet from "../../Data/CharacterSheet";
 import SubtypeDamageIcon from "../SmallComponents/SubtypeDamageIcon";
 import BoxWithTooltip from "../Generic/BoxWithTooltip";
 import {FaHeartbeat, FaRunning} from "react-icons/fa";
-import {GiArcheryTarget, GiBorderedShield, GiBrokenShield, GiFist, GiRun} from "react-icons/gi";
+import {GiArcheryTarget, GiBorderedShield, GiBrokenShield, GiFist, GiMagicShield, GiRun} from "react-icons/gi";
 import {FaRegClock} from "react-icons/fa6";
 
 interface ICalculatedCardInput {
@@ -201,7 +201,7 @@ const CalculatedCard = ({
                                 {/*<>{cardCalculator.getIconValue("spellSet")}</>*/}
 
                                 <NumericIcon fontSize={"16px"} align="left" val={cardCalculator.getSummonData().pDEF} icon={GiBorderedShield} title={`pDEF`} />
-                                <NumericIcon fontSize={"16px"} align="center" val={cardCalculator.getSummonData().mDEF} icon={GiBrokenShield} title={`mDEF`} />
+                                <NumericIcon fontSize={"16px"} align="center" val={cardCalculator.getSummonData().mDEF} icon={GiMagicShield} title={`mDEF`} />
                                 <NumericIcon fontSize={"16px"} align="right" val={getSkillFormat(cardCalculator.getSummonData().dodge,false)} icon={FaRunning} title={`Dodge`} />
 
                                 <NumericIcon fontSize={"16px"} align="left" val={cardCalculator.getSummonData().movement} icon={GiRun} title={`Movement`}/>
