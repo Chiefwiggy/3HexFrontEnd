@@ -20,7 +20,11 @@ const ArmorElement = ({armor, enchantmentLevel}: IArmorElementInput) => {
     const {currentSheet} = useCharacter();
 
     const getRefreshIndex = (armorClass: UArmorClass) => {
-        return ["heavy", "standard", "light"].indexOf(armor.armorClass) + 1
+        let ret = ["heavy", "standard", "light"].indexOf(armor.armorClass) + 1.0
+        if (currentSheet) {
+            ret += currentSheet.getAbilityBonuses(`${armorClass}ArmorRefreshScaling`)
+        }
+        return ret;
     }
 
     const getDodgeIndex = (armorClass: UArmorClass) => {
@@ -36,7 +40,7 @@ const ArmorElement = ({armor, enchantmentLevel}: IArmorElementInput) => {
     return (
         <Paper elevation={2} sx={{
             minWidth: "264px",
-            width: "18vw",
+            width: "100%",
             padding: "6px",
             borderRadius: "12px"
         }}>

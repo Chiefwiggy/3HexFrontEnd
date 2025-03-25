@@ -232,7 +232,7 @@ class CharacterSheet extends AbstractSheet {
                 strSplit.forEach(str => {
                     ability = ability[str];
                 })
-                if (Number.isInteger(ability)) {
+                if (Number.isFinite(ability)) {
                     return pv + ability as number;
                 }
                 return pv;
@@ -292,7 +292,7 @@ class CharacterSheet extends AbstractSheet {
                 strSplit.forEach(str => {
                     ability = ability[str];
                 })
-                if (Number.isInteger(ability)) {
+                if (Number.isFinite(ability)) {
                     return pv + ability as number;
                 }
                 return pv;

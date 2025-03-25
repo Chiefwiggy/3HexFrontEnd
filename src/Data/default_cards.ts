@@ -83,7 +83,7 @@ export const default_weapon_cards: Array<IWeaponCommonData | IWeaponBaseData> = 
         effects: [],
         prerequisites: [],
         baseHit: {
-            baseValue: 0,
+            baseValue: 25,
             breakpoints: [],
             breakpointBonuses: []
         },

@@ -45,12 +45,12 @@ abstract class AbstractSheet {
 
 
     public getMaxHealth(): number {
-        return 4 + this.getAbilityBonuses("maxHealth") +
-            (this.getAbilityBonuses("maxHealthScaling")+2)*this.getStat("vitality");
+        return Math.floor(4 + this.getAbilityBonuses("maxHealth") +
+            (this.getAbilityBonuses("maxHealthScaling")+2)*this.getStat("vitality") + (this.getAbilityBonuses("enduranceMaxHealthScaling")*this.getStat("endurance")));
     }
     public getMaxStamina() {
-        return 10 + this.getAbilityBonuses("maxStamina") +
-            (this.getAbilityBonuses("maxStaminaScaling")+5)*this.getStat("endurance");
+        return Math.floor(10 + this.getAbilityBonuses("maxStamina") +
+            (this.getAbilityBonuses("maxStaminaScaling")+5)*this.getStat("endurance") + this.getAbilityBonuses("mindMaxStaminaScaling") * this.getStat("mind"))
     }
     public getMaxTether() {
         if (this.isUnlocked("patronMagic")) {
@@ -74,7 +74,10 @@ abstract class AbstractSheet {
         } else if (this.currentArmor && this.currentArmor.armorClass == "heavy") {
             staminaMultiplier = 1.0
         }
-        staminaMultiplier += this.getAbilityBonuses("staminaRefreshScaling")
+        if (this.currentArmor) {
+            staminaMultiplier += this.getAbilityBonuses(`${this.currentArmor.armorClass}ArmorRefreshScaling`);
+        }
+        staminaMultiplier += this.getAbilityBonuses("staminaRefreshScaling") + this.getAbilityBonuses("refreshScaling")
 
         return Math.floor(
             this.getStat("endurance") * staminaMultiplier
@@ -87,14 +90,17 @@ abstract class AbstractSheet {
         } else if (this.currentArmor && this.currentArmor.armorClass == "heavy") {
             tetherMultiplier = 1.0
         }
-        tetherMultiplier += this.getAbilityBonuses("tetherRefreshScaling")
+        if (this.currentArmor) {
+            tetherMultiplier += this.getAbilityBonuses(`${this.currentArmor.armorClass}ArmorRefreshScaling`);
+        }
+        tetherMultiplier += this.getAbilityBonuses("tetherRefreshScaling") + this.getAbilityBonuses("refreshScaling")
         if (this.isUnlocked("patronMagic")) {
             return Math.floor(Math.max(0,this.getStat("mind")*(tetherMultiplier-2)) + this.getAbilityBonuses("tetherRefresh") + this.getStat("authority")*(tetherMultiplier*0.5) + this.getStat("presence")*(tetherMultiplier*0.5));
         }
 
 
 
-        return (this.getStat("mind")*tetherMultiplier) + this.getAbilityBonuses("tetherRefresh")
+        return Math.floor((this.getStat("mind")*tetherMultiplier) + this.getAbilityBonuses("tetherRefresh"))
     }
 
     public getEvadePDEF(): number {

@@ -85,6 +85,8 @@ const EquipWeaponsWidget = ({
         setWeaponData(newWeaponsArray);
     }
 
+    const isOneColumn = useMediaQuery("(max-width: 1853px)");
+
     return (
         <Box>
             <Typography variant={"h6"}>Weapons</Typography>
@@ -139,7 +141,7 @@ const EquipWeaponsWidget = ({
                 <Box
                     sx={{
                         display: 'grid',
-                        gridTemplateColumns: "repeat( auto-fill , max(264px, 19vw))",
+                        gridTemplateColumns: isOneColumn ? "1fr" : "repeat( auto-fill , max(264px, 19vw))",
                         gridGap: "10px"
                     }}
                 >

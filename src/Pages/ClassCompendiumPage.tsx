@@ -53,7 +53,7 @@ const ClassCompendiumPage = ({}: IClassCompendiumPageInput) => {
                 const ctier = classData.flatMap(e => e).find(e => e.className.toLowerCase() == className)?.classTier;
                 if (ctier) {
                     setTier(getNameFromTier(ctier));
-                    const index = classData[ctier-1].findIndex(e => e.className.toLowerCase() == className);
+                    const index = classData[ctier-1].sort((a, b) => a.className.localeCompare(b.className)).findIndex(e => e.className.toLowerCase() == className);
                     if (index) {
                         setCurrentTabValue(index);
                     }
@@ -71,7 +71,7 @@ const ClassCompendiumPage = ({}: IClassCompendiumPageInput) => {
             <Box
                 sx={{
                     display: "grid",
-                    gridTemplateColumns: "1fr 9fr"
+                    gridTemplateColumns: "1fr 9fr",
                 }}
             >
                 <Box>
@@ -104,13 +104,16 @@ const ClassCompendiumPage = ({}: IClassCompendiumPageInput) => {
                         </FormControl>
                         <Tabs
                             orientation="vertical"
-                            variant="scrollable"
+                            variant={"scrollable"}
                             value={currentTabValue}
                             onChange={handleTabChange}
                             aria-label="Vertical tabs example"
+                            sx={{
+                                height: "calc(100vh - 160px)"
+                            }}
                         >
                             {
-                                classData[getTierFromName(tier)-1].map(datum => {
+                                classData[getTierFromName(tier)-1].sort((a, b) => a.className.localeCompare(b.className)).map(datum => {
                                     return (
                                         <Tab
                                             label={datum.className}
