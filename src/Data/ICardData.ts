@@ -4,7 +4,7 @@ import {UArcanotype} from "./ISourceData";
 
 export type USpellTypes = "base" | "target" | "skill" | "edict" | "summon" | null;
 export type UWeaponClass = "light" | "standard" | "heavy"
-export type UWeaponType = "axe" | "blade" | "bomb" | "bow" | "club" | "polearm" | "wand" | "spear" | "unarmed"
+export type UWeaponType = "axe" | "blade" | "bomb" | "bow" | "club" | "polearm" | "wand" | "spear" | "unarmed" | "shield"
 export type UCritDie = "-" | "?" | "1" | "2" | "3" | "4" | "5" | "6"
 export interface ISpellBaseCardData extends ISpellModifierCardData {
     arcanotype: UArcanotype,
@@ -106,7 +106,7 @@ export interface ISpecialistData {
 }
 
 export type UDamageType = "physical" | "magical" | "raw" | "resistant" | "none";
-export const VDamageSubtypes = ["pierce", "slash", "kinetic", "burn", "frost", "shock", "corrosive", "sensory", "holy", "curse", "soul", "none"]
+export const VDamageSubtypes = ["pierce", "slash", "impact", "burn", "frost", "shock", "corrosive", "sensory", "holy", "curse", "soul", "none"]
 
 export type UDamageSubtype = typeof VDamageSubtypes[number]
 

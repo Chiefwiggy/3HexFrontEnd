@@ -3,6 +3,7 @@ import {Box, Button, TextField, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 import useAPI from "../Hooks/useAPI/useAPI";
 import {Helmet} from "react-helmet";
+import useUser from "../Hooks/useUser/useUser";
 
 
 
@@ -13,6 +14,7 @@ interface ICreateCharacterPageInput {
 const CreateCharacterPage = ({}: ICreateCharacterPageInput) => {
 
     const [charName, setCharName] = useState("");
+    const {userPermissions} = useUser();
 
     const navigate = useNavigate();
 

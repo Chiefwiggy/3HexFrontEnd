@@ -87,6 +87,8 @@ export interface ICharacterBaseData {
         isEquipped: boolean
     }>,
     settings: ISettingsData,
+    isDead: boolean,
+    creatorName: string,
     __times_accessed: number,
     _id: string
 }

@@ -99,8 +99,8 @@ const CharacterSelectView = () => {
                             .sort((a, b) => {
                                 if (a.isMainCharacter != b.isMainCharacter) {
                                     return b.isMainCharacter ? 1 : -1;
-                                } else if (b.__times_accessed != a.__times_accessed) {
-                                    return b.__times_accessed - a.__times_accessed
+                                } else if (a.isDead != b.isDead) {
+                                    return ~~a.isDead - ~~b.isDead
                                 } else {
                                     return a.characterName.localeCompare(b.characterName);
                                 }

@@ -21,6 +21,7 @@ export interface IUserResponse {
         userPermissions: Array<string>
         characters_owned: Array<string>,
         email: string,
+        name: string,
         password?: string,
         __v?: number,
         _id?: string
@@ -64,6 +65,7 @@ const UserProvider = ({children}: any) => {
     const __SetLoginData = async(data: IUserResponse) => {
         localStorage.setItem("refresh", data.refresh);
         localStorage.setItem("email", data.response.email);
+        localStorage.setItem("name", data.response.name);
         setCharactersOwnedIds(data.response.characters_owned);
         setUserPermissions(data.response.userPermissions);
         localStorage.setItem("token", data.token);

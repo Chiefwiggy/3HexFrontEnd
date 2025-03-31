@@ -85,7 +85,7 @@ export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: IS
     try {
         let finalBasePower = StatChain(spellBase.basePower, [spellBase.basePowerMod, spellTarget.basePowerMod, ...rest.map(e => e?.basePowerMod)]);
         let finalPotencyPower = Math.floor(StatChain(spellBase.potency, [spellBase.potencyMod, spellTarget.potencyMod, ...rest.map(e => e?.potencyMod)], false) * char.getStat((spellTarget.summonData?.simpleName && !rest.find(e => e?._id == "67d1e2ec08eca40980cfee29")) ? "authority" : "might"))
-        const finalPower = StatChain(finalBasePower + finalPotencyPower, [spellBase.powerMod, spellTarget.powerMod, {modifier: char.getAbilityBonuses("spellDamage")}, ...rest.map(e => e?.powerMod)]);
+        const finalPower = StatChain(finalBasePower + finalPotencyPower + char.getBonusSpellPower(spellBase.arcanotype), [spellBase.powerMod, spellTarget.powerMod, {modifier: char.getAbilityBonuses("spellDamage")}, ...rest.map(e => e?.powerMod)]);
         const minRange = StatChain(spellTarget.baseRange.min, [spellBase.minRangeMod, spellTarget.minRangeMod, ...rest.map(e => e?.minRangeMod)]);
         const maxRange = StatChain(spellTarget.baseRange.max, [spellBase.maxRangeMod, spellTarget.maxRangeMod, ...rest.map(e => e?.maxRangeMod)]);
         const minRangeFinal = StatChain(minRange, [spellBase.fullRangeMod, spellTarget.fullRangeMod, ...rest.map(e => e?.fullRangeMod)]);

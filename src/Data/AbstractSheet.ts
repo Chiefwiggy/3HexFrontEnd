@@ -17,6 +17,7 @@ import ConditionCard from "../Components/Cards/ConditionCard";
 import {getSkillFormat} from "../Utils/Shorthand";
 import {number} from "yup";
 import SpellTargetSummonCard from "../Components/Cards/SpellTargetSummonCard";
+import {UArcanotype} from "./ISourceData";
 
 
 abstract class AbstractSheet {
@@ -61,6 +62,7 @@ abstract class AbstractSheet {
     public abstract getHealth(): number;
     public abstract getStamina(): number;
     public abstract getTether(): number;
+
     public abstract setHealth(amount: number): void;
     public abstract setStamina(amount: number): void;
     public abstract setTether(amount: number): void;
@@ -723,6 +725,10 @@ abstract class AbstractSheet {
 
     public areAllCardsPrepared = (data: Array<ICommonCardData|null>): boolean => {
         return true;
+    }
+
+    public getBonusSpellPower(arcanotype: UArcanotype) {
+        return 0;
     }
 
 

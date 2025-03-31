@@ -29,7 +29,8 @@ const CharacterSelectCard = ({
             sx={{
                 display: "grid",
                 gridTemplateColumns: "7fr 1fr",
-                border: characterData.isMainCharacter ? "1px inset gold" : ""
+                border: characterData.isMainCharacter ? "1px inset gold" : "",
+                backgroundColor: characterData.isDead ? "rgba(159,66,66,0.3)" : "inherit"
             }}
         >
             <Box
@@ -44,6 +45,7 @@ const CharacterSelectCard = ({
                 <Typography variant={characterData.characterName.length > 22 ? "body1" : "h6"}>{ characterData.characterName.length > 28 ? characterData.characterName.substring(0, 25).trimEnd() + "..." : characterData.characterName}</Typography>
                 <Typography variant={"body2"} color={"darkgray"}>Level {characterData.characterLevel} </Typography>
                 <Typography variant={"body2"} color={"darkgray"}>{getClassesString(characterData.classes)} </Typography>
+                <Typography variant={"body2"} color={"darkgray"}>Owner: {characterData.creatorName} </Typography>
 
             </Box>
             <Box

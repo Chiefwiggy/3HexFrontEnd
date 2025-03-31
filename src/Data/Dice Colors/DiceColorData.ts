@@ -52,7 +52,29 @@ const DieColorData: Array<IDiceColor> = [
             outline: true,
             outlineColor: "#3731da",
         },
-        lockedByDefault: true,
+        lockedByDefault: false,
+    },
+    {
+        id: "DD_FROST",
+        name: "Frostbourne",
+        colorData: {
+            dotColor: "#b4d3ec",
+            faceColor: "#636363",
+            outline: false,
+            outlineColor: "white",
+        },
+        lockedByDefault: false,
+    },
+    {
+        id: "DD_EYES",
+        name: "The Eyes",
+        colorData: {
+            dotColor: "#caca66",
+            faceColor: "#0a3015",
+            outline: false,
+            outlineColor: "black",
+        },
+        lockedByDefault: false,
     }
 ]
 

@@ -38,7 +38,7 @@ const getElementIcon = (damageSubtype: string, size: number) => {
         // force: <GiWindHole  color={"#c8ff90"}   {...ElementIconProps}/>,
         pierce: <GiFlyingDagger color={"#ff5757"}  {...ElementIconProps}/>,
         slash: <GiAxeSwing color={"silver"}  {...ElementIconProps}/>,
-        kinetic: <GiPunchBlast color={"brown"}  {...ElementIconProps}/>,
+        impact: <GiPunchBlast color={"brown"}  {...ElementIconProps}/>,
         burn: <FaGripfire color={"#ff9d09"} {...ElementIconProps}/>,
         frost: <FaSnowflake color={"lightblue"}  {...ElementIconProps}/>,
         shock: <GiLightningBranches color={"#f6e410"} {...ElementIconProps}/>,

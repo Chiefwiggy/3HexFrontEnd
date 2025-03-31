@@ -46,6 +46,7 @@ import {Utils} from "../Utils/LanguageLacking";
 import {IFatelineData} from "./IFatelineData";
 import {IDowntimePlayerData} from "./IDowntime";
 import {number} from "yup";
+import {UArcanotype} from "./ISourceData";
 
 export type AttributeBarType = "tether" | "stamina" | "health"
 export type DamageType = "physical" | "magical" | "raw" | "resistant"
@@ -316,6 +317,20 @@ class CharacterSheet extends AbstractSheet {
             value: total + pts,
             isExpert: this.expertiseDiceValues[skillName] > 0 ?? false
         }
+    }
+
+    public getBonusSpellPower(arcanotype: UArcanotype) {
+        let finalRet = 0;
+        if (this.isUnlocked("communionStrength")) {
+            finalRet += this.getCharacterSourcesByArcanotype(arcanotype).length;
+        }
+        return finalRet;
+    }
+
+    public getCharacterSourcesByArcanotype(arcanotype: UArcanotype) {
+        const id_map = [...this.data.knownSources, ...this.data.temporarySources].map(e => e.sourceId);
+        const allSources = this.preloadedData.SourceData.GetAllSourceData().filter(e => id_map.includes(e._id));
+        return allSources.filter(e => e.sourceArcanotype === arcanotype)
     }
 
     public getExpertiseDice = () => {

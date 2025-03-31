@@ -293,8 +293,9 @@ class CharacterConnection {
               "value": 1
             }
           },
-          "preparedCards": [],
-          "skillPoints": {},
+            "preparedCards": [],
+            "skillPoints": {},
+            "creatorName": localStorage.getItem("name") ?? localStorage.getItem("email") ?? "ERROR",
             race: {
               raceId: "_"
             }

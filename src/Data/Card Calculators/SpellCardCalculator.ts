@@ -60,7 +60,7 @@ class SpellCardCalculator extends AbstractCardCalculator {
             [
                 "duration",
                 {
-                    val: "0",
+                    val: "Instant",
                     icon: AccessTimeOutlined
                 }
             ]
@@ -86,7 +86,10 @@ class SpellCardCalculator extends AbstractCardCalculator {
             if (this.getCardOfType("spell.base")) {
                 this.updateVal("saveType", (getStatShorthand(((this.getCardOfType("spell.base") as ISpellBaseCardData).saveType) as UStat | "none" | "luck")).toUpperCase());
             }
-            this.updateVal("duration", finalSpellData.duration.toString());
+            if (finalSpellData.duration > 0) {
+                this.updateVal("duration", `${finalSpellData.duration.toString()} Round${finalSpellData.duration == 1 ? "" : "s"}`);
+            }
+
             this.summonData = finalSpellData.summon;
         }
 
