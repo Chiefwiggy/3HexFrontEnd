@@ -75,6 +75,17 @@ const DieColorData: Array<IDiceColor> = [
             outlineColor: "black",
         },
         lockedByDefault: false,
+    },
+    {
+        id: "DD_CABBAGE",
+        name: "Cabbage",
+        colorData: {
+            dotColor: "#1C3509",
+            faceColor: "#72B63E",
+            outline: false,
+            outlineColor: "black",
+        },
+        lockedByDefault: false,
     }
 ]
 
