@@ -51,6 +51,8 @@ const ConditionTooltip = ({
                 return "Single Use: Effect is removed upon use."
             case "untilSaved":
                 return "On Save: Effect lasts until you successfully save. Reattempt saves at the start of your turn."
+            case "special":
+                return "Special: See condition's description"
             default:
                 return "Contact Collin, this is missing."
         }

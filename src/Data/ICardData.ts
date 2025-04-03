@@ -243,7 +243,7 @@ export interface IConditionTag {
     conditionId: string,
     conditionName: string,
     conditionType: string
-    conditionCountdownType: "uses" | "decay10" | "decay1" | "rounds" | "onWounding" | "perFight" | "singleUse" | "untilSaved"
+    conditionCountdownType: "uses" | "decay10" | "decay1" | "rounds" | "onWounding" | "perFight" | "singleUse" | "untilSaved" | "special"
     description: Array<string>,
     xVals: Array<{
         basePower: number,

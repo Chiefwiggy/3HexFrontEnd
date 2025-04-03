@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {IEffectData} from "../../Data/ICardData";
 import {Box, Paper, Typography} from "@mui/material";
 import {
-    AutoFixHighOutlined, DirectionsRunOutlined, HeartBrokenOutlined,
+    AutoFixHighOutlined, CasinoOutlined, DirectionsRunOutlined, HeartBrokenOutlined,
     InfoOutlined, LandscapeOutlined, PriorityHigh, PriorityHighOutlined,
     ReportGmailerrorredOutlined,
     SportsMmaOutlined, SquareOutlined, TrendingDownOutlined, TrendingUpOutlined,
@@ -40,6 +40,10 @@ const CardEffect = ({effectData, finalPower}: ICardEffectInput) => {
                 break;
             case 'info':
                 setEmblem(<InfoOutlined />)
+                setTintColor("rgba(255,255,255,0)")
+                break;
+            case 'die':
+                setEmblem(<CasinoOutlined />)
                 setTintColor("rgba(255,255,255,0)")
                 break;
             case 'warning':
