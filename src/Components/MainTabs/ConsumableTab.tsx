@@ -32,7 +32,6 @@ const ConsumableTab = ({}: IConsumableTabInput) => {
     }, [currentSheet]);
 
     const handleEditConsumableAmount = (consumableIndex: number, delta: number) => {
-        console.log(consumableIndex, delta);
 
         setConsumablePlayerData((prevState) => {
             const newState = [...prevState];

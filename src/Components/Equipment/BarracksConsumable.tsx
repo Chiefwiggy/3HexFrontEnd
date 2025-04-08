@@ -7,6 +7,7 @@ import PlayerAddDialog from '../../Dialogs/PlayerAddDialog'
 import {ICharacterBaseData} from "../../Data/ICharacterData";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
 import useAPI from "../../Hooks/useAPI/useAPI";
+import ConsumableCard_New from '../Items/ConsumableCard_New';
 
 interface IBarracksConsumableInput {
     consumable: IConsumableTemplate
@@ -43,7 +44,7 @@ const BarracksConsumable = ({consumable}: IBarracksConsumableInput) => {
                 borderRadius: "12px"
             }}
         >
-            <ConsumableCard consumableTemplate={consumable} defaultScaled={false} />
+            <ConsumableCard_New consumableTemplate={consumable} defaultScaled={false} />
             <Box
                 sx={{
                     display: "flex",

@@ -182,7 +182,6 @@ export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: IS
 
 export const GetFinalWeaponData = (weaponBase: IScaledWeaponBaseData, allCards: Array<IWeaponCommonData | null>, char: AbstractSheet): ITotalWeaponStats => {
 
-    console.log("CALCED");
 
     let might = 0;
     let skill = 0;

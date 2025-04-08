@@ -116,7 +116,6 @@ abstract class AbstractSheet {
         let blockShieldBonus = this.getShieldPDEF("blocking");
         blockArmorBonus += this.getAbilityBonuses("pDEFBlock") + this.getAbilityBonuses("DEFBlock");
         blockShieldBonus += this.getAbilityBonuses("shieldPDEF") + this.getAbilityBonuses("shieldDEF");
-        console.log(this.getEvadePDEF());
         return this.getEvadePDEF()+4+blockArmorBonus+blockShieldBonus;
     }
     public getEvadeMDEF(): number {

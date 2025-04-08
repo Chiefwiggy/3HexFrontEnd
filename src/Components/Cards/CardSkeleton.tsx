@@ -21,8 +21,6 @@ const CardSkeleton = ({
     index
 }: ICardSkeletonInput) => {
 
-    console.log(type)
-
     return cardData ? (
         <CardElement
             cardData={cardData}

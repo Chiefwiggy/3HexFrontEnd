@@ -76,7 +76,7 @@ const AbilityItem = ({abilityData, showPrerequisites = false}: IAbilityItemInput
                                 //     textAlign: "left",
                                 //     paddingBottom: "2px"
                                 // }} key={index}>{desc}</Typography>
-                                return <HighlightType text={desc} xval={0} />
+                                return <HighlightType text={desc} xval={0} key={index}/>
                             })
                         }
                     </Paper>

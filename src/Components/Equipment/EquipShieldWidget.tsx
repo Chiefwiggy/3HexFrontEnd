@@ -28,11 +28,9 @@ const EquipShieldWidget = ({
 
     useEffect(() => {
         if (currentSheet && currentShield) {
-            console.log("storen down");
             setcurrentShieldMax(getMaxArmorEnchant(currentSheet, currentShield.armorClass))
 
             setCurrentEnchant(currentShield.enchantmentLevel);
-            console.log(currentEnchant, currentShieldMax);
         } else {
             setcurrentShieldMax(0);
             setCurrentEnchant(0);

@@ -29,6 +29,9 @@ const HighlightType = ({ text, xval }: IHighlightTypeInput) => {
                 display: "inline",
                 padding: 0,
             }} size={14}/>
+        } else if (tagParts[0] == "color") {
+            return <Typography color={tagParts[1]} component={"span"} fontSize={"0.9rem"}>{tagParts.slice(2).join(".").replace(/'/g, "")}</Typography>
+
         }
 
         return <>{tag}</>

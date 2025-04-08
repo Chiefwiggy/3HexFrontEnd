@@ -40,7 +40,6 @@ const AddSubtractPanel = ({
     }
 
     const handleHeldClick = (event: React.MouseEvent, delta: number, times: number) => {
-        console.log("CORRECT", delta);
         const newEvent = setTimeout(() => {
             if ((delta > 0 && !isAtCap) || (delta < 0 && !isAtBottom))  {
                 handleChange(delta)(event);
@@ -57,7 +56,6 @@ const AddSubtractPanel = ({
     }
 
     const handleReleaseLongPress = () => {
-        console.log("RELEASED");
         setIsLongPressing(false);
         if (preLongPressTimeout) {
             clearTimeout(preLongPressTimeout);

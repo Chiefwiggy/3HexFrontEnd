@@ -131,13 +131,11 @@ class MinionSheet extends AbstractSheet {
     }
 
     private _setWeightPenalty() {
-        console.log(this.currentArmor?.vitalityRequirement);
         if (this.currentArmor && this.getStat("vitality")
  < this.currentArmor.vitalityRequirement) {
 
             this.weightPenalty = -(this.getStat("vitality")
  - this.currentArmor.vitalityRequirement);
-            console.log(this.weightPenalty)
         } else {
             this.weightPenalty = 0;
         }

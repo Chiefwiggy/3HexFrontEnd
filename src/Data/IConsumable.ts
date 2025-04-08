@@ -30,6 +30,7 @@ export interface IConsumableTemplate {
     itemName: string,
     itemType: EConsumableType,
     craftingType: EConsumableCraftingType,
+    craftingCost: number,
     xVals: Array<{
         basePower: number,
         potency: number,

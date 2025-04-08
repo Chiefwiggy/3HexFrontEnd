@@ -13,6 +13,7 @@ import ArmorTab from "../Components/MainTabs/ArmorTab";
 import SourcesTab from "../Components/MainTabs/SourcesTab";
 import useCharacter from "../Hooks/useCharacter/useCharacter";
 import MountTab from "../Components/MainTabs/MountTab";
+import ConsumableTab_New from "../Components/MainTabs/ConsumableTab_New";
 
 const MainContentView = () => {
 
@@ -66,7 +67,7 @@ const MainContentView = () => {
             <CustomTabPanel index={currentTab} value={2}>  <AbilityTab /> </CustomTabPanel>
             <CustomTabPanel index={currentTab} value={3}> <EquipmentTab /> </CustomTabPanel>
             <CustomTabPanel index={currentTab} value={4}> <SourcesTab /> </CustomTabPanel>
-            <CustomTabPanel index={currentTab} value={5}> <ConsumableTab /> </CustomTabPanel>
+            <CustomTabPanel index={currentTab} value={5}> <ConsumableTab_New /> </CustomTabPanel>
             {/*<CustomTabPanel index={currentTab} value={6}> <BattalionTab /> </CustomTabPanel>*/}
             <CustomTabPanel index={currentTab} value={6}><MountTab /></CustomTabPanel>
 

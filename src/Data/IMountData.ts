@@ -5,6 +5,7 @@ export interface IMountDefenseBonuses {
 }
 
 export interface IMountBaseModel extends Document {
+    _id: string,
     speciesName: string,
     mountType: string,
     mountTier: string,

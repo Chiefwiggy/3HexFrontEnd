@@ -859,13 +859,9 @@ class CharacterSheet extends AbstractSheet {
 
 
     public getResistancesAndWeaknesses(force = false) {
-        console.log(this._resistances, this._weaknesses);
         if (force || (this._resistances == null && this._weaknesses == null)) {
 
-            console.log("egg");
-
             const resistances = VDamageSubtypes.filter(dst => {
-                console.log(dst);
                 return this.isUnlocked(`${dst}Resistance`)
             })
             const weaknesses = VDamageSubtypes.filter(dst => {
@@ -932,6 +928,8 @@ class CharacterSheet extends AbstractSheet {
         await this.API.CharacterAPI.UpdateSource(this.data._id, sourceData, tempSources)
         this.manualCharPing()
     }
+
+
 
     public async healthPingExecute(doSend: boolean): Promise<void> {
         if (doSend) {

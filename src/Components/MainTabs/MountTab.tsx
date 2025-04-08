@@ -21,7 +21,7 @@ const MountTab = ({}: IMountTabInput) => {
         >
             {
                 MountData.GetMountData().map(mount => {
-                    return <MountBaseCard mountData={mount}/>
+                    return <MountBaseCard mountData={mount} key={mount._id}/>
                 })
             }
         </Box>

@@ -139,15 +139,12 @@ const CreateMinionTemplate = ({}: ICreateMinionTemplateInput) => {
         const maxStatLevel = (maxStat - 10) * 5;
 
         const minionActualLevel = Math.max(maxStatLevel, level);
-        console.log("MINION LEVEL", minionActualLevel);
 
         const x1 = minionActualLevel + 10;
         const roughPlayerLevel = x1 * 1.25;
         console.log(roughPlayerLevel);
 
         const playerMaxAUT = 10 + roughPlayerLevel / 5
-
-        console.log("RPAUT:", playerMaxAUT);
 
         setCurrentXP(playerMaxAUT * 50);
 

@@ -14,7 +14,6 @@ class PLC_ConditionData {
     public async Initialize(conditionCards: Array<IConditionCard>, conditionTags: Array<IConditionTag>) {
         this.conditionCards = conditionCards;
         this.conditionTags = conditionTags;
-        console.log(conditionTags);
     }
 
     public GetAllConditionCards() {

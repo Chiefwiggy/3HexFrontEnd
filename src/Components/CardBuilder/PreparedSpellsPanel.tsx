@@ -29,7 +29,6 @@ const PreparedSpellsPanel = ({}: IPreparedSpellsPanelInput) => {
     };
 
     useEffect(() => {
-        console.log("MISSED");
         if (currentSheet) {
             setCurrentSpell(currentSheet.data.currentSpell);
             setCurrentWeapon(currentSheet.data.currentWeapon);
