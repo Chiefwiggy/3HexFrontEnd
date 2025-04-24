@@ -84,7 +84,7 @@ const GetSummonScaler = (scalingTerm: string, char: AbstractSheet, power: number
 export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: ISpellTargetCardData, rest: Array<ISpellModifierCardData|null>, char: AbstractSheet): ITotalSpellStats => {
     try {
         let finalBasePower = StatChain(spellBase.basePower, [spellBase.basePowerMod, spellTarget.basePowerMod, ...rest.map(e => e?.basePowerMod)]);
-        let finalPotencyPower = Math.floor(StatChain(spellBase.potency, [spellBase.potencyMod, spellTarget.potencyMod, ...rest.map(e => e?.potencyMod)], false) * char.getStat((spellTarget.summonData?.simpleName && !rest.find(e => e?._id == "67d1e2ec08eca40980cfee29")) ? "authority" : "might"))
+        let finalPotencyPower = Math.floor(StatChain(spellBase.potency, [spellBase.potencyMod, spellTarget.potencyMod, ...rest.map(e => e?.potencyMod)], false) * char.getPowerStat(!(spellTarget.summonData?.simpleName && !rest.find(e => e?._id == "67d1e2ec08eca40980cfee29"))))
         const finalPower = StatChain(finalBasePower + finalPotencyPower + char.getBonusSpellPower(spellBase.arcanotype), [spellBase.powerMod, spellTarget.powerMod, {modifier: char.getAbilityBonuses("spellDamage")}, ...rest.map(e => e?.powerMod)]);
         const minRange = StatChain(spellTarget.baseRange.min, [spellBase.minRangeMod, spellTarget.minRangeMod, ...rest.map(e => e?.minRangeMod)]);
         const maxRange = StatChain(spellTarget.baseRange.max, [spellBase.maxRangeMod, spellTarget.maxRangeMod, ...rest.map(e => e?.maxRangeMod)]);
@@ -92,7 +92,7 @@ export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: IS
         const maxRangeFinal = StatChain(maxRange, [spellBase.fullRangeMod, spellTarget.fullRangeMod, ...rest.map(e => e?.fullRangeMod)]);
 
         let finalBaseSet = StatChain(spellBase.baseSpellSet, [spellBase.baseSpellSetMod, spellTarget.baseSpellSetMod, ...rest.map(e => e?.baseSpellSetMod)])
-        let finalSet = StatChain(finalBaseSet + char.getStat("presence")*3 + char.getStat("knowledge"), [spellBase.spellSetMod, spellTarget.spellSetMod, ...rest.map(e => e?.spellSetMod)])
+        let finalSet = StatChain(finalBaseSet + char.getSpellSet(), [spellBase.spellSetMod, spellTarget.spellSetMod, ...rest.map(e => e?.spellSetMod)])
 
         const isMelee = [spellBase.forceMelee, spellTarget.forceMelee, ...rest.map(e => e?.forceMelee)].reduce((pv: boolean, cv: boolean | undefined) => {
             if (cv) {

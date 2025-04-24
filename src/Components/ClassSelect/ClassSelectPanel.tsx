@@ -1,199 +1,197 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-    Box,
-    Button,
-    capitalize,
-    FormControl,
-    InputLabel,
-    MenuItem,
-    Select,
-    SelectChangeEvent,
-    Typography
+  Box,
+  Button,
+  capitalize,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Typography
 } from "@mui/material";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
 import usePreloadedContent from "../../Hooks/usePreloadedContent/usePreloadedContent";
-import {IClassMetaData} from "../../Data/IClassMetaData";
+import { IClassMetaData } from "../../Data/IClassMetaData";
 import ClassPreview from "./ClassPreview";
-import {IClassData} from "../../Data/ICharacterData";
-import {getNameFromTier, getTierFromName} from "../../Utils/Shorthand";
+import { IClassData } from "../../Data/ICharacterData";
+import { getNameFromTier, getTierFromName } from "../../Utils/Shorthand";
 import FatelinePreview from '../Fatelines/FatelinePreview';
-import {IFatelineData} from "../../Data/IFatelineData";
-import characterSheet from "../../Data/CharacterSheet";
+import { IFatelineData } from "../../Data/IFatelineData";
+import DevelopmentTab from "../Development/DevelopmentTab";
+
 
 interface IClassSelectPanelInput {
-    myClasses: IClassData[],
-    myFate: IFatelineData|undefined,
-    sendBack: (doPick: boolean, classData: IClassData) => void
-    sendBackFate: (doPick: boolean, fateData: IFatelineData) => void
+  myClasses: IClassData[];
+  myFate: IFatelineData | undefined;
+  sendBack: (doPick: boolean, classData: IClassData) => void;
+  sendBackFate: (doPick: boolean, fateData: IFatelineData) => void;
 }
+
+const TIER_OPTIONS = [
+  "fate",
+  "development",
+  "beginner",
+  "intermediate",
+  "advanced",
+  "expert",
+  "master",
+  "legend"
+];
 
 const ClassSelectPanel = ({
-    myClasses,
-    myFate,
-    sendBack,
-    sendBackFate
+  myClasses,
+  myFate,
+  sendBack,
+  sendBackFate
 }: IClassSelectPanelInput) => {
+  const { currentSheet } = useCharacter();
+  const { ClassData, FatelineData, isLoaded } = usePreloadedContent();
 
-    const {currentSheet, invokeSave} = useCharacter();
+  const [tier, setTier] = useState("beginner");
+  const [allClassData, setAllClassData] = useState<IClassMetaData[]>([]);
+  const [canPromote, setCanPromote] = useState(false);
+  const [canEquip, setCanEquip] = useState(false);
 
-    const {ClassData, FatelineData, isLoaded} = usePreloadedContent();
+  const handleTierChange = (event: SelectChangeEvent) => {
+    setTier(event.target.value);
+  };
 
-    const [allClassData, setAllClassData] = useState<Array<IClassMetaData>>([]);
+  const hasClass = (className: string) =>
+    myClasses.some(e => e.className.toLowerCase() === className.toLowerCase());
 
-    const [canPromote, setCanPromote] = useState<boolean>(false);
+  const getMyClass = (className: string) =>
+    myClasses.find(e => e.className.toLowerCase() === className.toLowerCase());
 
-    const [canEquip, setCanEquip] = useState<boolean>(false);
+  const handleSave = async () => {
+    if (!currentSheet) return;
+    currentSheet.data.classes = myClasses;
+    currentSheet.data.fateline = myFate;
+    currentSheet.setPreparedCards([]);
+    currentSheet.data.currentWeapon = null;
+    currentSheet.data.currentSpell = null;
+    await currentSheet.SaveCharacterSheet();
+  };
 
-    const handleSave = async() => {
-        if (currentSheet) {
-            currentSheet.data.classes = myClasses;
-            currentSheet.data.fateline = myFate;
-            currentSheet.setPreparedCards([]);
-            currentSheet.data.currentWeapon = null;
-            currentSheet.data.currentSpell = null;
-            await currentSheet.SaveCharacterSheet();
-        }
-    }
+  const evaluatePromotionEligibility = () => {
+    if (!currentSheet || tier === "fate" || tier === "development") return;
 
-    const handleSendBack = (doPick: boolean, classData: IClassData) => {
-        sendBack(doPick, classData);
-    }
+    const tierNumber = getTierFromName(tier);
+    const level = currentSheet.getLevel();
+    const baseLevel = 60 * (tierNumber - 1);
+    const classesOfTier = myClasses.filter(clz => clz.classTier === tierNumber).length;
+    const promotions = myClasses.filter(clz => clz.classTier === tierNumber && clz.isPromoted).length;
 
-    const handleFateSendback = (doPick: boolean, fateData: IFatelineData) => {
-        sendBackFate(doPick, fateData);
-    }
+    const maxClasses = 2 + Math.min(2, Math.floor((level - baseLevel) / 20));
+    const eligibleToEquip = (classesOfTier + promotions) < maxClasses && level >= baseLevel;
 
-    const setPromotionLogic = () => {
-        if (currentSheet) {
-            const tierNumber = getTierFromName(tier);
-            let minLevel = 60 * (tierNumber - 1);
-            const classesOfTier = myClasses.filter(clz => clz.classTier === tierNumber).length;
-            const promotions = myClasses.filter(clz => clz.classTier === tierNumber && clz.isPromoted).length;
-            if ((classesOfTier + promotions) < (2 + Math.min(2, Math.floor((currentSheet.getLevel() - minLevel) / 20))) && currentSheet.getLevel() >= minLevel) {
-                setCanEquip(true);
-                if (currentSheet.getLevel() >= minLevel + 20) {
-                    setCanPromote(true);
-                }
-            } else {
-                setCanEquip(false);
-                setCanPromote(false);
-            }
-        }
-    }
+    setCanEquip(eligibleToEquip);
+    setCanPromote(eligibleToEquip && level >= baseLevel + 20);
+  };
 
-    const hasClass = (className: string) => {
-        return myClasses.map(e => e.className.toLowerCase()).includes(className.toLowerCase());
-    }
-
-    const getMyClass = (className: string) => {
-        return myClasses.find(e => e.className.toLowerCase() === className.toLowerCase());
-    }
-
-     const [tier, setTier] = useState('beginner');
-
-    useEffect(() => {
-        setPromotionLogic();
+  useEffect(() => {
+    if (isLoaded) {
+      evaluatePromotionEligibility();
+      if (tier !== "fate" && tier !== "development") {
         setAllClassData(ClassData.getClassesData(getTierFromName(tier)));
-    }, [isLoaded, myClasses, tier]);
+      }
+    }
+  }, [isLoaded, myClasses, tier]);
 
-    const handleChange = (event: SelectChangeEvent) => {
-        setTier(event.target.value);
-    };
+  const renderTierInfo = () => {
+    if (tier === "fate") {
+      return "Choose a Fateline. This decision cannot be changed unless you undergo a major transformation.";
+    }
+    if (tier === "development") {
+      return "Unlock Talents every 20 Levels, starting at Level 10.";
+    }
 
+    const tierNum = getTierFromName(tier);
+    return tier !== "legend"
+      ? `Unlock Classes at Level ${tierNum * 60 - 60}, Promotions at ${tierNum * 60 - 40} and ${tierNum * 60 - 20}`
+      : `Unlock Class at Level ${(tierNum - 1) * 60}`;
+  };
 
+  const renderContent = () => {
+    if (tier === "development") return <DevelopmentTab />;
+    if (tier === "fate") {
+      return FatelineData.GetAllFatelineData().map(fd => (
+        <FatelinePreview
+          key={fd.fatelineId}
+          fateData={fd}
+          isEquipped={myFate?.fatelineId === fd.fatelineId}
+          canEquip={!myFate}
+          equipData={myFate}
+          sendBack={sendBackFate}
+        />
+      ));
+    }
 
-    return currentSheet ? (
-        <Box
-            sx={{
-                display: 'flex',
-                flexDirection: "column",
-                alignItems: "center",
-            }}
-        >
-            <Box
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'space-around',
-                    width:'100%'
-                }}
-            >
-                <Box>
-                    <FormControl fullWidth variant="outlined" sx={{ width: "150px"}}>
-                      <InputLabel id="tier-select-label">Tier</InputLabel>
-                      <Select
-                        labelId="tier-select-label"
-                        id="tier-select"
-                        value={tier}
-                        onChange={handleChange}
-                        label="Tier"
-                        fullWidth
-                      >
-                            <MenuItem value="fate">Fateline</MenuItem>
-                            <MenuItem value="beginner">Beginner</MenuItem>
-                            <MenuItem value="intermediate">Intermediate</MenuItem>
-                            <MenuItem value="advanced">Advanced</MenuItem>
-                            <MenuItem value="expert">Expert</MenuItem>
-                            <MenuItem value="master">Master</MenuItem>
-                            <MenuItem value="legend">Legend</MenuItem>
-                      </Select>
-                    </FormControl>
-                </Box>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        alignItems: "center"
-                    }}
-                >
-                    <Typography variant="h4">{capitalize(tier)} Classes</Typography>
+    return allClassData.map(cd => (
+      <ClassPreview
+        key={cd._id}
+        classData={cd}
+        isEquipped={hasClass(cd.className)}
+        canEquip={canEquip}
+        canPromote={canPromote}
+        sendBack={sendBack}
+        equipData={hasClass(cd.className) ? getMyClass(cd.className) : undefined}
+      />
+    ));
+  };
 
-                    {
-                        tier != "fate" ?
+  if (!currentSheet) return null;
 
-                            (tier != "legend" ?
-                            <>
-                                <Typography variant={"subtitle2"}>Unlock Classes at Level {(getTierFromName(tier)-1)*60}</Typography>
-                                <Typography variant={"subtitle2"}>Unlock Promotions at Level {(getTierFromName(tier)-1)*60 + 20} and {(getTierFromName(tier)-1)*60 + 40} </Typography>
-                            </>
-                            :
-                            <>
-                                <Typography variant={"subtitle2"}>Unlock Class at Level {(getTierFromName(tier)-1)*60}</Typography>
-                            </>)
-                            : <>
-                                <Typography variant={"subtitle2"}>Choose a Fateline. This decision cannot be changed unless you undergo a major transformation</Typography>
-                            </>
-                    }
+  return (
+    <Box display="flex" flexDirection="column" alignItems="center">
+      <Box display="flex" justifyContent="space-around" width="100%">
+        <FormControl fullWidth variant="outlined" sx={{ width: 150 }}>
+          <InputLabel id="tier-select-label">Tier</InputLabel>
+          <Select
+            labelId="tier-select-label"
+            id="tier-select"
+            value={tier}
+            onChange={handleTierChange}
+            label="Tier"
+            fullWidth
+          >
+            {TIER_OPTIONS.map(option => (
+              <MenuItem key={option} value={option}>
+                {capitalize(option)}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-
-                </Box>
-
-                <Button onClick={handleSave}> SAVE </Button>
-            </Box>
-            <Box
-                sx={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(4, 1fr)",
-                    width: '100%',
-                    maxHeight: "88vh",
-                    overflowY: "auto",
-                    scrollbarColor: '#6b6b6b #2b2b2b',
-                    scrollbarWidth: 'thin',
-                }}
-            >
-                {
-                    tier != "fate" ?
-                    allClassData.map(cd => {
-                        return <ClassPreview classData={cd} isEquipped={hasClass(cd.className)} canEquip={canEquip} canPromote={canPromote} sendBack={handleSendBack} key={cd._id} equipData={hasClass(cd.className) ? getMyClass(cd.className) : undefined}/>
-                    })
-                        :
-                        FatelineData.GetAllFatelineData().map(fd => {
-                            return <FatelinePreview key={fd.fatelineId} fateData={fd} isEquipped={myFate?.fatelineId === fd.fatelineId} canEquip={!myFate} equipData={myFate} sendBack={handleFateSendback} />
-                        })
-                }
-            </Box>
+        <Box display="flex" flexDirection="column" alignItems="center">
+          <Typography variant="h4">
+            {capitalize(tier)} {tier !== "fate" && tier !== "development" ? "Classes" : "Talents"}
+          </Typography>
+          <Typography variant="subtitle2">{renderTierInfo()}</Typography>
         </Box>
-    ) : <></>
-}
 
-export default ClassSelectPanel
+        <Button onClick={handleSave}>SAVE</Button>
+      </Box>
+
+      <Box
+        sx={
+          tier !== "development"
+            ? {
+                display: "grid",
+                gridTemplateColumns: "repeat(4, 1fr)",
+                width: "100%",
+                maxHeight: "88vh",
+                overflowY: "auto",
+                scrollbarColor: "#6b6b6b #2b2b2b",
+                scrollbarWidth: "thin"
+              }
+            : {}
+        }
+      >
+        {renderContent()}
+      </Box>
+    </Box>
+  );
+};
+
+export default ClassSelectPanel;

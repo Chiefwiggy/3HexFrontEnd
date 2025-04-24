@@ -9,6 +9,16 @@ import {ICommonCardData} from "./ICardData";
 
 
 class MinionTemplateSheet extends AbstractSheet {
+    public getSetStat(): number {
+        throw new Error("Method not implemented.");
+    }
+    public getPowerStat(isAuth: boolean): number {
+        throw new Error("Method not implemented.");
+    }
+
+    public getSpellSet(): number {
+        return 0;
+    }
 
 
     public data: IMinionTemplateData = {

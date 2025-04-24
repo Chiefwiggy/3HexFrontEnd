@@ -14,11 +14,22 @@ import {IDefenseBreakdown} from "./IDefenses";
 import {getSkillFormat, UStat} from "../Utils/Shorthand";
 import {IArmor} from "./IArmorData";
 import {StatChain} from "../Utils/GetFinalSpellData";
+import {number} from "yup";
 
 
 class MinionSheet extends AbstractSheet {
+    public getSetStat(): number {
+        throw new Error("Method not implemented.");
+    }
+    public getPowerStat(isAuth: boolean): number {
+        throw new Error("Method not implemented.");
+    }
     public isUnlocked(unlockType: string): boolean {
         return false;
+    }
+
+    public getSpellSet(): number {
+        return 0;
     }
 
 

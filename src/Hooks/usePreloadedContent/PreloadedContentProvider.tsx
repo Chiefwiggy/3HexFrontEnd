@@ -18,6 +18,7 @@ import PLC_DowntimeData from "./PLC_DowntimeData";
 import PLC_SettingsData from "./PLC_SettingsData";
 import PLC_ShieldData from "./PLC_ShieldData";
 import PLC_MountData from "./PLC_MountData";
+import PLC_MinionMetadata from "./PLC_MinionMetadata";
 
 interface IPreloadedContentProviderInput {
     children: any
@@ -37,6 +38,7 @@ export interface IPreloadedContentContextInput {
     DowntimeData: PLC_DowntimeData,
     SettingsData: PLC_SettingsData,
     MountData: PLC_MountData,
+    MinionMetadata: PLC_MinionMetadata,
     isLoaded: boolean
 }
 const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) => {
@@ -67,6 +69,8 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
 
     const [MountData, setMountData] = useState(new PLC_MountData());
 
+    const [MinionMetadata, setMinionMetadata] = useState(new PLC_MinionMetadata());
+
     const [isLoaded, setIsLoaded] = useState(false);
 
     const API = useAPI();
@@ -89,6 +93,7 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
             await FatelineData.Initialize(data.fatelineData);
             await ConditionData.Initialize(data.conditionCards, data.conditionTags);
             await DowntimeData.Initialize(data.downtimeActivitiesData)
+            await MinionMetadata.Initialize(data.minionRoles, data.allMinions)
             setIsLoaded(true);
             await MountData.Initialize(data.mountData)
         })();
@@ -110,6 +115,7 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
                 DowntimeData,
                 SettingsData,
                 MountData,
+                MinionMetadata,
                 isLoaded
             }}
         >

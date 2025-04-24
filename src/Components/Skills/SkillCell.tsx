@@ -9,6 +9,7 @@ import {ISkillPointObject} from "../../Data/ICharacterData";
 import {AddCircleOutlined, RemoveCircleOutlined} from "@mui/icons-material";
 import {ISkillConfig, ISkillItemConfig, skill_config} from "../../Data/skill_config";
 import AddSubtractPanel from '../Generic/AddSubtractPanel';
+import BoxWithTooltip from "../Generic/BoxWithTooltip";
 
 interface ISkillCellInput {
     skillName: string,
@@ -56,11 +57,15 @@ const SkillCell = ({
     return currentSheet ? (
         <>
             <TableCell>
-                <Typography
+                <BoxWithTooltip placement={"left"} title={hasExpert ? `You have expertise in ${skillName}!` : `You DO NOT have expertise in ${skillName}!`} >
+                    <Typography
                     sx={ hasExpert ? {
-                        fontWeight: "bold"
+                        fontWeight: "bold",
+                        color: "#fff186"
                     } : {}}
                 >{skillName} {hasExpert ? "*" : ""}</Typography>
+                </BoxWithTooltip>
+
             </TableCell>
             <TableCell>
                 {

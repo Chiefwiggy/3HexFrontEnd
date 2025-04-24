@@ -156,8 +156,8 @@ class CharacterConnection {
             preparedCards: newData.preparedCards,
             currentSpell: newData.currentSpell,
             currentWeapon: newData.currentWeapon,
-            createdSpells: newData.createdSpells,
             createdWeapons: newData.createdWeapons,
+            createdSpells: newData.createdSpells,
             knownSources: newData.knownSources
         }, this._getConfig()).then((resp) => {
             console.log(resp);

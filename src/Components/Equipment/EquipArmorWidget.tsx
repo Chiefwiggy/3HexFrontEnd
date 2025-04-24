@@ -79,7 +79,13 @@ const EquipArmorWidget = ({
                         >
                             <MenuItem value={undefined} sx={{color: "darkgray"}}>Unarmored</MenuItem>
                             {
-                                ArmorData.GetAllBaseData().map(ad => {
+                                ArmorData.GetAllBaseData().sort((a,b) => {
+                                    if (a.armorClass != b.armorClass) {
+                                        return ["light", "standard", "heavy"].indexOf(a.armorClass) - ["light", "standard", "heavy"].indexOf(b.armorClass);
+                                    } else {
+                                        return a.armorName.localeCompare(b.armorName)
+                                    }
+                                }).map(ad => {
                                     return (
                                         <MenuItem value={ad._id} key={ad._id}>{ad.armorName}</MenuItem>
                                     )

@@ -70,12 +70,10 @@ const CardBuilder = ({
                 return cv.count + pv;
             }, 0)
             let finalIndex = startingIndex + cardTypes[cardIndex].count;
-            console.log(newState);
             const openSpots = newState.slice(startingIndex, finalIndex).reduce((pv, cv) => {
                 if (cv) return pv;
                 return pv + 1;
             }, 0)
-            console.log(openSpots);
             if (openSpots) {
                 newState[finalIndex-openSpots] = data.cardData
             } else {
@@ -214,10 +212,8 @@ const CardBuilder = ({
                     (() => {
                         let runningIndex = 0; // Initialize running index
                         return cardTypes.map((data) => {
-                            console.log(cardTypes)
                             return Array.from({ length: data.count }).map((_, i) => {
                                 const currentIndex = runningIndex++; // Use and increment the running index inline
-                                console.log(data)
                                 return (
                                     <CardSkeleton
                                         placeholderText={data.display.toUpperCase()}

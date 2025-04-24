@@ -68,6 +68,7 @@ interface IAllCardsData {
 
 
 class CharacterSheet extends AbstractSheet {
+
     public data: ICharacterBaseData
     private dataBackup: ICharacterBaseData;
     public currentAttack: any
@@ -890,6 +891,22 @@ class CharacterSheet extends AbstractSheet {
 
     public getStat(stat: UStat): number {
         return StatChain(this.data.characterStats[stat].value, [this.data.characterStats[stat].modifiers])
+    }
+
+    public getPowerStat(isAuth: boolean): number {
+        return isAuth ? this.getStat("authority") : this.getStat("might")
+    }
+
+    public getSpellSet(): number {
+        if (this.isUnlocked("arcaneTechnique")) {
+            return (this.getStat("knowledge") * 2) + (this.getStat("skill") * 2)
+        } else {
+            return this.getStat("presence") * 3 + this.getStat("knowledge")
+        }
+    }
+
+    public getSetStat(): number {
+        return this.getStat("presence")
     }
 
     public getSave(stat: UStat): number {

@@ -21,8 +21,9 @@ export enum EMinionRole {
 export interface IMinionBaseData_New {
     _id: string,
     minionName: string,
+    isNamedMinion: boolean,
     minionLevel: number,
-    minionRole: EMinionRole,
+    minionRoles: Array<EMinionRole>,
     minionStats: {
         might: number,
         technique: number,
@@ -39,6 +40,7 @@ export interface IMinionBaseData_New {
 export interface IMinionRoleData {
     roleId: EMinionRole,
     roleName: string,
+    roleDescription: string,
     commanderAuthorityModifiers: {
         finalPower: number,
         toHit: number,
@@ -71,3 +73,5 @@ export interface IMinionRoleData {
     }
 
 }
+
+export type UMinionStat = "might" | "technique" | "toughness"

@@ -18,6 +18,7 @@ import {getSkillFormat} from "../Utils/Shorthand";
 import {number} from "yup";
 import SpellTargetSummonCard from "../Components/Cards/SpellTargetSummonCard";
 import {UArcanotype} from "./ISourceData";
+import {IMinionBaseData_New, UMinionStat} from "./IMinionData_New";
 
 
 abstract class AbstractSheet {
@@ -34,7 +35,7 @@ abstract class AbstractSheet {
 
     public currentStance: UStance
 
-    public abstract data: ICharacterBaseData | IMinionData | IMinionTemplateData
+    public abstract data: ICharacterBaseData | IMinionData | IMinionTemplateData | IMinionBaseData_New
 
     protected constructor( api: IAPIContext, ping: React.Dispatch<React.SetStateAction<boolean>>|undefined, hping: React.Dispatch<React.SetStateAction<boolean>>|undefined, sping: React.Dispatch<SetStateAction<boolean>>|undefined) {
         this.updateCharacter = ping;
@@ -136,7 +137,7 @@ abstract class AbstractSheet {
         if (!this.currentArmor || this.currentArmor.armorClass == "light" ) {
             agilityScalingBonus = 2.5
         } else if (this.currentArmor.armorClass == "heavy") {
-            agilityScalingBonus = 1.0
+            agilityScalingBonus = 1.5
         }
         agilityScalingBonus += this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("evadeAgilityDodgeScaling");
         return agilityScalingBonus;
@@ -431,7 +432,9 @@ abstract class AbstractSheet {
     }
 
     public abstract getAbilityBonuses(bonusType: string): number;
-    public abstract getStat(statName: keyof ICharacterStats | "command"): number;
+    public abstract getStat(statName: keyof ICharacterStats | UMinionStat | "command"  ): number;
+    public abstract getPowerStat(isAuth: boolean): number
+    public abstract getSpellSet(): number
     public isUnlocked(unlockType: string) {
         return false;
     }

@@ -170,6 +170,10 @@ export const default_weapon_cards: Array<IWeaponCommonData | IWeaponBaseData> = 
         },
         weaponTags: ["unarmed"],
         handedness: 1.0,
+        tempEnchantValue: {
+            baseId: "___defaultBaseWeapon",
+            enchantmentLevel: 0
+        },
         _id: "___defaultBaseWeapon"
     },
     {
@@ -263,6 +267,10 @@ export const default_weapon_cards: Array<IWeaponCommonData | IWeaponBaseData> = 
         },
         weaponTags: ["unarmed"],
         handedness: 1.0,
+        tempEnchantValue: {
+            baseId: "___defaultImprovisedWeapon",
+            enchantmentLevel: 0
+        },
         _id: "___defaultImprovisedWeapon"
     },
     {

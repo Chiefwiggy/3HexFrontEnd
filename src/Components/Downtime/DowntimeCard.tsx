@@ -47,7 +47,7 @@ const DowntimeCard = ({
                 }}
             >
                 <Box></Box>
-                <Typography variant={"h5"} textAlign={"center"}>{downtimeData.activityName}</Typography>
+                <Typography variant={"h6"} textAlign={"center"}>{downtimeData.activityName}</Typography>
                 <Box sx={{
                     display: "flex"
                 }}>

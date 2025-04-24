@@ -64,6 +64,7 @@ export const GetConsumableCraftingColor = (craftingType: string) => {
         case "curse":
             return "rgba(142,14,14,0.56)"
         case "trap":
+        case "compound":
             return "rgba(198,198,198,0.56)"
         case "medical":
             return "rgba(47,255,89,0.86)"
@@ -82,6 +83,8 @@ export const GetConsumableItemTypeColor = (itemType: string) => {
             return "rgba(165,38,49,0.55)"
         case "debuff":
             return "rgba(181,79,15,0.55)"
+        case "poison":
+            return "rgba(31,117,11,0.55)"
         case "buff":
             return "rgba(36,240,246,0.55)"
         case "support":

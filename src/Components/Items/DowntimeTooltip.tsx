@@ -18,8 +18,9 @@ const DowntimeTooltip = ({tooltipKey, size}: IDowntimeTooltipInput) => {
         switch (tooltipKey) {
             case "alchemy":
             case "potion":
+            case "compound":
             case "oil":
-            case "poison":
+            case "bomb":
                 return "Alchemy Kit"
             case "gem":
                 return "Gemcarving Kit"
@@ -42,8 +43,9 @@ const DowntimeTooltip = ({tooltipKey, size}: IDowntimeTooltipInput) => {
         switch (tooltipKey) {
             case "alchemy":
             case "potion":
+            case "compound":
             case "oil":
-            case "poison":
+            case "bomb":
                 return <SlChemistry size={size}/>
             case "gem":
                 return <FaGem size={size}/>

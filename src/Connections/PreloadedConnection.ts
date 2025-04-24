@@ -6,6 +6,7 @@ import {IConsumableTemplate} from "../Data/IConsumable";
 import {IFatelineFullData} from "../Data/IFatelineData";
 import {IDowntimeActivity} from "../Data/IDowntime";
 import {IMountBaseModel} from "../Data/IMountData";
+import {IMinionBaseData_New, IMinionRoleData} from "../Data/IMinionData_New";
 
 export interface IPreloadedDataStruct {
     class: {
@@ -30,7 +31,9 @@ export interface IPreloadedDataStruct {
     conditionCards: Array<IConditionCard>,
     downtimeActivitiesData: Array<IDowntimeActivity>,
     mountData: Array<IMountBaseModel>,
-    conditionTags: Array<IConditionTag>
+    conditionTags: Array<IConditionTag>,
+    minionRoles: Array<IMinionRoleData>,
+    allMinions: Array<IMinionBaseData_New>
 }
 class PreloadedConnection {
     private _preloadedURL: string;

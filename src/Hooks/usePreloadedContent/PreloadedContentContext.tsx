@@ -14,6 +14,7 @@ import PLC_DowntimeData from "./PLC_DowntimeData";
 import PLC_SettingsData from "./PLC_SettingsData";
 import PLC_ShieldData from "./PLC_ShieldData";
 import PLC_MountData from "./PLC_MountData";
+import PLC_MinionMetadata from "./PLC_MinionMetadata";
 
 
 
@@ -31,6 +32,7 @@ const PreloadedContentContext =     createContext<IPreloadedContentContextInput>
         DowntimeData: new PLC_DowntimeData(),
         SettingsData: new PLC_SettingsData(),
         MountData: new PLC_MountData(),
+        MinionMetadata: new PLC_MinionMetadata(),
         isLoaded: false
     }
 );

@@ -48,6 +48,8 @@ const WeaponCardBuilderView = ({closeSelf, isOffhand = false}: IWeaponCardBuilde
         const cards: Array<ICommonCardData> = sentCards.filter(c => c !== null && c !== undefined) as ICommonCardData[];
         const base = cards.find(e => e.cardSubtype == "base") as IWeaponBaseData
         const rest = cards.filter(e => e.cardSubtype != "base");
+        console.log(base)
+        console.log(rest)
         if (base && rest && currentSheet) {
             const weaponCalcData: ICalculatedWeapon = {
                 weaponBaseData: base.tempEnchantValue ?? (base as unknown as IScaledWeaponBaseData).enchantmentData,
@@ -60,7 +62,6 @@ const WeaponCardBuilderView = ({closeSelf, isOffhand = false}: IWeaponCardBuilde
     }
 
     const handleReceiveEquipCards = async(sentCards :Array<ICommonCardData|null>) => {
-        console.log(sentCards);
         const cards: Array<ICommonCardData> = sentCards.filter(c => c !== null && c !== undefined) as ICommonCardData[];
         const base = cards.find(e => e.cardSubtype == "base");
         const rest = cards.filter(e => e.cardSubtype != "base");
@@ -97,6 +98,9 @@ const WeaponCardBuilderView = ({closeSelf, isOffhand = false}: IWeaponCardBuilde
             if (customName != "") {
                 standbyCards.customName = customName;
             }
+            console.log("OH BABY")
+            console.log(standbyCards)
+            console.log("--")
             await CharacterAPI.AddPrepWeapon(currentSheet.data._id, standbyCards);
             currentSheet.data.createdWeapons.push(standbyCards);
             if (doEquip) {

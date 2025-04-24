@@ -4,9 +4,11 @@ import {IRangeData} from "./Card Calculators/AbstractCardCalculator";
 
 export enum EConsumableType {
     HEALING = "healing",
+    CURE = "cure",
     BUFF = "buff",
     DAMAGE = "damage",
     DEBUFF = "debuff",
+    POISON = "poison",
     CONTAINER = "container",
     SUPPORT = "support",
     OTHER = "other"

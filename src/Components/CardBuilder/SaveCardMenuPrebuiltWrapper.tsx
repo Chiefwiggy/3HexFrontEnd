@@ -22,6 +22,7 @@ const SaveCardMenuPrebuiltWrapper = ({cardData, cardType, closeSelf}: ISaveCardM
 
 
     const handleEquipSavedCard = (isOffhand = false) => async(event: React.MouseEvent) => {
+        console.log("I COMPARE YA")
         if (currentSheet) {
             if (cardType === "weapon") {
                 const weaponData = cardData as ICalculatedWeapon;

@@ -35,9 +35,10 @@ const MainContentView = () => {
                 sx={{
                     borderBottom: 1,
                     borderColor: 'divider',
+                    overflowX: "hidden"
                 }}
             >
-                <Tabs value={currentTab} onChange={handleTabChange}>
+                <Tabs value={currentTab} onChange={handleTabChange} variant={"scrollable"}>
                     <Tab label={
                         <Badge invisible={currentSheet.getSkillPointsUsed() === currentSheet.getMaxSkillPoints()} color={"secondary"} variant={"dot"} sx={{
                             paddingRight: "5px"
@@ -58,8 +59,8 @@ const MainContentView = () => {
                     <Tab label={"Equipment"} value={3} />
                     <Tab label={"Sources"} value={4} />
                     <Tab label={"Consumables"} value={5} />
-                    {/*<Tab label={"Battalion"} value={6} />*/}
-                    <Tab label={"Mounts"} value={6} />
+                    <Tab label={"Battalion"} value={6} />
+                    <Tab label={"Mounts"} value={7} />
                 </Tabs>
             </Box>
             <CustomTabPanel index={currentTab} value={0}> <SkillsTab /> </CustomTabPanel>
@@ -68,8 +69,8 @@ const MainContentView = () => {
             <CustomTabPanel index={currentTab} value={3}> <EquipmentTab /> </CustomTabPanel>
             <CustomTabPanel index={currentTab} value={4}> <SourcesTab /> </CustomTabPanel>
             <CustomTabPanel index={currentTab} value={5}> <ConsumableTab_New /> </CustomTabPanel>
-            {/*<CustomTabPanel index={currentTab} value={6}> <BattalionTab /> </CustomTabPanel>*/}
-            <CustomTabPanel index={currentTab} value={6}><MountTab /></CustomTabPanel>
+            <CustomTabPanel index={currentTab} value={6}> <BattalionTab /> </CustomTabPanel>
+            <CustomTabPanel index={currentTab} value={7}><MountTab /></CustomTabPanel>
 
         </Box>
     ) : <></>

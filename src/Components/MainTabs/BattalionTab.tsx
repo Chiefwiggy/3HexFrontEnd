@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Tab, Tabs} from "@mui/material";
+import {Box, Tab, Tabs, Typography} from "@mui/material";
 import {IMinionData} from "../../Data/IMinionData";
 import {sample_minions} from "../../Data/sample_minions";
 import CustomTabPanel from "../../Utils/CustomTabPanel";
@@ -8,6 +8,10 @@ import MinionSheet from "../../Data/MinionSheet";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
 import MinionSimplePanel from "../Minions/MinionSimplePanel";
 import MinionOverviewPanel from '../Minions/MinionOverviewPanel';
+import usePreloadedContent from "../../Hooks/usePreloadedContent/usePreloadedContent";
+import MinionCard from "../Minions/Minions_v3/MinionCard";
+import MinionSheet_v3 from "../../Data/Minion/MinionSheet_v3";
+import useAPI from "../../Hooks/useAPI/useAPI";
 
 interface IBattalionTabInput {
 
@@ -16,54 +20,37 @@ interface IBattalionTabInput {
 const BattalionTab = ({}: IBattalionTabInput) => {
 
 
-    const [currentTab, setCurrentTab] = useState<number>(0);
 
-    const {currentSheet, charPing, isReady} = useCharacter();
+    const {currentSheet, charPing, isReady} = useCharacter()
+    const api = useAPI()
 
-    const handleChangeTab = (event: React.SyntheticEvent, newValue: number ) => {
-        setCurrentTab(newValue);
-    }
-
-    const [currentMinions, setCurrentMinions] = useState<Array<MinionSheet>>([]);
-
-    const [displayedMinions, setDisplayedMinions] = useState<Array<MinionSheet>>([]);
+    const {MinionMetadata} = usePreloadedContent()
+    const [minionSheets, setMinionSheets] = useState<Array<MinionSheet_v3>>([])
 
     useEffect(() => {
-        if (currentSheet) {
-            setCurrentMinions(currentSheet.minionData);
-            setDisplayedMinions(currentSheet.minionData.filter(e => e.isPrepared));
-        }
-    }, [currentSheet?.minionData, charPing]);
+        setMinionSheets(MinionMetadata.GetAllMinions().map(e => new MinionSheet_v3(e, MinionMetadata, api)));
+    }, []);
+
 
     return (
-        <Box
-            sx={{
-                display: "grid",
-                gridTemplateColumns: "1fr 7fr"
-            }}
-        >
+        <Box>
             <Box>
-                <Tabs onChange={handleChangeTab} value={currentTab} orientation="vertical" variant={"scrollable"}>
-                    <Tab label={"Overview"} value={0}/>
-                    {
-                        displayedMinions.map(((minion, index) => {
-                            return <Tab label={minion.data.minionName} value={index+1} key={index+1}/>
-                        }))
-                    }
-                </Tabs>
+                <Typography variant={"h6"}>Battalion</Typography>
             </Box>
-            <Box>
-                <CustomTabPanel index={currentTab} value={0}>
-                    <MinionOverviewPanel currentMinions={currentMinions} displayMinions={displayedMinions}/>
-                </CustomTabPanel>
-                <Box
-                    hidden={currentTab === 0}
-                    role={"tabpanel"}
-                >
-                    <MinionPanel minionData={displayedMinions[currentTab-1]} />
-                </Box>
-            </Box>
+            <Box
+                sx={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: "12px"
+                }}
+            >
+                {
+                    minionSheets.map(minionSheet => {
+                        return <MinionCard minionSheet={minionSheet} key={minionSheet.data._id}/>
+                    })
+                }
 
+            </Box>
         </Box>
     )
 }
