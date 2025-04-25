@@ -781,7 +781,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getBaseCardSlots(): number {
-        return 2 + this.getAbilityBonuses("tempCardSlots") + this.getAbilityBonuses("baseCardSlots");
+        return 1 + this.getAbilityBonuses("baseSlots");
     }
 
     public getTempSourcesCanPrepare(): number {
