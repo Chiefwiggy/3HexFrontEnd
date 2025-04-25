@@ -306,17 +306,26 @@ class CharacterSheet extends AbstractSheet {
 
     public getSkillData = (skillName: string) => {
 
-        const config = skill_config[skillName.toLowerCase() as keyof ISkillConfig] as ISkillItemConfig;
+        const skillName_F: keyof ISkillConfig = skillName.toLowerCase() as keyof ISkillConfig;
+
+
+        const config = skill_config[skillName_F] as ISkillItemConfig;
 
         const total = config.attr.reduce((pv, cv) => {
             return pv + this.getStat(cv as UStat);
         }, 0)
 
-        const pts = this.data.skillPoints[skillName.toLowerCase() as keyof ISkillPointObject] as number;
+        const pts = this.data.skillPoints[skillName_F] as number;
+
+        const isExpert = this.expertiseDiceValues[skillName_F] > 0 ?? false;
+        console.log(`expert in ${skillName}: ${isExpert} by ${this.expertiseDiceValues[skillName_F]}`);
+        const expertBonus = (isExpert ? (this.expertiseDiceValues[skillName_F]-1)*5 : 0)
 
         return {
-            value: total + pts,
-            isExpert: this.expertiseDiceValues[skillName] > 0 ?? false
+            value: total + pts + expertBonus,
+            expertBonus,
+            pts,
+            isExpert
         }
     }
 
@@ -374,22 +383,19 @@ class CharacterSheet extends AbstractSheet {
     public getSkillBreakdown = (skillName: string): IDefenseBreakdown => {
 
         const config = skill_config[skillName.toLowerCase() as keyof ISkillConfig] as ISkillItemConfig;
-        const total = config.attr.reduce((pv, cv) => {
-            return pv + this.getStat(cv as UStat);
-        }, 0)
 
-        const pts = this.data.skillPoints[skillName.toLowerCase() as keyof ISkillPointObject] as number;
+        const {value, pts, isExpert, expertBonus} = this.getSkillData(skillName)
 
         return {
-            totalValue: pts > total ? total * 2 : pts + total,
+            totalValue: value,
             sources: [
                 {
                     reason: "Skill Points",
                     value: getSkillFormat(pts)
                 },
-                ...(pts > total ? [{
-                    reason: "(capped at",
-                    value: getSkillFormat(total) + ")"
+                ...(expertBonus > 0 ? [{
+                    reason: "Expertise Bonus",
+                    value: getSkillFormat(expertBonus)
                 }] : []),
                 ...config.attr.map(attr => {
                     return {
