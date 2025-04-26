@@ -77,20 +77,20 @@ const MinionPanel = ({
                                 gap: 2
                             }}
                         >
-                            {
-                                minionData.data.currentWeapon
-                                    ?
-                                    <MinionWeaponCardWrapper weaponData={minionData.data.currentWeapon} minionData={minionData}/>
-                                    :
-                                    <></>
-                            }
-                            {
-                                minionData.data.currentSpell
-                                    ?
-                                    <MinionSpellCardWrapper minionData={minionData} spellData={minionData.data.currentSpell} />
-                                    :
-                                    <></>
-                            }
+                            {/*{*/}
+                            {/*    minionData.data.currentWeapon*/}
+                            {/*        ?*/}
+                            {/*        <MinionWeaponCardWrapper weaponData={minionData.data.currentWeapon} minionData={minionData}/>*/}
+                            {/*        :*/}
+                            {/*        <></>*/}
+                            {/*}*/}
+                            {/*{*/}
+                            {/*    minionData.data.currentSpell*/}
+                            {/*        ?*/}
+                            {/*        <MinionSpellCardWrapper minionData={minionData} spellData={minionData.data.currentSpell} />*/}
+                            {/*        :*/}
+                            {/*        <></>*/}
+                            {/*}*/}
                         </Box>
                     </Box>
 

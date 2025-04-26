@@ -28,7 +28,7 @@ const BattalionTab = ({}: IBattalionTabInput) => {
     const [minionSheets, setMinionSheets] = useState<Array<MinionSheet_v3>>([])
 
     useEffect(() => {
-        setMinionSheets(MinionMetadata.GetAllMinions().map(e => new MinionSheet_v3(e, MinionMetadata, api)));
+        setMinionSheets(MinionMetadata.GetAllMinions().map(e => new MinionSheet_v3(e, MinionMetadata, api, currentSheet)));
     }, []);
 
 

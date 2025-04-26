@@ -14,7 +14,7 @@ import {
 import {LiaGrav} from "react-icons/lia";
 import {TfiShine} from "react-icons/tfi";
 import {IoMdEyeOff} from "react-icons/io";
-import {IoNuclear} from "react-icons/io5";
+import {IoNuclear, IoWater} from "react-icons/io5";
 import {UDamageSubtype, UDamageType} from "../../Data/ICardData";
 import {FaGripfire} from "react-icons/fa6";
 import IconButtonWithTooltip from "../Generic/IconButtonWithTooltip";
@@ -35,10 +35,11 @@ const getElementIcon = (damageSubtype: string, size: number) => {
         size: size
     }
     const ElementIconMap: { [key: string]: JSX.Element} = {
-        // force: <GiWindHole  color={"#c8ff90"}   {...ElementIconProps}/>,
         pierce: <GiFlyingDagger color={"#ff5757"}  {...ElementIconProps}/>,
         slash: <GiAxeSwing color={"silver"}  {...ElementIconProps}/>,
         impact: <GiPunchBlast color={"brown"}  {...ElementIconProps}/>,
+        water: <IoWater color={"#1670c5"} {...ElementIconProps} />,
+        gale: <GiWhirlwind  color={"#c8ff90"}   {...ElementIconProps}/>,
         burn: <FaGripfire color={"#ff9d09"} {...ElementIconProps}/>,
         frost: <FaSnowflake color={"lightblue"}  {...ElementIconProps}/>,
         shock: <GiLightningBranches color={"#f6e410"} {...ElementIconProps}/>,
@@ -46,7 +47,7 @@ const getElementIcon = (damageSubtype: string, size: number) => {
         sensory: <GiBrainstorm color={"#fb628c"}  {...ElementIconProps}/>,
         holy: <GiAngelOutfit color={"goldenrod"}  {...ElementIconProps}/>,
         curse: <GiCursedStar color={"#ff1a00"}  {...ElementIconProps}/>,
-        soul: <GiSparkSpirit color={"#0083e3"} {...ElementIconProps} />,
+        soul: <GiSparkSpirit color={"#a958ef"} {...ElementIconProps} />,
         none: <></>
     }
 

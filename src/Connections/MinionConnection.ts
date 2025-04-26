@@ -38,6 +38,8 @@ class MinionConnection {
             armorData: minionData.armorData,
             baseWeaponData: minionData.baseWeapon,
             downtimeSkill: minionData.downtimeSkill,
+            currentWeapon: minionData.currentWeapon,
+            currentSpell: minionData.currentSpell,
             primarySkill: minionData.primarySkill,
             secondarySkill: minionData.secondarySkill,
             tertiarySkill: minionData.tertiarySkill,

@@ -4,7 +4,8 @@ import PLC_MinionMetadata from "../../Hooks/usePreloadedContent/PLC_MinionMetada
 import {IAPIContext} from "../../Hooks/useAPI/APIProvider";
 import {clone} from "../../Utils/ObjectUtils";
 import AbstractSheet from "../AbstractSheet";
-import {number} from "yup";
+import {boolean, number, string} from "yup";
+import CharacterSheet from "../CharacterSheet";
 
 
 class MinionSheet_v3 extends AbstractSheet {
@@ -15,12 +16,14 @@ class MinionSheet_v3 extends AbstractSheet {
     private metadata: PLC_MinionMetadata;
     public rolesData: Array<IMinionRoleData> = []
     public api: IAPIContext
-    constructor(minionData: IMinionBaseData_New, metadata: PLC_MinionMetadata, api: IAPIContext) {
+    public owner: CharacterSheet | undefined;
+    constructor(minionData: IMinionBaseData_New, metadata: PLC_MinionMetadata, api: IAPIContext, owner: CharacterSheet | undefined) {
         super(api, undefined, undefined, undefined)
         this.server_data = clone(minionData)
         this.data = clone(minionData)
         this.metadata = metadata;
         this.api = api;
+        this.owner = owner;
         this.updateRoles()
     }
 
@@ -28,9 +31,34 @@ class MinionSheet_v3 extends AbstractSheet {
         this.rolesData = this.data.minionRoles.map(e => this.metadata.GetRoleById(e)).filter((e): e is IMinionRoleData => e !== null);
     }
 
+    private getRoleStat(source: "commander" | UMinionStat, roleStat: string): number {
+        return this.rolesData.reduce((pv, cv) => {
+            let subObject: Record<string, number> = {}
+            switch(source) {
+                case "commander":
+                    subObject = cv.commanderAuthorityModifiers
+                    break;
+                case "technique":
+                    subObject = cv.minionTechniqueModifiers
+                    break;
+                case "toughness":
+                    subObject = cv.minionToughnessModifiers
+                    break;
+                case "might":
+                    subObject = cv.minionMightModifiers
+                    break;
+            }
+            if (subObject[roleStat]) {
+                return pv + subObject[roleStat]
+            }
+            return pv;
+        }, 0)
+    }
+
     public async SaveData() {
-        console.log("saV", this.data, this.server_data)
+        console.log(this.data);
         this.server_data = clone(this.data)
+        this.metadata.UpdateMinionData(this.data._id, this.data)
         await this.api.MinionAPI.UpdateMinion(this.data._id, this.data)
         this.updateRoles()
     }
@@ -44,12 +72,30 @@ class MinionSheet_v3 extends AbstractSheet {
         return this.data.minionStats[stat]
     }
 
+
     public getPowerStat(isAuth: boolean): number {
-        return this.getStat("might")
+        let authMod = this.data.minionLevel;
+        if (this.owner) {
+            authMod = this.owner.getStat("authority");
+        }
+        const comMultiplier = (1 + this.getRoleStat("commander", "finalPower"));
+        const powMultiplier = (1 + this.getRoleStat("might", "finalPower"));
+        const powerFromCommander = comMultiplier * authMod;
+        const powerFromMight = powMultiplier * this.getStat("might");
+        return (powerFromCommander + powerFromMight) * 0.5;
     }
 
     public getSpellSet(): number {
         return 0
+    }
+
+    getCritStat(): number {
+
+        return this.getStat("technique")
+    }
+
+    getHitStat(): number {
+        return this.getStat("technique")
     }
 
     public SetStat(stat: UMinionStat, val: number): void {
@@ -62,15 +108,23 @@ class MinionSheet_v3 extends AbstractSheet {
 
     public getMaxStatPoints() {
         if (this.data.minionLevel <= 3) {
-            return (this.data.minionLevel*3)-1
+            return (this.data.minionLevel*3)-1;
         }
         return this.data.minionLevel + 6
+    }
+
+    public getMaxPointsInStat() {
+        return Math.floor(this.data.minionLevel/3*2 + 6);
+    }
+
+    isUnlocked(unlockType: string): boolean {
+        return this.rolesData.reduce((pv: string[], cv) => [...pv, ...cv.unlocks], []).includes(unlockType);
     }
 
     public getMaxRoles() {
         if (this.data.minionLevel < 3) {
             return 1;
-        } else if (this.data.minionLevel > 40) {
+        } else if (this.data.minionLevel >= 30) {
             return 3;
         }
         return 2;
@@ -104,7 +158,7 @@ class MinionSheet_v3 extends AbstractSheet {
         throw new Error("Method not implemented.");
     }
     public getAbilityBonuses(bonusType: string): number {
-        throw new Error("Method not implemented.");
+        return 0;
     }
     public getLevel(): number {
         return this.data.minionLevel

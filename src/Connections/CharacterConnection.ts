@@ -128,7 +128,8 @@ class CharacterConnection {
 
     public async UpdateMinionsPrepared(charID: string, minionData: Array<{
         minionId: string,
-        isEquipped: boolean
+        isEquipped: boolean,
+        equippedAs: string
     }>) {
         await Axios.put(this.GetRouteURL(`update/${charID}`), {
             minionsOwned: minionData

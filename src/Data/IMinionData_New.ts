@@ -1,6 +1,6 @@
 import {UArmorClass} from "./IArmorData";
-import {IWeaponBaseData} from "./ICardData";
-import {IEnchantmentData, ISkillPointObject} from "./ICharacterData";
+import {ICommonCardData, IWeaponBaseData} from "./ICardData";
+import {ICalculatedSpell, ICalculatedWeapon, IEnchantmentData, ISkillPointObject} from "./ICharacterData";
 
 export enum EMinionRole {
     DUELIST="duelist", // quick footed
@@ -31,10 +31,13 @@ export interface IMinionBaseData_New {
     }
     armorData: IEnchantmentData,
     baseWeapon: IEnchantmentData,
+    currentWeapon: ICalculatedWeapon,
+    currentSpell: ICalculatedSpell,
     downtimeSkill: string,
     primarySkill: keyof ISkillPointObject,
     secondarySkill: keyof ISkillPointObject,
-    tertiarySkill: keyof ISkillPointObject
+    tertiarySkill: keyof ISkillPointObject,
+    cardData: Array<ICommonCardData>
 }
 
 export interface IMinionRoleData {
@@ -71,6 +74,7 @@ export interface IMinionRoleData {
     otherModifiers: {
         movement: number,
     }
+    unlocks: Array<string>
 
 }
 

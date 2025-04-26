@@ -42,7 +42,7 @@ const MinionWeaponBuilder = ({
         }
         return [...AffinityData.getAllAffinityCards("weapon"),
         ...PathData.getAllPathCards("weapon"),
-        ...ClassData.getAllClassCards("weapon"), ...finalWeaponTARRAY]
+         ...finalWeaponTARRAY]
     }
 
     const handleReceiveEquipCards = async(sentCards :Array<ICommonCardData|null>) => {

@@ -433,6 +433,8 @@ abstract class AbstractSheet {
 
     public abstract getAbilityBonuses(bonusType: string): number;
     public abstract getStat(statName: keyof ICharacterStats | UMinionStat | "command"  ): number;
+    public getCritStat(): number { return 0; }
+    public getHitStat(): number { return 0; }
     public abstract getPowerStat(isAuth: boolean): number
     public abstract getSpellSet(): number
     public isUnlocked(unlockType: string) {

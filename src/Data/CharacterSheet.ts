@@ -318,7 +318,6 @@ class CharacterSheet extends AbstractSheet {
         const pts = this.data.skillPoints[skillName_F] as number;
 
         const isExpert = this.expertiseDiceValues[skillName_F] > 0 ?? false;
-        console.log(`expert in ${skillName}: ${isExpert} by ${this.expertiseDiceValues[skillName_F]}`);
         const expertBonus = (isExpert ? (this.expertiseDiceValues[skillName_F]-1)*5 : 0)
 
         return {
@@ -666,13 +665,20 @@ class CharacterSheet extends AbstractSheet {
             if (this.data.minionsOwned.length > 0) {
                 const minionRawData = await this.API.MinionAPI.GetMinionData(this.data.minionsOwned.map(e => e.minionId));
                 this.minionData = minionRawData.map((md: IMinionData, index: number) => {
-                    return new MinionSheet(md, this.API, this.data.minionsOwned[index].isEquipped, this)
+                    return new MinionSheet(md, this.API, this.data.minionsOwned[index], this)
                 })
             }
 
         } catch (e) {
             console.error("minion set error", e);
         }
+    }
+    getHitStat(): number {
+        return this.getStat("awareness")*2 + this.getStat("skill");
+    }
+
+    getCritStat(): number {
+        return this.getStat("skill")
     }
 
     public refresh() {
@@ -980,11 +986,13 @@ class CharacterSheet extends AbstractSheet {
     public async InvokeUpdateMinionPreparation() {
         const minionMetadata: Array<{
             isEquipped: boolean,
-            minionId: string
+            minionId: string,
+            equippedAs: string
         }> = this.minionData.map(minionDatum => {
             return {
                 isEquipped: minionDatum.isPrepared,
-                minionId: minionDatum.data._id
+                minionId: minionDatum.data._id,
+                equippedAs: minionDatum.equippedAs
             }
         })
         this.data.minionsOwned = minionMetadata;

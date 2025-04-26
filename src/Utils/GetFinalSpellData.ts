@@ -182,18 +182,8 @@ export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: IS
 
 export const GetFinalWeaponData = (weaponBase: IScaledWeaponBaseData, allCards: Array<IWeaponCommonData | null>, char: AbstractSheet): ITotalWeaponStats => {
 
-
-    let might = 0;
-    let skill = 0;
-    let auth = 0;
-    let awareness = 0;
-    might = char.getStat("might");
-    auth = char.getStat("authority")
-    skill = char.getStat("skill");
-    awareness = char.getStat("awareness");
-
     let finalBasePower = StatChain(weaponBase.basePower, allCards.map(c => c?.basePowerMod));
-    let finalPotencyPower = Math.floor(StatChain(weaponBase.potency, allCards.map(c => c?.potencyMod), false) * (weaponBase.isCreatureWeapon ? auth : might));
+    let finalPotencyPower = Math.floor(StatChain(weaponBase.potency, allCards.map(c => c?.potencyMod), false) * char.getPowerStat(weaponBase.isCreatureWeapon));
     const finalPower = StatChain(finalBasePower + finalPotencyPower, [...allCards.map(c => c?.powerMod), {modifier: char.getAbilityBonuses("weaponDamage")}]);
     const minRange = StatChain(weaponBase.baseRange.min, allCards.map(c => c?.minRangeMod));
     const maxRange = StatChain(weaponBase.baseRange.max, allCards.map(c => c?.maxRangeMod));
@@ -210,11 +200,11 @@ export const GetFinalWeaponData = (weaponBase: IScaledWeaponBaseData, allCards: 
     const isThrownMelee = weaponBase.thrownRange.isMelee
 
     const finalBaseCrit = StatChain(weaponBase.baseCrit, allCards.map(c => c?.baseCritMod));
-    const finalCrit = StatChain(skill + finalBaseCrit + char.getCritBonus(), allCards.map(c => c?.critMod));
+    const finalCrit = StatChain(char.getCritStat() + finalBaseCrit + char.getCritBonus(), allCards.map(c => c?.critMod));
 
     const finalBaseHit = StatChain(weaponBase.baseHit, allCards.map(c => c?.baseHitMod));
 
-    const finalHitMod = StatChain(finalBaseHit + Math.floor(awareness*2) + skill + char.getCritBonus(), allCards.map(c => c?.hitMod));
+    const finalHitMod = StatChain(finalBaseHit + char.getHitStat() + char.getCritBonus(), allCards.map(c => c?.hitMod));
 
     let finalDamageType: UDamageType = weaponBase.damageType;
     let finalDamageSubtype = weaponBase.damageSubtype;

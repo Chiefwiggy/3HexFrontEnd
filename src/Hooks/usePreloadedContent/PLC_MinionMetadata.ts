@@ -15,6 +15,10 @@ class PLC_MinionMetadata {
         this.minionData = data
     }
 
+    public UpdateMinionData(minionId: string, minionData: IMinionBaseData_New) {
+        this.minionData[this.minionData.findIndex(e => e._id == minionId)] = minionData;
+    }
+
     public GetRoleById(id: string) {
         return this.minionRoles.find(e => e.roleId === id);
     }

@@ -1,7 +1,7 @@
 import {IMinionData, IMinionStats} from "./IMinionData";
 import AbstractSheet from "./AbstractSheet";
 import CharacterSheet, { AttributeBarType, DamageType } from "./CharacterSheet";
-import {ICharacterStats, UStance} from "./ICharacterData";
+import {ICharacterStats, IMinionOwnedData, UStance} from "./ICharacterData";
 import {ICardBuilderType} from "../Layouts/CardBuilder";
 import SpellBaseCard from "../Components/Cards/SpellBaseCard";
 import SpellTargetCard from "../Components/Cards/SpellTargetCard";
@@ -122,14 +122,16 @@ class MinionSheet extends AbstractSheet {
 
     public data: IMinionData;
     public isPrepared: boolean;
+    public equippedAs: string;
     private owner: CharacterSheet
 
-    constructor(minionData: IMinionData, api: IAPIContext, isPrepared: boolean, owner: CharacterSheet) {
+    constructor(minionData: IMinionData, api: IAPIContext, minionOwnedData: IMinionOwnedData, owner: CharacterSheet) {
         super(api,undefined, undefined, undefined);
         this.data = minionData;
         this.data.cardData.push(...default_spell_cards)
         this.data.cardData.push(...default_weapon_cards);
-        this.isPrepared = isPrepared
+        this.isPrepared = minionOwnedData.isEquipped
+        this.equippedAs = minionOwnedData.equippedAs
         this.owner = owner;
         this.setArmor();
     }

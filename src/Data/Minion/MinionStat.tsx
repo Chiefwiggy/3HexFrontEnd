@@ -48,7 +48,7 @@ const MinionStat = ({minionSheet, stat, isInEditMode, callback}: IMinionStatInpu
                     <AddSubtractPanel
                         handleChange={handleChange}
                         value={statHolder}
-                        isAtCap={statHolder >= minionSheet.data.minionLevel + 5}
+                        isAtCap={statHolder >= minionSheet.getMaxPointsInStat()}
                         isAtBottom={statHolder <= 0}
                         textWidth={30}
                         textSx={{
@@ -57,6 +57,12 @@ const MinionStat = ({minionSheet, stat, isInEditMode, callback}: IMinionStatInpu
                         callAfterChange={finalChange}
                     />
                 </Box>
+                {
+                    stat === "might" ?
+                        <Typography textAlign={"center"} color={"grey"}>Base Power: {minionSheet.getPowerStat(false).toFixed(2)}</Typography>
+                        :
+                        <></>
+                }
 
             </Box>
         </Box>
@@ -65,6 +71,12 @@ const MinionStat = ({minionSheet, stat, isInEditMode, callback}: IMinionStatInpu
             <Box>
                 <Typography variant={"h6"} textAlign={"center"}>{capitalize(stat)}</Typography>
                 <Typography variant={"h5"} textAlign={"center"}>{minionSheet.getStat(stat)}</Typography>
+                {
+                    stat === "might" ?
+                        <Typography textAlign={"center"} color={"grey"}>Base Power: {minionSheet.getPowerStat(false).toFixed(2)}</Typography>
+                        :
+                        <></>
+                }
             </Box>
         </Box>
     )

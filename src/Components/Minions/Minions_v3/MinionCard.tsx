@@ -6,12 +6,19 @@ import MinionSheet_v3 from "../../../Data/Minion/MinionSheet_v3";
 import {FiEdit} from "react-icons/fi";
 import IconButtonWithTooltip from "../../Generic/IconButtonWithTooltip";
 import {MdOutlineSave} from "react-icons/md";
-import {GiCancel} from "react-icons/gi";
+import {GiAxeSword, GiCancel} from "react-icons/gi";
 import MinionStat from '../../../Data/Minion/MinionStat';
 import AddSubtractPanel from "../../Generic/AddSubtractPanel";
 import {IDowntimeActivity} from "../../../Data/IDowntime";
-import {CheckBox, CheckBoxOutlineBlank} from "@mui/icons-material";
+import {AutoFixHighOutlined, CheckBox, CheckBoxOutlineBlank} from "@mui/icons-material";
 import {number} from "yup";
+import CharacterSheetSidebar from "../../Character Sheet/CharacterSheetSidebar";
+import MinionWeaponBuilder from "../MinionWeaponBuilder";
+import MinionSpellBuilder from "../MinionSpellBuilder";
+import {ICalculatedSpell, ICalculatedWeapon} from "../../../Data/ICharacterData";
+import {ICommonCardData} from "../../../Data/ICardData";
+import MinionWeaponCardWrapper from "../../CardBuilder/MinionWeaponCardWrapper";
+import MinionSpellCardWrapper from "../../CardBuilder/MinionSpellCardWrapper";
 
 interface IMinionCardInput {
     minionSheet: MinionSheet_v3
@@ -27,8 +34,6 @@ const MinionCard = ({minionSheet}: IMinionCardInput) => {
     const ping = () => {
         _setPing(!mping)
     }
-
-
 
     const handleEdit = (state: boolean) => () => {
         setEditMode(state)
@@ -61,6 +66,7 @@ const MinionCard = ({minionSheet}: IMinionCardInput) => {
     }
 
     const invokeCallback = () => {
+        ping()
         setCurrentPts(minionSheet.getCurrentStatPointsSpent())
         setMaxPts(minionSheet.getMaxStatPoints())
         setMinionLevel(minionSheet.data.minionLevel)
@@ -68,7 +74,22 @@ const MinionCard = ({minionSheet}: IMinionCardInput) => {
 
     const handleLevelChange = (delta: number) => (event: React.MouseEvent) => {
         minionSheet.data.minionLevel += delta
+        ping()
         invokeCallback()
+    }
+
+    const setCurrentWeapon = async(data: ICalculatedWeapon, cards: Array<ICommonCardData>) => {
+        console.log(data, cards);
+        minionSheet.data.currentWeapon = data;
+        minionSheet.data.cardData = [...minionSheet.data.cardData.filter(e => e.cardType != "weapon"), ...cards]
+        ping()
+    }
+
+    const setCurrentSpell = async(data: ICalculatedSpell, cards: Array<ICommonCardData>) => {
+        console.log(data, cards);
+        minionSheet.data.currentSpell = data;
+        minionSheet.data.cardData = [...minionSheet.data.cardData.filter(e => e.cardType != "spell"), ...cards]
+        ping()
     }
 
 
@@ -215,6 +236,70 @@ const MinionCard = ({minionSheet}: IMinionCardInput) => {
                     <MinionStat minionSheet={minionSheet} stat={"might"}  isInEditMode={isInEditMode} callback={invokeCallback}/>
                     <MinionStat minionSheet={minionSheet} stat={"technique"} isInEditMode={isInEditMode} callback={invokeCallback}/>
                     <MinionStat minionSheet={minionSheet} stat={"toughness"} isInEditMode={isInEditMode} callback={invokeCallback}/>
+                </Box>
+            </Box>
+            <Box>
+                {
+                    isInEditMode ?
+                        <Box
+                    sx={{
+                        display: "flex"
+                    }}
+                >
+                    <CharacterSheetSidebar
+                        title={"Build Weapon"}
+                        icon={GiAxeSword}
+                        panelComponent={MinionWeaponBuilder}
+                        placement={"left"}
+                        tooltipPlacement={"left"}
+                        panelProps={{
+                            // currentWeaponId: formik.values.currentWeaponId,
+                            // currentWeaponEnchantment: formik.values.currentWeaponEnchantment,
+                            minionSheet: minionSheet,
+                            receiveFinalData: setCurrentWeapon
+                        }}
+                    />
+                            {
+                                minionSheet.isUnlocked("spellcasting")
+                                ?
+                                    <CharacterSheetSidebar title={"Build Spell"} icon={AutoFixHighOutlined} panelComponent={MinionSpellBuilder} placement={"left"}
+                                                           tooltipPlacement={"right"}
+                                                           panelProps={{
+                                                                minionSheet: minionSheet,
+                                                                receiveFinalData: setCurrentSpell
+                                                            }}
+                                    />
+                                    :
+                                    <></>
+                            }
+
+                </Box>
+                        :
+                        <></>
+                }
+            </Box>
+            <Box
+                sx={{
+                    display: "flex",
+                    gap: "10px",
+                    margin: "12px"
+                }}
+            >
+                <Box>
+                    {
+                        minionSheet.data.currentWeapon != null ?
+                            <MinionWeaponCardWrapper weaponData={minionSheet.data.currentWeapon} minionData={minionSheet} ping={mping}/>
+                            :
+                            <></>
+                    }
+                </Box>
+                <Box>
+                    {
+                        minionSheet.data.currentSpell != null && minionSheet.isUnlocked("spellcasting") ?
+                            <MinionSpellCardWrapper spellData={minionSheet.data.currentSpell} minionData={minionSheet} ping={mping} />
+                            :
+                            <></>
+                    }
                 </Box>
             </Box>
         </Paper>

@@ -106,7 +106,7 @@ export interface ISpecialistData {
 }
 
 export type UDamageType = "physical" | "magical" | "raw" | "resistant" | "none";
-export const VDamageSubtypes = ["pierce", "slash", "impact", "burn", "frost", "shock", "corrosive", "sensory", "holy", "curse", "soul", "none"]
+export const VDamageSubtypes = ["none", "pierce", "slash", "impact", "water", "gale", "burn", "frost", "shock", "corrosive", "sensory", "curse", "holy", "soul"]
 
 export type UDamageSubtype = typeof VDamageSubtypes[number]
 

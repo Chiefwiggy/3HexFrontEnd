@@ -8,17 +8,20 @@ import usePreloadedContent from "../../Hooks/usePreloadedContent/usePreloadedCon
 import {IWeaponBaseData} from "../../Data/ICardData";
 import CalculatedCard from "./CalculatedCard";
 import {ConstructFinalWeapon} from "../../Utils/ConstructFinalWeapon";
+import MinionSheet_v3 from "../../Data/Minion/MinionSheet_v3";
 
 interface IMinionWeaponCardWrapperInput {
     weaponData: ICalculatedWeapon | null,
     overrideWidth?: number,
-    minionData: MinionSheet
+    minionData: MinionSheet_v3,
+    ping: boolean
 }
 
 const MinionWeaponCardWrapper = ({
     weaponData,
     overrideWidth,
-    minionData
+    minionData,
+    ping
 }: IMinionWeaponCardWrapperInput) => {
 
     const {isReady, charPing} = useCharacter();
@@ -40,7 +43,7 @@ const MinionWeaponCardWrapper = ({
         if (minionData && weaponCalc) {
             _setWeaponData(weaponCalc);
         }
-    }, [isReady, weaponData, charPing]);
+    }, [isReady, weaponData, charPing, ping]);
 
     const _setWeaponData = (calc: WeaponCardCalculator, timeout = 0) => {
         if (minionData && weaponData) {

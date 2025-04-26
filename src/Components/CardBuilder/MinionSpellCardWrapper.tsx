@@ -6,17 +6,20 @@ import CalculatedCard from "./CalculatedCard";
 import {ICalculatedSpell, ICalculatedWeapon} from "../../Data/ICharacterData";
 import MinionSheet from "../../Data/MinionSheet";
 import WeaponCardCalculator from "../../Data/Card Calculators/WeaponCardCalculator";
+import MinionSheet_v3 from "../../Data/Minion/MinionSheet_v3";
 
 interface IMinionSpellCardWrapperInput {
     spellData: ICalculatedSpell| null,
     overrideWidth?: number,
-    minionData: MinionSheet
+    minionData: MinionSheet_v3,
+    ping: boolean
 }
 
 const MinionSpellCardWrapper = ({
     spellData,
     overrideWidth,
-    minionData
+    minionData,
+    ping
 }: IMinionSpellCardWrapperInput) => {
 
     const {isReady} = useCharacter();
@@ -38,7 +41,7 @@ const MinionSpellCardWrapper = ({
         if (minionData && spellCalc) {
             _setSpellData(spellCalc);
         }
-    }, [isReady, spellData]);
+    }, [isReady, spellData, ping]);
 
 
     const _setSpellData = (calc: SpellCardCalculator, timeout = 0) => {

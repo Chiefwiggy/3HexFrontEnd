@@ -82,15 +82,18 @@ export interface ICharacterBaseData {
     knownSources: Array<IPreparedSource>,
     temporarySources: Array<IPreparedSource>,
     skillPoints: ISkillPointObject,
-    minionsOwned: Array<{
-        minionId: string,
-        isEquipped: boolean
-    }>,
+    minionsOwned: Array<IMinionOwnedData>,
     settings: ISettingsData,
     isDead: boolean,
     creatorName: string,
     __times_accessed: number,
     _id: string
+}
+
+export interface IMinionOwnedData {
+    minionId: string,
+    isEquipped: boolean,
+    equippedAs: string
 }
 
 export interface IEnchantmentData {

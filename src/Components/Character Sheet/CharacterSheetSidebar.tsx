@@ -15,6 +15,7 @@ interface ICharacterSheetSidebarInput {
     panelProps?: Record<string, any>;
     doShow?: boolean,
     placement?: "left" | "right" | "top" | "bottom",
+    tooltipPlacement?: "left" | "right" | "top" | "bottom",
     darkenBackground?: boolean,
     [x:string]: any
 }
@@ -26,6 +27,7 @@ const CharacterSheetSidebar = ({
     panelProps = {},
     doShow = true,
     placement = "right",
+    tooltipPlacement = "right",
     darkenBackground = true,
     ...rest
 }: ICharacterSheetSidebarInput) => {
@@ -41,7 +43,7 @@ const CharacterSheetSidebar = ({
 
     return doShow ? (
         <Box>
-            <IconButtonWithTooltip title={title} placement={"left"} onClick={handleOpenSidebarPanel(true)}>
+            <IconButtonWithTooltip title={title} placement={tooltipPlacement} onClick={handleOpenSidebarPanel(true)}>
                 <IconComponent />
             </IconButtonWithTooltip>
             <Drawer
