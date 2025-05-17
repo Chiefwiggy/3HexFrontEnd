@@ -13,6 +13,8 @@ import BoxWithTooltip from "../Components/Generic/BoxWithTooltip";
 import SubtypeDamageIcon from '../Components/SmallComponents/SubtypeDamageIcon';
 import {UDamageSubtype} from "../Data/ICardData";
 import {RxValueNone} from "react-icons/rx";
+import {GiMagicHat, GiMeepleCircle, GiRuneStone} from "react-icons/gi";
+import {FaMoneyBillWave} from "react-icons/fa6";
 
 interface IStatViewInput {
     pivot: boolean
@@ -128,6 +130,28 @@ const StatView = ({
                         >
                             <RefreshOutlined sx={{color: "#ac38ea"}}/>
                             <Typography> {currentSheet.getTetherRefresh()}</Typography>
+                        </BoxWithTooltip>
+                        <BoxWithTooltip
+                            sx={{
+                                display: "grid",
+                                gridTemplateColumns: "1fr 1fr"
+                            }}
+                            title={"Max Summons"}
+                            placement={"left"}
+                        >
+                            <Box sx={{paddingLeft: "2px", display: "flex", alignItems: "center"}}><GiMagicHat color={"#ffe1f5"}/></Box>
+                            <Typography> {currentSheet.getMaxSummons()}</Typography>
+                        </BoxWithTooltip>
+                        <BoxWithTooltip
+                            sx={{
+                                display: "grid",
+                                gridTemplateColumns: "1fr 1fr"
+                            }}
+                            title={"Max Concurrent Runes"}
+                            placement={"left"}
+                        >
+                            <Box sx={{paddingLeft: "2px", display: "flex", alignItems: "center"}}><GiMeepleCircle color={"#f1ecff"}/></Box>
+                            <Typography> {currentSheet.getMaxGlyphs()}</Typography>
                         </BoxWithTooltip>
                         <Typography variant={"subtitle2"}>Resistances</Typography>
                         <Box

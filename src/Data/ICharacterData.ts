@@ -9,6 +9,8 @@ export interface IAttributeBars {
     health: IAttributeBar,
     stamina: IAttributeBar,
     tether: IAttributeBar
+    orders: IAttributeBar,
+    technik: IAttributeBar
 }
 
 export interface ICharacterStats {

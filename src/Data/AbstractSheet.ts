@@ -19,6 +19,7 @@ import {number} from "yup";
 import SpellTargetSummonCard from "../Components/Cards/SpellTargetSummonCard";
 import {UArcanotype} from "./ISourceData";
 import {IMinionBaseData_New, UMinionStat} from "./IMinionData_New";
+import {capitalize} from "@mui/material";
 
 
 abstract class AbstractSheet {
@@ -60,13 +61,29 @@ abstract class AbstractSheet {
         }
         return this.getAbilityBonuses("maxTether") + (this.getAbilityBonuses("maxTetherScaling")+5)*this.getStat("mind");
     }
+
+    public getMaxTechnik(): number {
+        return 0;
+    }
+
+    public getMaxOrders(): number {
+        return 0;
+    }
     public abstract getHealth(): number;
     public abstract getStamina(): number;
     public abstract getTether(): number;
+    public getOrders() {
+        return 0;
+    }
+    public getTechnik() {
+        return 0;
+    }
 
     public abstract setHealth(amount: number): void;
     public abstract setStamina(amount: number): void;
     public abstract setTether(amount: number): void;
+    public abstract setTechnik(amount: number): void;
+    public abstract setOrders(amount: number): void;
     public abstract healthPingExecute(doSend: boolean): Promise<void>;
     public abstract statPingExecute(): Promise<void>;
     public abstract charPingExecute(): Promise<void>;
@@ -183,6 +200,14 @@ abstract class AbstractSheet {
             armorBonus = 0
         }
         return 1 + armorBonus + this.getAbilityBonuses("stepSpeed");
+    }
+
+    public getMaxGlyphs(): number {
+        return 1 + this.getAbilityBonuses("maxGlyphs")
+    }
+
+    public getMaxSummons(): number {
+        return 1 + this.getAbilityBonuses("summoningSlots")
     }
 
     public getArmorPDEF(stance: "evade" | "blocking", display=false): number {
@@ -435,7 +460,14 @@ abstract class AbstractSheet {
     public abstract getStat(statName: keyof ICharacterStats | UMinionStat | "command"  ): number;
     public getCritStat(): number { return 0; }
     public getHitStat(): number { return 0; }
-    public abstract getPowerStat(isAuth: boolean): number
+    public abstract getPowerStat(specialLogicTags: Array<string>): number
+    public applyRangedModifiers(minRange: number, maxRange: number, attackType: "weapon" | "spell" | "hack") {
+        const isRanged = maxRange > 0;
+        const rangeTag = isRanged ? "ranged" : "melee"
+        const newMaxRange = maxRange + this.getAbilityBonuses(`${rangeTag}${capitalize(attackType)}MaxRangeMod`) + this.getAbilityBonuses(`${attackType}MaxRangeMod`)
+        const newMinRange = minRange + this.getAbilityBonuses(`${rangeTag}${capitalize(attackType)}MinRangeMod`) + this.getAbilityBonuses(`${attackType}MinRangeMod`)
+        return [newMinRange, newMaxRange];
+    }
     public abstract getSpellSet(): number
     public isUnlocked(unlockType: string) {
         return false;
@@ -462,6 +494,10 @@ abstract class AbstractSheet {
                 return this.getMaxStamina();
             case "health":
                 return this.getMaxHealth();
+            case "technik":
+                return this.getMaxTechnik();
+            case "orders":
+                return this.getMaxOrders();
         }
     }
 
@@ -473,6 +509,10 @@ abstract class AbstractSheet {
                 return this.getStamina();
             case "health":
                 return this.getHealth();
+            case "technik":
+                return this.getTechnik();
+            case "orders":
+                return this.getOrders();
         }
     }
 
@@ -484,6 +524,10 @@ abstract class AbstractSheet {
                 return this.setStamina(value);
             case "health":
                 return this.setHealth(value);
+            case "technik":
+                return this.setTechnik(value)
+            case "orders":
+                return this.setOrders(value);
         }
     }
 
@@ -524,6 +568,7 @@ abstract class AbstractSheet {
 
     public healCharacter(bar: AttributeBarType, amount: number, doPing = true) {
         if (amount > 0) {
+            console.log(this.getBarCurrent(bar) + amount, this.getMaxBar(bar))
              this.setCurrentBar(bar, Math.min(this.getBarCurrent(bar) + amount, this.getMaxBar(bar)))
              if (doPing) {
                  this._hping();
@@ -535,6 +580,7 @@ abstract class AbstractSheet {
         // this.healCharacter("health", 999, false);
         this.healCharacter("stamina", 999, false);
         this.healCharacter("tether", 999, false);
+        this.healCharacter("orders", 999, false)
     }
 
     public useBar(bar: AttributeBarType, amount: number) {
@@ -644,7 +690,7 @@ abstract class AbstractSheet {
                 display: "skill",
                 component: [SpellModifierCard],
                 required: true,
-                count: this.isUnlocked("secondSkill") ? 2 : 1
+                count: this.isUnlocked("secondSpellSkill") ? 2 : 1
             },
             {
                 name: ["spell.edict"],
@@ -692,12 +738,21 @@ abstract class AbstractSheet {
                 required: true,
                 counterRequired: true,
                 counterInvalid: false,
-                count: this.isUnlocked("secondForm") ? 2 : 1
+                count: this.isUnlocked("secondWeaponForm") ? 2 : 1
             },
 
             {
                 name: ["weapon.skill"],
                 display: "skill",
+                component: [WeaponModCard],
+                required: false,
+                counterRequired: false,
+                counterInvalid: true,
+                count: this.isUnlocked("secondWeaponSkill") ? 2 : 1
+            },
+            {
+                name: ["weapon.order"],
+                display: "order",
                 component: [WeaponModCard],
                 required: false,
                 counterRequired: false,

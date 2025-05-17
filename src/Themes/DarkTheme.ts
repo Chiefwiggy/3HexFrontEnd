@@ -6,6 +6,8 @@ declare module '@mui/material/styles' {
     health: PaletteColorOptions
     stamina: PaletteColorOptions
     tether: PaletteColorOptions
+    technik: PaletteColorOptions,
+    orders: PaletteColorOptions,
     gray: PaletteColorOptions
   }
 
@@ -13,6 +15,8 @@ declare module '@mui/material/styles' {
     health: PaletteColorOptions
     stamina: PaletteColorOptions
     tether: PaletteColorOptions
+    technik: PaletteColorOptions
+    orders: PaletteColorOptions
     gray: PaletteColorOptions
   }
 }
@@ -22,6 +26,8 @@ declare module '@mui/material/CircularProgress' {
     health: true,
     stamina: true,
     tether: true
+    technik: true
+    orders: true
     gray: true
   }
 
@@ -32,6 +38,8 @@ declare module '@mui/material/Button' {
     health: true,
     stamina: true,
     tether: true
+    technik: true
+    orders: true
     gray: true
   }
 }
@@ -53,6 +61,12 @@ const DarkTheme = createTheme({
     },
     tether: {
       main: '#512da8'
+    },
+    technik: {
+      main: '#fbf38c'
+    },
+    orders: {
+      main: '#02ffd7'
     },
     gray: {
       main: '#bdbdbd'

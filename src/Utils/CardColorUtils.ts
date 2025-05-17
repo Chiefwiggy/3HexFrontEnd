@@ -9,6 +9,8 @@ export const CardGetColor = (type: string) => {
                 return '#3BBA20';
             case 'weapon.skill':
                 return '#BBD826';
+            case 'weapon.order':
+                return '#18fff1'
             case 'spell.base':
                 return '#1C2EB5';
             case 'spell.base.temporary':

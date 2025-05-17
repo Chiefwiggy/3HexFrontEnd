@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import AttributeBar from "../Components/Sheet/AttributeBar";
-import {Box, Button, IconButton, Typography} from "@mui/material";
+import {Box, Button, IconButton, LinearProgress, Typography} from "@mui/material";
 import {FlareOutlined, RefreshOutlined, SelfImprovementOutlined, SelfImprovementRounded} from "@mui/icons-material";
 import SimpleClosableDialog from "../Components/Generic/SimpleClosableDialog";
 import useCharacter from "../Hooks/useCharacter/useCharacter";
@@ -10,6 +10,7 @@ import {UDamageType} from "../Data/ICardData";
 import ActionPointsPanel from "../Components/Sheet/ActionPointsPanel";
 import IconButtonWithTooltip from "../Components/Generic/IconButtonWithTooltip";
 import BoxWithTooltip from "../Components/Generic/BoxWithTooltip";
+import VerticalLinearBar from "../Components/Generic/VerticalLinearBar";
 
 interface IAttributeViewInput {
     pivot: boolean
@@ -27,6 +28,7 @@ const AttributeView = ({pivot}: IAttributeViewInput) => {
     const [currentHealth, setCurrentHealth] = useState(0);
     const [currentMaxHealth, setCurrentMaxHealth] = useState(0);
 
+
     const [progressStamina, setProgressStamina] = useState(99);
     const [currentStamina, setCurrentStamina] = useState(0);
     const [currentMaxStamina, setCurrentMaxStamina] = useState(0);
@@ -34,6 +36,14 @@ const AttributeView = ({pivot}: IAttributeViewInput) => {
     const [progressTether, setProgressTether] = useState(99);
     const [currentTether, setCurrentTether] = useState(0);
     const [currentMaxTether, setCurrentMaxTether] = useState(0);
+
+    const [progressTechnik, setProgressTechnik] = useState(99)
+    const [currentTechnik, setCurrentTechnik] = useState(0);
+    const [currentMaxTechnik, setCurrentMaxTechnik] = useState(0);
+
+    const [progressOrders, setProgressOrders] = useState(99)
+    const [currentOrders, setCurrentOrders] = useState(0);
+    const [currentMaxOrders, setCurrentMaxOrders] = useState(0);
 
     const handleRefreshPanel = (open: boolean) => () => {
         setRefreshPanelOpen(open);
@@ -58,6 +68,12 @@ const AttributeView = ({pivot}: IAttributeViewInput) => {
             setProgressTether(Math.min(100, 100 * currentSheet.getBarCurrent("tether") / currentSheet.getMaxBar("tether")));
             setCurrentTether(currentSheet.getBarCurrent("tether"));
             setCurrentMaxTether(currentSheet.getMaxBar("tether"));
+            setProgressTechnik(Math.min(100, 100 * currentSheet.getBarCurrent("technik") / currentSheet.getMaxBar("technik")));
+            setCurrentTechnik(currentSheet.getBarCurrent("technik"));
+            setCurrentMaxTechnik(currentSheet.getMaxBar("technik"));
+            setProgressOrders(Math.min(100, 100 * currentSheet.getBarCurrent("orders") / currentSheet.getMaxBar("orders")));
+            setCurrentOrders(currentSheet.getBarCurrent("orders"));
+            setCurrentMaxOrders(currentSheet.getMaxBar("orders"));
         }
     }, [healthPing, statPing])
 
@@ -107,6 +123,14 @@ const AttributeView = ({pivot}: IAttributeViewInput) => {
                 <AttributeBar barName={"Health"} barColor={"health"} healFunction={handleHealAndUse(true)} damageFunction={handleDamage} takeFunction={handleHealAndUse(false)} currentAttr={currentHealth} currentMaxAttr={currentMaxHealth} progress={progressHealth} />
                 <AttributeBar barName={"Stamina"} barColor={"stamina"}  healFunction={handleHealAndUse(true)} damageFunction={handleDamage} takeFunction={handleHealAndUse(false)} currentAttr={currentStamina} currentMaxAttr={currentMaxStamina} progress={progressStamina} />
                 <AttributeBar barName={"Tether"} barColor={"tether"} healFunction={handleHealAndUse(true)} damageFunction={handleDamage} takeFunction={handleHealAndUse(false)} currentAttr={currentTether} currentMaxAttr={currentMaxTether} progress={progressTether} />
+                {
+                    currentMaxTechnik > 0 ?
+                        <AttributeBar barName={"Technik"} barColor={"technik"} healFunction={handleHealAndUse(true)} damageFunction={handleDamage} takeFunction={handleHealAndUse(true)} currentAttr={currentTechnik} currentMaxAttr={currentMaxTechnik} progress={progressTechnik} />
+                        :
+                        <></>
+                }
+                <AttributeBar barName={"Orders"} barColor={"orders"} healFunction={handleHealAndUse(true)} damageFunction={handleDamage}  takeFunction={handleHealAndUse(true)} currentAttr={currentOrders} currentMaxAttr={currentMaxOrders} progress={progressOrders} />
+
 
                 <Box
                     sx={{

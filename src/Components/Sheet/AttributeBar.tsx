@@ -86,6 +86,8 @@ const AttributeBar = ({
                 })
                 break;
             case "Tether":
+            case "Technik":
+            case "Orders":
                 setDropdownOptions({
                     damage: false,
                     use: true,

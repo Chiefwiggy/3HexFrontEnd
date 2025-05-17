@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import {ISourceData} from "../../Data/ISourceData";
 import SpellBaseCard from "../Cards/SpellBaseCard";
-import {ISpellBaseCardData, ISpellModifierCardData} from "../../Data/ICardData";
+import {ISpellBaseCardData, ISpellModifierCardData, IWeaponCommonData} from "../../Data/ICardData";
 import SpellModifierCard from "../Cards/SpellModifierCard";
 import SourceList from './SourceList';
 import {AddOutlined, CloseOutlined, ExpandMoreOutlined} from "@mui/icons-material";
@@ -21,6 +21,7 @@ import useAPI from "../../Hooks/useAPI/useAPI";
 import {useNavigate} from "react-router-dom";
 import {ICardSendbackData} from "../../Layouts/GenericCardLayout";
 import {ExpandMore} from "../../Elements/ExpandMore";
+import WeaponModCard from "../Cards/WeaponModCard";
 
 interface ISourceComponentInput {
     sourceData: ISourceData
@@ -124,8 +125,9 @@ const SourceComponent = ({sourceData}: ISourceComponentInput) => {
 
                                 (sourceData.sourceTiers[currentIndex].cardType == "base" ?
                                     <SpellBaseCard cardData={sourceData.sourceTiers[currentIndex].cardData as ISpellBaseCardData} sendBack={()=>{}} canFavorite={false} isExpanded={true} canToggleExpand={false} showAdd={false}/>
-                                    :
-                                    <SpellModifierCard cardData={sourceData.sourceTiers[currentIndex].cardData as ISpellModifierCardData} sendBack={() => {}} canFavorite={false}  isExpanded={true} canToggleExpand={false} showAdd={false}/>)
+                                    : (sourceData.sourceTiers[currentIndex].cardType == "edict" ?
+                                    <SpellModifierCard cardData={sourceData.sourceTiers[currentIndex].cardData as ISpellModifierCardData} sendBack={() => {}} canFavorite={false}  isExpanded={true} canToggleExpand={false} showAdd={false}/>
+                                    : <WeaponModCard cardData={sourceData.sourceTiers[currentIndex].cardData as IWeaponCommonData} sendBack={() => {}} canFavorite={false}  isExpanded={true} canToggleExpand={false} showAdd={false}/>))
                             }
 
                         </Box>

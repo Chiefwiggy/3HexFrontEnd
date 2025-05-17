@@ -122,6 +122,7 @@ export interface ICommonCardData {
     powerMod?: IDataModifiers,
     basePowerMod?: IDataModifiers,
     potencyMod?: IDataModifiers,
+    specialLogicTags?: Array<string>,
     fullRangeMod?: IDataModifiers,
     minRangeMod?: IDataModifiers,
     maxRangeMod?: IDataModifiers,

@@ -37,6 +37,15 @@ export const DEFAULT_WEAPON_CALC_TYPES: Array<ICardBuilderType> = [
         count: 1
     },
     {
+        name: ["weapon.order"],
+        display: "order",
+        component: [WeaponModCard],
+        required: false,
+        counterRequired: false,
+        counterInvalid: true,
+        count: 1
+    },
+    {
         name: ["condition.buff"],
         display: "buff",
         component: [ConditionCard],

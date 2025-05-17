@@ -21,7 +21,7 @@ class MinionSheet extends AbstractSheet {
     public getSetStat(): number {
         throw new Error("Method not implemented.");
     }
-    public getPowerStat(isAuth: boolean): number {
+    public getPowerStat(specialLogicTags: Array<string>): number {
         throw new Error("Method not implemented.");
     }
     public isUnlocked(unlockType: string): boolean {
@@ -72,6 +72,7 @@ class MinionSheet extends AbstractSheet {
     public getHealth(): number {
         return this.data.attributeBars.health.current;
     }
+
     public getStamina(): number {
         return this.data.attributeBars.stamina.current;
     }
@@ -81,6 +82,12 @@ class MinionSheet extends AbstractSheet {
     public setHealth(amount: number): void {
         this.data.attributeBars.health.current = amount;
     }
+    public setTechnik(value: number) {
+
+    }
+    public setOrders(amount: number) {
+    }
+
     public setStamina(amount: number): void {
         this.data.attributeBars.stamina.current = amount;
     }
@@ -154,7 +161,7 @@ class MinionSheet extends AbstractSheet {
         }
     }
     public async healthPingExecute(): Promise<void> {
-        Promise.resolve(this.API.MinionAPI.SetBars(this.data._id,this.data.attributeBars)).then().catch();
+        // Promise.resolve(this.API.MinionAPI.SetBars(this.data._id,this.data.attributeBars)).then().catch();
         this.owner.manualHealthPing(false);
     }
 

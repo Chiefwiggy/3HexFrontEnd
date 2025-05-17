@@ -59,7 +59,7 @@ const MinionStat = ({minionSheet, stat, isInEditMode, callback}: IMinionStatInpu
                 </Box>
                 {
                     stat === "might" ?
-                        <Typography textAlign={"center"} color={"grey"}>Base Power: {minionSheet.getPowerStat(false).toFixed(2)}</Typography>
+                        <Typography textAlign={"center"} color={"grey"}>Base Power: {minionSheet.getPowerStat([""]).toFixed(2)}</Typography>
                         :
                         <></>
                 }
@@ -73,7 +73,7 @@ const MinionStat = ({minionSheet, stat, isInEditMode, callback}: IMinionStatInpu
                 <Typography variant={"h5"} textAlign={"center"}>{minionSheet.getStat(stat)}</Typography>
                 {
                     stat === "might" ?
-                        <Typography textAlign={"center"} color={"grey"}>Base Power: {minionSheet.getPowerStat(false).toFixed(2)}</Typography>
+                        <Typography textAlign={"center"} color={"grey"}>Base Power: {minionSheet.getPowerStat([""]).toFixed(2)}</Typography>
                         :
                         <></>
                 }

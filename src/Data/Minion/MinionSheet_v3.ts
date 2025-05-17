@@ -11,6 +11,7 @@ import CharacterSheet from "../CharacterSheet";
 class MinionSheet_v3 extends AbstractSheet {
 
 
+
     private server_data: IMinionBaseData_New;
     public data: IMinionBaseData_New;
     private metadata: PLC_MinionMetadata;
@@ -73,7 +74,7 @@ class MinionSheet_v3 extends AbstractSheet {
     }
 
 
-    public getPowerStat(isAuth: boolean): number {
+    public getPowerStat(specialLogicTags: Array<string>): number {
         let authMod = this.data.minionLevel;
         if (this.owner) {
             authMod = this.owner.getStat("authority");
@@ -95,7 +96,15 @@ class MinionSheet_v3 extends AbstractSheet {
     }
 
     getHitStat(): number {
-        return this.getStat("technique")
+        let authMod = this.data.minionLevel;
+        if (this.owner) {
+            authMod = this.owner.getStat("authority");
+        }
+        const comMultiplier = 1 + this.getRoleStat("commander", "toHit");
+        const techMultiplier = 2 + this.getRoleStat("technique", "toHit");
+        const finalComHit = comMultiplier * authMod;
+        const finalTechHit = techMultiplier * this.getStat("technique");
+        return finalComHit + finalTechHit;
     }
 
     public SetStat(stat: UMinionStat, val: number): void {
@@ -162,6 +171,13 @@ class MinionSheet_v3 extends AbstractSheet {
     }
     public getLevel(): number {
         return this.data.minionLevel
+    }
+
+    public setTechnik(amount: number): void {
+        throw new Error("Method not implemented.");
+    }
+    public setOrders(amount: number): void {
+        throw new Error("Method not implemented.");
     }
 
 

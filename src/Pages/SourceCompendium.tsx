@@ -30,6 +30,7 @@ const SourceCompendium = ({}: ISourceCompendiumInput) => {
             </Helmet>
 
             {SourceData.GetSourceDataForUser(userPermissions, "all").map((data) => {
+                console.log(data)
                 return (
                     <Box key={data._id}>
                         <SourceComponent sourceData={data}  />

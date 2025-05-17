@@ -48,7 +48,7 @@ import {IDowntimePlayerData} from "./IDowntime";
 import {number} from "yup";
 import {UArcanotype} from "./ISourceData";
 
-export type AttributeBarType = "tether" | "stamina" | "health"
+export type AttributeBarType = "tether" | "stamina" | "health" | "technik" | "orders"
 export type DamageType = "physical" | "magical" | "raw" | "resistant"
 
 
@@ -191,6 +191,14 @@ class CharacterSheet extends AbstractSheet {
 
     public getMaxReinforcements = () => {
         return 1 + this.getAbilityBonuses("reinforcementSlots");
+    }
+
+    public getMaxOrders(): number {
+        return 1 + this.getAbilityBonuses("maxOrders") + Math.floor(this.getStat("skill") / 5)
+    }
+
+    public getMaxTechnik(): number {
+        return 0 + this.getAbilityBonuses("maxTechnik")
     }
 
     public areAllCardsPrepared = (data: Array<ICommonCardData|null>): boolean => {
@@ -787,6 +795,22 @@ class CharacterSheet extends AbstractSheet {
         this.data.attributeBars.tether.current = value;
     }
 
+    public setTechnik(value: number) {
+        this.data.attributeBars.technik.current = value;
+    }
+
+    public getTechnik(): number {
+        return this.data.attributeBars.technik.current;
+    }
+
+    public getOrders(): number {
+        return this.data.attributeBars.orders.current
+    }
+
+    public setOrders(value: number) {
+        this.data.attributeBars.orders.current = value;
+    }
+
 
     public getCardSlots(): number {
         return 3 + Math.floor(this.getStat("knowledge") * 0.5) + this.getAbilityBonuses("cardSlots");
@@ -801,7 +825,22 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getAuthoritySlots(): number {
-        return 1 + Math.floor(this.getStat("authority") / 2) + this.getAbilityBonuses("commanderCardSlots");
+        const aut = this.getStat("authority");
+        let slots = 1;
+        const thresholds = [
+            {maxAUT: 8, step: 2},
+            {maxAUT: 20, step: 3},
+            {maxAUT: 40, step: 4},
+            {maxAUT: Infinity, step: 5}
+        ]
+        let currentAUT = 0;
+        for (const { maxAUT, step } of thresholds) {
+            while (currentAUT + step <= aut && currentAUT < maxAUT) {
+              currentAUT += step;
+              slots += 1;
+            }
+        }
+        return slots + this.getAbilityBonuses("commanderCardSlots")
     }
 
 
@@ -905,8 +944,12 @@ class CharacterSheet extends AbstractSheet {
         return StatChain(this.data.characterStats[stat].value, [this.data.characterStats[stat].modifiers])
     }
 
-    public getPowerStat(isAuth: boolean): number {
-        return isAuth ? this.getStat("authority") : this.getStat("might")
+    public getPowerStat(specialLogicTags: Array<string>): number {
+
+        if (specialLogicTags.includes("useAuth") && !specialLogicTags.includes("useMightOverride")) {
+            return this.getStat("authority")
+        }
+        return this.getStat("might")
     }
 
     public getSpellSet(): number {

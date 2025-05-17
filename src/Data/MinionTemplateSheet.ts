@@ -9,10 +9,16 @@ import {ICommonCardData} from "./ICardData";
 
 
 class MinionTemplateSheet extends AbstractSheet {
+    public setTechnik(amount: number): void {
+        throw new Error("Method not implemented.");
+    }
+    public setOrders(amount: number): void {
+        throw new Error("Method not implemented.");
+    }
     public getSetStat(): number {
         throw new Error("Method not implemented.");
     }
-    public getPowerStat(isAuth: boolean): number {
+    public getPowerStat(specialLogicTags: Array<string>): number {
         throw new Error("Method not implemented.");
     }
 

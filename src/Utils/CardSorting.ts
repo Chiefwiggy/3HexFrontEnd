@@ -26,6 +26,7 @@ const _AssignValueToSubtype = (subtype: string): number => {
         case "skill":
             return 3;
         case "edict":
+        case "order":
             return 4;
         default:
             return 5;

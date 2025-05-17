@@ -83,13 +83,15 @@ const GetSummonScaler = (scalingTerm: string, char: AbstractSheet, power: number
 
 export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: ISpellTargetCardData, rest: Array<ISpellModifierCardData|null>, char: AbstractSheet): ITotalSpellStats => {
     try {
+        let specialLogicTags = [...spellBase.specialLogicTags ?? [], ...spellTarget.specialLogicTags ?? [], ...rest.flatMap(e => e?.specialLogicTags ?? [])];
         let finalBasePower = StatChain(spellBase.basePower, [spellBase.basePowerMod, spellTarget.basePowerMod, ...rest.map(e => e?.basePowerMod)]);
-        let finalPotencyPower = Math.floor(StatChain(spellBase.potency, [spellBase.potencyMod, spellTarget.potencyMod, ...rest.map(e => e?.potencyMod)], false) * char.getPowerStat(!!(spellTarget.summonData?.simpleName && !rest.find(e => e?._id == "67d1e2ec08eca40980cfee29"))))
+        let finalPotencyPower = Math.floor(StatChain(spellBase.potency, [spellBase.potencyMod, spellTarget.potencyMod, ...rest.map(e => e?.potencyMod)], false) * char.getPowerStat(specialLogicTags))
         const finalPower = StatChain(finalBasePower + finalPotencyPower + char.getBonusSpellPower(spellBase.arcanotype), [spellBase.powerMod, spellTarget.powerMod, {modifier: char.getAbilityBonuses("spellDamage")}, ...rest.map(e => e?.powerMod)]);
         const minRange = StatChain(spellTarget.baseRange.min, [spellBase.minRangeMod, spellTarget.minRangeMod, ...rest.map(e => e?.minRangeMod)]);
         const maxRange = StatChain(spellTarget.baseRange.max, [spellBase.maxRangeMod, spellTarget.maxRangeMod, ...rest.map(e => e?.maxRangeMod)]);
-        const minRangeFinal = StatChain(minRange, [spellBase.fullRangeMod, spellTarget.fullRangeMod, ...rest.map(e => e?.fullRangeMod)]);
-        const maxRangeFinal = StatChain(maxRange, [spellBase.fullRangeMod, spellTarget.fullRangeMod, ...rest.map(e => e?.fullRangeMod)]);
+        const minRangePreFinal = StatChain(minRange, [spellBase.fullRangeMod, spellTarget.fullRangeMod, ...rest.map(e => e?.fullRangeMod)]);
+        const maxRangePreFinal = StatChain(maxRange, [spellBase.fullRangeMod, spellTarget.fullRangeMod, ...rest.map(e => e?.fullRangeMod)]);
+        const [minRangeFinal, maxRangeFinal] = char.applyRangedModifiers(minRangePreFinal, maxRangePreFinal, "spell");
 
         let finalBaseSet = StatChain(spellBase.baseSpellSet, [spellBase.baseSpellSetMod, spellTarget.baseSpellSetMod, ...rest.map(e => e?.baseSpellSetMod)])
         let finalSet = StatChain(finalBaseSet + char.getSpellSet(), [spellBase.spellSetMod, spellTarget.spellSetMod, ...rest.map(e => e?.spellSetMod)])
@@ -119,7 +121,7 @@ export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: IS
         let summonBasicName = ""
         let summonDodge = 0;
 
-        if (spellTarget.summonData) {
+        if (specialLogicTags.includes("isSummon") && spellTarget.summonData) {
             summonPDEF = spellTarget.summonData.pDEF.baseValue + (spellBase.damageType == "physical" ? 10 : 0)
                 // + spellTarget.summonData.pDEF.potency * 0)
             summonMDEF = spellTarget.summonData.mDEF.baseValue + (spellBase.damageType == "magical" ? 10 : 0)
@@ -181,14 +183,16 @@ export const GetFinalSpellData = (spellBase: ISpellBaseCardData, spellTarget: IS
 
 
 export const GetFinalWeaponData = (weaponBase: IScaledWeaponBaseData, allCards: Array<IWeaponCommonData | null>, char: AbstractSheet): ITotalWeaponStats => {
-
+    let specialLogicTags = [...weaponBase.specialLogicTags ?? [], ...allCards.flatMap(e => e?.specialLogicTags ?? [])];
     let finalBasePower = StatChain(weaponBase.basePower, allCards.map(c => c?.basePowerMod));
-    let finalPotencyPower = Math.floor(StatChain(weaponBase.potency, allCards.map(c => c?.potencyMod), false) * char.getPowerStat(weaponBase.isCreatureWeapon));
+    let finalPotencyPower = Math.floor(StatChain(weaponBase.potency, allCards.map(c => c?.potencyMod), false) * char.getPowerStat(specialLogicTags));
     const finalPower = StatChain(finalBasePower + finalPotencyPower, [...allCards.map(c => c?.powerMod), {modifier: char.getAbilityBonuses("weaponDamage")}]);
     const minRange = StatChain(weaponBase.baseRange.min, allCards.map(c => c?.minRangeMod));
     const maxRange = StatChain(weaponBase.baseRange.max, allCards.map(c => c?.maxRangeMod));
-    const minRangeFinal = StatChain(minRange, allCards.map(c => c?.fullRangeMod));
-    const maxRangeFinal = StatChain(maxRange, allCards.map(c => c?.fullRangeMod));
+    const minRangePreFinal = StatChain(minRange, allCards.map(c => c?.fullRangeMod));
+    const maxRangePreFinal = StatChain(maxRange, allCards.map(c => c?.fullRangeMod));
+
+    const [minRangeFinal, maxRangeFinal] = char.applyRangedModifiers(minRangePreFinal, maxRangePreFinal, "weapon");
 
     const minThrownRange = StatChain(weaponBase.thrownRange.min, allCards.map(c => c?.minRangeMod));
     const maxThrownRange = StatChain(weaponBase.thrownRange.max, allCards.map(c => c?.maxRangeMod));
