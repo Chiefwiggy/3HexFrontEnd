@@ -11,6 +11,7 @@ import {
 import HighlightType from "../Generic/HighlightType";
 import {FaMoneyBillWave} from "react-icons/fa6";
 import {GiSparkSpirit, GiTiedScroll} from "react-icons/gi";
+import {SiMagic} from "react-icons/si";
 
 interface ICardEffectInput {
     effectData: IEffectData,
@@ -90,6 +91,10 @@ const CardEffect = ({effectData, finalPower}: ICardEffectInput) => {
             case 'money':
                 setEmblem(<Box sx={{paddingLeft: "2px", display: "flex", alignItems: "center"}}><FaMoneyBillWave /></Box>);
                 setTintColor("rgba(76,239,76,0.15)");
+                break;
+            case 'enchantment':
+                setEmblem(<Box sx={{paddingLeft: "2px", display: "flex", alignItems: "center"}}><SiMagic /></Box>)
+                setTintColor("rgba(255,143,238,0.22)")
                 break;
             case 'order':
                 setEmblem(<Box sx={{paddingLeft: "2px", display: "flex", alignItems: "center"}}><GiTiedScroll /></Box>)
