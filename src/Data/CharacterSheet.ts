@@ -194,7 +194,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getMaxOrders(): number {
-        return 1 + this.getAbilityBonuses("maxOrders") + Math.floor(this.getStat("skill") / 5)
+        return 1 + this.getAbilityBonuses("maxOrders") + Math.floor(this.getStat("presence") / 5)
     }
 
     public getMaxTechnik(): number {
