@@ -260,7 +260,18 @@ class CharacterConnection {
               "scaling": {
                 "value": 2
               }
-            }
+            },
+              "technik": {
+                "current": 0,
+                  "scaling": {
+                    "value": 2
+                  }
+              },"orders": {
+                "current": 0,
+                  "scaling": {
+                    "value": 2
+                  }
+              }
           },
           "characterStats": {
             "might": {
