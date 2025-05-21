@@ -24,6 +24,7 @@ import {disambiguateCard} from "../../Utils/DisambiguateCardType";
 import MultiselectChoice from "../ClassSelect/ChoiceElements/MultiselectChoice";
 import AffinityCheckbox from "../ClassSelect/ChoiceElements/AffinityCheckbox";
 import CompendiumChoiceAffinities from '../ClassSelect/Affinities/CompendiumChoiceAffinities'
+import {convertToSnakeCase} from "../../Utils/NameCodifier";
 
 interface ICompendiumClassElementInput {
     data: IClassMetaData
@@ -40,8 +41,8 @@ const CompendiumClassElement = ({
 
     useEffect(() => {
         if (data) {
-            setAllCards(ClassData.getClassCards(data.className.toLowerCase()));
-            setAllAbilities(ClassData.getClassAbilities(data.className.toLowerCase()));
+            setAllCards(ClassData.getClassCards(convertToSnakeCase(data.className)));
+            setAllAbilities(ClassData.getClassAbilities(convertToSnakeCase(data.className)));
         }
     }, [data, isLoaded]);
 

@@ -33,7 +33,7 @@ const ClassPreview = ({classData, isEquipped, canEquip, sendBack, equipData, can
     const navigate = useNavigate();
 
     const handleNavigateToClass = (event: React.MouseEvent) => {
-        window.open(`/compendium/classes?class=${classData.className.toLowerCase()}`, "_blank");
+        window.open(`/compendium/classes?class=${classData.className.split(" ").join("_").toLowerCase()}`, "_blank");
     }
 
 
