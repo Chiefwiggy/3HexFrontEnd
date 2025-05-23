@@ -270,7 +270,7 @@ const SourcesTab = ({}: ISourcesTabInput) => {
                             DowntimeData.GetSourcesPerTypeForPlayer(currentSheet).sort(([_, valA], [__, valB]) => valB - valA).map(([sourceName, value]) => {
                                 return (
                                     <Box key={sourceName} >
-                                        <SourceByArcanotypeWidget  sourceArcanotype={sourceName} slots={value} bypassList={getOverflowSources(true).map(e => e._id)} characterSourcesOfType={characterSources.filter(e => e.sourceArcanotype === sourceName)} handleInnerUpdate={handleUpdateInner} cancelInnerPing={cancelInnerPing} />
+                                        <SourceByArcanotypeWidget  sourceArcanotype={sourceName} slots={value} bypassList={getOverflowSources(true).map(e => e._id)} characterSourcesOfType={characterSources.filter(e => e.sourceArcanotype === sourceName)} handleInnerUpdate={handleUpdateInner} isTemporary={false} cancelInnerPing={cancelInnerPing} />
                                     </Box>
                                 )
                             })

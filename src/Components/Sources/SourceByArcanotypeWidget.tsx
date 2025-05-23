@@ -7,6 +7,7 @@ interface ISourceByArcanotypeWidgetInput {
     sourceArcanotype: UArcanotype,
     slots: number,
     characterSourcesOfType: Array<ISourceData>,
+    isTemporary?: boolean,
     bypassList?: Array<string>,
     handleInnerUpdate?: (source_id: string, newAttunementLevel: number) => void,
     cancelInnerPing?: boolean
@@ -16,6 +17,7 @@ const SourceByArcanotypeWidget = ({
     sourceArcanotype,
     slots,
     characterSourcesOfType,
+    isTemporary=true,
     bypassList=[],
     handleInnerUpdate = (source_id: string, newAttunementLevel: number) => {},
     cancelInnerPing = false
@@ -46,7 +48,7 @@ const SourceByArcanotypeWidget = ({
                 {
                     characterSourcesOfType.map((source, index) => {
                         return (
-                            <SourceChip handleInnerUpdate={handleInnerUpdate} cancelInnerPing={cancelInnerPing} source={source} bypassList={bypassList} index={index} slots={slots} key={index}/>
+                            <SourceChip handleInnerUpdate={handleInnerUpdate} cancelInnerPing={cancelInnerPing} source={source} bypassList={bypassList} index={index} slots={slots} key={index} isTemporary={isTemporary}/>
                         )
                     })
                 }
