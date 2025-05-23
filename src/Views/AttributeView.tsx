@@ -125,11 +125,11 @@ const AttributeView = ({pivot}: IAttributeViewInput) => {
                 <AttributeBar barName={"Tether"} barColor={"tether"} healFunction={handleHealAndUse(true)} damageFunction={handleDamage} takeFunction={handleHealAndUse(false)} currentAttr={currentTether} currentMaxAttr={currentMaxTether} progress={progressTether} />
                 {
                     currentMaxTechnik > 0 ?
-                        <AttributeBar barName={"Technik"} barColor={"technik"} healFunction={handleHealAndUse(true)} damageFunction={handleDamage} takeFunction={handleHealAndUse(true)} currentAttr={currentTechnik} currentMaxAttr={currentMaxTechnik} progress={progressTechnik} />
+                        <AttributeBar barName={"Technik"} barColor={"technik"} healFunction={handleHealAndUse(true)} damageFunction={handleDamage} takeFunction={handleHealAndUse(false)} currentAttr={currentTechnik} currentMaxAttr={currentMaxTechnik} progress={progressTechnik} />
                         :
                         <></>
                 }
-                <AttributeBar barName={"Orders"} barColor={"orders"} healFunction={handleHealAndUse(true)} damageFunction={handleDamage}  takeFunction={handleHealAndUse(true)} currentAttr={currentOrders} currentMaxAttr={currentMaxOrders} progress={progressOrders} />
+                <AttributeBar barName={"Orders"} barColor={"orders"} healFunction={handleHealAndUse(true)} damageFunction={handleDamage}  takeFunction={handleHealAndUse(false)} currentAttr={currentOrders} currentMaxAttr={currentMaxOrders} progress={progressOrders} />
 
 
                 <Box
