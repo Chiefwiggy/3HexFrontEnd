@@ -20,8 +20,8 @@ const SourceChip = ({source, bypassList, index, slots, handleInnerUpdate, cancel
     const handleOnClick = (event: React.MouseEvent<HTMLDivElement>) => {
         if (event.ctrlKey || event.metaKey) {
             setCurrentAttunement((currentAttunement) => {
-                handleInnerUpdate(source._id, 0)
-                return 0;
+                handleInnerUpdate(source._id, currentAttunement + 10)
+                return currentAttunement + 10;
             })
         } else {
             setCurrentAttunement((currentAttunement) => {
@@ -34,10 +34,15 @@ const SourceChip = ({source, bypassList, index, slots, handleInnerUpdate, cancel
 
     const handleRightClick = (event: React.MouseEvent<HTMLDivElement>) => {
         event.preventDefault()
-        if (currentAttunement > 0) {
+        if (event.ctrlKey || event.metaKey) {
             setCurrentAttunement((currentAttunement) => {
-                handleInnerUpdate(source._id, currentAttunement - 1)
-                return currentAttunement - 1;
+                handleInnerUpdate(source._id, Math.max(currentAttunement - 10, 0))
+                return Math.max(0, currentAttunement - 10);
+            })
+        } else {
+            setCurrentAttunement((currentAttunement) => {
+                handleInnerUpdate(source._id, Math.max(currentAttunement - 1, 0))
+                return Math.max(0, currentAttunement - 1);
             })
         }
 
