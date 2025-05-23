@@ -58,7 +58,7 @@ const ConsumableCard_New = ({
                 if (ct.skillScaling !== "none") {
                     newT += currentSheet.getStat(ct.skillScaling) * ct.potency
                 }
-                console.log(ct.abilityScaling)
+
                 if (ct.abilityScaling) {
                     if (ct.abilityScaling.modifiers) {
                         ct.abilityScaling.modifiers.forEach(mod => {
@@ -182,7 +182,7 @@ const ConsumableCard_New = ({
                             justifyContent: "center"
                         }}>
                             <DowntimeTooltip tooltipKey={consumableTemplate.craftingType} size={24} />
-                            <Typography >{(2**(consumableTemplate.itemTier-1))*getDowntimeTimeModifier(consumableTemplate.craftingType, consumableTemplate.itemName)}</Typography>
+                            <Typography >{Math.max(0, (2**(consumableTemplate.itemTier-1))*getDowntimeTimeModifier(consumableTemplate.craftingType, consumableTemplate.itemName)+(currentSheet?.getAbilityBonuses("craftingTime") ?? 0))}</Typography>
                         </BoxWithTooltip>
                     </Box>
 

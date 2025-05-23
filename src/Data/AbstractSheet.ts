@@ -206,6 +206,10 @@ abstract class AbstractSheet {
         return 1 + this.getAbilityBonuses("maxGlyphs")
     }
 
+    public getMaxAttacks(): number {
+        return 1 + this.getAbilityBonuses("attacksPerTurn")
+    }
+
     public getMaxSummons(): number {
         return 1 + this.getAbilityBonuses("summoningSlots")
     }

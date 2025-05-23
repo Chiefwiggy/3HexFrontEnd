@@ -1,17 +1,24 @@
 import React from 'react';
 import {Box, capitalize, Paper, Typography} from "@mui/material";
 import {ISourceData, UArcanotype} from "../../Data/ISourceData";
+import SourceChip from "./SourceChip";
 
 interface ISourceByArcanotypeWidgetInput {
     sourceArcanotype: UArcanotype,
     slots: number,
-    characterSourcesOfType: Array<ISourceData>
+    characterSourcesOfType: Array<ISourceData>,
+    bypassList?: Array<string>,
+    handleInnerUpdate?: (source_id: string, newAttunementLevel: number) => void,
+    cancelInnerPing?: boolean
 }
 
 const SourceByArcanotypeWidget = ({
     sourceArcanotype,
     slots,
-    characterSourcesOfType
+    characterSourcesOfType,
+    bypassList=[],
+    handleInnerUpdate = (source_id: string, newAttunementLevel: number) => {},
+    cancelInnerPing = false
 }: ISourceByArcanotypeWidgetInput) => {
 
 
@@ -22,7 +29,7 @@ const SourceByArcanotypeWidget = ({
                 padding: 1,
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "center"
+                alignItems: "center",
             }}
         >
             <Typography variant={"h6"}>{sourceArcanotype.toUpperCase()}</Typography>
@@ -39,16 +46,7 @@ const SourceByArcanotypeWidget = ({
                 {
                     characterSourcesOfType.map((source, index) => {
                         return (
-                            <Paper elevation={3} key={source._id}
-                                sx={{
-                                    padding: "6px",
-                                    backgroundColor: index >= slots ? "darkred" : "#343434",
-                                    flexBasis: "45%",
-                                    margin: "2.5%"
-                                }}
-                            >
-                                <Typography variant={"subtitle2"} textAlign={"center"}>{source.sourceName}</Typography>
-                            </Paper>
+                            <SourceChip handleInnerUpdate={handleInnerUpdate} cancelInnerPing={cancelInnerPing} source={source} bypassList={bypassList} index={index} slots={slots} key={index}/>
                         )
                     })
                 }

@@ -194,7 +194,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getMaxOrders(): number {
-        return 1 + this.getAbilityBonuses("maxOrders") + Math.floor(this.getStat("presence") / 5)
+        return 1 + this.getAbilityBonuses("maxOrders") + Math.floor(this.getStat("mind") / 5)
     }
 
     public getMaxTechnik(): number {
@@ -824,6 +824,10 @@ class CharacterSheet extends AbstractSheet {
         return 1 + this.getAbilityBonuses("tempSourcesKnown")
     }
 
+    public getVersatileSourcesCanPrepare(): number {
+        return 1 + this.getAbilityBonuses("versatileSourcesKnown")
+    }
+
     public getAuthoritySlots(): number {
         const aut = this.getStat("authority");
         let slots = 1;
@@ -953,8 +957,8 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getSpellSet(): number {
-        if (this.isUnlocked("arcaneTechnique")) {
-            return (this.getStat("knowledge") * 2) + (this.getStat("skill") * 2)
+        if (this.isUnlocked("arcaneTechnique") || this.isUnlocked("arcaneTechnique2")) {
+            return (this.getStat("knowledge") * 2) + (this.getStat("skill") * (this.isUnlocked("arcaneTechnique2") ? 2 : 1))
         } else {
             return this.getStat("presence") * 3 + this.getStat("knowledge")
         }

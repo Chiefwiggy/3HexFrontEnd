@@ -51,7 +51,7 @@ export const GetArcanotypeColor = (arcanotype: UArcanotype) => {
     case "animus":
       return "rgba(91,0,255,0.71)"
     case "esoteric":
-      return "#121212"
+      return "rgba(178,255,89,0.68)"
   }
 }
 

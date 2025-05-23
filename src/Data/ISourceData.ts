@@ -9,7 +9,8 @@ export interface ISourceData {
     sourceTiers: Array<ITierData>,
     visibility: "all" | "restricted" | "admin",
     onlyTemporary: boolean,
-    neverTemporary: boolean
+    neverTemporary: boolean,
+    tempAttunementLevel: number
 }
 
 

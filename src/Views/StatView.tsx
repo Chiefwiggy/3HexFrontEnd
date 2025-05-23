@@ -13,7 +13,7 @@ import BoxWithTooltip from "../Components/Generic/BoxWithTooltip";
 import SubtypeDamageIcon from '../Components/SmallComponents/SubtypeDamageIcon';
 import {UDamageSubtype} from "../Data/ICardData";
 import {RxValueNone} from "react-icons/rx";
-import {GiMagicHat, GiMeepleCircle, GiRuneStone} from "react-icons/gi";
+import {GiMagicHat, GiMeepleCircle, GiRuneStone, GiStripedSword} from "react-icons/gi";
 import {FaMoneyBillWave} from "react-icons/fa6";
 
 interface IStatViewInput {
@@ -136,6 +136,17 @@ const StatView = ({
                                 display: "grid",
                                 gridTemplateColumns: "1fr 1fr"
                             }}
+                            title={"Attacks Per Turn"}
+                            placement={"left"}
+                        >
+                            <Box sx={{paddingLeft: "2px", display: "flex", alignItems: "center"}}><GiStripedSword color={"#f1ecff"}/></Box>
+                            <Typography> {currentSheet.getMaxAttacks()}</Typography>
+                        </BoxWithTooltip>
+                        <BoxWithTooltip
+                            sx={{
+                                display: "grid",
+                                gridTemplateColumns: "1fr 1fr"
+                            }}
                             title={"Max Summons"}
                             placement={"left"}
                         >
@@ -153,6 +164,7 @@ const StatView = ({
                             <Box sx={{paddingLeft: "2px", display: "flex", alignItems: "center"}}><GiMeepleCircle color={"#f1ecff"}/></Box>
                             <Typography> {currentSheet.getMaxGlyphs()}</Typography>
                         </BoxWithTooltip>
+
                         <Typography variant={"subtitle2"}>Resistances</Typography>
                         <Box
                             sx={{

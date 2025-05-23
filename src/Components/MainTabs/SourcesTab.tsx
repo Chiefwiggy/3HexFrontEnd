@@ -20,6 +20,7 @@ import {IPreparedSource} from "../../Data/ICharacterData";
 import SourceByArcanotypeWidget from "../Sources/SourceByArcanotypeWidget";
 import {GetArcanotypeColor} from "../../Utils/CardColorUtils";
 import {SortSourcesByArcanotype} from "../../Utils/CardSorting";
+import {clone} from "../../Utils/ObjectUtils";
 
 interface ISourcesTabInput {
 
@@ -39,9 +40,54 @@ const SourcesTab = ({}: ISourcesTabInput) => {
     const [characterSources, setCharacterSources] = useState<Array<ISourceData>>([])
     const [characterTemporarySources, setCharacterTemporarySources] = useState<Array<ISourceData>>([]);
 
+    const [overflowSources, setOverflowSources] = useState<Array<ISourceData>>([])
+    const [isOverflowCurrent, setIsOverflowCurrent] = useState<boolean>(false)
+
+    const [cancelInnerPing, setCancelInnerPing] = useState<boolean>(false)
+
+    const getOverflowSources = (doCap = false): Array<ISourceData> => {
+        if (currentSheet) {
+            if (isOverflowCurrent) {
+                if (doCap) {
+                    return overflowSources.slice(0, currentSheet.getVersatileSourcesCanPrepare())
+                }
+                return overflowSources
+            } else {
+                let returnSources: Array<ISourceData> = []
+                const sourceList = DowntimeData.GetSourcesPerTypeForPlayer(currentSheet)
+                sourceList.map(([sourceType, value]) => {
+                    let nsources = characterSources.filter(e => e.sourceArcanotype == sourceType).slice(value)
+                    returnSources = [...returnSources, ...nsources]
+
+                })
+                setIsOverflowCurrent(true)
+                setOverflowSources(returnSources)
+                if (doCap) {
+                    return returnSources.slice(0, currentSheet?.getVersatileSourcesCanPrepare())
+                }
+                return returnSources
+            }
+        }
+        return []
+    }
+
     const handleAutocomplete = (event: SyntheticEvent<any>, value: Array<ISourceData>) => {
         setJustUpdated(false);
+        setIsOverflowCurrent(false)
+        value.forEach(e => {
+            if (!e.tempAttunementLevel) {
+                e.tempAttunementLevel = 0
+            }
+        })
         setCharacterSources(value);
+    }
+
+    const handleUpdateInner = (source_id: string, newAttunementLevel: number) => {
+        const theSource = characterSources.find(e => e._id == source_id)
+        if (theSource) {
+            theSource.tempAttunementLevel = newAttunementLevel
+        }
+        setJustUpdated(false)
     }
 
     const handleTemporaryAutocomplete = (event: SyntheticEvent<any>, value: Array<ISourceData>) => {
@@ -55,13 +101,13 @@ const SourcesTab = ({}: ISourcesTabInput) => {
             const newSources = characterSources.map(cs => {
                 return {
                     sourceId: cs._id,
-                    attunementLevel: 100
+                    attunementLevel: cs.tempAttunementLevel ?? 0
                 }
             })
             const tempSources = characterTemporarySources.map(cs => {
                 return {
                     sourceId: cs._id,
-                    attunementLevel: 100
+                    attunementLevel: 0
                 }
             })
             await currentSheet.SaveCharacterSources(newSources, tempSources);
@@ -74,9 +120,14 @@ const SourcesTab = ({}: ISourcesTabInput) => {
     const cancelSaveData = () => {
         if (currentSheet) {
             const allSourcesWithContext = currentSheet.data.knownSources.map(psd => {
-                return SourceData.GetSourceById(psd.sourceId);
+                let newSource = clone(SourceData.GetSourceById(psd.sourceId) ?? {})
+                if (newSource) {
+                    newSource.tempAttunementLevel = psd.attunementLevel
+                }
+                return newSource ? newSource : undefined
             }).filter((e): e is ISourceData => e != undefined);
             setCharacterSources(allSourcesWithContext);
+            setCancelInnerPing(cancelInnerPing => !cancelInnerPing)
             const allTempSourcesWithContext = currentSheet.data.temporarySources.map(psd => {
                 return SourceData.GetSourceById(psd.sourceId);
             }).filter((e): e is ISourceData => e != undefined);
@@ -86,10 +137,8 @@ const SourcesTab = ({}: ISourcesTabInput) => {
     }
 
     useEffect(() => {
-
-
-
         cancelSaveData()
+        setIsOverflowCurrent(false)
     }, [])
 
 
@@ -214,11 +263,14 @@ const SourcesTab = ({}: ISourcesTabInput) => {
                         <Box key={"temp"}>
                             <SourceByArcanotypeWidget  sourceArcanotype={"temporary"} slots={currentSheet.getTempSourcesCanPrepare()} characterSourcesOfType={characterTemporarySources} />
                         </Box>
+                        <Box key={"vers"}>
+                            <SourceByArcanotypeWidget  sourceArcanotype={"versatile"} slots={currentSheet.getVersatileSourcesCanPrepare()} characterSourcesOfType={getOverflowSources(true)} />
+                        </Box>
                         {
                             DowntimeData.GetSourcesPerTypeForPlayer(currentSheet).sort(([_, valA], [__, valB]) => valB - valA).map(([sourceName, value]) => {
                                 return (
                                     <Box key={sourceName} >
-                                        <SourceByArcanotypeWidget  sourceArcanotype={sourceName} slots={value} characterSourcesOfType={characterSources.filter(e => e.sourceArcanotype === sourceName)} />
+                                        <SourceByArcanotypeWidget  sourceArcanotype={sourceName} slots={value} bypassList={getOverflowSources(true).map(e => e._id)} characterSourcesOfType={characterSources.filter(e => e.sourceArcanotype === sourceName)} handleInnerUpdate={handleUpdateInner} cancelInnerPing={cancelInnerPing} />
                                     </Box>
                                 )
                             })
