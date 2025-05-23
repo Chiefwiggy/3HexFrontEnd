@@ -42,6 +42,8 @@ import {FaDice} from "react-icons/fa6";
 import RollDiceView from "./RollDiceView";
 import SubtypeDamageIcon from '../Components/SmallComponents/SubtypeDamageIcon';
 import BattalionAssignmentView from "./BattalionAssignmentView";
+import {MdMemory} from "react-icons/md";
+import HackCardBuilderView from "./HackCardBuilderView";
 
 const CharacterSheetFullView = () => {
 
@@ -116,6 +118,7 @@ const CharacterSheetFullView = () => {
                 <CharacterSheetSidebar title={"Create Spells"} icon={AutoFixHighOutlined} panelComponent={SpellCardBuilderView} />
                 <CharacterSheetSidebar title={"Create Attacks"} icon={GiAxeSword} panelComponent={WeaponCardBuilderView} />
                 <CharacterSheetSidebar title={"Create Offhand Attacks"} icon={GiDaggers} panelComponent={WeaponCardBuilderView}  doShow={currentSheet.canDualWield()} isOffhand={true}/>
+                <CharacterSheetSidebar title={"Create Hacks"} icon={MdMemory} panelComponent={HackCardBuilderView} />
                 <CharacterSheetSidebar title={"Saved Cards"} icon={GiSave} panelComponent={SavedCardsView} />
                 <CharacterSheetSidebar title={"Prepare Commander Cards"} icon={MilitaryTechOutlined} panelComponent={CommanderCardPrepView} />
                 {/*<CharacterSheetSidebar title={"Prepare Battalion"} icon={Diversity3Outlined} panelComponent={BattalionAssignmentView} />*/}

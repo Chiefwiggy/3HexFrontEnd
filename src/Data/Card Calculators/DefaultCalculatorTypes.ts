@@ -114,6 +114,44 @@ export const DEFAULT_SPELL_CALC_TYPES: Array<ICardBuilderType> = [
     }
 ]
 
+export const DEFAULT_TECHNIK_CALC_TYPES: Array<ICardBuilderType> = [
+    {
+        name: ["hack.io"],
+        display: "I/O",
+        component: [],
+        required: true,
+        count: 1
+    },
+    {
+        name: ["hack.function"],
+        display: "function",
+        component: [],
+        required: true,
+        count: 1
+    },
+    {
+        name: ["hack.protocol"],
+        display: "protocol",
+        component: [],
+        required: true,
+        count: 1
+    },
+    {
+        name: ["hack.util"],
+        display: "util",
+        component: [],
+        required: false,
+        count: 1
+    },
+    {
+        name: ["hack.else"],
+        display: "else",
+        component: [],
+        required: false,
+        count: 1
+    }
+]
+
 export const MINION_SPELL_CALC_TYPES: Array<ICardBuilderType> = [
     {
         name: ["spell.base"],

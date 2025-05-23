@@ -244,4 +244,12 @@ export interface ICalculatedWeapon {
     weaponCardsIds: Array<string>
 }
 
+export interface ICalculatedHack {
+    customName?: string,
+    hackIOId: string,
+    hackFunctionId: IEnchantmentData,
+    hackProtocolId: string,
+    hackCardsIds: Array<string>
+}
+
 export type UStance = "block" | "evade" | "exposed"

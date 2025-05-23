@@ -784,6 +784,46 @@ abstract class AbstractSheet {
         ]
     }
 
+    public getHackCalculatorTypes = () => {
+        return [
+            {
+                name: ["hack.io"],
+                display: "I/O",
+                component: [],
+                required: true,
+                count: 1
+            },
+            {
+                name: ["hack.function"],
+                display: "function",
+                component: [],
+                required: true,
+                count: 1
+            },
+            {
+                name: ["hack.protocol"],
+                display: "protocol",
+                component: [],
+                required: true,
+                count: 1
+            },
+            {
+                name: ["hack.util"],
+                display: "util",
+                component: [],
+                required: false,
+                count: 1
+            },
+            {
+                name: ["hack.else"],
+                display: "else",
+                component: [],
+                required: false,
+                count: 1
+            }
+        ]
+    }
+
 
 
     public areAllCardsPrepared = (data: Array<ICommonCardData|null>): boolean => {
