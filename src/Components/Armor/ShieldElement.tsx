@@ -39,9 +39,14 @@ const ShieldElement = ({
                 </Box>
                 <Divider />
                 <Box>
-                    <Typography variant={"h6"}>pDEF {shield.pDEFBonus} <em>(+{shield.blockPDEFBonus})</em></Typography>
-                    <Typography variant={"h6"}>mDEF {shield.mDEFBonus} <em>(+{shield.blockMDEFBonus})</em></Typography>
-                    <Typography variant={"h6"}>Dodge -{getSkillFormat(shield.armorClass == "light" ? 4 : (shield.armorClass == "heavy" ? 16 : 8), false)}</Typography>
+                    <Typography variant={"h6"}>pDEF: {shield.pDEFBonus} <em>(+{shield.blockPDEFBonus})</em></Typography>
+                    <Typography variant={"h6"}>mDEF: {shield.mDEFBonus} <em>(+{shield.blockMDEFBonus})</em></Typography>
+                    {
+                        shield.armorClass != "light" ?
+                            <Typography variant={"body1"}>Refresh: x{shield.armorClass == "standard" ? 0.75 : 0.5}</Typography>
+                            : <></>
+                    }
+
                     {
                         shield.armorClass == "heavy"
                         ?

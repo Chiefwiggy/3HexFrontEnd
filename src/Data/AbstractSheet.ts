@@ -99,6 +99,14 @@ abstract class AbstractSheet {
         }
         staminaMultiplier += this.getAbilityBonuses("staminaRefreshScaling") + this.getAbilityBonuses("refreshScaling")
 
+        if (this.currentShield) {
+            if (this.currentShield.armorClass == "standard") {
+                staminaMultiplier *= 0.75
+            } else if (this.currentShield.armorClass == "heavy") {
+                staminaMultiplier *= 0.5
+            }
+        }
+
         return Math.floor(
             this.getStat("endurance") * staminaMultiplier
         ) + this.getAbilityBonuses("staminaRefresh")
@@ -117,6 +125,13 @@ abstract class AbstractSheet {
         if (this.isUnlocked("patronMagic")) {
             return Math.floor(Math.max(0,this.getStat("mind")*(tetherMultiplier-2)) + this.getAbilityBonuses("tetherRefresh") + this.getStat("authority")*(tetherMultiplier*0.5) + this.getStat("presence")*(tetherMultiplier*0.5));
         }
+        if (this.currentShield) {
+            if (this.currentShield.armorClass == "standard") {
+                tetherMultiplier *= 0.75
+            } else if (this.currentShield.armorClass == "heavy") {
+                tetherMultiplier *= 0.5
+            }
+        }
 
 
 
@@ -127,11 +142,11 @@ abstract class AbstractSheet {
         let evadeArmorBonus = this.getArmorPDEF("evade");
         let evadeShieldBonus = this.getShieldPDEF("evade");
         evadeArmorBonus += this.getAbilityBonuses("pDEF");
-        return Math.floor((this.getStat("vitality") + this.getStat("endurance"))*0.5) + evadeArmorBonus;
+        return Math.floor((this.getStat("vitality") + this.getStat("endurance"))*0.5) + evadeArmorBonus + evadeShieldBonus;
     }
     public getBlockPDEF(): number {
         let blockArmorBonus = this.getArmorPDEF("blocking");
-        let blockShieldBonus = this.getShieldPDEF("blocking");
+        let blockShieldBonus = this.getShieldPDEF("blocking")
         blockArmorBonus += this.getAbilityBonuses("pDEFBlock") + this.getAbilityBonuses("DEFBlock");
         blockShieldBonus += this.getAbilityBonuses("shieldPDEF") + this.getAbilityBonuses("shieldDEF");
         return this.getEvadePDEF()+4+blockArmorBonus+blockShieldBonus;

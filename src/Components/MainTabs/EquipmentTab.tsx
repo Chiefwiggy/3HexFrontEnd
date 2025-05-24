@@ -118,7 +118,7 @@ const EquipmentTab = ({}: IEquipmentTabInput) => {
                 <EquipWeaponsWidget currentWeaponMetadata={currentWeaponMetadata} setWeaponData={handleChangeSelectedWeapons} />
                 <Box>
                     <EquipArmorWidget currentArmor={currentArmor} handleChangeSelectedArmor={handleChangeSelectedArmor}  />
-                    {/*<EquipShieldWidget currentShield={currentShield} handleChangeSelectedShield={handleChangeSelectedShield} />*/}
+                    <EquipShieldWidget currentShield={currentShield} handleChangeSelectedShield={handleChangeSelectedShield} />
                 </Box>
 
             </Box>
