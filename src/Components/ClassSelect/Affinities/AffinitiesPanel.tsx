@@ -30,7 +30,7 @@ const AffinitiesPanel = ({
             summoning: 0,
             swift: 0,
             riding: 0,
-            versatile: 0,
+            adaptation: 0,
             rune: 0,
             sourcecraft: 0,
             research: 0,
@@ -64,7 +64,7 @@ const AffinitiesPanel = ({
             <PathLayout affData={affData} path={"warrior"} affinities={["nimble", "infantry", "guardian"]}/>
             <PathLayout affData={affData} path={"arcanist"} affinities={["focus", "creation", "alteration"]}/>
             <PathLayout affData={affData} path={"commander"} affinities={["leadership", "supply", "summoning"]}/>
-            <PathLayout affData={affData} path={"navigator"} affinities={["swift", "riding", "versatile"]}/>
+            <PathLayout affData={affData} path={"navigator"} affinities={["swift", "riding", "adaptation"]}/>
             <PathLayout affData={affData} path={"scholar"} affinities={["rune", "sourcecraft", "research"]}/>
             <PathLayout affData={affData} path={"hacker"} affinities={["machinery", "abjuration", "biohacking"]}/>
 

@@ -535,7 +535,7 @@ class CharacterSheet extends AbstractSheet {
             summoning: 0,
             swift: 0,
             riding: 0,
-            versatile: 0,
+            adaptation: 0,
             rune: 0,
             sourcecraft: 0,
             research: 0,
@@ -742,7 +742,7 @@ class CharacterSheet extends AbstractSheet {
             summoning: 0,
             swift: 0,
             riding: 0,
-            versatile: 0,
+            adaptation: 0,
             rune: 0,
             sourcecraft: 0,
             research: 0,
@@ -765,7 +765,7 @@ class CharacterSheet extends AbstractSheet {
             warrior: this.currentAffinities.nimble + this.currentAffinities.infantry + this.currentAffinities.guardian,
             arcanist: this.currentAffinities.focus + this.currentAffinities.creation + this.currentAffinities.alteration,
             commander: this.currentAffinities.leadership + this.currentAffinities.supply + this.currentAffinities.summoning,
-            navigator: this.currentAffinities.swift + this.currentAffinities.riding + this.currentAffinities.versatile,
+            navigator: this.currentAffinities.swift + this.currentAffinities.riding + this.currentAffinities.adaptation,
             scholar: this.currentAffinities.rune + this.currentAffinities.research + this.currentAffinities.sourcecraft,
             hacker: this.currentAffinities.abjuration + this.currentAffinities.machinery + this.currentAffinities.biohacking
         }

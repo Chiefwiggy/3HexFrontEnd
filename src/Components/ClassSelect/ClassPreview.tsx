@@ -49,7 +49,7 @@ const ClassPreview = ({classData, isEquipped, canEquip, sendBack, equipData, can
         summoning: 0,
         swift: 0,
         riding: 0,
-        versatile: 0,
+        adaptation: 0,
         rune: 0,
         sourcecraft: 0,
         research: 0,

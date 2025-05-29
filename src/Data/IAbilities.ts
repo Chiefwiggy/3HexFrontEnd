@@ -23,7 +23,7 @@ export interface IAbility {
             summoning?: number,
             swift?: number,
             riding?: number,
-            versatile?: number,
+            adaptation?: number,
             rune?: number,
             sourcecraft?: number,
             research?: number,

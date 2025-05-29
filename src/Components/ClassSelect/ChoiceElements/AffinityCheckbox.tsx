@@ -32,7 +32,7 @@ const AffinityCheckbox = ({
 
     const [disableNew, setDisableNew] = useState<boolean>(false);
 
-    const allAffinities = ["nimble", "infantry", "guardian", "focus", "creation", "alteration", "leadership", "supply", "summoning", "swift", "riding", "versatile", "rune", "sourcecraft", "research", "biohacking", "abjuration", "machinery"]
+    const allAffinities = ["nimble", "infantry", "guardian", "focus", "creation", "alteration", "leadership", "supply", "summoning", "swift", "riding", "adaptation", "rune", "sourcecraft", "research", "biohacking", "abjuration", "machinery"]
 
     const [affDropdown, setAffDropdown] = useState<keyof IAffinities | "">("");
 
@@ -43,7 +43,7 @@ const AffinityCheckbox = ({
         warrior: ["nimble", "infantry", "guardian"],
         arcanist: ["focus", "creation", "alteration"],
         commander: ["leadership", "supply", "summoning"],
-        navigator: ["swift", "riding", "versatile"],
+        navigator: ["swift", "riding", "adaptation"],
         scholar: ["rune", "sourcecraft", "research"],
         hacker: ["machinery", "abjuration", "biohacking"]
     }

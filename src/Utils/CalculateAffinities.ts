@@ -14,7 +14,7 @@ export const GetPathAndAffinitiesFromClassList = (classes: Array<IClassData>, fa
             summoning: 0,
             swift: 0,
             riding: 0,
-            versatile: 0,
+            adaptation: 0,
             rune: 0,
             sourcecraft: 0,
             research: 0,
@@ -39,7 +39,7 @@ export const GetPathAndAffinitiesFromClassList = (classes: Array<IClassData>, fa
             warrior: currentAffinities.nimble + currentAffinities.infantry + currentAffinities.guardian,
             arcanist: currentAffinities.focus + currentAffinities.creation + currentAffinities.alteration,
             commander: currentAffinities.leadership + currentAffinities.supply + currentAffinities.summoning,
-            navigator: currentAffinities.swift + currentAffinities.riding + currentAffinities.versatile,
+            navigator: currentAffinities.swift + currentAffinities.riding + currentAffinities.adaptation,
             scholar: currentAffinities.rune + currentAffinities.research + currentAffinities.sourcecraft,
             hacker: currentAffinities.abjuration + currentAffinities.machinery + currentAffinities.biohacking
         }

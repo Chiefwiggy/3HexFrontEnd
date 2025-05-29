@@ -50,7 +50,7 @@ const FatelinePreview = ({fateData, isEquipped, canEquip, sendBack, equipData}: 
         summoning: 0,
         swift: 0,
         riding: 0,
-        versatile: 0,
+        adaptation: 0,
         rune: 0,
         sourcecraft: 0,
         research: 0,
