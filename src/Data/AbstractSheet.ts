@@ -48,8 +48,8 @@ abstract class AbstractSheet {
 
 
     public getMaxHealth(): number {
-        return Math.floor(4 + this.getAbilityBonuses("maxHealth") +
-            (this.getAbilityBonuses("maxHealthScaling")+2)*this.getStat("vitality") + (this.getAbilityBonuses("enduranceMaxHealthScaling")*this.getStat("endurance")));
+        return Math.floor((4 + this.getAbilityBonuses("maxHealth") +
+            (this.getAbilityBonuses("maxHealthScaling")+2)*this.getStat("vitality") + (this.getAbilityBonuses("enduranceMaxHealthScaling")*this.getStat("endurance"))) * (this.getAbilityBonuses("maxHealthMultiplier") || 1));
     }
     public getMaxStamina() {
         return Math.floor(10 + this.getAbilityBonuses("maxStamina") +

@@ -1,11 +1,10 @@
 import {IAffinities} from "./ICharacterData";
 
 export interface ICharacterRacialData {
-    raceName: string,
     raceId: string,
-    raceRole: string,
+    raceRoles: Array<string>,
+    pointsSpentOn: Array<string>,
     subraceId: string,
-    affinities: IAffinities
 }
 
 export interface IRaceData {

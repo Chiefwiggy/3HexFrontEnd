@@ -19,6 +19,7 @@ import PLC_SettingsData from "./PLC_SettingsData";
 import PLC_ShieldData from "./PLC_ShieldData";
 import PLC_MountData from "./PLC_MountData";
 import PLC_MinionMetadata from "./PLC_MinionMetadata";
+import PLC_RaceData from "./PLC_RaceData";
 
 interface IPreloadedContentProviderInput {
     children: any
@@ -39,6 +40,7 @@ export interface IPreloadedContentContextInput {
     SettingsData: PLC_SettingsData,
     MountData: PLC_MountData,
     MinionMetadata: PLC_MinionMetadata,
+    RaceData: PLC_RaceData,
     isLoaded: boolean
 }
 const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) => {
@@ -71,6 +73,8 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
 
     const [MinionMetadata, setMinionMetadata] = useState(new PLC_MinionMetadata());
 
+    const [RaceData, setRaceData] = useState(new PLC_RaceData());
+
     const [isLoaded, setIsLoaded] = useState(false);
 
     const API = useAPI();
@@ -94,6 +98,8 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
             await ConditionData.Initialize(data.conditionCards, data.conditionTags);
             await DowntimeData.Initialize(data.downtimeActivitiesData)
             await MinionMetadata.Initialize(data.minionRoles, data.allMinions)
+            console.log(data.raceData)
+            await RaceData.Initialize(data.raceData.raceCards, data.raceData.subraceCards, data.raceData.raceRoleCards, data.raceData.raceAbilities, data.raceData.subraceAbilities, data.raceData.raceRoleAbilities, data.raceData.raceMetadata)
             setIsLoaded(true);
             await MountData.Initialize(data.mountData)
         })();
@@ -116,6 +122,7 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
                 SettingsData,
                 MountData,
                 MinionMetadata,
+                RaceData,
                 isLoaded
             }}
         >

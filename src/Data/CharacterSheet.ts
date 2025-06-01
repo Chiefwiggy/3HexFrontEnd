@@ -972,6 +972,10 @@ class CharacterSheet extends AbstractSheet {
         return this.getStat(stat)*3 + Math.ceil(this.getStat("knowledge")) + this.getAbilityBonuses("allSaves") + this.getAbilityBonuses(`${stat}Saves`)
     }
 
+    public getRacialAbilityTokens = () => {
+        return 1 + this.getAbilityBonuses("racialAbilityTokens")
+    }
+
 
     public EnterEditMode() {
         console.log(this.data);

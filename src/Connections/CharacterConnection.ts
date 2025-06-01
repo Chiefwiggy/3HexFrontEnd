@@ -15,6 +15,7 @@ import Axios, { AxiosRequestConfig } from 'axios'
 import {IBaseArmorData} from "../Data/IArmorData";
 import {ISourceData} from "../Data/ISourceData";
 import {IDowntimePlayerData} from "../Data/IDowntime";
+import {ICharacterRacialData} from "../Data/IRacialData";
 
 class CharacterConnection {
 
@@ -208,6 +209,14 @@ class CharacterConnection {
     public async UpdateConsumableList(charID: string, consumables: Array<IConsumablePlayerData>) {
         await Axios.put(this.GetRouteURL(`update/${charID}`), {
             knownConsumables: consumables
+        }, this._getConfig()).then((resp) => {
+            console.log(resp);
+        })
+    }
+
+    public async UpdateRace(charID: string, raceData: ICharacterRacialData) {
+        await Axios.put(this.GetRouteURL(`update/${charID}`), {
+            race: raceData
         }, this._getConfig()).then((resp) => {
             console.log(resp);
         })

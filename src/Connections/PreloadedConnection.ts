@@ -1,12 +1,14 @@
 import Axios, {AxiosRequestConfig} from "axios";
 import {IBaseArmorData, IBaseShieldData} from "../Data/IArmorData";
-import {IConditionCard, IConditionTag, IWeaponBaseData} from "../Data/ICardData";
+import {ICommonCardData, IConditionCard, IConditionTag, IWeaponBaseData} from "../Data/ICardData";
 import {ISourceData} from "../Data/ISourceData";
 import {IConsumableTemplate} from "../Data/IConsumable";
 import {IFatelineFullData} from "../Data/IFatelineData";
 import {IDowntimeActivity} from "../Data/IDowntime";
 import {IMountBaseModel} from "../Data/IMountData";
 import {IMinionBaseData_New, IMinionRoleData} from "../Data/IMinionData_New";
+import {IRaceMetadata} from "../Hooks/usePreloadedContent/PLC_RaceData";
+import {IAbility} from "../Data/IAbilities";
 
 export interface IPreloadedDataStruct {
     class: {
@@ -33,7 +35,16 @@ export interface IPreloadedDataStruct {
     mountData: Array<IMountBaseModel>,
     conditionTags: Array<IConditionTag>,
     minionRoles: Array<IMinionRoleData>,
-    allMinions: Array<IMinionBaseData_New>
+    allMinions: Array<IMinionBaseData_New>,
+    raceData: {
+        raceCards: Record<string, Array<ICommonCardData>>,
+        subraceCards: Record<string, Array<ICommonCardData>>,
+        raceRoleCards: Record<string, Array<ICommonCardData>>,
+        raceAbilities: Record<string, Array<IAbility>>,
+        subraceAbilities: Record<string, Array<IAbility>>,
+        raceRoleAbilities: Record<string, Array<IAbility>>,
+        raceMetadata: Array<IRaceMetadata>
+    }
 }
 class PreloadedConnection {
     private _preloadedURL: string;
