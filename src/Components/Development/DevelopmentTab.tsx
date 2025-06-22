@@ -75,7 +75,15 @@ const DevelopmentTab = ({currentUnlockList, updateUnlockList}: IMasteryTabInput)
                         wrapper: (el, key) => <UnlockWrapper el={el} _id={key} unlockedByDefault={false} unlockList={currentUnlockList} updateUnlockList={updateUnlockList}/>
                     })
                 }
-                {DevelopmentData.GetDevelopmentAbilities().map(ability => {
+                {DevelopmentData.GetDevelopmentAbilities().sort((a,b) => {
+                    const aLevel = a.prerequisites.find(e => e.prerequisiteType === "level")?.level ?? 0
+                    const bLevel = b.prerequisites.find(e => e.prerequisiteType === "level")?.level ?? 0
+                    if (aLevel != bLevel) {
+                        return aLevel - bLevel
+                    } else {
+                        return a.abilityName.localeCompare(b.abilityName)
+                    }
+                }).map(ability => {
                     return <UnlockWrapper key={ability._id} el={<AbilityItem abilityData={ability} showPrerequisites={true} />} _id={ability._id} unlockedByDefault={false} isDisabled={isAbilityDisabled(ability)} unlockList={currentUnlockList} updateUnlockList={updateUnlockList}/>
                 })}
 
