@@ -444,7 +444,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getTotalStatPoints = () => {
-        return this.getLevel() + 35;
+        return this.getLevel() + 35 + this.getAbilityBonuses("statPoints")
     }
 
     public editStat(val: number, statName: string) {
