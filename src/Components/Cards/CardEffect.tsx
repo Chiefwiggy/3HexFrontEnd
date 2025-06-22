@@ -10,7 +10,7 @@ import {
 } from "@mui/icons-material";
 import HighlightType from "../Generic/HighlightType";
 import {FaMoneyBillWave} from "react-icons/fa6";
-import {GiSparkSpirit, GiTiedScroll} from "react-icons/gi";
+import {GiPortal, GiSparkSpirit, GiTiedScroll} from "react-icons/gi";
 import {SiMagic} from "react-icons/si";
 
 interface ICardEffectInput {
@@ -103,6 +103,10 @@ const CardEffect = ({effectData, finalPower}: ICardEffectInput) => {
             case 'soul_charge':
                 setEmblem(<Box sx={{paddingLeft: "2px", display: "flex", alignItems: "center"}}><GiSparkSpirit /></Box>)
                 setTintColor("rgba(191,0,255,0.4)")
+                break;
+            case 'rift_object':
+                setEmblem(<Box sx={{paddingLeft: "2px", display: "flex", alignItems: "center"}}><GiPortal /></Box>)
+                setTintColor("rgba(42,52,255,0.2)");
                 break;
         }
     }

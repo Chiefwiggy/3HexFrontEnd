@@ -88,6 +88,7 @@ export interface ICharacterBaseData {
     settings: ISettingsData,
     isDead: boolean,
     creatorName: string,
+    developmentIds: Array<string>,
     __times_accessed: number,
     _id: string
 }

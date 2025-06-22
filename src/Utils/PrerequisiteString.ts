@@ -4,16 +4,18 @@ import {convertFromSnakeCase} from "./NameCodifier";
 
 const GetPrerequisitePriority = (prerequisite: IPrerequisite) => {
     switch (prerequisite.prerequisiteType) {
+        case "level":
+            return 0
         case "attribute":
-            return 2;
+            return 20;
         case "affinity":
-            return 4;
+            return 40;
         case "class":
-            return 1;
+            return 10;
         case "fateline":
-            return 0;
+            return 5;
         case "path":
-            return 3;
+            return 30;
         default:
             return 99;
     }
@@ -33,8 +35,12 @@ export const GetPrerequisiteString = (prerequisites: Array<IPrerequisite>) => {
             return `${convertFromSnakeCase(prereq.skill, true)}${prereq.level > 1 ? "+" : ""}`
         } else if (prereq.prerequisiteType === "fateline") {
             return `${convertFromSnakeCase(prereq.skill, true)}${prereq.level == -1 ? " - Reversed" : " - Upright"}`
+        } else if (prereq.prerequisiteType === "level") {
+            return `Level ${prereq.level}`
+        } else if (prereq.prerequisiteType === "development") {
+            return null
         }
         return `${capitalize(prereq.skill)} ${prereq.level}`
-    }).join(", ");
+    }).filter(e => e !== null).join(", ");
     return str;
 }

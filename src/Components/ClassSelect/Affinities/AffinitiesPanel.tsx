@@ -9,48 +9,17 @@ import {GetPathAndAffinitiesFromClassList} from "../../../Utils/CalculateAffinit
 interface IAffinitiesPanelInput {
     myClasses: Array<IClassData>,
     myFate: IFatelineData|undefined
+    affData: IAffinitiesAndPath
 }
 
 const AffinitiesPanel = ({
     myClasses,
-    myFate
+    myFate,
+    affData
 }: IAffinitiesPanelInput) => {
 
 
-    const [affData, setAffData] = useState<IAffinitiesAndPath>({
-        affinities: {
-            nimble: 0,
-            infantry: 0,
-            guardian: 0,
-            focus: 0,
-            creation: 0,
-            alteration: 0,
-            leadership: 0,
-            supply: 0,
-            summoning: 0,
-            swift: 0,
-            riding: 0,
-            adaptation: 0,
-            rune: 0,
-            sourcecraft: 0,
-            research: 0,
-            machinery: 0,
-            biohacking: 0,
-            abjuration: 0
-        },
-        path: {
-            warrior: 0,
-            arcanist: 0,
-            commander: 0,
-            navigator: 0,
-            scholar: 0,
-            hacker: 0
-        }
-    })
 
-    useEffect(() => {
-        setAffData(GetPathAndAffinitiesFromClassList(myClasses, myFate));
-    }, [myClasses, myFate]);
 
     return (
         <Box

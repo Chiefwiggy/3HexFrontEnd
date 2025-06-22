@@ -2,16 +2,18 @@ import React, {useEffect, useState} from 'react';
 import {Box} from "@mui/material";
 import {LockOpenOutlined, LockOutlined} from '@mui/icons-material';
 import IconButtonWithTooltip from "../Generic/IconButtonWithTooltip";
+import {MdLocationDisabled} from "react-icons/md";
 
 interface IUnlockWrapperInput {
     el: JSX.Element,
     _id: string,
     unlockedByDefault: boolean,
     unlockList: Array<string>,
-    updateUnlockList: (newUnlockList: Array<string>) => void
+    updateUnlockList: (newUnlockList: Array<string>) => void,
+    isDisabled?: boolean
 }
 
-const UnlockWrapper = ({el, _id, unlockedByDefault, unlockList, updateUnlockList}: IUnlockWrapperInput) => {
+const UnlockWrapper = ({el, _id, unlockedByDefault, unlockList, updateUnlockList, isDisabled=false}: IUnlockWrapperInput) => {
 
     const [isCurrentlyUnlocked, setIsCurrentlyUnlocked ] = useState<boolean>(unlockList.includes(_id))
 
@@ -43,12 +45,17 @@ const UnlockWrapper = ({el, _id, unlockedByDefault, unlockList, updateUnlockList
                 }}
             >
                 {el}
-                <IconButtonWithTooltip title={isCurrentlyUnlocked ? "Lock" : "Unlock"} placement={"right"} onClick={isCurrentlyUnlocked ? setToLocked : setToUnlocked}>
+                <IconButtonWithTooltip disabled={!isCurrentlyUnlocked && isDisabled} title={isCurrentlyUnlocked ? "Lock" : "Unlock"} placement={"right"} onClick={isCurrentlyUnlocked ? setToLocked : setToUnlocked}>
                     {
                         isCurrentlyUnlocked ?
                             <LockOpenOutlined color={"success"} />
                             :
-                            <LockOutlined color={"error"}/>
+                            (
+                                isDisabled ?
+                                    <MdLocationDisabled color={"disabled"} />
+                                    :
+                                    <LockOutlined color={"error"}/>
+                            )
                     }
                 </IconButtonWithTooltip>
 

@@ -137,7 +137,7 @@ const CardPreparationView = ({closeSelf}: ICardPreparationViewInput) => {
                                 currentPreparedCards.length -
                                 Math.max(
                                     Math.min(
-                                        currentPreparedCards.filter(e => e.cardSubtype == "base" ).length,
+                                        currentPreparedCards.filter(e => e.cardSubtype == "base" || e.cardSubtype == "order" ).length,
                                         currentSheet.getBaseCardSlots()
                                     ),
                                     currentPreparedCards.filter(e => (e as ISpellBaseCardData).isFromTemporarySource ?? false).length
@@ -147,7 +147,7 @@ const CardPreparationView = ({closeSelf}: ICardPreparationViewInput) => {
                             } • Base Slots: {
                                 Math.max(
                                     Math.min(
-                                        currentPreparedCards.filter(e => e.cardSubtype == "base").length,
+                                        currentPreparedCards.filter(e => e.cardSubtype == "base" || e.cardSubtype == "order").length,
                                         currentSheet.getBaseCardSlots()
                                     ),
                                     currentPreparedCards.filter(e => (e as ISpellBaseCardData).isFromTemporarySource ?? false).length

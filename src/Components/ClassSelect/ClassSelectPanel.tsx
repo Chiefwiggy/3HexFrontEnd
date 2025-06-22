@@ -24,8 +24,10 @@ import DevelopmentTab from "../Development/DevelopmentTab";
 interface IClassSelectPanelInput {
   myClasses: IClassData[];
   myFate: IFatelineData | undefined;
+  myDev: Array<string>,
   sendBack: (doPick: boolean, classData: IClassData) => void;
   sendBackFate: (doPick: boolean, fateData: IFatelineData) => void;
+  sendBackDev: (newList: Array<string>) => void
 }
 
 const TIER_OPTIONS = [
@@ -41,9 +43,9 @@ const TIER_OPTIONS = [
 
 const ClassSelectPanel = ({
   myClasses,
-  myFate,
+  myFate, myDev,
   sendBack,
-  sendBackFate
+  sendBackFate, sendBackDev
 }: IClassSelectPanelInput) => {
   const { currentSheet } = useCharacter();
   const { ClassData, FatelineData, isLoaded } = usePreloadedContent();
@@ -68,6 +70,7 @@ const ClassSelectPanel = ({
     currentSheet.data.classes = myClasses;
     currentSheet.data.fateline = myFate;
     currentSheet.setPreparedCards([]);
+    currentSheet.data.developmentIds = myDev
     currentSheet.data.currentWeapon = null;
     currentSheet.data.currentSpell = null;
     await currentSheet.SaveCharacterSheet();
@@ -112,8 +115,9 @@ const ClassSelectPanel = ({
       : `Unlock Class at Level ${(tierNum - 1) * 60}`;
   };
 
+
   const renderContent = () => {
-    if (tier === "development") return <DevelopmentTab />;
+    if (tier === "development") return <DevelopmentTab currentUnlockList={myDev} updateUnlockList={sendBackDev} />;
     if (tier === "fate") {
       return FatelineData.GetAllFatelineData().map(fd => (
         <FatelinePreview

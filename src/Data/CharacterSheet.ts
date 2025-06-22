@@ -950,9 +950,15 @@ class CharacterSheet extends AbstractSheet {
 
     public getPowerStat(specialLogicTags: Array<string>): number {
 
-        if (specialLogicTags.includes("useAuth") && !specialLogicTags.includes("useMightOverride")) {
-            return this.getStat("authority")
+        if (!specialLogicTags.includes("useMightOverride")) {
+            if (specialLogicTags.includes("useAuth")) {
+                return this.getStat("authority")
+            }
+            if (specialLogicTags.includes("useSkill") ) {
+                return this.getStat("skill")
+            }
         }
+
         return this.getStat("might")
     }
 
@@ -974,6 +980,10 @@ class CharacterSheet extends AbstractSheet {
 
     public getRacialAbilityTokens = () => {
         return 1 + this.getAbilityBonuses("racialAbilityTokens")
+    }
+
+    public getDevelopmentPoints = () => {
+        return 1 + Math.floor((this.getLevel() - 10) * 0.05)
     }
 
 

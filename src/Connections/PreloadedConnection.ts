@@ -44,6 +44,10 @@ export interface IPreloadedDataStruct {
         subraceAbilities: Record<string, Array<IAbility>>,
         raceRoleAbilities: Record<string, Array<IAbility>>,
         raceMetadata: Array<IRaceMetadata>
+    },
+    development: {
+        abilities: Record<string, Array<IAbility>>,
+        cards: Record<string, Array<ICommonCardData>>
     }
 }
 class PreloadedConnection {

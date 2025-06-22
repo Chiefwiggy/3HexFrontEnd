@@ -1,7 +1,8 @@
 import {IAffinities, IPathKeys, IClassData} from "../Data/ICharacterData";
 import {IFatelineData} from "../Data/IFatelineData";
+import {IAbility} from "../Data/IAbilities";
 
-export const GetPathAndAffinitiesFromClassList = (classes: Array<IClassData>, fate: IFatelineData|undefined)  => {
+export const GetPathAndAffinitiesFromClassList = (classes: Array<IClassData>, fate: IFatelineData|undefined, devAbilities: Array<IAbility>)  => {
         const currentAffinities = { ...{
             nimble: 0,
             infantry: 0,
@@ -34,6 +35,15 @@ export const GetPathAndAffinitiesFromClassList = (classes: Array<IClassData>, fa
             Object.entries(val.affinities).forEach(([key, value]) => {
                 currentAffinities[key as keyof IAffinities] += value;
             })
+        })
+        devAbilities.forEach(ability => {
+            if (ability.unlocks && Object.keys(ability.unlocks).length > 0) {
+                let uList = Object.keys(ability.unlocks).filter(key => key.endsWith("Affinity")).map(e => e.replace(/Affinity$/, ""))
+                console.log(uList)
+                if (uList.length > 0) {
+                    currentAffinities[uList[0] as keyof IAffinities] += 1
+                }
+            }
         })
         currentPath = {
             warrior: currentAffinities.nimble + currentAffinities.infantry + currentAffinities.guardian,

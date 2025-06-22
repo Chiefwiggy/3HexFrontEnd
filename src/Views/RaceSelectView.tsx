@@ -154,7 +154,7 @@ const RaceSelectView = ({}: IRaceSelectViewInput) => {
                                                 })
                                             }
                                             {[...RaceData.GetBaseRaceAbilities(currentRace.raceId, 1), ...RaceData.GetRaceRoleAbilities(currentRace.raceId, 1)].map(ability => {
-                                                return <UnlockWrapper el={<AbilityItem abilityData={ability} showPrerequisites={false} />} _id={ability._id} unlockedByDefault={true} unlockList={currentUnlockList} updateUnlockList={updateUnlockList}/>
+                                                return <UnlockWrapper key={ability._id} el={<AbilityItem abilityData={ability} showPrerequisites={false} />} _id={ability._id} unlockedByDefault={true} unlockList={currentUnlockList} updateUnlockList={updateUnlockList}/>
                                             })}
                                         </Box>
                                         <Divider sx={{
@@ -171,11 +171,11 @@ const RaceSelectView = ({}: IRaceSelectViewInput) => {
                                         >
                                             {
                                                 disambiguateCard([...RaceData.GetBaseRaceCards(currentRace.raceId, 2), ...RaceData.GetRaceRoleCards(currentRace.raceId, 2)], compendiumProps, {
-                                                    wrapper: (el, key) => <UnlockWrapper el={el} _id={key} unlockedByDefault={false} unlockList={currentUnlockList} updateUnlockList={updateUnlockList}/>
+                                                    wrapper: (el, key) => <UnlockWrapper el={el} key={key} _id={key} unlockedByDefault={false} unlockList={currentUnlockList} updateUnlockList={updateUnlockList}/>
                                                 })
                                             }
                                             {[...RaceData.GetBaseRaceAbilities(currentRace.raceId, 2), ...RaceData.GetRaceRoleAbilities(currentRace.raceId, 2)].map(ability => {
-                                                return <UnlockWrapper el={<AbilityItem abilityData={ability} showPrerequisites={false} />} _id={ability._id} unlockedByDefault={false} unlockList={currentUnlockList} updateUnlockList={updateUnlockList}/>
+                                                return <UnlockWrapper key={ability._id} el={<AbilityItem abilityData={ability} showPrerequisites={false} />} _id={ability._id} unlockedByDefault={false} unlockList={currentUnlockList} updateUnlockList={updateUnlockList}/>
                                             })}
                                         </Box>
                                     </Box>
@@ -208,7 +208,7 @@ const RaceSelectView = ({}: IRaceSelectViewInput) => {
                                                 })
                                             }
                                             {RaceData.GetSubraceAbilities(currentSubrace.subraceId, 1).map(ability => {
-                                                return <UnlockWrapper el={<AbilityItem abilityData={ability} showPrerequisites={false} />} _id={ability._id} unlockedByDefault={true} unlockList={currentUnlockList} updateUnlockList={updateUnlockList}/>
+                                                return <UnlockWrapper key={ability._id} el={<AbilityItem abilityData={ability} showPrerequisites={false} />} _id={ability._id} unlockedByDefault={true} unlockList={currentUnlockList} updateUnlockList={updateUnlockList}/>
                                             })}
                                         </Box>
                                         <Divider sx={{
@@ -229,7 +229,7 @@ const RaceSelectView = ({}: IRaceSelectViewInput) => {
                                                 })
                                             }
                                             {RaceData.GetSubraceAbilities(currentSubrace.subraceId, 2).map(ability => {
-                                                return <UnlockWrapper el={<AbilityItem abilityData={ability} showPrerequisites={false} />} _id={ability._id} unlockedByDefault={false} unlockList={currentUnlockList} updateUnlockList={updateUnlockList}/>
+                                                return <UnlockWrapper key={ability._id} el={<AbilityItem abilityData={ability} showPrerequisites={false} />} _id={ability._id} unlockedByDefault={false} unlockList={currentUnlockList} updateUnlockList={updateUnlockList}/>
                                             })}
                                         </Box>
                                     </Box>

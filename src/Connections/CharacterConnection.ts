@@ -160,7 +160,8 @@ class CharacterConnection {
             currentWeapon: newData.currentWeapon,
             createdWeapons: newData.createdWeapons,
             createdSpells: newData.createdSpells,
-            knownSources: newData.knownSources
+            knownSources: newData.knownSources,
+            developmentIds: newData.developmentIds
         }, this._getConfig()).then((resp) => {
             console.log(resp);
         })
@@ -217,6 +218,14 @@ class CharacterConnection {
     public async UpdateRace(charID: string, raceData: ICharacterRacialData) {
         await Axios.put(this.GetRouteURL(`update/${charID}`), {
             race: raceData
+        }, this._getConfig()).then((resp) => {
+            console.log(resp);
+        })
+    }
+
+    public async UpdateDevelopmentUnlockList(charID: string, unlockList: Array<string>) {
+        await Axios.put(this.GetRouteURL(`update/${charID}`), {
+            developmentIds: unlockList
         }, this._getConfig()).then((resp) => {
             console.log(resp);
         })
