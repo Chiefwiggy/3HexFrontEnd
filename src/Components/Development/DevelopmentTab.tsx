@@ -64,7 +64,7 @@ const DevelopmentTab = ({currentUnlockList, updateUnlockList}: IMasteryTabInput)
                     gridTemplateColumns: "repeat( auto-fill , max(314px, 19vw))",
                     gridGap: "10px",
                     width: "100%",
-                    maxHeight: "88vh",
+                    maxHeight: "78vh",
                     overflowY: "auto",
                     scrollbarColor: "#6b6b6b #2b2b2b",
                     scrollbarWidth: "thin"
