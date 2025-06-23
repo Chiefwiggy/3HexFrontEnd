@@ -10,7 +10,20 @@ import {IMinionBaseData_New, IMinionRoleData} from "../Data/IMinionData_New";
 import {IRaceMetadata} from "../Hooks/usePreloadedContent/PLC_RaceData";
 import {IAbility} from "../Data/IAbilities";
 
+export interface ICacheTimestamp {
+    entry_name: string,
+    last_updated: number
+}
+
+export interface ICacheData {
+    db_cache_timestamps: Array<ICacheTimestamp>,
+    frontend_timestamp?: ICacheTimestamp,
+    backend_timestamp?: ICacheTimestamp,
+    always_pull: boolean,
+    is_master: boolean
+}
 export interface IPreloadedDataStruct {
+    updatedCache: ICacheData,
     class: {
         cards: Object,
         abilities: Object,
@@ -52,15 +65,30 @@ export interface IPreloadedDataStruct {
 }
 class PreloadedConnection {
     private _preloadedURL: string;
+    private _cacheURL: string
     private _getConfig: () => AxiosRequestConfig
 
     constructor(url: string, getConfig: () => AxiosRequestConfig) {
         this._preloadedURL = url + "preload/";
+        this._cacheURL = url + "cache/"
         this._getConfig = getConfig;
     }
 
-    public async GetPreloadedData(): Promise<IPreloadedDataStruct> {
-        return await Axios.get(`${this._preloadedURL}getAllPreloadedContent`, this._getConfig()).then((resp) => {
+    public async GetMasterCache(): Promise<ICacheData> {
+        return await Axios.get(`${this._cacheURL}master`, this._getConfig()).then((resp) => {
+            return resp.data
+        }).catch((e) => {
+            console.error(e);
+            return {
+                db_cache_timestamps: [],
+                is_master: false,
+                always_pull: true
+            }
+        })
+    }
+
+    public async GetPreloadedData(myCache: ICacheData | Object ): Promise<IPreloadedDataStruct> {
+        return await Axios.post(`${this._preloadedURL}getAllPreloadedContent`, {"user_cache_data": myCache}, this._getConfig()).then((resp) => {
             return resp.data
         }).catch((e) => {
             console.error(e);

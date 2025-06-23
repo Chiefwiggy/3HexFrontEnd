@@ -86,8 +86,78 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
     useEffect(() => {
         (async() => {
 
-            const data = await API.PreloadedAPI.GetPreloadedData();
+
+            const local_myCacheMetadata = localStorage.getItem("cache_metadata")
+            const local_myCache = localStorage.getItem("cache_data")
+            let myCacheFinalMetadata = {}
+            let myCacheFinal = null
+            if (local_myCacheMetadata) {
+                myCacheFinalMetadata = JSON.parse(local_myCacheMetadata);
+            }
+            if (local_myCache) {
+                myCacheFinal = JSON.parse(local_myCache)
+            }
+
+            let data = await API.PreloadedAPI.GetPreloadedData(myCacheFinalMetadata);
+
             const classData = await API.ClassAPI.GetAllClasses();
+
+            if (myCacheFinal) {
+                if (Object.keys(data.class.cards).length == 0) {
+                    data.class.cards = myCacheFinal.class.cards;
+                }
+                if (Object.keys(data.affinity.cards).length == 0) {
+                    data.affinity.cards = myCacheFinal.affinity.cards;
+                }
+                if (Object.keys(data.path.cards).length == 0) {
+                    data.path.cards = myCacheFinal.path.cards;
+                }
+                if (Object.keys(data.class.abilities).length == 0) {
+                    data.class.abilities = myCacheFinal.class.abilities;
+                }
+                if (Object.keys(data.affinity.abilities).length == 0) {
+                    data.affinity.abilities = myCacheFinal.affinity.abilities;
+                }
+                if (Object.keys(data.path.abilities).length == 0) {
+                    data.path.abilities = myCacheFinal.path.abilities;
+                }
+                if (data.sources.length == 0) {
+                    data.sources = myCacheFinal.sources;
+                }
+                if (data.armorData.length == 0) {
+                    data.armorData = myCacheFinal.armorData;
+                }
+                if (data.shieldData.length == 0) {
+                    data.shieldData = myCacheFinal.shieldData;
+                }
+                if (data.consumableData.length == 0) {
+                    data.consumableData = myCacheFinal.consumableData;
+                }
+                if (data.fatelineData.length == 0) {
+                    data.fatelineData = myCacheFinal.fatelineData;
+                }
+                if (data.conditionCards.length == 0) {
+                    data.conditionCards = myCacheFinal.conditionCards;
+                }
+                if (data.downtimeActivitiesData.length == 0) {
+                    data.downtimeActivitiesData = myCacheFinal.downtimeActivitiesData;
+                }
+                if (data.conditionTags.length == 0) {
+                    data.conditionTags = myCacheFinal.conditionTags;
+                }
+                if (data.mountData.length == 0) {
+                    data.mountData = myCacheFinal.mountData;
+                }
+                if (Object.keys(data.raceData.raceMetadata).length == 0) {
+                    data.raceData = myCacheFinal.raceData
+                }
+                if (Object.keys(data.development.abilities).length == 0) {
+                    data.development = myCacheFinal.development;
+                }
+                if (data.weaponData.length == 0) {
+                    data.weaponData = myCacheFinal.weaponData;
+                }
+            }
 
 
             await ClassData.Initialize(data.class.cards, data.class.abilities, classData);
@@ -107,6 +177,11 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
             await DevelopmentData.Initialize(data.development.cards, data.development.abilities)
             setIsLoaded(true);
             await MountData.Initialize(data.mountData)
+
+            console.log(data.updatedCache)
+            localStorage.setItem("cache_metadata", JSON.stringify(data.updatedCache))
+            localStorage.setItem("cache_data", JSON.stringify(data))
+
         })();
     }, []);
 
