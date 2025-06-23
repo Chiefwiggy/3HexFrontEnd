@@ -1008,6 +1008,7 @@ class CharacterSheet extends AbstractSheet {
         this.sendReadyFn(false);
         await this.initializeAsync();
         this._setAffinities()
+        this.setExpertiseDice()
         this._ping();
     }
 

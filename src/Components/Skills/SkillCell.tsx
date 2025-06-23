@@ -26,6 +26,7 @@ const SkillCell = ({
     const showPoints = useMediaQuery("(min-width: 1360px)");
 
     useEffect(() => {
+
         if (currentSheet) {
             const {value, isExpert} = currentSheet.getSkillData(skillName.toLowerCase());
             setHasExpert(isExpert);
