@@ -24,6 +24,19 @@ class PLC_DevelopmentData {
     public GetDevelopmentAbilities() {
         return Object.values(this.developmentAbilities).flat()
     }
+
+    public GetDevelopmentAbilityLevelById(id: string) {
+        const elem = this.GetDevelopmentAbilities().find(e => e._id == id)
+        if (elem) {
+            const prereq = elem.prerequisites.find(prerequisite => prerequisite.prerequisiteType == "level")
+            if (prereq) {
+                return prereq.level
+            } else {
+                return 0;
+            }
+        }
+        return undefined;
+    }
 }
 
 export default PLC_DevelopmentData;

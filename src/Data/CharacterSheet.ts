@@ -983,7 +983,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getDevelopmentPoints = () => {
-        return 1 + Math.floor((this.getLevel() - 10) * 0.05)
+        return 2 + Math.floor((this.getLevel() - 10) * 0.05)
     }
 
 
