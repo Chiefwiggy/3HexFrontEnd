@@ -112,6 +112,15 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
                 if (Object.keys(data.path.cards).length == 0) {
                     data.path.cards = myCacheFinal.path.cards;
                 }
+                if (Object.keys(data.raceData.raceCards).length == 0) {
+                    data.raceData.raceCards = myCacheFinal.raceData.raceCards
+                }
+                if (Object.keys(data.raceData.subraceCards).length == 0) {
+                    data.raceData.subraceCards = myCacheFinal.raceData.subraceCards
+                }
+                if (Object.keys(data.raceData.raceRoleCards).length == 0) {
+                    data.raceData.raceRoleCards = myCacheFinal.raceData.raceRoleCards
+                }
                 if (Object.keys(data.class.abilities).length == 0) {
                     data.class.abilities = myCacheFinal.class.abilities;
                 }
@@ -120,6 +129,15 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
                 }
                 if (Object.keys(data.path.abilities).length == 0) {
                     data.path.abilities = myCacheFinal.path.abilities;
+                }
+                if (Object.keys(data.raceData.raceAbilities).length == 0) {
+                    data.raceData.raceAbilities = myCacheFinal.raceData.raceAbilities;
+                }
+                if (Object.keys(data.raceData.subraceAbilities).length == 0) {
+                    data.raceData.subraceAbilities = myCacheFinal.raceData.subraceAbilities;
+                }
+                if (Object.keys(data.raceData.raceRoleAbilities).length == 0) {
+                    data.raceData.raceRoleAbilities = myCacheFinal.raceData.raceRoleAbilities;
                 }
                 if (data.sources.length == 0) {
                     data.sources = myCacheFinal.sources;
@@ -149,7 +167,7 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
                     data.mountData = myCacheFinal.mountData;
                 }
                 if (Object.keys(data.raceData.raceMetadata).length == 0) {
-                    data.raceData = myCacheFinal.raceData
+                    data.raceData.raceMetadata = myCacheFinal.raceData.raceMetadata
                 }
                 if (Object.keys(data.development.abilities).length == 0) {
                     data.development = myCacheFinal.development;

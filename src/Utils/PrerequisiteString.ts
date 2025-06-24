@@ -39,6 +39,15 @@ export const GetPrerequisiteString = (prerequisites: Array<IPrerequisite>) => {
             return `Level ${prereq.level}`
         } else if (prereq.prerequisiteType === "development") {
             return null
+        } else if (prereq.prerequisiteType === "race" || prereq.prerequisiteType === "race_role" || prereq.prerequisiteType === "subrace") {
+            if (prereq.level == 1)
+                return `Racial`
+            else if (prereq.level == 2) {
+                return `Racial Unlock`
+            }
+            else {
+                return `Racial Mastery`
+            }
         }
         return `${capitalize(prereq.skill)} ${prereq.level}`
     }).filter(e => e !== null).join(", ");
