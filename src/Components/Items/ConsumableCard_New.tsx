@@ -116,7 +116,9 @@ const ConsumableCard_New = ({
 
     return (
         <Paper elevation={1} sx={{
-            borderRadius: "12px"
+            borderRadius: "12px",
+            backgroundColor: consumableTemplate.alchemistOnly ? "rgba(36,110,58,0.1)" : "inherit",
+
         }}>
             <Box
                 sx={{
@@ -124,6 +126,7 @@ const ConsumableCard_New = ({
                     flexDirection: "column",
                     justifyContent: "center",
                     alignItems: "center",
+
                     padding: 1
                 }}
             >
@@ -149,8 +152,15 @@ const ConsumableCard_New = ({
                         <Switch size={"small"} checked={isScaled} onChange={handleSwitch} disabled={!currentSheet} />
                     </BoxWithTooltip>
                     <Box>
-                        <Typography variant={"h5"} textAlign={"center"}>{consumableTemplate.itemName}</Typography>
+                        <Typography variant={"h6"} textAlign={"center"}>{consumableTemplate.itemName}</Typography>
                         <Typography variant={"subtitle1"} textAlign={"center"} color={"lightgray"} fontSize={"14px"}> {getNameFromTier(consumableTemplate.itemTier).toUpperCase()} {consumableTemplate.craftingType.toUpperCase()} ({consumableTemplate.itemType.toUpperCase()})</Typography>
+                        {
+                            consumableTemplate.alchemistOnly ?
+                                <Typography variant={"body2"} color={"grey"} textAlign={"center"}>Requires Advanced Potioncraft</Typography>
+                                :
+                                <></>
+                        }
+
                         <Typography variant={"body2"} color={"grey"} textAlign={"center"}>
                             <BoxWithTooltip title={"Retail Price"} placement={"bottom"} component={"span"}>${consumableTemplate.itemCost}</BoxWithTooltip>
                              {' '}/{' '}

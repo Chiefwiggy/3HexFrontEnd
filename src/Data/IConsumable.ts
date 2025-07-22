@@ -32,6 +32,7 @@ export interface IConsumableTemplate {
     itemName: string,
     itemType: EConsumableType,
     craftingType: EConsumableCraftingType,
+    alchemistOnly: boolean,
     craftingCost: number,
     xVals: Array<{
         basePower: number,

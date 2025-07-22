@@ -341,6 +341,7 @@ class CharacterSheet extends AbstractSheet {
         if (this.isUnlocked("communionStrength")) {
             finalRet += this.getCharacterSourcesByArcanotype(arcanotype).length;
         }
+        finalRet += this.getAbilityBonuses(`${arcanotype}Power`);
         return finalRet;
     }
 
