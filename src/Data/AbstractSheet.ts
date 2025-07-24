@@ -239,7 +239,7 @@ abstract class AbstractSheet {
             }
              return this.currentArmor.pDEFBonus;
         } else if (this.isUnlocked("unarmoredDefense") && stance === "evade") {
-            return Math.floor(this.getStat("vitality") * 0.5)
+            return Math.floor((this.getStat("vitality") + this.getStat("endurance")) * 0.5)
         }
         return 0;
     }
