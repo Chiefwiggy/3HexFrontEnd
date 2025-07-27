@@ -9,7 +9,7 @@ interface IExpertiseWidgetInput {
 
 const ExpertiseWidget = ({}: IExpertiseWidgetInput) => {
 
-    const [expertiseDice, setExpertiseDice] = useState(3);
+    const [expertiseDice, setExpertiseDice] = useState(1);
 
     const {currentSheet} = useCharacter();
 

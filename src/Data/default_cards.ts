@@ -93,7 +93,7 @@ export const default_weapon_cards: Array<IWeaponCommonData | IWeaponBaseData> = 
             breakpointBonuses: []
         },
         potency: {
-            baseValue: 3,
+            baseValue: 2.5,
             breakpoints: [],
             breakpointBonuses: []
         },

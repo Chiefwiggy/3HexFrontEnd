@@ -82,7 +82,7 @@ class CharacterSheet extends AbstractSheet {
     public commanderCards: Array<ICommanderCardData> = [];
     public minionData: Array<MinionSheet> = [];
 
-    private baseExpertiseDice = 3;
+    private baseExpertiseDice = 1;
     private expertiseDiceValues: Record<string, number> = {};
 
 
