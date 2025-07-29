@@ -928,8 +928,19 @@ class CharacterSheet extends AbstractSheet {
             const resistancesSet = new Set(resistances);
             const weaknessSet = new Set(weaknesses);
 
-            const finalResistances = resistances.filter(item => !weaknessSet.has(item));
-            const finalWeakness = weaknesses.filter(item => !resistancesSet.has(item));
+            const preFinalResistances = resistances.filter(item => !weaknessSet.has(item));
+            const preFinalWeakness = weaknesses.filter(item => !resistancesSet.has(item));
+
+            let finalResistances = preFinalResistances
+            let finalWeakness = preFinalWeakness
+            if (this.isUnlocked("invertResistances") && this.isUnlocked("invertWeaknesses")) {
+                finalWeakness = preFinalResistances
+                finalResistances = preFinalWeakness
+            }
+            else if (this.isUnlocked("invertWeaknesses")) {
+                finalWeakness = []
+                finalResistances = [...preFinalResistances, ...preFinalWeakness]
+            }
 
             this._resistances = finalResistances;
             this._weaknesses = finalWeakness;

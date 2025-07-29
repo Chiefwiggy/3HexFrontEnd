@@ -76,7 +76,7 @@ const ArmorElement = ({armor, enchantmentLevel}: IArmorElementInput) => {
                 >
                     <ArmorBigIconDivider size={48} iconLabel={"Refresh"} icon={IoMdRefresh} topValue={`x${getRefreshIndex(armor.armorClass)}`} topLabel={"Stamina Refresh Bonus"} topColor={"lime"} bottomValue={`x${getRefreshIndex(armor.armorClass)}`} bottomColor={"#ac38ea"} bottomLabel={"Tether Refresh Bonus"} />
 
-                    <ArmorBigIconDivider size={48} iconLabel={"Dodge Agility Multiplier"} icon={FaRunning} topValue={`x${getDodgeIndex(armor.armorClass)}`} topLabel={"Dodge Evade"} bottomValue={`x${getDodgeIndex(armor.armorClass)-1}`} bottomLabel={"Dodge Block"} />
+                    <ArmorBigIconDivider size={48} iconLabel={"Dodge Agility Multiplier"} icon={FaRunning} topValue={`x${getDodgeIndex(armor.armorClass)}`} topLabel={"Dodge Evade"} bottomValue={`x${getDodgeIndex(armor.armorClass)-0.5}`} bottomLabel={"Dodge Block"} />
 
                     <ArmorBigIconDivider size={48} iconLabel={"mDEF"} icon={MdOutlineDirectionsWalk} topValue={`${armor.armorClass == "heavy" ? ((currentSheet?.isUnlocked("evadeWithHeavyArmor") ?? false) ? 1 : "N/A") : 2}`} topLabel={"Evade Base Speed"} bottomValue={`${armor.armorClass == "heavy" ? 1 : 2}`} bottomLabel={"Block Base Speed"} />
                 </Box>

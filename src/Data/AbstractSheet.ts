@@ -155,7 +155,11 @@ abstract class AbstractSheet {
         let evadeArmorBonus = this.getArmorMDEF("evade");
         let evadeShieldBonus = this.getShieldMDEF("evade");
         evadeArmorBonus += this.getAbilityBonuses("mDEF")
-        return Math.floor((this.getStat("mind") + this.getStat("presence"))*0.5) + evadeArmorBonus + evadeShieldBonus;
+        return Math.floor(this.getStat("mind")*0.5) + Math.floor(this.getStat("presence")*this.getPresenceMDEFMultiplier()) + evadeArmorBonus + evadeShieldBonus;
+    }
+
+    public getPresenceMDEFMultiplier(): number {
+        return this.isUnlocked("hexcladWard") ? 1 : 0.5
     }
     public getBlockMDEF(): number {
         let blockArmorBonus = this.getArmorMDEF("blocking");
@@ -202,7 +206,7 @@ abstract class AbstractSheet {
 
         let agilityScalingBonus= this.getAgilityScalingBonus()
 
-        let dodgeAgility = (agilityScalingBonus-1)*this.getStat("agility");
+        let dodgeAgility = (agilityScalingBonus-0.5)*this.getStat("agility");
         let dodgeAwareness = (1 + this.getAbilityBonuses("agilityDodgeScaling") + this.getAbilityBonuses("blockAgilityDodgeScaling"))*this.getStat("awareness");
         let weightPenaltyBonus = this.weightPenalty*5;
 
@@ -316,7 +320,7 @@ abstract class AbstractSheet {
             sources: [
                 {
                     reason: "Presence",
-                    value: this.getStat("presence") * 0.5
+                    value: this.getStat("presence") * this.getPresenceMDEFMultiplier()
                 },
                 {
                     reason: "Mind",
@@ -378,7 +382,7 @@ abstract class AbstractSheet {
                 },
                 {
                     reason: "Presence",
-                    value: this.getStat("presence") * 0.5
+                    value: this.getStat("presence") * this.getPresenceMDEFMultiplier()
                 },
                 {
                     reason: "Mind",
@@ -443,11 +447,11 @@ abstract class AbstractSheet {
                 },
                 {
                     reason: "Agility",
-                    value: getSkillFormat(Math.floor((this.getAgilityScalingBonus()-1)*this.getStat("agility")))
+                    value: getSkillFormat(Math.floor((this.getAgilityScalingBonus()-0.5)*this.getStat("agility")))
                 },
                 {
                     reason: "Agility Scaling",
-                    value: `x${this.getAgilityScalingBonus()-1}`
+                    value: `x${this.getAgilityScalingBonus()-0.5}`
                 },
                 {
                     reason: "Awareness",
