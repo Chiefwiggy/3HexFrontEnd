@@ -581,7 +581,7 @@ class CharacterSheet extends AbstractSheet {
                 return pv + cv - 1;
             }
             return pv;
-        }, 3);
+        }, 1);
      }
 
      private async initializeAsync() {
