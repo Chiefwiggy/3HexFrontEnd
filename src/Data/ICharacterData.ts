@@ -37,7 +37,8 @@ export interface IPreparedSource {
 }
 
 export interface ISettingsData {
-    dieColorId: string
+    dieColorId: string,
+    showAttributeDescriptions: boolean
 }
 
 export interface ICharacterBaseData {

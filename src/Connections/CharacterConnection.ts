@@ -183,7 +183,7 @@ class CharacterConnection {
 
     public async UpdateSettings(charID: string, settings: ISettingsData) {
         await Axios.put(this.GetRouteURL(`settings/update/${charID}`), {
-            dieColorId: settings.dieColorId
+            ...settings
         }, this._getConfig()).then((resp) => {
             console.log(resp);
         })

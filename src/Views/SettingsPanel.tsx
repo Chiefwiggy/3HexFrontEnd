@@ -1,6 +1,7 @@
 import React from 'react';
 import {Box, Button, Typography} from "@mui/material";
 import SettingsDangerActions from "../Components/SettingsPanel/SettingsDangerActions";
+import SettingsBooleanActions from "../Components/SettingsPanel/SettingsBooleanActions";
 
 interface ISettingsPanelInput {
 
@@ -20,6 +21,12 @@ const SettingsPanel = ({}: ISettingsPanelInput) => {
         >
             <Box>
                 <Typography variant={"h4"}>Settings</Typography>
+            </Box>
+            <Box>
+
+            </Box>
+            <Box>
+                <SettingsBooleanActions />
             </Box>
             <Box>
                 <SettingsDangerActions />
