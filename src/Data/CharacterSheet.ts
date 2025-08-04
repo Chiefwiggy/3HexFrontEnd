@@ -423,11 +423,14 @@ class CharacterSheet extends AbstractSheet {
     public getDowntimeRanks = () => {
         return 2 + Math.floor(
             (
-                this.getStat("knowledge")*3 +
-                this.getStat("skill")*2 +
-                this.getLevel()
+                this.getDowntimeRankHiddenValue()
                 )
             /15)  + this.getAbilityBonuses("downtimeRanks")
+    }
+
+
+    public getDowntimeRankHiddenValue = () => {
+        return this.getStat("knowledge")*3 + this.getStat("skill")*2 + this.getLevel()
     }
 
     public getCurrentDowntimeRanks = () => {

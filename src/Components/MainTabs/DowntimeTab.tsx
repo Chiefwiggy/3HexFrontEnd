@@ -19,6 +19,8 @@ import SimpleClosableDialog from "../Generic/SimpleClosableDialog";
 import {CheckBox, CheckBoxOutlineBlank} from "@mui/icons-material";
 import useAPI from "../../Hooks/useAPI/useAPI";
 import DowntimeRankCard from "../Downtime/DowntimeRankCard";
+import PoleProgress from "../Minions/CreateTemplate/PoleProgress";
+import VerticalLinearBar from "../Generic/VerticalLinearBar";
 
 interface IDowntimeTabInput {
 
@@ -155,19 +157,54 @@ const DowntimeTab = ({}: IDowntimeTabInput) => {
             </Paper>
             <Box
                 sx={{
-                    display: 'grid',
-                    gridTemplateColumns: "repeat( auto-fill , max(264px, 16vw))",
-                    gridGap: "10px"
+                    display: "grid",
+                    gridTemplateColumns: "11fr 1fr"
                 }}
             >
-                {
-                    downtimeData.map(e => {
-                        return (
-                            <DowntimeCard downtimeData={e} key={e._id} />
-                        )
-                    })
-                }
+                <Box
+                    sx={{
+                        display: 'grid',
+                        gridTemplateColumns: "repeat( auto-fill , max(264px, 16vw))",
+                        gridGap: "10px"
+                    }}
+                >
+                    {
+                        downtimeData.map(e => {
+                            return (
+                                <DowntimeCard downtimeData={e} key={e._id} />
+                            )
+                        })
+                    }
+                </Box>
+                <Box position="relative" width="10px" height="100%">
+                  <VerticalLinearBar variant={"determinate"} value={(Math.min(100, 100*((currentSheet.getDowntimeRankHiddenValue() % 15) / 15)))} />
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '100%',
+                      display: 'flex', flexDirection: "column",
+                      justifyContent: 'space-between',
+                      pointerEvents: 'none',
+                    }}
+                  >
+                    {[...Array(16)].map((_, i) => (
+                      <Box
+                        key={i}
+                        sx={{
+                          height: '2px',
+                          width: '50px',
+                          backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                        }}
+                      />
+                    ))}
+                  </Box>
+                </Box>
+
             </Box>
+
             <SimpleClosableDialog
                 fullWidth={true}
                 title={"Edit Activities"}
