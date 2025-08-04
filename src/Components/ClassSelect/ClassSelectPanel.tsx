@@ -69,7 +69,7 @@ const ClassSelectPanel = ({
     if (!currentSheet) return;
     currentSheet.data.classes = myClasses;
     currentSheet.data.fateline = myFate;
-    currentSheet.setPreparedCards([]);
+    //currentSheet.setPreparedCards([]);
     currentSheet.data.developmentIds = myDev
     currentSheet.data.currentWeapon = null;
     currentSheet.data.currentSpell = null;
