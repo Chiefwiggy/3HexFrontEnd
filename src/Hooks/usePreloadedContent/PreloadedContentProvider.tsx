@@ -170,7 +170,10 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
                     data.raceData.raceMetadata = myCacheFinal.raceData.raceMetadata
                 }
                 if (Object.keys(data.development.abilities).length == 0) {
-                    data.development = myCacheFinal.development;
+                    data.development.abilities = myCacheFinal.development.abilities;
+                }
+                if (Object.keys(data.development.cards).length == 0) {
+                    data.development.cards = myCacheFinal.development.cards
                 }
                 if (data.weaponData.length == 0) {
                     data.weaponData = myCacheFinal.weaponData;

@@ -10,6 +10,7 @@ import {IRaceMetadata, ISubraceMetadata} from "../../Hooks/usePreloadedContent/P
 import {IAbility} from "../../Data/IAbilities";
 import {FaCircle, FaRegCircle} from "react-icons/fa";
 import {clone} from "../../Utils/ObjectUtils";
+import {ICommonCardData} from "../../Data/ICardData";
 
 interface IMasteryTabInput {
     currentUnlockList: Array<string>,
@@ -27,7 +28,7 @@ const DevelopmentTab = ({currentUnlockList, updateUnlockList}: IMasteryTabInput)
     const [maxLevel, setMaxLevel] = useState<number>(0)
 
     useEffect(() => {
-        const levelList = currentUnlockList.map(e => DevelopmentData.GetDevelopmentAbilityLevelById(e)).filter((level): level is number => level !== undefined).sort()
+        const levelList = currentUnlockList.map(e => DevelopmentData.GetDevelopmentFeatureLevelById(e)).filter((level): level is number => level !== undefined).sort()
         setCurrentLevels(levelList)
         generateMaskArray(levelList)
 
@@ -42,7 +43,7 @@ const DevelopmentTab = ({currentUnlockList, updateUnlockList}: IMasteryTabInput)
         showPrerequisites: true
     }
 
-    const isAbilityDisabled = (ability: IAbility): boolean => {
+    const isFeatureDisabled = (ability: IAbility | ICommonCardData): boolean => {
         if (currentSheet) {
             if (currentUnlockList.length >= currentSheet.getDevelopmentPoints()) {
                 return true
@@ -70,9 +71,10 @@ const DevelopmentTab = ({currentUnlockList, updateUnlockList}: IMasteryTabInput)
 
     const generateMaskArray = (levels: Array<number>) => {
         const availableArray = clone(generateCurrentArray());
+
+
         let truthArray: Array<boolean> = Array(availableArray.length).fill(false);
         let workArray: Array<number> = clone(levels.reverse())
-
         for (let level of workArray) {
             let foundIt = false;
             for (let i = 0; i < truthArray.length; i++) {
@@ -166,22 +168,62 @@ const DevelopmentTab = ({currentUnlockList, updateUnlockList}: IMasteryTabInput)
                     scrollbarWidth: "thin"
                   }}
             >
-                {
-                    disambiguateCard(DevelopmentData.GetDevelopmentCards(), compendiumProps, {
-                        wrapper: (el, key) => <UnlockWrapper el={el} _id={key} unlockedByDefault={false} unlockList={currentUnlockList} updateUnlockList={updateUnlockList}/>
-                    })
-                }
-                {DevelopmentData.GetDevelopmentAbilities().sort((a,b) => {
-                    const aLevel = a.prerequisites.find(e => e.prerequisiteType === "level")?.level ?? 0
-                    const bLevel = b.prerequisites.find(e => e.prerequisiteType === "level")?.level ?? 0
-                    if (aLevel != bLevel) {
-                        return aLevel - bLevel
-                    } else {
-                        return a.abilityName.localeCompare(b.abilityName)
-                    }
-                }).map(ability => {
-                    return <UnlockWrapper key={ability._id} el={<AbilityItem abilityData={ability} showPrerequisites={true} />} _id={ability._id} unlockedByDefault={false} isDisabled={isAbilityDisabled(ability)} unlockList={currentUnlockList} updateUnlockList={updateUnlockList}/>
-                })}
+                {/*{*/}
+                {/*    disambiguateCard(DevelopmentData.GetDevelopmentCards(), compendiumProps, {*/}
+                {/*        wrapper: (el, key) => <UnlockWrapper el={el} _id={key} unlockedByDefault={false} unlockList={currentUnlockList} updateUnlockList={updateUnlockList}/>*/}
+                {/*    })*/}
+                {/*}*/}
+                {/*{DevelopmentData.GetDevelopmentAbilities().sort((a,b) => {*/}
+                {/*    const aLevel = a.prerequisites.find(e => e.prerequisiteType === "level")?.level ?? 0*/}
+                {/*    const bLevel = b.prerequisites.find(e => e.prerequisiteType === "level")?.level ?? 0*/}
+                {/*    if (aLevel != bLevel) {*/}
+                {/*        return aLevel - bLevel*/}
+                {/*    } else {*/}
+                {/*        return a.abilityName.localeCompare(b.abilityName)*/}
+                {/*    }*/}
+                {/*}).map(ability => {*/}
+                {/*    return <UnlockWrapper key={ability._id} el={<AbilityItem abilityData={ability} showPrerequisites={true} />} _id={ability._id} unlockedByDefault={false} isDisabled={isAbilityDisabled(ability)} unlockList={currentUnlockList} updateUnlockList={updateUnlockList}/>*/}
+                {/*})}*/}
+                {[
+                    // Cards
+                    ...DevelopmentData.GetDevelopmentCards().map(card => ({
+                        _id: card._id,
+                        level: card.prerequisites?.find(e => e.prerequisiteType === "level")?.level ?? 0,
+                        name: card.cardName ?? "",
+                        el: disambiguateCard([card], compendiumProps, {
+                            wrapper: (el, key) => (
+                                <UnlockWrapper
+                                    el={el}
+                                    _id={card._id}
+                                    key={card._id}
+                                    unlockedByDefault={false}
+                                    isDisabled={isFeatureDisabled(card)}
+                                    unlockList={currentUnlockList}
+                                    updateUnlockList={updateUnlockList}
+                                />
+                            )
+                        })
+                    })),
+                    // Abilities
+                    ...DevelopmentData.GetDevelopmentAbilities().map(ability => ({
+                        _id: ability._id,
+                        level: ability.prerequisites?.find(e => e.prerequisiteType === "level")?.level ?? 0,
+                        name: ability.abilityName ?? "",
+                        el: (
+                            <UnlockWrapper
+                                key={ability._id}
+                                el={<AbilityItem abilityData={ability} showPrerequisites={true} />}
+                                _id={ability._id}
+                                unlockedByDefault={false}
+                                isDisabled={isFeatureDisabled(ability)}
+                                unlockList={currentUnlockList}
+                                updateUnlockList={updateUnlockList}
+                            />
+                        )
+                    }))
+                ]
+                .sort((a, b) => a.level - b.level || a.name.localeCompare(b.name))
+                .map(item => item.el)}
 
             </Box>
         </Box>

@@ -336,12 +336,15 @@ class CharacterSheet extends AbstractSheet {
         }
     }
 
-    public getBonusSpellPower(arcanotype: UArcanotype) {
+    public getBonusSpellPower(arcanotype: UArcanotype, specialLogicTags: Array<string>) {
         let finalRet = 0;
         if (this.isUnlocked("communionStrength")) {
             finalRet += this.getCharacterSourcesByArcanotype(arcanotype).length;
         }
         finalRet += this.getAbilityBonuses(`${arcanotype}Power`);
+        if (specialLogicTags.includes("addKnowledge")) {
+            finalRet += this.getStat("knowledge")
+        }
         return finalRet;
     }
 
@@ -694,7 +697,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public refresh() {
-        this.changeActionPoints(1);
+        this.changeActionPoints(1 + this.getAbilityBonuses("actionPointsPerTurn"));
         for (const minion of this.minionData) {
             minion.refresh();
         }
@@ -964,18 +967,26 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getPowerStat(specialLogicTags: Array<string>): number {
+        let finalNum = this.getStat("might")
 
         if (!specialLogicTags.includes("useMightOverride")) {
             if (specialLogicTags.includes("useAuth")) {
-                return this.getStat("authority")
+                finalNum = this.getStat("authority")
             }
             if (specialLogicTags.includes("useSkill") ) {
-                return this.getStat("skill")
+                finalNum = this.getStat("skill")
             }
         }
 
-        return this.getStat("might")
+        if (specialLogicTags.includes("eurekaBonus")) {
+            finalNum += this.getDowntimeRanks()
+        }
+
+
+        return finalNum
+
     }
+
 
     public getSpellSet(): number {
         if (this.isUnlocked("arcaneTechnique") || this.isUnlocked("arcaneTechnique2")) {

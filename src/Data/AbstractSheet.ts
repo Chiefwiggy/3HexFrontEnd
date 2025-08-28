@@ -849,7 +849,7 @@ abstract class AbstractSheet {
         return true;
     }
 
-    public getBonusSpellPower(arcanotype: UArcanotype) {
+    public getBonusSpellPower(arcanotype: UArcanotype, specialLogicTags: Array<string>) {
         return 0;
     }
 
