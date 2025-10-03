@@ -9,7 +9,7 @@ import {
     IEnchantmentData,
     IPreparedSource,
     IConsumablePlayerData,
-    ISettingsData
+    ISettingsData, ICalculatedHack
 } from "../Data/ICharacterData";
 import Axios, { AxiosRequestConfig } from 'axios'
 import {IBaseArmorData} from "../Data/IArmorData";
@@ -95,6 +95,14 @@ class CharacterConnection {
         })
     }
 
+    public async SetPrepHack(charID: string, hackData: ICalculatedHack) {
+        await Axios.put(this.GetRouteURL(`update/${charID}`), {
+            currentHack: hackData
+        }, this._getConfig()).then((resp) => {
+            console.log(resp);
+        })
+    }
+
     public async SetOffhandPrepWeapon(charID: string, weaponData: ICalculatedWeapon) {
         await Axios.put(this.GetRouteURL(`update/${charID}`), {
             currentOffhandWeapon: weaponData
@@ -114,6 +122,12 @@ class CharacterConnection {
     public async AddPrepWeapon(charID: string, weaponData: ICalculatedWeapon) {
         console.log("sdata", weaponData)
         await Axios.post(this.GetRouteURL(`prep/${charID}/weapon/add`), weaponData, this._getConfig()).then((resp) => {
+            console.log(resp);
+        })
+    }
+
+    public async AddPrepHack(charID: string, hackData: ICalculatedHack) {
+        await Axios.post(this.GetRouteURL(`prep/${charID}/hack/add`), hackData, this._getConfig()).then((resp) => {
             console.log(resp);
         })
     }

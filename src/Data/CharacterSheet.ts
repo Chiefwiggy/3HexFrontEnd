@@ -4,7 +4,7 @@ import {
     ICalculatedWeapon,
     ICharacterBaseData, ICharacterStats, IClassData, IPreparedCard, IPreparedSource,
     ISkillPointObject,
-    UStance
+    UStance, ICalculatedHack
 } from "./ICharacterData";
 import {getSkillFormat, UStat} from "../Utils/Shorthand";
 import {StatChain} from "../Utils/GetFinalSpellData";
@@ -26,7 +26,7 @@ import SpellBaseCard from "../Components/Cards/SpellBaseCard";
 import SpellTargetCard from "../Components/Cards/SpellTargetCard";
 import SpellModifierCard from "../Components/Cards/SpellModifierCard";
 import SpellCardCalculator from "./Card Calculators/SpellCardCalculator";
-import {default_commander_cards, default_spell_cards, default_weapon_cards} from "./default_cards";
+import {default_commander_cards, default_hack_cards, default_spell_cards, default_weapon_cards} from "./default_cards";
 import WeaponBaseCard from "../Components/Cards/WeaponBaseCard";
 import WeaponModCard from "../Components/Cards/WeaponModCard";
 import WeaponCardCalculator from "./Card Calculators/WeaponCardCalculator";
@@ -45,8 +45,9 @@ import {IPreloadedContentContextInput} from "../Hooks/usePreloadedContent/Preloa
 import {Utils} from "../Utils/LanguageLacking";
 import {IFatelineData} from "./IFatelineData";
 import {IDowntimePlayerData} from "./IDowntime";
-import {number} from "yup";
+import {number, string} from "yup";
 import {UArcanotype} from "./ISourceData";
+import HackCardCalculator from "./Card Calculators/HackCardCalculator";
 
 export type AttributeBarType = "tether" | "stamina" | "health" | "technik" | "orders"
 export type DamageType = "physical" | "magical" | "raw" | "resistant"
@@ -63,6 +64,12 @@ interface IAllCardsData {
         bases: Array<any>,
         forms: Array<any>,
         skills: Array<any>
+    },
+    hacks: {
+        bases: Array<any>,
+        io: Array<any>,
+        protocols: Array<any>,
+        modifiers: Array<any>
     }
 }
 
@@ -89,6 +96,7 @@ class CharacterSheet extends AbstractSheet {
 
     public spellCalculator = new SpellCardCalculator(this.getSpellCalculatorTypes());
     public weaponCalculator = new WeaponCardCalculator(this.getWeaponCalculatorTypes());
+    public hackCalculator = new HackCardCalculator(this.getHackCalculatorTypes())
 
 
     public allAbilities: Array<IAbility> = [];
@@ -110,6 +118,11 @@ class CharacterSheet extends AbstractSheet {
 
     public setCurrentSpell = (data: ICalculatedSpell) => {
         this.data.currentSpell = data;
+        this._ping();
+    }
+
+    public setCurrentHack = (data: ICalculatedHack) => {
+        this.data.currentHack = data;
         this._ping();
     }
 
@@ -202,11 +215,16 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public areAllCardsPrepared = (data: Array<ICommonCardData|null>): boolean => {
+        console.log(data);
+        const fullPreparedList = [...this.data.preparedCards.map(e => e.cardId), ...this.data.knownWeapons.map(e => e.baseId), ...this.data.knownBaseSpells, ...default_weapon_cards.map(e => e._id), ...default_hack_cards.map(e => e._id), ...default_spell_cards.map(e => e._id)]
+        console.log(fullPreparedList)
         return data.reduce((pv, cv) => {
             if (!pv) return pv;
+
             if (cv != null) {
+                console.log(cv._id)
                 if (cv.cardType != "condition") {
-                    return [...this.data.preparedCards.map(e => e.cardId), ...this.data.knownWeapons.map(e => e.baseId), ...this.data.knownBaseSpells, ...default_weapon_cards.map(e => e._id), ...default_spell_cards.map(e => e._id)].includes(cv._id);
+                    return fullPreparedList.includes(cv._id);
                 }
                 return pv;
             }
@@ -344,6 +362,14 @@ class CharacterSheet extends AbstractSheet {
         finalRet += this.getAbilityBonuses(`${arcanotype}Power`);
         if (specialLogicTags.includes("addKnowledge")) {
             finalRet += this.getStat("knowledge")
+        }
+        return finalRet;
+    }
+
+    public getBonusWeaponPower(specialLogicTags: Array<string>): number {
+        let finalRet = 0;
+        if (specialLogicTags.includes("powerPlusCommanderCardsEquipped")) {
+            finalRet += this.commanderCards.length;
         }
         return finalRet;
     }
@@ -510,6 +536,17 @@ class CharacterSheet extends AbstractSheet {
         return [];
     }
 
+    public getPreparedHackCards = (): Array<ICommonCardData> => {
+        if (this.allButDefaultCards) {
+            const hackCards: Array<ICommonCardData> = [...this.allButDefaultCards.hacks.bases, ...this.allButDefaultCards.hacks.io, ...this.allButDefaultCards.hacks.protocols, ...this.allButDefaultCards.hacks.modifiers];
+            const filteredCards = hackCards.filter(card => {
+                return this.getPreparedCardsIdList().includes(card._id)
+            })
+            return filteredCards.map(e => e);
+        }
+        return []
+    }
+
     public GetPreparedWeaponBases = (): Array<IWeaponBaseData> => {
         if (this.allCards) {
             return this.allCards.weapons.bases.map(base => {
@@ -655,12 +692,16 @@ class CharacterSheet extends AbstractSheet {
     private _setAllCards = async() => {
         try {
             const gotCards = await this.API.CardAPI.GetCharacterCards(this.data._id);
-            const apiCards: IAllCardsData = {spells: gotCards.spells, weapons: gotCards.weapons};
+            const apiCards: IAllCardsData = {spells: gotCards.spells, weapons: gotCards.weapons, hacks: gotCards.hacks};
+            console.log(apiCards);
             this.allCards = apiCards;
             this.allButDefaultCards = JSON.parse(JSON.stringify(apiCards));
             if (this.allCards) {
                 this.allCards.spells.targets.push(default_spell_cards[0]);
                 this.allCards.spells.modifiers.push(default_spell_cards[1]);
+                this.allCards.hacks.bases.push(default_hack_cards[0]);
+                this.allCards.hacks.io.push(default_hack_cards[1]);
+                this.allCards.hacks.protocols.push(default_hack_cards[2]);
                 this.allCards.weapons.bases.push(default_weapon_cards[0]);
                 this.allCards.weapons.bases.push(default_weapon_cards[1]);
                 this.allCards.weapons.forms.push(default_weapon_cards[2]);
@@ -994,6 +1035,10 @@ class CharacterSheet extends AbstractSheet {
         } else {
             return this.getStat("presence") * 3 + this.getStat("knowledge")
         }
+    }
+
+    public getHackSet(): number {
+        return this.getStat("knowledge") * 3 + this.getStat("presence")
     }
 
     public getSetStat(): number {

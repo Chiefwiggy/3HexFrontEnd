@@ -1,4 +1,5 @@
 import {
+    IHackBaseCardData, IHackIOCardData, IHackModifierCardData, IHackProtocolCardData,
     IScaledWeaponBaseData,
     ISpellBaseCardData,
     ISpellModifierCardData,
@@ -35,6 +36,19 @@ export interface ITotalSpellStats {
         maxHealth: number,
         simpleName: string
     }
+}
+
+export interface ITotalHackStats {
+    technikCost: number,
+    moneyCost: number,
+    totalPower: number,
+    duration: number,
+    surge: number,
+    range: {
+        min: number,
+        max: number
+    },
+    hackSet: number
 }
 
 export interface ITotalWeaponStats {
@@ -186,7 +200,7 @@ export const GetFinalWeaponData = (weaponBase: IScaledWeaponBaseData, allCards: 
     let specialLogicTags = [...weaponBase.specialLogicTags ?? [], ...allCards.flatMap(e => e?.specialLogicTags ?? [])];
     let finalBasePower = StatChain(weaponBase.basePower, allCards.map(c => c?.basePowerMod));
     let finalPotencyPower = Math.floor(StatChain(weaponBase.potency, allCards.map(c => c?.potencyMod), false) * char.getPowerStat(specialLogicTags));
-    const finalPower = StatChain(finalBasePower + finalPotencyPower, [...allCards.map(c => c?.powerMod), {modifier: char.getAbilityBonuses("weaponDamage")}]);
+    const finalPower = StatChain(finalBasePower + finalPotencyPower + char.getBonusWeaponPower(specialLogicTags), [...allCards.map(c => c?.powerMod), {modifier: char.getAbilityBonuses("weaponDamage")}]);
     const minRange = StatChain(weaponBase.baseRange.min, allCards.map(c => c?.minRangeMod));
     const maxRange = StatChain(weaponBase.baseRange.max, allCards.map(c => c?.maxRangeMod));
     const minRangePreFinal = StatChain(minRange, allCards.map(c => c?.fullRangeMod));
@@ -241,6 +255,84 @@ export const GetFinalWeaponData = (weaponBase: IScaledWeaponBaseData, allCards: 
         totalPower: finalPower,
         damageType: finalDamageType,
         damageSubtype: finalDamageSubtype
+    }
+
+}
+
+export const GetFinalHackData = (hackBase: IHackBaseCardData, hackIO: IHackIOCardData, hackProtocol: IHackProtocolCardData, rest: Array<IHackModifierCardData>, char: AbstractSheet): ITotalHackStats => {
+    try {
+        let specialLogicTags = [...hackBase.specialLogicTags ?? [], ...hackIO.specialLogicTags ?? [], ...hackProtocol.specialLogicTags ?? [], ...rest.flatMap(e => e?.specialLogicTags ?? [])];
+        let finalBasePower = StatChain(hackBase.basePower, [hackBase.basePowerMod, hackIO.basePowerMod, hackProtocol.basePowerMod, ...rest.map(e => e?.basePowerMod)]);
+
+        let finalPotencyPower = Math.floor(
+            StatChain(hackBase.potency, [hackBase.potencyMod, hackIO.potencyMod, hackProtocol.potencyMod, ...rest.map(e => e?.potencyMod)], false)
+            * char.getPowerStat(specialLogicTags)
+        );
+
+
+        const finalPower = StatChain(
+            finalBasePower + finalPotencyPower + char.getBonusHackPower(specialLogicTags),
+            [hackBase.powerMod, hackIO.powerMod, hackProtocol.powerMod, { modifier: char.getAbilityBonuses("hackDamage") }, ...rest.map(e => e?.powerMod)]
+        );
+
+        const minRange = StatChain(hackIO.baseRange.min, [hackBase.minRangeMod, hackIO.minRangeMod, hackProtocol.minRangeMod, ...rest.map(e => e?.minRangeMod)]);
+        const maxRange = StatChain(hackIO.baseRange.max, [hackBase.maxRangeMod, hackIO.maxRangeMod, hackProtocol.maxRangeMod, ...rest.map(e => e?.maxRangeMod)]);
+
+        const minRangePreFinal = StatChain(minRange, [hackBase.fullRangeMod, hackIO.fullRangeMod, hackProtocol.fullRangeMod, ...rest.map(e => e?.fullRangeMod)]);
+        const maxRangePreFinal = StatChain(maxRange, [hackBase.fullRangeMod, hackIO.fullRangeMod, hackProtocol.fullRangeMod, ...rest.map(e => e?.fullRangeMod)]);
+
+        const [minRangeFinal, maxRangeFinal] = char.applyRangedModifiers(minRangePreFinal, maxRangePreFinal, "hack");
+
+
+        let finalBaseSet = StatChain(
+            hackProtocol.baseHackSet,
+            [hackBase.baseHackSetMod, hackIO.baseHackSetMod, hackProtocol.baseHackSetMod, ...rest.map(e => e?.baseHackSetMod)]
+        );
+
+        let finalSurge = StatChain(0,
+            [hackBase.surgeCostMod, hackIO.surgeCostMod, hackProtocol.surgeCostMod, ...rest.map(e => e?.surgeCostMod)])
+
+        let finalSet = StatChain(
+            finalBaseSet + char.getHackSet(),
+            [hackBase.hackSetMod, hackIO.hackSetMod, hackProtocol.hackSetMod, ...rest.map(e => e?.hackSetMod)]
+        );
+
+
+
+        const technikCost = StatChain(
+            hackBase.technikCost,
+            [hackBase.technikCostMod, hackIO.technikCostMod, hackProtocol.technikCostMod, ...rest.map(e => e?.technikCostMod)]
+        );
+
+        console.log([hackBase.technikCostMod, hackIO.technikCostMod, hackProtocol.technikCostMod, ...rest.map(e => e?.technikCostMod)])
+
+
+
+        return {
+            technikCost: technikCost,
+            moneyCost: StatChain(0, [hackBase.moneyCostMod, hackIO.moneyCostMod, hackProtocol.moneyCostMod, ...rest.map(e => e?.moneyCostMod)]),
+            totalPower: finalPower,
+            duration: StatChain(hackBase.duration, [hackBase.durationMod, hackIO.durationMod, hackProtocol.durationMod, ...rest.map(e => e?.durationMod)]),
+            surge: finalSurge,
+            range: {
+                min: minRangeFinal,
+                max: maxRangeFinal
+            },
+            hackSet: finalSet,
+        }
+    } catch (e) {
+        return {
+            technikCost: 0,
+            moneyCost: 0,
+            totalPower: 0,
+            duration: 0,
+            surge: 0,
+            range: {
+                min: 0,
+                max: 0
+            },
+            hackSet: 0
+        }
     }
 
 }

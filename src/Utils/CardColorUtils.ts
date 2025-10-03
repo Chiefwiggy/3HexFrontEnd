@@ -8,7 +8,7 @@ export const CardGetColor = (type: string) => {
             case 'weapon.form':
                 return '#3BBA20';
             case 'weapon.skill':
-                return '#BBD826';
+                return '#9db614';
             case 'weapon.order':
                 return '#18fff1'
             case 'spell.base':
@@ -20,15 +20,25 @@ export const CardGetColor = (type: string) => {
             case 'spell.summon':
                 return '#c888f4';
             case 'spell.skill':
-                return '#f13060';
+                return '#e11584';
             case 'spell.edict':
-                return '#FF8305';
+                return '#ff66cc';
             case "commander.commander":
                 return '#600b0b'
             case "condition.buff":
                 return '#ffffff';
             case "condition.debuff":
                 return '#000000';
+            case 'hack.function':
+                return '#fbf38c';
+            case 'hack.io':
+                return '#633502';
+            case 'hack.protocol':
+                return '#ff6f0a';
+            case 'hack.util':
+                return '#ffec07';
+            case 'hack.else':
+                return '#ff0000';
         }
         return 'white'
     }

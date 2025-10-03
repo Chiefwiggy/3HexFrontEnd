@@ -13,12 +13,17 @@ import ConditionCard from "../Components/Cards/ConditionCard";
 import {
     ICommanderCardData,
     ICommonCardData,
-    IConditionCard,
+    IConditionCard, IHackBaseCardData, IHackIOCardData, IHackModifierCardData,
+    IHackProtocolCardData,
     ISpellBaseCardData,
     ISpellModifierCardData,
     ISpellTargetCardData,
     IWeaponBaseData,
 } from "../Data/ICardData";
+import HackBaseCard from "../Components/Cards/HackBaseCard";
+import HackIOCard from "../Components/Cards/HackIOCard";
+import HackProtocolCard from "../Components/Cards/HackProtocolCard";
+import HackModifierCard from "../Components/Cards/HackModifierCard";
 
 type DisambiguateOptions = {
     wrapper?: (element: JSX.Element, key: string) => JSX.Element;
@@ -95,6 +100,47 @@ export const disambiguateCard = (
                     />,
                     key
                 );
+            }
+        }
+
+        if (card.cardType == "hack") {
+            switch(card.cardSubtype) {
+                case "base":
+                    return wrapper(
+                        <HackBaseCard
+                            cardData={card as IHackBaseCardData}
+                            sendBack={() => {}}
+                            {...compendiumProps}
+                        />,
+                        key
+                    )
+                case "io":
+                    return wrapper(
+                        <HackIOCard
+                            cardData={card as IHackIOCardData}
+                            sendBack={() => {}}
+                            {...compendiumProps}
+                        />,
+                        key
+                    )
+                case "protocol":
+                    return wrapper(
+                        <HackProtocolCard
+                            cardData={card as IHackProtocolCardData}
+                            sendBack={() => {}}
+                            {...compendiumProps}
+                        />,
+                        key
+                    )
+                default:
+                    return wrapper(
+                        <HackModifierCard
+                            cardData={card as IHackModifierCardData}
+                            sendBack={() => {}}
+                            {...compendiumProps}
+                        />,
+                        key
+                    )
             }
         }
 

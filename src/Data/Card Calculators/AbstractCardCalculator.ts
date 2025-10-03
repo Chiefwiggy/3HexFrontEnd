@@ -20,7 +20,7 @@ import AbstractSheet from "../AbstractSheet";
 export interface IRangeData {
     min: number,
     max: number,
-    isMelee: boolean
+    isMelee?: boolean
 }
 
 export interface INumericIconData {

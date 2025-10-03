@@ -30,7 +30,7 @@ const NumericIcon = ({val, align="left", icon, title="", placement="top", postTe
             title={title}
             placement={placement}
         >
-            <><IconComponent color={iconColor} /> { val } {postText} {postIcon} </>
+            <><IconComponent color={iconColor} fontSize={"24px"} /> { val } {postText} {postIcon} </>
         </BoxWithTooltip>
     )
 }

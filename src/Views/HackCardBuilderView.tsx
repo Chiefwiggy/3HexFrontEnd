@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
 import CardBuilder from "../Layouts/CardBuilder";
-import {default_spell_cards} from "../Data/default_cards";
+import {default_hack_cards, default_spell_cards} from "../Data/default_cards";
 import useAPI from "../Hooks/useAPI/useAPI";
 import useCharacter from "../Hooks/useCharacter/useCharacter";
-import {ICalculatedSpell} from "../Data/ICharacterData";
+import {ICalculatedHack, ICalculatedSpell} from "../Data/ICharacterData";
 import {ICommonCardData} from "../Data/ICardData";
 
 interface IHackCardBuilderViewInput {
@@ -15,10 +15,10 @@ const HackCardBuilderView = ({closeSelf}: IHackCardBuilderViewInput) => {
     const {CardAPI, CharacterAPI} = useAPI();
     const {currentSheet, charPing} = useCharacter();
 
-    const [standbyCards, setStandbyCards] = useState<ICalculatedSpell|null>(null);
+    const [standbyCards, setStandbyCards] = useState<ICalculatedHack|null>(null);
     const [standbyStyle, setStandbyStyle] = useState<React.ReactNode>(<></>);
 
-    const [saveSpellDialog, setSaveSpellDialog] = useState<boolean>(false);
+    const [saveHackDialog, setSaveHackDialog] = useState<boolean>(false);
     const [customName, setCustomName] = useState<string>("");
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,41 +30,49 @@ const HackCardBuilderView = ({closeSelf}: IHackCardBuilderViewInput) => {
 
     const GetAllCards = async(): Promise<Array<ICommonCardData>> => {
         if (currentSheet) {
-            return [...currentSheet.getPreparedSpellCards()]
+            return [...currentSheet.getPreparedHackCards()]
 
         }
         return []
     }
 
-    const handleReceiveSaveCards = async(sentCards: Array<ICommonCardData|null>, spellCopy: React.ReactNode) => {
+    const handleReceiveSaveCards = async(sentCards: Array<ICommonCardData|null>, hackCopy: React.ReactNode) => {
         const cards: Array<ICommonCardData> = sentCards.filter(c => c !== null && c !== undefined) as ICommonCardData[];
-        const base = cards.find(e => e.cardSubtype == "base");
-        const target = cards.find(e => e.cardSubtype == "target" || e.cardSubtype == "summon") ;
-        const rest = cards.filter(e => e.cardSubtype != "base" && (e.cardSubtype != "target" && e.cardSubtype != "summon"));
-        if (base && target && rest && currentSheet) {
-            const spellCalcData: ICalculatedSpell = {
-                spellBaseId: base._id,
-                spellTargetId: target._id,
-                spellSkillsIds: rest.map(e => e._id)
+
+        const base = cards.find(e => e.cardSubtype == "function");
+        const io = cards.find(e => e.cardSubtype == "io");
+        const protocol = cards.find(e => e.cardSubtype == "protocol");
+        const rest = cards.filter(e => e.cardSubtype == "else" || e.cardSubtype == "util");
+
+        if (base && io && protocol && rest && currentSheet) {
+            const hackCalcData: ICalculatedHack = {
+                hackFunctionId: base._id,
+                hackIOId: io._id,
+                hackProtocolId: protocol._id,
+                hackCardsIds: rest.map(e => e._id)
             }
-            setStandbyCards(spellCalcData);
-            setSaveSpellDialog(true);
-            setStandbyStyle(spellCopy);
+            setStandbyCards(hackCalcData);
+            setSaveHackDialog(true);
+            setStandbyStyle(hackCopy);
         }
     }
 
     const handleEquip = async(sentCards: Array<ICommonCardData|null>) => {
         const cards: Array<ICommonCardData> = sentCards.filter(c => c !== null && c !== undefined) as ICommonCardData[];
-        const base = cards.find(e => e.cardSubtype == "base");
-        const target = cards.find(e => e.cardSubtype == "target" || e.cardSubtype == "summon") ;
-        const rest = cards.filter(e => e.cardSubtype != "base" && (e.cardSubtype != "target" && e.cardSubtype != "summon"));
-        if (base && target && rest && currentSheet) {
-            const spellCalcData: ICalculatedSpell = {
-                spellBaseId: base._id,
-                spellTargetId: target._id,
-                spellSkillsIds: rest.map(e => e._id)
+        const base = cards.find(e => e.cardSubtype == "function");
+        const io = cards.find(e => e.cardSubtype == "io");
+        const protocol = cards.find(e => e.cardSubtype == "protocol");
+        const rest = cards.filter(e => e.cardSubtype == "else" || e.cardSubtype == "util");
+
+
+        if (base && io && protocol && rest && currentSheet) {
+            const hackCalcData: ICalculatedHack = {
+                hackFunctionId: base._id,
+                hackIOId: io._id,
+                hackProtocolId: protocol._id,
+                hackCardsIds: rest.map(e => e._id)
             }
-            await handleFinalEquip(spellCalcData);
+            await handleFinalEquip(hackCalcData)
         }
     }
 
@@ -78,8 +86,8 @@ const HackCardBuilderView = ({closeSelf}: IHackCardBuilderViewInput) => {
             if (customName != "") {
                 standbyCards.customName = customName;
             }
-            await CharacterAPI.AddPrepSpell(currentSheet.data._id, standbyCards)
-            currentSheet.data.createdSpells.push(standbyCards);
+            await CharacterAPI.AddPrepHack(currentSheet.data._id, standbyCards)
+            currentSheet.data.createdHacks.push(standbyCards);
 
             if (doEquip) {
                 await handleFinalEquip(standbyCards);
@@ -90,16 +98,16 @@ const HackCardBuilderView = ({closeSelf}: IHackCardBuilderViewInput) => {
 
 
 
-    const handleFinalEquip = async(spellData: ICalculatedSpell) => {
+    const handleFinalEquip = async(hackData: ICalculatedHack) => {
         if (currentSheet) {
-            await CharacterAPI.SetPrepSpell(currentSheet.data._id, spellData);
-                currentSheet.setCurrentSpell(spellData);
+            await CharacterAPI.SetPrepHack(currentSheet.data._id, hackData);
+                currentSheet.setCurrentHack(hackData);
                 closeSelf(null);
         }
     }
 
     const handleCloseSaveDialog = (event: React.MouseEvent) => {
-        setSaveSpellDialog(false);
+        setSaveHackDialog(false);
         setCustomName("");
         setStandbyCards(null);
     }
@@ -108,9 +116,9 @@ const HackCardBuilderView = ({closeSelf}: IHackCardBuilderViewInput) => {
         <>
             <CardBuilder
                 GetAllCards={GetAllCards}
-                defaultCardList={default_spell_cards}
+                defaultCardList={default_hack_cards}
                 cardTypes={currentSheet.getHackCalculatorTypes()}
-                cardCalculator={currentSheet.spellCalculator}
+                cardCalculator={currentSheet.hackCalculator}
                 closeSelf={closeSelf}
                 sendSaveData={handleReceiveSaveCards}
                 sendEquipData={handleEquip}
@@ -119,7 +127,7 @@ const HackCardBuilderView = ({closeSelf}: IHackCardBuilderViewInput) => {
                 owner={currentSheet}
             />
             <Dialog
-                open={saveSpellDialog}
+                open={saveHackDialog}
                 onClose={handleCloseSaveDialog}
                 fullWidth
             >

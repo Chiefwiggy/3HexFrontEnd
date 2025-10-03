@@ -20,6 +20,10 @@ import SpellTargetSummonCard from "../Components/Cards/SpellTargetSummonCard";
 import {UArcanotype} from "./ISourceData";
 import {IMinionBaseData_New, UMinionStat} from "./IMinionData_New";
 import {capitalize} from "@mui/material";
+import HackIOCard from "../Components/Cards/HackIOCard";
+import HackModifierCard from "../Components/Cards/HackModifierCard";
+import HackProtocolCard from "../Components/Cards/HackProtocolCard";
+import HackBaseCard from "../Components/Cards/HackBaseCard";
 
 
 abstract class AbstractSheet {
@@ -492,6 +496,9 @@ abstract class AbstractSheet {
         return [newMinRange, newMaxRange];
     }
     public abstract getSpellSet(): number
+    public getHackSet(): number {
+        return 0;
+    }
     public isUnlocked(unlockType: string) {
         return false;
     }
@@ -721,24 +728,6 @@ abstract class AbstractSheet {
                 component: [SpellModifierCard],
                 required: false,
                 count: 1
-            },
-            {
-                name: ["condition.buff"],
-                display: "buff",
-                component: [ConditionCard],
-                required: false,
-                counterRequired: false,
-                counterInvalid: true,
-                count: 1
-            },
-            {
-                name: ["condition.debuff"],
-                display: "debuff",
-                component: [ConditionCard],
-                required: false,
-                counterRequired: false,
-                counterInvalid: true,
-                count: 1
             }
         ]
     }
@@ -781,24 +770,6 @@ abstract class AbstractSheet {
                 counterRequired: false,
                 counterInvalid: true,
                 count: 1
-            },
-            {
-                name: ["condition.buff"],
-                display: "buff",
-                component: [ConditionCard],
-                required: false,
-                counterRequired: false,
-                counterInvalid: true,
-                count: 1
-            },
-            {
-                name: ["condition.debuff"],
-                display: "debuff",
-                component: [ConditionCard],
-                required: false,
-                counterRequired: false,
-                counterInvalid: true,
-                count: 1
             }
         ]
     }
@@ -806,37 +777,37 @@ abstract class AbstractSheet {
     public getHackCalculatorTypes = () => {
         return [
             {
-                name: ["hack.io"],
-                display: "I/O",
-                component: [],
+                name: ["hack.function"],
+                display: "function",
+                component: [HackBaseCard],
                 required: true,
                 count: 1
             },
             {
-                name: ["hack.function"],
-                display: "function",
-                component: [],
+                name: ["hack.io"],
+                display: "I/O",
+                component: [HackIOCard],
                 required: true,
                 count: 1
             },
             {
                 name: ["hack.protocol"],
                 display: "protocol",
-                component: [],
+                component: [HackProtocolCard],
                 required: true,
                 count: 1
             },
             {
                 name: ["hack.util"],
                 display: "util",
-                component: [],
+                component: [HackModifierCard],
                 required: false,
                 count: 1
             },
             {
                 name: ["hack.else"],
                 display: "else",
-                component: [],
+                component: [HackModifierCard],
                 required: false,
                 count: 1
             }
@@ -850,6 +821,14 @@ abstract class AbstractSheet {
     }
 
     public getBonusSpellPower(arcanotype: UArcanotype, specialLogicTags: Array<string>) {
+        return 0;
+    }
+
+    public getBonusHackPower(specialLogicTags: Array<string>) {
+        return 0;
+    }
+
+    public getBonusWeaponPower(specialLogicTags: Array<string>) {
         return 0;
     }
 

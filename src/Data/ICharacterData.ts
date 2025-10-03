@@ -72,8 +72,10 @@ export interface ICharacterBaseData {
     preparedCommanderCards: Array<string>,
     createdSpells: Array<ICalculatedSpell>,
     createdWeapons: Array<ICalculatedWeapon>,
+    createdHacks: Array<ICalculatedHack>,
     currentSpell: ICalculatedSpell | null,
     currentWeapon: ICalculatedWeapon | null,
+    currentHack: ICalculatedHack | null,
     currentOffhandWeapon: ICalculatedWeapon | null,
     counterWeapon: ICalculatedWeapon | null,
     currentArmor: IEnchantmentData | null,
@@ -235,6 +237,7 @@ export interface ICalculatedSpell {
     spellSkillsIds: Array<string>
 }
 
+
 export interface ICalculatedArmor {
     baseId: string,
     enchantmentLevel: 0
@@ -249,7 +252,7 @@ export interface ICalculatedWeapon {
 export interface ICalculatedHack {
     customName?: string,
     hackIOId: string,
-    hackFunctionId: IEnchantmentData,
+    hackFunctionId: string,
     hackProtocolId: string,
     hackCardsIds: Array<string>
 }

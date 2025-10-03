@@ -24,6 +24,7 @@ import BoxWithTooltip from "../Generic/BoxWithTooltip";
 import {FaHeartbeat, FaRunning} from "react-icons/fa";
 import {GiArcheryTarget, GiBorderedShield, GiBrokenShield, GiFist, GiMagicShield, GiRun} from "react-icons/gi";
 import {FaRegClock} from "react-icons/fa6";
+import {MdOutlineLooks, MdOutlineSportsMma} from "react-icons/md";
 
 interface ICalculatedCardInput {
     cardCalculator: AbstractCardCalculator
@@ -80,7 +81,13 @@ const CalculatedCard = ({
                         gap: 2
                     }}
                 >
-                    <Typography variant={"h5"}>{cardTitle}</Typography>
+                    <Typography variant={"h5"}
+                        sx={{
+                            wordBreak: cardTitle.length > 35 ? "break-all" : "break-word",
+                            fontSize: cardTitle.length > 35 ? "1rem" : "1.5rem"
+                        }}
+                    >
+                        {cardTitle}</Typography>
                     {
                         conditionalCard ?
                             <>
@@ -223,10 +230,10 @@ const CalculatedCard = ({
                             display: 'grid',
                             gridTemplateColumns: "1fr 1fr"
                         }}>
-                            <NumericIcon val={cardCalculator.getFinalPower()}  icon={SportsMmaOutlined} postText={getDamageShorthand(cardCalculator.getDamageType())} postIcon={<SubtypeDamageIcon damageSubtype={cardCalculator.getDamageSubtype()} />}/>
+                            <NumericIcon val={cardCalculator.getFinalPower()}  icon={MdOutlineSportsMma} postText={getDamageShorthand(cardCalculator.getDamageType())} postIcon={<SubtypeDamageIcon damageSubtype={cardCalculator.getDamageSubtype()} />}/>
                             <NumericIcon
                                 val={`${createRangeString(cardCalculator.getFinalRange())}`}
-                                icon={LooksOutlined}
+                                icon={MdOutlineLooks}
                             />
                             {
                                 cardCalculator.getFinalIcons().map((data) => {

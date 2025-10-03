@@ -58,6 +58,7 @@ const CompendiumAffinityElement = ({
             setAllCards(AffinityData.getAffinityCardsByLevel(elemName as keyof IAffinities));
             setAllAbilities(AffinityData.getAffinityAbilitiesByLevel(elemName as keyof IAffinities));
             setLevelArray(AffinityData.getLevelArray(elemName as keyof IAffinities));
+            console.log(AffinityData.getAffinityCards("machinery"));
         }
     }, [elemName, isLoaded]);
 

@@ -17,6 +17,15 @@ import {createRangeString} from "../../Utils/helper_functions";
 import {ConstructFinalWeapon} from "../../Utils/ConstructFinalWeapon";
 import SubtypeDamageIcon from "../SmallComponents/SubtypeDamageIcon";
 import {IEnchantmentData} from "../../Data/ICharacterData";
+import {
+    MdAccessibilityNew,
+    MdAdsClick,
+    MdBackHand,
+    MdCrisisAlert,
+    MdFitnessCenter,
+    MdLooks,
+    MdOutlineSportsMma
+} from "react-icons/md";
 
 interface IWeaponBaseCardInput {
     cardData: IWeaponBaseData,
@@ -66,19 +75,19 @@ const WeaponBaseCard = ({
             >
 
 
-                <NumericIcon val={constructedData.basePower} icon={SportsMmaOutlined}  postText={getDamageShorthand(cardData.damageType as UDamageType)}
+                <NumericIcon val={constructedData.basePower} icon={MdOutlineSportsMma}  postText={getDamageShorthand(cardData.damageType as UDamageType)}
                     postIcon={<SubtypeDamageIcon damageSubtype={cardData.damageSubtype}/>}
                 />
-                <NumericIcon val={"x" + constructedData.potency} icon={FitnessCenterOutlined} />
-                <NumericIcon val={constructedData.skillRequirement} icon={BackHandOutlined} />
-                <NumericIcon val={`${createRangeString(constructedData.baseRange)}`} icon={LooksOutlined} />
-                <NumericIcon val={getSkillFormat(constructedData.baseHit)} icon={AdsClickOutlined} />
-                <NumericIcon val={constructedData.baseCrit} icon={CrisisAlertOutlined} />
-                <NumericIcon val={getHandedness(constructedData.handedness)} icon={AccessibilityNewOutlined} />
+                <NumericIcon val={"x" + constructedData.potency} icon={MdFitnessCenter} />
+                <NumericIcon val={`${createRangeString(constructedData.baseRange)}`} icon={MdLooks} />
+                <NumericIcon val={getSkillFormat(constructedData.baseHit)} icon={MdAdsClick} />
+                <NumericIcon val={constructedData.baseCrit} icon={MdCrisisAlert} />
+                <NumericIcon val={getHandedness(constructedData.handedness)} icon={MdAccessibilityNew} />
                 {
-                    cardData.canThrow ?
+                    cardData.thrownRange.max.baseValue > 0 ?
                         <NumericIcon val={createRangeString(constructedData.thrownRange)} icon={SportsHandballOutlined} />
-                        : <NumericIcon val={"-"} icon={SportsHandballOutlined} />
+                        : <></>
+
                 }
             </Box>
             <Box

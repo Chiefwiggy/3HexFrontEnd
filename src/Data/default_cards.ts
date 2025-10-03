@@ -1,6 +1,6 @@
 import {
     ICommanderCardData,
-    ICommonCardData, IScaledWeaponBaseData,
+    ICommonCardData, IHackBaseCardData, IHackIOCardData, IHackProtocolCardData, IScaledWeaponBaseData,
     ISpellModifierCardData,
     ISpellTargetCardData,
     IWeaponBaseData,
@@ -287,6 +287,82 @@ export const default_weapon_cards: Array<IWeaponCommonData | IWeaponBaseData> = 
         }],
         prerequisites: [],
         _id: "___defaultWeaponForm"
+    }
+]
+
+export const default_hack_cards: Array<IHackIOCardData | IHackBaseCardData | IHackProtocolCardData> = [
+    {
+        _id: "___defaultHackBase",
+        "cardName": "On/Off",
+        "cardType": "hack",
+        "cardSubtype": "function",
+        "functionalName": "togglePowerSimple",
+        "isUltimate": false,
+        "basePower": 0,
+        "potency": 0,
+        "duration": 0,
+        "technikCost": 10,
+        "damageType": "none",
+        "damageSubtype": "none",
+        "hackSetMod": {
+            "modifier": -100
+        },
+        "effects": [
+            {
+                "text": "Toggle the Electrical Power of all targets. -10 : 0 to the Hack Set Mod.",
+                "icon": {
+                    "emblem": "info",
+                    "text": ""
+                }
+            }
+        ],
+        "prerequisites": [
+
+        ]
+    },
+    {
+        "_id": "___defaultHackIO",
+        "cardName": "Wired",
+        "cardType": "hack",
+        "cardSubtype": "io",
+        "baseRange": {
+            "min": 0,
+            "max": 0
+        },
+        "effects": [
+            {
+              "text": "This hack works on a target you are wired into directly. You are always wired into yourself.",
+              icon: {
+                "emblem": "info",
+                  text: ""
+
+              }
+            }
+          ],
+          "prerequisites": [
+          ],
+          "isUltimate": false
+    },
+    {
+          "_id": "___defaultHackProtocol",
+          "cardName": "Frontdoor",
+          "cardType": "hack",
+          "cardSubtype": "protocol",
+          "baseHackSet": -100,
+          "saveType": "might",
+          "effects": [
+            {
+              "text": "Very unlikely to work on a sentient or protected entity.",
+              "icon": {
+                  "text": "",
+                "emblem": "default"
+              }
+            }
+          ],
+          "prerequisites": [
+
+          ],
+          "isUltimate": false
     }
 ]
 

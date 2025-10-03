@@ -9,9 +9,10 @@ import {
     WarningOutlined
 } from "@mui/icons-material";
 import HighlightType from "../Generic/HighlightType";
-import {FaMoneyBillWave} from "react-icons/fa6";
+import {FaArrowRightArrowLeft, FaMoneyBillWave} from "react-icons/fa6";
 import {GiPortal, GiSparkSpirit, GiTiedScroll} from "react-icons/gi";
 import {SiMagic} from "react-icons/si";
+import {GrTechnology} from "react-icons/gr";
 
 interface ICardEffectInput {
     effectData: IEffectData,
@@ -107,6 +108,14 @@ const CardEffect = ({effectData, finalPower}: ICardEffectInput) => {
             case 'rift_object':
                 setEmblem(<Box sx={{paddingLeft: "2px", display: "flex", alignItems: "center"}}><GiPortal /></Box>)
                 setTintColor("rgba(42,52,255,0.2)");
+                break;
+            case 'else':
+                setEmblem(<Box sx={{paddingLeft: "2px", display: "flex", alignItems: "center"}}><FaArrowRightArrowLeft /></Box>)
+                setTintColor("rgba(255,42,99,0.2)");
+                break;
+            case 'technik':
+                setEmblem(<Box sx={{paddingLeft: "2px", display: "flex", alignItems: "center"}}><GrTechnology /></Box>)
+                setTintColor("rgba(244,197,29,0.2)");
                 break;
         }
     }

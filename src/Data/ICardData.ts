@@ -48,13 +48,43 @@ export interface ISpellTargetCardData extends ISpellModifierCardData {
 export interface ISpellModifierCardData extends ICommonCardData {
     castTimeMod?: IDataModifiers,
     durationMod?: IDataModifiers,
-    tetherCostMod?: IDataModifiers,
-    moneyCostMod?: IDataModifiers,
     baseSpellSetMod?: IDataModifiers,
     spellSetMod?: IDataModifiers,
     summonHealthMod?: IDataModifiers,
     forceMelee?: boolean,
     forceRanged?: boolean
+}
+
+export interface IHackModifierCardData extends ICommonCardData {
+    durationMod?: IDataModifiers,
+    surgeCostMod?: IDataModifiers,
+    baseHackSetMod?: IDataModifiers,
+    hackSetMod?: IDataModifiers,
+    overrideSaveType?: string
+}
+
+export interface IHackIOCardData extends IHackModifierCardData {
+    baseRange: {
+        min: number,
+        max: number
+    }
+}
+
+export interface IHackBaseCardData extends IHackModifierCardData {
+    technikCost: number,
+    basePower: number,
+    potency: number,
+    duration: number,
+    tetherCost?: number,
+    staminaCost?: number,
+    damageType: string,
+    damageSubtype: string,
+    functionalName: string
+}
+
+export interface IHackProtocolCardData extends IHackModifierCardData {
+    saveType: string,
+    baseHackSet: number
 }
 
 export interface ICommanderCardData extends ICommonCardData {
@@ -119,6 +149,10 @@ export interface ICommonCardData {
     prerequisites: Array<IPrerequisite>,
     isUltimate?: boolean
     isFavorite?: boolean
+    staminaCostMod?: IDataModifiers,
+    tetherCostMod?: IDataModifiers,
+    technikCostMod?: IDataModifiers,
+    moneyCostMod?: IDataModifiers,
     powerMod?: IDataModifiers,
     basePowerMod?: IDataModifiers,
     potencyMod?: IDataModifiers,

@@ -29,7 +29,7 @@ const CardPreparationView = ({closeSelf}: ICardPreparationViewInput) => {
             (async() => {
                 const apiData = currentSheet.allButDefaultCards;
                 if (apiData) {
-                    const allPlayerCards = [...apiData.spells.bases, ...apiData.spells.targets, ...apiData.spells.modifiers, ...apiData.weapons.forms, ...apiData.weapons.skills, ...apiData.weapons.bases.filter(e => !currentSheet.data.knownWeapons.map(e => e.baseId).includes(e._id))];
+                    const allPlayerCards = [...apiData.spells.bases, ...apiData.spells.targets, ...apiData.spells.modifiers, ...apiData.hacks.bases, ...apiData.hacks.io, ...apiData.hacks.protocols, ...apiData.hacks.modifiers, ...apiData.weapons.forms, ...apiData.weapons.skills, ...apiData.weapons.bases.filter(e => !currentSheet.data.knownWeapons.map(e => e.baseId).includes(e._id))];
                     setAllCards(allPlayerCards);
                     setNotPreparedCards(allPlayerCards.filter(c => !currentSheet.getPreparedCardsIdList().includes(c._id)));
                     setCurrentPreparedCards(allPlayerCards.filter(c => currentSheet.getPreparedCardsIdList().includes(c._id)));
@@ -71,18 +71,35 @@ const CardPreparationView = ({closeSelf}: ICardPreparationViewInput) => {
         }
 
         else if (a.cardType !== b.cardType) {
-            return a.cardType.localeCompare(b.cardType);
+            const typePriority = (elem: string): number => {
+                switch(elem) {
+                    case "weapon":
+                        return 1;
+                    case "spell":
+                        return 2;
+                    case "hack":
+                        return 3;
+                    default:
+                        return 4;
+                }
+            }
+            return typePriority(a.cardType) - typePriority(b.cardType);
         } else if (a.cardSubtype !== b.cardSubtype) {
             const subtypePriority = (elem: string): number => {
                 switch (elem) {
                     case "base":
+                    case "function":
                         return 1;
                     case "target":
+                    case "io":
                         return 2;
                     case "skill":
+                    case "protocol":
                         return 3;
                     case "edict":
+                    case "util":
                         return 4;
+                    case "else":
                     default:
                         return 5;
                 }

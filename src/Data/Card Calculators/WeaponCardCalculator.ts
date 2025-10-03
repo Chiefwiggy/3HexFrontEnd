@@ -16,6 +16,7 @@ import CharacterSheet from "../CharacterSheet";
 import MinionSheet from "../MinionSheet";
 import {string} from "yup";
 import AbstractSheet from "../AbstractSheet";
+import {MdAccessibilityNew, MdAdsClick, MdCrisisAlert, MdSportsHandball} from "react-icons/md";
 
 
 class WeaponCardCalculator extends AbstractCardCalculator {
@@ -27,28 +28,28 @@ class WeaponCardCalculator extends AbstractCardCalculator {
               "toHit",
               {
                 val: "0",
-                icon: AdsClickOutlined
+                icon: MdAdsClick
               }
           ],
             [
                 "critDamage",
                 {
                     val: "0",
-                    icon: CrisisAlertOutlined
+                    icon: MdCrisisAlert
                 }
             ],
             [
                 "handedness",
                 {
                     val: "One-Handed",
-                    icon: AccessibilityNewOutlined
+                    icon: MdAccessibilityNew
                 }
             ],
             [
                 "thrownDistance",
                 {
                     val: "-",
-                    icon: SportsHandballOutlined
+                    icon: MdSportsHandball
                 }
             ]
         ]));

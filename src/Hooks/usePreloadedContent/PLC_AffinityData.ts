@@ -55,6 +55,7 @@ class PLC_AffinityData {
 
     public async Initialize(affinityCards: IAffinitiesArray<ICommonCardData>, affinityAbilities: IAffinitiesArray<IAbility>) {
         this.affinityCards = affinityCards
+        console.log(this.affinityCards);
         this.affinityAbilities = affinityAbilities
     }
 

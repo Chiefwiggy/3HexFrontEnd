@@ -23,6 +23,8 @@ import CharacterSheet from "../CharacterSheet";
 import MinionSheet from "../MinionSheet";
 import {string} from "yup";
 import AbstractSheet from "../AbstractSheet";
+import {MdAccessTime, MdAutoFixOff, MdElectricBolt, MdOutlineWaterDrop, MdSaveAlt, MdWaterDrop} from "react-icons/md";
+import {GiHeartShield} from "react-icons/gi";
 
 class SpellCardCalculator extends AbstractCardCalculator {
 
@@ -33,35 +35,28 @@ class SpellCardCalculator extends AbstractCardCalculator {
               "tetherCost",
               {
                 val: "0",
-                icon: WaterDropOutlined
+                icon: MdOutlineWaterDrop
               }
           ],
             [
                 "energyCost",
                 {
                     val: "0",
-                    icon: ElectricBoltOutlined
+                    icon: MdElectricBolt
                 }
             ],
             [
                 "spellSet",
                 {
-                    val: "0 : 0",
-                    icon: AutoFixOffOutlined
-                }
-            ],
-            [
-                "saveType",
-                {
-                    val: "NONE",
-                    icon: SaveAltOutlined
+                    val: "MHT 0 : 0",
+                    icon: GiHeartShield
                 }
             ],
             [
                 "duration",
                 {
                     val: "Instant",
-                    icon: AccessTimeOutlined
+                    icon: MdAccessTime
                 }
             ]
         ]));
@@ -82,10 +77,9 @@ class SpellCardCalculator extends AbstractCardCalculator {
             this.currentPower = finalSpellData.totalPower;
             this.currentRange = finalSpellData.range;
             this.updateVal("energyCost", finalSpellData.castTime.toString());
-            this.updateVal("spellSet", getSkillFormat(finalSpellData.spellSet, false))
-            if (this.getCardOfType("spell.base")) {
-                this.updateVal("saveType", (getStatShorthand(((this.getCardOfType("spell.base") as ISpellBaseCardData).saveType) as UStat | "none" | "luck")).toUpperCase());
-            }
+            const setSave = getSkillFormat(finalSpellData.spellSet, false)
+            const saveType = (getStatShorthand(((this.getCardOfType("spell.base") as ISpellBaseCardData).saveType) as UStat | "none" | "luck")).toUpperCase();
+            this.updateVal("spellSet", `${saveType} ${setSave}`)
             if (finalSpellData.duration > 0) {
                 this.updateVal("duration", `${finalSpellData.duration.toString()} Round${finalSpellData.duration == 1 ? "" : "s"}`);
             }

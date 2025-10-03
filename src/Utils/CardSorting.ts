@@ -17,19 +17,25 @@ export const SortCardList = (a: ICommonCardData, b:ICommonCardData) => {
 const _AssignValueToSubtype = (subtype: string): number => {
     switch (subtype) {
         case "base":
+        case "function":
             return 1;
+        case "io":
         case "target":
-        case "summon":
         case "form":
             return 2;
-        case "modifier":
+        case "summon":
+        case "protocol":
         case "skill":
             return 3;
+        case "util":
         case "edict":
-        case "order":
+        case "modifier":
             return 4;
-        default:
+        case "else":
+        case "order":
             return 5;
+        default:
+            return 6;
     }
 }
 
