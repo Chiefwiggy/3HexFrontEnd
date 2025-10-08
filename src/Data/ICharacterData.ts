@@ -89,6 +89,7 @@ export interface ICharacterBaseData {
     skillPoints: ISkillPointObject,
     minionsOwned: Array<IMinionOwnedData>,
     settings: ISettingsData,
+    characterImageKey: string,
     isDead: boolean,
     creatorName: string,
     developmentIds: Array<string>,

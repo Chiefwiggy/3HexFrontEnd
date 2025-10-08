@@ -10,6 +10,7 @@ import UserConnection from "../../Connections/UserConnection";
 import ClassConnection from "../../Connections/ClassConnection";
 import MinionConnection from "../../Connections/MinionConnection";
 import PreloadedConnection from "../../Connections/PreloadedConnection";
+import ImageLibraryConnection from "../../Connections/ImageLibraryConnection";
 
 interface IAPIProviderInput {
     children: any
@@ -24,6 +25,7 @@ export interface IAPIContext {
     ClassAPI: ClassConnection,
     MinionAPI: MinionConnection,
     PreloadedAPI: PreloadedConnection,
+    ImageLibraryAPI: ImageLibraryConnection
 }
 
 const APIProvider = ({children}: IAPIProviderInput) => {
@@ -56,6 +58,8 @@ const APIProvider = ({children}: IAPIProviderInput) => {
 
     const [PreloadedAPI, setPreloadedAPI] = useState<PreloadedConnection>(new PreloadedConnection(apiURL, GetAPIConfig));
 
+    const [ImageLibraryAPI, setImageLibraryAPI] = useState<ImageLibraryConnection>(new ImageLibraryConnection(apiURL, GetAPIConfig));
+
     return (
         <APIContext.Provider value={{
             CharacterAPI,
@@ -65,7 +69,8 @@ const APIProvider = ({children}: IAPIProviderInput) => {
             UserAPI,
             ClassAPI,
             MinionAPI,
-            PreloadedAPI
+            PreloadedAPI,
+            ImageLibraryAPI,
         }}>
             {children}
         </APIContext.Provider>

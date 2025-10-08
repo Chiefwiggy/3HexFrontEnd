@@ -7,6 +7,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {getClassesString} from "../../Utils/Shorthand";
 import IconButtonWithTooltip from "../Generic/IconButtonWithTooltip";
 import {ArrowForwardOutlined} from "@mui/icons-material";
+import useImageLibrary from "../../Hooks/useImageLibrary/useImageLibrary";
 
 
 interface ICharacterSelectCardInput {
@@ -22,13 +23,15 @@ const CharacterSelectCard = ({
         characterData.__times_accessed += 2;
     }
 
+    const {GetImageById} = useImageLibrary();
+
 
 
     return (
         <Card
             sx={{
                 display: "grid",
-                gridTemplateColumns: "7fr 1fr",
+                gridTemplateColumns: characterData.characterImageKey ? "5fr 2fr 1fr" : "7fr 1fr",
                 border: characterData.isMainCharacter ? "1px inset gold" : "",
                 backgroundColor: characterData.isDead ? "rgba(159,66,66,0.3)" : "inherit"
             }}
@@ -42,12 +45,36 @@ const CharacterSelectCard = ({
                     padding: 3
                 }}
             >
-                <Typography variant={characterData.characterName.length > 22 ? "body1" : "h6"}>{ characterData.characterName.length > 28 ? characterData.characterName.substring(0, 25).trimEnd() + "..." : characterData.characterName}</Typography>
-                <Typography variant={"body2"} color={"darkgray"}>Level {characterData.characterLevel} </Typography>
-                <Typography variant={"body2"} color={"darkgray"}>{getClassesString(characterData.classes)} </Typography>
-                <Typography variant={"body2"} color={"darkgray"}>Owner: {characterData.creatorName} </Typography>
+                <Typography variant={"body2"} sx={{
+                    textAlign: "center"
+                }}>{ characterData.characterName.length > 28 ? characterData.characterName.substring(0, 25).trimEnd() + "..." : characterData.characterName}</Typography>
+                <Typography variant={"body2"} color={"darkgray"} sx={{
+                    textAlign: "center"
+                }}>Level {characterData.characterLevel} </Typography>
+                <Typography variant={"body2"} color={"darkgray"} sx={{
+                    textAlign: "center"
+                }}>{getClassesString(characterData.classes)} </Typography>
+                <Typography variant={"body2"} color={"darkgray"} sx={{
+                    textAlign: "center"
+                }}>Owner: {characterData.creatorName} </Typography>
 
             </Box>
+            {
+                characterData.characterImageKey ?
+
+                    <Box
+                       component={"img"}
+                       src={`${GetImageById(characterData.characterImageKey).imageUrl}`}
+                       sx={{
+                            width: "100%",
+                           alignSelf: "center"
+                      }}
+                    >
+
+                    </Box>
+                    :
+                    <></>
+            }
             <Box
                 sx={{
                     display: "flex",

@@ -8,6 +8,7 @@ import EventHistoryProvider from "./Hooks/useEventHistory/EventHistoryProvider";
 import UserProvider from "./Hooks/useUser/UserProvider";
 import APIProvider from "./Hooks/useAPI/APIProvider";
 import PreloadedCharacterProvider from './Hooks/usePreloadedContent/PreloadedContentProvider'
+import ImageLibraryProvider from "./Hooks/useImageLibrary/ImageLibraryProvider";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -18,11 +19,13 @@ root.render(
       <UserProvider>
           <APIProvider>
               <PreloadedCharacterProvider>
-                  <CharacterProvider>
-                      <EventHistoryProvider>
-                          <RouterProvider router={UrsuraRouter} />
-                      </EventHistoryProvider>
-                  </CharacterProvider>
+                  <ImageLibraryProvider>
+                      <CharacterProvider>
+                          <EventHistoryProvider>
+                              <RouterProvider router={UrsuraRouter} />
+                          </EventHistoryProvider>
+                      </CharacterProvider>
+                  </ImageLibraryProvider>
               </PreloadedCharacterProvider>
           </APIProvider>
       </UserProvider>
