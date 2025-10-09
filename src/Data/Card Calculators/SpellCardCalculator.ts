@@ -78,8 +78,11 @@ class SpellCardCalculator extends AbstractCardCalculator {
             this.currentRange = finalSpellData.range;
             this.updateVal("energyCost", finalSpellData.castTime.toString());
             const setSave = getSkillFormat(finalSpellData.spellSet, false)
-            const saveType = (getStatShorthand(((this.getCardOfType("spell.base") as ISpellBaseCardData).saveType) as UStat | "none" | "luck")).toUpperCase();
-            this.updateVal("spellSet", `${saveType} ${setSave}`)
+            if (this.getCardOfType("spell.base")) {
+                const saveType = (getStatShorthand(((this.getCardOfType("spell.base") as ISpellBaseCardData).saveType) as UStat | "none" | "luck")).toUpperCase();
+                this.updateVal("spellSet", `${saveType} ${setSave}`)
+            }
+
             if (finalSpellData.duration > 0) {
                 this.updateVal("duration", `${finalSpellData.duration.toString()} Round${finalSpellData.duration == 1 ? "" : "s"}`);
             }

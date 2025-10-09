@@ -90,6 +90,7 @@ export interface ICharacterBaseData {
     minionsOwned: Array<IMinionOwnedData>,
     settings: ISettingsData,
     characterImageKey: string,
+    campaignIds: Array<string>,
     isDead: boolean,
     creatorName: string,
     developmentIds: Array<string>,
