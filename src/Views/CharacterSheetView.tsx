@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {
+    Badge,
     Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Divider, IconButton,
     Typography,
     useMediaQuery
@@ -176,7 +177,12 @@ const CharacterSheetView = () => {
                                 <IconButton
                                     onClick={handleEditClick(true)}
                                 >
-                                    <ModeEditOutlined sx={{fontSize: 20}}/>
+                                    <Badge invisible={currentSheet.getTotalStatPoints() - currentSheet.getTotalStatPointsUsed() == 0} color={currentSheet.getTotalStatPoints() - currentSheet.getTotalStatPointsUsed() > 0 ? "secondary" : "error"} variant={"dot"} sx={{
+                                        paddingRight: "5px"
+                                    }}>
+                                        <ModeEditOutlined sx={{fontSize: 20}}/>
+                                    </Badge>
+
                                 </IconButton>
                                 :
                                 <>

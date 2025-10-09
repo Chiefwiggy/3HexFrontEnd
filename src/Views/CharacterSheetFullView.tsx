@@ -124,7 +124,11 @@ const CharacterSheetFullView = () => {
                 {/*<CharacterSheetSidebar title={"Prepare Battalion"} icon={Diversity3Outlined} panelComponent={BattalionAssignmentView} />*/}
                 <CharacterSheetSidebar title={"Conditions"} icon={FlareOutlined} panelComponent={ConditionsPanelView} />
                 <CharacterSheetSidebar title={"Backpack"} icon={BackpackOutlined} panelComponent={BackpackView} />
-                <CharacterSheetSidebar title={"Classes & Affinities"} icon={EngineeringOutlined} panelComponent={ClassSelectView} />
+                <CharacterSheetSidebar title={"Classes & Affinities"} icon={EngineeringOutlined} panelComponent={ClassSelectView} badgeCondition={
+                    currentSheet.getDevelopmentPoints() != currentSheet.data.developmentIds.length
+                    ||
+                    currentSheet.getClassPointsSpent() != currentSheet.getMaxClassPoints()
+                } />
                 <CharacterSheetSidebar title={"Race & Build"} icon={IoMan} panelComponent={RaceSelectView}/>
                 <CharacterSheetSidebar title={"Event Log"} icon={ChatOutlined} panelComponent={EventLogView} />
                 <CharacterSheetSidebar title={"Settings"} icon={SettingsOutlined} panelComponent={SettingsPanel} />

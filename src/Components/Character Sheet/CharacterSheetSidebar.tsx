@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import {Box, Drawer} from "@mui/material";
+import {Badge, Box, Drawer} from "@mui/material";
 import IconButtonWithTooltip from "../Generic/IconButtonWithTooltip";
+import {ModeEditOutlined} from "@mui/icons-material";
 
 
 
@@ -17,6 +18,7 @@ interface ICharacterSheetSidebarInput {
     placement?: "left" | "right" | "top" | "bottom",
     tooltipPlacement?: "left" | "right" | "top" | "bottom",
     darkenBackground?: boolean,
+    badgeCondition?: boolean,
     [x:string]: any
 }
 
@@ -29,6 +31,7 @@ const CharacterSheetSidebar = ({
     placement = "right",
     tooltipPlacement = "right",
     darkenBackground = true,
+    badgeCondition = false,
     ...rest
 }: ICharacterSheetSidebarInput) => {
 
@@ -43,9 +46,14 @@ const CharacterSheetSidebar = ({
 
     return doShow ? (
         <Box>
-            <IconButtonWithTooltip title={title} placement={tooltipPlacement} onClick={handleOpenSidebarPanel(true)}>
-                <IconComponent />
-            </IconButtonWithTooltip>
+            <Badge invisible={!badgeCondition} color={"secondary"} variant={"dot"} sx={{
+                marginTop: "5px"
+            }}>
+                <IconButtonWithTooltip title={title} placement={tooltipPlacement} onClick={handleOpenSidebarPanel(true)}>
+                    <IconComponent />
+                </IconButtonWithTooltip>
+            </Badge>
+
             <Drawer
                 anchor={placement}
                 open={openSidebarPanel}

@@ -480,6 +480,10 @@ class CharacterSheet extends AbstractSheet {
         return this.getLevel() + 35 + this.getAbilityBonuses("statPoints")
     }
 
+    public getTotalStatPointsUsed = (): number => {
+        return Object.values(this.data.characterStats).reduce((a, b) => a + b.value, 0)
+    }
+
     public editStat(val: number, statName: string) {
         this.data.characterStats[statName as UStat].value = Math.max(0, val);
         this._sping();
@@ -868,6 +872,7 @@ class CharacterSheet extends AbstractSheet {
         return 1 + this.getAbilityBonuses("baseSlots");
     }
 
+
     public getTempSourcesCanPrepare(): number {
         return 1 + this.getAbilityBonuses("tempSourcesKnown")
     }
@@ -1056,6 +1061,20 @@ class CharacterSheet extends AbstractSheet {
     public getDevelopmentPoints = () => {
         return 2 + Math.floor((this.getLevel() - 10) * 0.05)
     }
+
+    public getClassPointsSpent = () => {
+        return this.data.classes.reduce((pv, cv) => {
+            return pv + 1 + (cv.isPromoted ? 1 : 0)
+        }, 0)
+    }
+
+    public getMaxClassPoints = () => {
+        let majorPoints = Math.floor(this.getLevel() / 60) + 1
+        let minorPoints = Math.floor(this.getLevel() / 20) + 1
+        return majorPoints + minorPoints;
+    }
+
+
 
 
     public EnterEditMode() {
