@@ -78,7 +78,7 @@ const ArmorElement = ({armor, enchantmentLevel}: IArmorElementInput) => {
 
                     <ArmorBigIconDivider size={48} iconLabel={"Dodge Agility Multiplier"} icon={FaRunning} topValue={`x${getDodgeIndex(armor.armorClass)}`} topLabel={"Dodge Evade"} bottomValue={`x${getDodgeIndex(armor.armorClass)-0.5}`} bottomLabel={"Dodge Block"} />
 
-                    <ArmorBigIconDivider size={48} iconLabel={"mDEF"} icon={MdOutlineDirectionsWalk} topValue={`${armor.armorClass == "heavy" ? ((currentSheet?.isUnlocked("evadeWithHeavyArmor") ?? false) ? 1 : "N/A") : 2}`} topLabel={"Evade Base Speed"} bottomValue={`${armor.armorClass == "heavy" ? 1 : 2}`} bottomLabel={"Block Base Speed"} />
+                    <ArmorBigIconDivider size={48} iconLabel={"Walk Speed"} icon={MdOutlineDirectionsWalk} topValue={`${armor.armorClass == "heavy" ? ((currentSheet?.isUnlocked("evadeWithHeavyArmor") ?? false) ? 1 : "N/A") : 2}`} topLabel={"Evade Base Speed"} bottomValue={`${armor.armorClass == "heavy" ? 1 : 2}`} bottomLabel={"Block Base Speed"} />
                 </Box>
 
             </Box>

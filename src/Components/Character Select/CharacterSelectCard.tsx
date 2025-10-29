@@ -23,7 +23,7 @@ const CharacterSelectCard = ({
         characterData.__times_accessed += 2;
     }
 
-    const {GetImageById} = useImageLibrary();
+    const {GetImageById, isImageLibraryLoaded} = useImageLibrary();
 
 
 
@@ -60,7 +60,7 @@ const CharacterSelectCard = ({
 
             </Box>
             {
-                characterData.characterImageKey ?
+                characterData.characterImageKey && isImageLibraryLoaded ?
 
                     <Box
                        component={"img"}

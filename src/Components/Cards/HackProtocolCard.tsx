@@ -6,6 +6,7 @@ import NumericIcon from "./NumericIcon";
 import {getSkillFormat, getStatShorthand, UStat} from "../../Utils/Shorthand";
 import {AutoFixOffOutlined, SaveAltOutlined} from "@mui/icons-material";
 import {GiTechnoHeart} from "react-icons/gi";
+import ChannelType from "../../Utils/ChannelType";
 
 interface IHackProtocolCardInput {
     cardData: IHackProtocolCardData;
@@ -32,6 +33,18 @@ const HackProtocolCard = ({
 
     return (
         <GenericCardLayout cardData={cardData} sendBack={sendBack} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} canFavorite={canFavorite} showPrerequisites={showPrerequisites} showAdd={showAdd}>
+            <Box
+                sx={{
+                    marginTop: "-16px",
+                    marginBottom: "6px"
+                }}
+            >
+                {cardData.protocolChannels.map((channel, index) => {
+                    return (
+                        <ChannelType channelType={channel.channelType} channelStrength={channel.channelStrength} />
+                    )
+                })}
+            </Box>
             <Box
                 sx={{
                     display: "flex",

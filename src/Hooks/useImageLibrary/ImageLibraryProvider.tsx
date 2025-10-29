@@ -5,6 +5,7 @@ import useAPI from "../useAPI/useAPI";
 export interface IImageLibraryContext {
     ImageLibrary: Record<string, IImageData>
     GetImageById: (id: string) => IImageData
+    isImageLibraryLoaded: boolean
 }
 
 interface IImageLibraryProvider {
@@ -21,6 +22,7 @@ export interface IImageData {
 const ImageLibraryProvider = ({children}: IImageLibraryProvider) => {
 
     const [ImageLibrary, setImageLibrary] = useState<Record<string, IImageData>>({});
+    const [isImageLibraryLoaded, setIsImageLibraryLoaded] = useState(false);
 
     const API = useAPI();
 
@@ -46,12 +48,14 @@ const ImageLibraryProvider = ({children}: IImageLibraryProvider) => {
             }, {} as Record<string, IImageData>);
             console.log(imageLibrary)
             setImageLibrary(imageLibrary)
+            setIsImageLibraryLoaded(true);
         })();
     }, []);
 
     return <ImageLibraryContext.Provider value={{
         ImageLibrary,
-        GetImageById
+        GetImageById,
+        isImageLibraryLoaded
     }}>
         {children}
     </ImageLibraryContext.Provider>

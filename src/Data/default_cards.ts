@@ -307,6 +307,10 @@ export const default_hack_cards: Array<IHackIOCardData | IHackBaseCardData | IHa
         "hackSetMod": {
             "modifier": -100
         },
+        "channelRequirements": [{
+            "channelType": "machina",
+            "channelStrength": 1
+        }],
         "effects": [
             {
                 "text": "Toggle the Electrical Power of all targets. -10 : 0 to the Hack Set Mod.",
@@ -349,6 +353,10 @@ export const default_hack_cards: Array<IHackIOCardData | IHackBaseCardData | IHa
           "cardType": "hack",
           "cardSubtype": "protocol",
           "baseHackSet": -100,
+        "protocolChannels": [{
+            "channelType": "machina",
+            "channelStrength": 1
+        }],
           "saveType": "might",
           "effects": [
             {

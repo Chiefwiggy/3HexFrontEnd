@@ -14,7 +14,7 @@ import SourcesTab from "../Components/MainTabs/SourcesTab";
 import useCharacter from "../Hooks/useCharacter/useCharacter";
 import MountTab from "../Components/MainTabs/MountTab";
 import ConsumableTab_New from "../Components/MainTabs/ConsumableTab_New";
-import FunctionsTab from "../Components/MainTabs/FunctionsTab";
+import ChipsetTab from "../Components/MainTabs/ChipsetTab";
 
 const MainContentView = () => {
 
@@ -59,7 +59,7 @@ const MainContentView = () => {
                     <Tab label={"Abilities"} value={2} />
                     <Tab label={"Equipment"} value={3} />
                     <Tab label={"Sources"} value={4} />
-                    <Tab label={"Functions"} value={5} />
+                    <Tab label={"Chipset"} value={5} />
                     <Tab label={"Consumables"} value={6} />
                     <Tab label={"Battalion"} value={7} />
                     <Tab label={"Mounts"} value={8} />
@@ -70,7 +70,7 @@ const MainContentView = () => {
             <CustomTabPanel index={currentTab} value={2}>  <AbilityTab /> </CustomTabPanel>
             <CustomTabPanel index={currentTab} value={3}> <EquipmentTab /> </CustomTabPanel>
             <CustomTabPanel index={currentTab} value={4}> <SourcesTab /> </CustomTabPanel>
-            <CustomTabPanel index={currentTab} value={5}> <FunctionsTab /> </CustomTabPanel>
+            <CustomTabPanel index={currentTab} value={5}> <ChipsetTab /> </CustomTabPanel>
             <CustomTabPanel index={currentTab} value={6}> <ConsumableTab_New /> </CustomTabPanel>
             <CustomTabPanel index={currentTab} value={7}> <BattalionTab /> </CustomTabPanel>
             <CustomTabPanel index={currentTab} value={8}><MountTab /></CustomTabPanel>

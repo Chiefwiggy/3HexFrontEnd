@@ -9,6 +9,7 @@ export const ImageLibraryContext = createContext<IImageLibraryContext>({
             imageUrl: "",
             owner: ""
         }
-    }
+    },
+    isImageLibraryLoaded: false
 });
 
