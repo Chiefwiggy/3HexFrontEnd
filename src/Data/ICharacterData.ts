@@ -86,6 +86,8 @@ export interface ICharacterBaseData {
     knownWeapons: Array<IEnchantmentData>,
     knownSources: Array<IPreparedSource>,
     temporarySources: Array<IPreparedSource>,
+    knownDatachips: Array<string>,
+    knownPackages: Array<string>,
     skillPoints: ISkillPointObject,
     minionsOwned: Array<IMinionOwnedData>,
     settings: ISettingsData,

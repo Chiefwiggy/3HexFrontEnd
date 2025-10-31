@@ -6,6 +6,7 @@ import useAPI from "../Hooks/useAPI/useAPI";
 import useCharacter from "../Hooks/useCharacter/useCharacter";
 import {ICalculatedHack, ICalculatedSpell} from "../Data/ICharacterData";
 import {ICommonCardData} from "../Data/ICardData";
+import usePreloadedContent from "../Hooks/usePreloadedContent/usePreloadedContent";
 
 interface IHackCardBuilderViewInput {
     closeSelf: (event: any) => void
@@ -14,6 +15,8 @@ interface IHackCardBuilderViewInput {
 const HackCardBuilderView = ({closeSelf}: IHackCardBuilderViewInput) => {
     const {CardAPI, CharacterAPI} = useAPI();
     const {currentSheet, charPing} = useCharacter();
+
+    const {DatachipData} = usePreloadedContent();
 
     const [standbyCards, setStandbyCards] = useState<ICalculatedHack|null>(null);
     const [standbyStyle, setStandbyStyle] = useState<React.ReactNode>(<></>);
@@ -112,11 +115,24 @@ const HackCardBuilderView = ({closeSelf}: IHackCardBuilderViewInput) => {
         setStandbyCards(null);
     }
 
+    const getDefaultCards = () => {
+        if (currentSheet && DatachipData) {
+            const datachipHacks = DatachipData.GetDatachipsFromIdList(currentSheet.data.knownDatachips).reduce((pv: Array<ICommonCardData>, datachip) => {
+                return [...pv, ...datachip.builtinHacks]
+            }, [])
+            return [...default_hack_cards, ...datachipHacks]
+        } else {
+            return default_hack_cards
+        }
+
+
+    }
+
     return currentSheet ? (
         <>
             <CardBuilder
                 GetAllCards={GetAllCards}
-                defaultCardList={default_hack_cards}
+                defaultCardList={getDefaultCards()}
                 cardTypes={currentSheet.getHackCalculatorTypes()}
                 cardCalculator={currentSheet.hackCalculator}
                 closeSelf={closeSelf}

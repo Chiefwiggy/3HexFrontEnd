@@ -216,7 +216,17 @@ class CharacterSheet extends AbstractSheet {
 
     public areAllCardsPrepared = (data: Array<ICommonCardData|null>): boolean => {
         console.log(data);
-        const fullPreparedList = [...this.data.preparedCards.map(e => e.cardId), ...this.data.knownWeapons.map(e => e.baseId), ...this.data.knownBaseSpells, ...default_weapon_cards.map(e => e._id), ...default_hack_cards.map(e => e._id), ...default_spell_cards.map(e => e._id)]
+        const fullPreparedList = [
+            ...this.data.preparedCards.map(e => e.cardId),
+            ...this.data.knownWeapons.map(e => e.baseId),
+            ...this.data.knownBaseSpells,
+            ...default_weapon_cards.map(e => e._id),
+            ...default_hack_cards.map(e => e._id),
+            ...default_spell_cards.map(e => e._id),
+            ...this.preloadedData.DatachipData.GetDatachipsFromIdList(this.data.knownDatachips).reduce((pv: Array<string>, datachip) => {
+                return [...pv, ...datachip.builtinHacks.map(e => e._id)]
+            }, [])
+        ]
         console.log(fullPreparedList)
         return data.reduce((pv, cv) => {
             if (!pv) return pv;
@@ -507,7 +517,11 @@ class CharacterSheet extends AbstractSheet {
     // }
     public getPreparedWeaponCards = () => {
         if (this.allButDefaultCards) {
-            const weaponCards: Array<ICommonCardData> = [...this.allButDefaultCards.weapons.forms, ...this.allButDefaultCards.weapons.skills, ...this.allButDefaultCards.weapons.bases];
+            const weaponCards: Array<ICommonCardData> = [
+                ...this.allButDefaultCards.weapons.forms,
+                ...this.allButDefaultCards.weapons.skills,
+                ...this.allButDefaultCards.weapons.bases
+            ];
             const filteredCards = weaponCards.filter(card => {
                 return this.getPreparedCardsIdList().includes(card._id)
             })
@@ -529,7 +543,11 @@ class CharacterSheet extends AbstractSheet {
 
     public getPreparedSpellCards = (): Array<ICommonCardData> => {
         if (this.allButDefaultCards) {
-            const spellCards: Array<ICommonCardData> = [...this.allButDefaultCards.spells.bases, ...this.allButDefaultCards.spells.targets, ...this.allButDefaultCards.spells.modifiers];
+            const spellCards: Array<ICommonCardData> = [
+                ...this.allButDefaultCards.spells.bases,
+                ...this.allButDefaultCards.spells.targets,
+                ...this.allButDefaultCards.spells.modifiers
+            ];
             const filteredCards = spellCards.filter(card => {
                 return this.getPreparedCardsIdList().includes(card._id)
             })
@@ -1109,6 +1127,16 @@ class CharacterSheet extends AbstractSheet {
         await this.API.CharacterAPI.UpdateSource(this.data._id, sourceData, tempSources)
         this.manualCharPing()
     }
+
+    public async SaveCharacterChipset(datachips: Array<string>, packages: Array<string>) {
+        this.data.knownDatachips = datachips;
+        this.data.knownPackages = packages;
+        this.data.currentHack = null
+        await this.API.CharacterAPI.UpdateChipset(this.data._id, datachips, packages);
+        this.manualCharPing();
+    }
+
+
 
 
 

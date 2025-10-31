@@ -9,6 +9,7 @@ import {IMountBaseModel} from "../Data/IMountData";
 import {IMinionBaseData_New, IMinionRoleData} from "../Data/IMinionData_New";
 import {IRaceMetadata} from "../Hooks/usePreloadedContent/PLC_RaceData";
 import {IAbility} from "../Data/IAbilities";
+import {IDatachipData, IPackageData} from "../Data/ChipsetData";
 
 export interface ICacheTimestamp {
     entry_name: string,
@@ -61,7 +62,9 @@ export interface IPreloadedDataStruct {
     development: {
         abilities: Record<string, Array<IAbility>>,
         cards: Record<string, Array<ICommonCardData>>
-    }
+    },
+    datachips: Array<IDatachipData>,
+    packages: Array<IPackageData>
 }
 class PreloadedConnection {
     private _preloadedURL: string;

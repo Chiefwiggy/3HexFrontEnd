@@ -17,6 +17,8 @@ import PLC_MountData from "./PLC_MountData";
 import PLC_MinionMetadata from "./PLC_MinionMetadata";
 import PLC_RaceData from "./PLC_RaceData";
 import PLC_DevelopmentData from "./PLC_DevelopmentData";
+import PLC_DatachipData from "./PLC_DatachipData";
+import PLC_PackageData from "./PLC_PackageData";
 
 
 
@@ -37,6 +39,9 @@ const PreloadedContentContext =     createContext<IPreloadedContentContextInput>
         MinionMetadata: new PLC_MinionMetadata(),
         RaceData: new PLC_RaceData(),
         DevelopmentData: new PLC_DevelopmentData(),
+        DatachipData: new PLC_DatachipData(),
+        PackageData: new PLC_PackageData(),
+
         isLoaded: false
     }
 );

@@ -29,7 +29,20 @@ const CardPreparationView = ({closeSelf}: ICardPreparationViewInput) => {
             (async() => {
                 const apiData = currentSheet.allButDefaultCards;
                 if (apiData) {
-                    const allPlayerCards = [...apiData.spells.bases, ...apiData.spells.targets, ...apiData.spells.modifiers, ...apiData.hacks.bases, ...apiData.hacks.io, ...apiData.hacks.protocols, ...apiData.hacks.modifiers, ...apiData.weapons.forms, ...apiData.weapons.skills, ...apiData.weapons.bases.filter(e => !currentSheet.data.knownWeapons.map(e => e.baseId).includes(e._id))];
+                    const allPlayerCards = [
+                        ...apiData.spells.bases,
+                        ...apiData.spells.targets,
+                        ...apiData.spells.modifiers,
+                        ...apiData.hacks.bases,
+                        ...apiData.hacks.io,
+                        ...apiData.hacks.protocols,
+                        ...apiData.hacks.modifiers,
+                        ...apiData.weapons.forms,
+                        ...apiData.weapons.skills,
+                        ...apiData.weapons.bases.filter(e => !currentSheet.data.knownWeapons.map(e => e.baseId).includes(e._id))
+
+
+                    ];
                     setAllCards(allPlayerCards);
                     setNotPreparedCards(allPlayerCards.filter(c => !currentSheet.getPreparedCardsIdList().includes(c._id)));
                     setCurrentPreparedCards(allPlayerCards.filter(c => currentSheet.getPreparedCardsIdList().includes(c._id)));

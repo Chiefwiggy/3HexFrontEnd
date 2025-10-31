@@ -13,6 +13,7 @@ import {FaArrowRightArrowLeft, FaMoneyBillWave} from "react-icons/fa6";
 import {GiPortal, GiSparkSpirit, GiTiedScroll} from "react-icons/gi";
 import {SiMagic} from "react-icons/si";
 import {GrTechnology} from "react-icons/gr";
+import {MdPowerOff} from "react-icons/md";
 
 interface ICardEffectInput {
     effectData: IEffectData,
@@ -104,6 +105,10 @@ const CardEffect = ({effectData, finalPower}: ICardEffectInput) => {
             case 'soul_charge':
                 setEmblem(<Box sx={{paddingLeft: "2px", display: "flex", alignItems: "center"}}><GiSparkSpirit /></Box>)
                 setTintColor("rgba(191,0,255,0.4)")
+                break;
+            case 'surge':
+                setEmblem(<Box sx={{paddingLeft: "2px", display: "flex", alignItems: "center"}}><MdPowerOff /></Box>)
+                setTintColor("rgba(34,134,255,0.4)")
                 break;
             case 'rift_object':
                 setEmblem(<Box sx={{paddingLeft: "2px", display: "flex", alignItems: "center"}}><GiPortal /></Box>)

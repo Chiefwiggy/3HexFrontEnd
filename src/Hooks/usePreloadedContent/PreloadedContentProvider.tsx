@@ -21,6 +21,8 @@ import PLC_MountData from "./PLC_MountData";
 import PLC_MinionMetadata from "./PLC_MinionMetadata";
 import PLC_RaceData from "./PLC_RaceData";
 import PLC_DevelopmentData from "./PLC_DevelopmentData";
+import PLC_DatachipData from "./PLC_DatachipData";
+import PLC_PackageData from "./PLC_PackageData";
 
 interface IPreloadedContentProviderInput {
     children: any
@@ -43,6 +45,8 @@ export interface IPreloadedContentContextInput {
     MinionMetadata: PLC_MinionMetadata,
     RaceData: PLC_RaceData,
     DevelopmentData: PLC_DevelopmentData,
+    DatachipData: PLC_DatachipData,
+    PackageData: PLC_PackageData,
     isLoaded: boolean
 }
 const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) => {
@@ -79,7 +83,13 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
 
     const [DevelopmentData, setDevelopmentData] = useState(new PLC_DevelopmentData())
 
+    const [DatachipData, setDatachipData] = useState(new PLC_DatachipData());
+
+    const [PackageData, setPackageData] = useState(new PLC_PackageData());
+
     const [isLoaded, setIsLoaded] = useState(false);
+
+
 
     const API = useAPI();
 
@@ -178,6 +188,12 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
                 if (data.weaponData.length == 0) {
                     data.weaponData = myCacheFinal.weaponData;
                 }
+                if (data.datachips.length == 0) {
+                    data.datachips = myCacheFinal.datachips;
+                }
+                if (data.packages.length == 0) {
+                    data.packages = myCacheFinal.packages;
+                }
             }
 
 
@@ -198,6 +214,8 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
             await DevelopmentData.Initialize(data.development.cards, data.development.abilities)
             setIsLoaded(true);
             await MountData.Initialize(data.mountData)
+            await PackageData.Initialize(data.packages)
+            await DatachipData.Initialize(data.datachips)
 
             console.log(data.updatedCache)
             localStorage.setItem("cache_metadata", JSON.stringify(data.updatedCache))
@@ -225,6 +243,8 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
                 MinionMetadata,
                 RaceData,
                 DevelopmentData,
+                DatachipData,
+                PackageData,
                 isLoaded
             }}
         >

@@ -59,7 +59,7 @@ const ConditionTooltip = ({
     }
 
     const getConditionBorderColor = () => {
-        if (conditionData.conditionType == "buff") {
+        if (conditionData.conditionType != "debuff") {
             switch(conditionData.conditionTier) {
                 case 1:
                     return "#3d6a8e";

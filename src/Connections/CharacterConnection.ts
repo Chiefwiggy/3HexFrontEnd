@@ -191,6 +191,17 @@ class CharacterConnection {
         })
     }
 
+
+    public async UpdateChipset(charID: string, datachips: Array<string>, packages: Array<string>) {
+        await Axios.put(this.GetRouteURL(`update/${charID}`), {
+            knownDatachips: datachips,
+            knownPackages: packages,
+            currentHack: null
+        }, this._getConfig()).then((resp) => {
+            console.log(resp);
+        })
+    }
+
     public async DeleteCharacter(charID: string) {
         return await Axios.delete(this.GetRouteURL(`delete/${charID}`), this._getConfig())
     }
