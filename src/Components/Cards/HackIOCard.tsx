@@ -5,6 +5,7 @@ import GenericCardLayout, {ICardSendbackData} from "../../Layouts/GenericCardLay
 import NumericIcon from "./NumericIcon";
 import {createRangeString} from "../../Utils/helper_functions";
 import {LooksOutlined} from "@mui/icons-material";
+import ChannelType from "../../Utils/ChannelType";
 
 interface IHackIOCardInput {
     cardData: IHackIOCardData;
@@ -31,6 +32,21 @@ const HackIOCard = ({
 
     return (
         <GenericCardLayout cardData={cardData} sendBack={sendBack} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} canFavorite={canFavorite} showPrerequisites={showPrerequisites} showAdd={showAdd}>
+            <Box
+                sx={{
+                    marginTop: "-16px",
+                    marginBottom: "6px",
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px"
+                }}
+            >
+                {cardData.channelRequirements?.map((channel, index) => {
+                    return (
+                        <ChannelType channelType={channel.channelType} channelStrength={channel.channelStrength} color={"white"} />
+                    )
+                })}
+            </Box>
         </GenericCardLayout>
 
     )

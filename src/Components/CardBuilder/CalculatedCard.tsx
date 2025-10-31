@@ -25,6 +25,7 @@ import {FaHeartbeat, FaRunning} from "react-icons/fa";
 import {GiArcheryTarget, GiBorderedShield, GiBrokenShield, GiFist, GiMagicShield, GiRun} from "react-icons/gi";
 import {FaRegClock} from "react-icons/fa6";
 import {MdOutlineLooks, MdOutlineSportsMma} from "react-icons/md";
+import ChannelType from "../../Utils/ChannelType";
 
 interface ICalculatedCardInput {
     cardCalculator: AbstractCardCalculator
@@ -107,12 +108,34 @@ const CalculatedCard = ({
                 </Box>
             </CardContent>
 
-            {
-                validCard ? <></> :
-                    <Box>
-                        <Typography variant={"body2"} color={"red"}>Not all cards prepared.</Typography>
-                    </Box>
-            }
+                {
+                    validCard ? <></> :
+                        <Box>
+                            <Typography variant={"body2"} color={"red"}>Not all cards prepared.</Typography>
+                        </Box>
+                }
+                {
+                    !cardCalculator.hasCorrectChannels()
+                    ?
+                        <Box>
+                            <Typography variant={"body2"} color={"red"}>Invalid Protocol. You are missing the following channels:</Typography>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    gap: "10px"
+                                }}
+                            >
+                                {cardCalculator.getBadChannels().map((channel, index) => {
+                                    return (
+                                        <ChannelType channelType={channel.channelType} channelStrength={channel.channelStrength} color={"red"} />
+                                    )
+                                })}
+                            </Box>
+                        </Box>
+                        :
+                        <></>
+                }
 
             <CardContent>
                 {

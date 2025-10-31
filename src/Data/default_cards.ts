@@ -304,6 +304,7 @@ export const default_hack_cards: Array<IHackIOCardData | IHackBaseCardData | IHa
         "technikCost": 10,
         "damageType": "none",
         "damageSubtype": "none",
+        "baseSurge": 1,
         "hackSetMod": {
             "modifier": -100
         },

@@ -211,7 +211,14 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getMaxTechnik(): number {
-        return 0 + this.getAbilityBonuses("maxTechnik")
+        const datachips = this.preloadedData.DatachipData.GetDatachipsFromIdList(this.data.knownDatachips)
+        let baseTechnik = 0;
+        if (datachips.length > 0) {
+            const pdc = datachips[0];
+            baseTechnik = pdc.baseTechnikCapacity + (pdc.primaryTechnikScaling * this.getStat(pdc.primaryTechnikStat) + (pdc.secondaryTechnikScaling * this.getStat(pdc.secondaryTechnikStat)));
+        }
+        console.log(baseTechnik);
+        return baseTechnik + this.getAbilityBonuses("maxTechnik")
     }
 
     public areAllCardsPrepared = (data: Array<ICommonCardData|null>): boolean => {
@@ -1134,6 +1141,7 @@ class CharacterSheet extends AbstractSheet {
         this.data.currentHack = null
         await this.API.CharacterAPI.UpdateChipset(this.data._id, datachips, packages);
         this.manualCharPing();
+        this._hping();
     }
 
 

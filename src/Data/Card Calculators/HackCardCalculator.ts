@@ -1,4 +1,5 @@
 import {
+    IChannelData,
     IEffectData, IHackBaseCardData, IHackIOCardData, IHackModifierCardData, IHackProtocolCardData,
     ISpellBaseCardData,
     ISpellModifierCardData,
@@ -30,6 +31,7 @@ import {MdAccessTime, MdAutoFixOff, MdSaveAlt} from "react-icons/md";
 
 class HackCardCalculator extends AbstractCardCalculator {
 
+    private missingChannels: IChannelData[] = [];
 
     constructor(cardTypes: Array<ICardBuilderType>) {
         super(cardTypes, new Map<string, INumericIconData>([
@@ -62,6 +64,7 @@ class HackCardCalculator extends AbstractCardCalculator {
                 }
             ]
         ]));
+
     }
     protected invokeRecalculateData(char: AbstractSheet): void {
         if (this.cards.length > 0) {
@@ -72,6 +75,7 @@ class HackCardCalculator extends AbstractCardCalculator {
                 this.cards.filter(e => (e?.cardSubtype == "else" || e?.cardSubtype == "util")) as IHackModifierCardData[],
                 char
             )
+            this.missingChannels = finalHackData.missingChannels;
             if (finalHackData.moneyCost > 0) {
                 this.updateVal("technikCost", `$${finalHackData.moneyCost*finalHackData.technikCost}`)
             } else {
@@ -99,6 +103,14 @@ class HackCardCalculator extends AbstractCardCalculator {
 
     public isValid() {
         return !!(this.getCardOfType("hack.function") && this.getCardOfType("hack.protocol") && this.getCardOfType("hack.io"))
+    }
+
+    public hasCorrectChannels() {
+        return this.missingChannels.length === 0;
+    }
+
+    public getBadChannels() {
+        return this.missingChannels;
     }
 
     private sanitizeName = (name?: string, keepFirstWord = false) => {

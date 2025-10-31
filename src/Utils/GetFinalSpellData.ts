@@ -1,4 +1,5 @@
 import {
+    IChannelData,
     IHackBaseCardData, IHackIOCardData, IHackModifierCardData, IHackProtocolCardData,
     IScaledWeaponBaseData,
     ISpellBaseCardData,
@@ -48,7 +49,9 @@ export interface ITotalHackStats {
         min: number,
         max: number
     },
-    hackSet: number
+    hackSet: number,
+    isValidChannel: boolean,
+    missingChannels: IChannelData[],
 }
 
 export interface ITotalWeaponStats {
@@ -259,6 +262,91 @@ export const GetFinalWeaponData = (weaponBase: IScaledWeaponBaseData, allCards: 
 
 }
 
+function generateCartesianProductCountedObjects(channelGroups: Array<Array<IChannelData>>) {
+    const product = channelGroups.reduce((acc, curr) => {
+        const result: IChannelData[][] = [];
+        acc.forEach(a => {
+            curr.forEach(b => {
+                result.push([...a, b]);
+            });
+        });
+        return result;
+    }, [[]] as IChannelData[][]);
+
+    // Step 2: merge duplicates in each combination
+    return product.map((comb: Array<IChannelData>) => {
+        const merged: Record<string, IChannelData> = {};
+        comb.forEach((item: IChannelData) => {
+            if (merged[item.channelType]) {
+                merged[item.channelType].channelStrength += item.channelStrength;
+            } else {
+                merged[item.channelType] = { ...item };
+            }
+        });
+        return Object.values(merged);
+    });
+}
+
+function protocolCompare(
+    protocol: IChannelData[],
+    combination: IChannelData[]
+): number {
+    const protocolMap: Record<string, number> = {};
+    protocol.forEach(p => {
+        protocolMap[p.channelType] = p.channelStrength;
+    });
+
+    let deficit = 0;
+
+    combination.forEach(c => {
+        const protocolStrength = protocolMap[c.channelType] || 0;
+        // Only count deficit if combination exceeds protocol
+        if (c.channelStrength > protocolStrength) {
+            deficit += c.channelStrength - protocolStrength;
+        }
+    });
+
+    return deficit; // 0 if fully covered or combination smaller
+}
+
+function subtractProtocol(
+    protocol: IChannelData[],
+    group: IChannelData[]
+): IChannelData[] {
+    const protocolMap: Record<string, number> = {};
+    protocol.forEach(p => {
+        protocolMap[p.channelType] = p.channelStrength;
+    });
+
+    return group.map(g => {
+        const protocolStrength = protocolMap[g.channelType] || 0;
+        return {
+            channelType: g.channelType,
+            channelStrength: Math.max(g.channelStrength - protocolStrength, 0)
+        };
+    });
+}
+
+function getMissingChannels(groups: Array<Array<IChannelData>>, protocol: Array<IChannelData>): Array<IChannelData> {
+
+    const cartesianGroups = generateCartesianProductCountedObjects(groups);
+
+    let minDisparity = 999;
+    let minGroup: Array<IChannelData> = [];
+
+    for (const group of cartesianGroups) {
+        const pc = protocolCompare(protocol, group);
+        if (pc == 0) {
+            return [];
+        } else if (minDisparity > pc) {
+           minGroup = group;
+           minDisparity = pc;
+        }
+    }
+
+    return subtractProtocol(protocol, minGroup);
+}
+
 export const GetFinalHackData = (hackBase: IHackBaseCardData, hackIO: IHackIOCardData, hackProtocol: IHackProtocolCardData, rest: Array<IHackModifierCardData>, char: AbstractSheet): ITotalHackStats => {
     try {
         let specialLogicTags = [...hackBase.specialLogicTags ?? [], ...hackIO.specialLogicTags ?? [], ...hackProtocol.specialLogicTags ?? [], ...rest.flatMap(e => e?.specialLogicTags ?? [])];
@@ -289,7 +377,7 @@ export const GetFinalHackData = (hackBase: IHackBaseCardData, hackIO: IHackIOCar
             [hackBase.baseHackSetMod, hackIO.baseHackSetMod, hackProtocol.baseHackSetMod, ...rest.map(e => e?.baseHackSetMod)]
         );
 
-        let finalSurge = StatChain(0,
+        let finalSurge = StatChain(hackBase.baseSurge,
             [hackBase.surgeCostMod, hackIO.surgeCostMod, hackProtocol.surgeCostMod, ...rest.map(e => e?.surgeCostMod)])
 
         let finalSet = StatChain(
@@ -308,6 +396,18 @@ export const GetFinalHackData = (hackBase: IHackBaseCardData, hackIO: IHackIOCar
 
 
 
+        const groups: Array<Array<IChannelData>> = [
+            hackBase.channelRequirements ?? [],
+            hackIO.channelRequirements ?? [],
+            ...rest.map(e => e?.channelRequirements ?? [])
+        ].filter(g => g.length > 0)
+
+        const missingChannels = getMissingChannels(groups, hackProtocol.protocolChannels);
+
+
+
+
+
         return {
             technikCost: technikCost,
             moneyCost: StatChain(0, [hackBase.moneyCostMod, hackIO.moneyCostMod, hackProtocol.moneyCostMod, ...rest.map(e => e?.moneyCostMod)]),
@@ -319,6 +419,8 @@ export const GetFinalHackData = (hackBase: IHackBaseCardData, hackIO: IHackIOCar
                 max: maxRangeFinal
             },
             hackSet: finalSet,
+            isValidChannel: missingChannels.length === 0,
+            missingChannels
         }
     } catch (e) {
         return {
@@ -331,7 +433,9 @@ export const GetFinalHackData = (hackBase: IHackBaseCardData, hackIO: IHackIOCar
                 min: 0,
                 max: 0
             },
-            hackSet: 0
+            hackSet: 0,
+            isValidChannel: true,
+            missingChannels: []
         }
     }
 

@@ -8,11 +8,11 @@ export const CardGetColor = (type: string) => {
             case 'weapon.form':
                 return '#3BBA20';
             case 'weapon.skill':
-                return '#9db614';
+                return '#14f3e0';
             case 'weapon.order':
-                return '#18fff1'
+                return '#006CFF'
             case 'spell.base':
-                return '#1C2EB5';
+                return '#7A7AFF';
             case 'spell.base.temporary':
                 return '#b5beff'
             case 'spell.target':
@@ -20,7 +20,7 @@ export const CardGetColor = (type: string) => {
             case 'spell.summon':
                 return '#c888f4';
             case 'spell.skill':
-                return '#e11584';
+                return '#dc0e80';
             case 'spell.edict':
                 return '#ff66cc';
             case "commander.commander":
@@ -36,7 +36,7 @@ export const CardGetColor = (type: string) => {
             case 'hack.protocol':
                 return '#ff6f0a';
             case 'hack.util':
-                return '#ffec07';
+                return '#ddce09';
             case 'hack.else':
                 return '#ff0000';
         }

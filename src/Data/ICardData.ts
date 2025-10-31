@@ -80,7 +80,8 @@ export interface IHackBaseCardData extends IHackModifierCardData {
     staminaCost?: number,
     damageType: string,
     damageSubtype: string,
-    functionalName: string
+    functionalName: string,
+    baseSurge: number
 }
 
 export interface IChannelData {

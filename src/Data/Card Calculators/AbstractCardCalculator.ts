@@ -1,4 +1,5 @@
 import {
+    IChannelData,
     ICommonCardData,
     IEffectData,
     ISpellBaseCardData,
@@ -85,6 +86,14 @@ abstract class AbstractCardCalculator {
 
     public isValid() {
         return true;
+    }
+
+    public hasCorrectChannels() {
+        return true;
+    }
+
+    public getBadChannels(): Array<IChannelData> {
+        return []
     }
 
     public isSummon() {

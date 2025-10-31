@@ -10,7 +10,7 @@ import {
 } from "@mui/icons-material";
 import HighlightType from "../Generic/HighlightType";
 import {FaArrowRightArrowLeft, FaMoneyBillWave} from "react-icons/fa6";
-import {GiPortal, GiSparkSpirit, GiTiedScroll} from "react-icons/gi";
+import {GiLaserBurst, GiPortal, GiSparkSpirit, GiTiedScroll} from "react-icons/gi";
 import {SiMagic} from "react-icons/si";
 import {GrTechnology} from "react-icons/gr";
 import {MdPowerOff} from "react-icons/md";
@@ -107,7 +107,7 @@ const CardEffect = ({effectData, finalPower}: ICardEffectInput) => {
                 setTintColor("rgba(191,0,255,0.4)")
                 break;
             case 'surge':
-                setEmblem(<Box sx={{paddingLeft: "2px", display: "flex", alignItems: "center"}}><MdPowerOff /></Box>)
+                setEmblem(<Box sx={{paddingLeft: "2px", display: "flex", alignItems: "center"}}><GiLaserBurst /></Box>)
                 setTintColor("rgba(34,134,255,0.4)")
                 break;
             case 'rift_object':

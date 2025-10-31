@@ -36,12 +36,15 @@ const HackProtocolCard = ({
             <Box
                 sx={{
                     marginTop: "-16px",
-                    marginBottom: "6px"
+                    marginBottom: "6px",
+                    display: "flex",
+                    justifyContent: "center",
+                    gap: "10px"
                 }}
             >
                 {cardData.protocolChannels.map((channel, index) => {
                     return (
-                        <ChannelType channelType={channel.channelType} channelStrength={channel.channelStrength} />
+                        <ChannelType channelType={channel.channelType} channelStrength={channel.channelStrength} color={"gray"} />
                     )
                 })}
             </Box>
