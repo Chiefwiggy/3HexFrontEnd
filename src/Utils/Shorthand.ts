@@ -239,4 +239,21 @@ export function getClassesString(classes: Array<IClassData>) {
                 return a.className.localeCompare(b.className);
             }
         }).map(e => e.isPromoted ? e.className + "+" : e.className).join(" • ")
+}
+
+export type UHackType = "function" | "protocol" | "io" | "else" | "util"
+
+export function getHackShorthand(input: UHackType) {
+    switch(input) {
+        case "function":
+            return "fn";
+        case "protocol":
+            return "pcl";
+        case "io":
+            return "io"
+        case "else":
+            return "el"
+        case "util":
+            return "utl"
     }
+}

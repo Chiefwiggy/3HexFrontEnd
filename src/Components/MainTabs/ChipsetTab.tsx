@@ -1,5 +1,16 @@
 import React, {SyntheticEvent, useEffect, useState} from 'react';
-import {Alert, Autocomplete, Box, Button, capitalize, Checkbox, Chip, TextField, Typography} from "@mui/material";
+import {
+    Alert,
+    Autocomplete,
+    Box,
+    Button,
+    capitalize,
+    Checkbox,
+    Chip, LinearProgress,
+    Paper,
+    TextField,
+    Typography
+} from "@mui/material";
 import {clone} from "../../Utils/ObjectUtils";
 import {ISourceData} from "../../Data/ISourceData";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
@@ -8,6 +19,10 @@ import {IDatachipData, IPackageData} from "../../Data/ChipsetData";
 import {CheckBox, CheckBoxOutlineBlank} from "@mui/icons-material";
 import {GetArcanotypeColor} from "../../Utils/CardColorUtils";
 import useUser from "../../Hooks/useUser/useUser";
+import DatachipInfo from "../Chipsets/DatachipInfo";
+import PackageWidget from "../Chipsets/PackageWidget";
+import VerticalLinearBar from "../Generic/VerticalLinearBar";
+import MemorySlotBar from "../Chipsets/MemorySlotBar";
 
 interface IFunctionsTabInput {
 
@@ -65,7 +80,7 @@ const ChipsetTab = ({}: IFunctionsTabInput) => {
         setCharacterPackages(value);
     }
 
-    return (
+    return currentSheet ? (
         <Box>
             <Box
                 sx={{
@@ -164,9 +179,44 @@ const ChipsetTab = ({}: IFunctionsTabInput) => {
                     />
 
                 </Box>
+                <Box
+                    sx={{
+                        marginTop: "12px",
+                        display: "grid",
+                        gridTemplateColumns: "10fr 1fr 14fr",
+                        gridGap: "20px"
+                    }}
+                >
+                    <Box
+                        sx={{
+                            display: "flex",
+                            flexDirection: "column"
+                        }}
+                    >
+                        {
+                            characterDatachips.map((option, index) => {
+                                return (
+                                    <DatachipInfo datachip={option} index={index} key={index} />
+                                )
+                            })
+                        }
+                    </Box>
+                    <MemorySlotBar memorySlotTotal={currentSheet.getMemorySlots()} memorySlotsUsed={characterPackages.reduce((pv, cv) => {
+                        return pv + cv.memorySlots
+                    }, 0)}/>
+                    <Box>
+                        {
+                            characterPackages.map((option, index) => {
+                                return (
+                                    <PackageWidget packageData={option} key={index} />
+                                )
+                            })
+                        }
+                    </Box>
+                </Box>
             </Box>
         </Box>
-    )
+    ) : <></>
 }
 
 export default ChipsetTab

@@ -10,7 +10,7 @@ import {getSkillFormat, UStat} from "../Utils/Shorthand";
 import {StatChain} from "../Utils/GetFinalSpellData";
 import {
     ICommanderCardData,
-    ICommonCardData, IScaledWeaponBaseData,
+    ICommonCardData, IHackModifierCardData, IScaledWeaponBaseData,
     ISpellBaseCardData,
     ISpellModifierCardData,
     ISpellTargetCardData, IWeaponBaseData,
@@ -55,22 +55,28 @@ export type DamageType = "physical" | "magical" | "raw" | "resistant"
 
 
 interface IAllCardsData {
-    spells: {
-        bases: Array<any>,
-        targets: Array<any>,
-        modifiers: Array<any>
-    },
-    weapons: {
-        bases: Array<any>,
-        forms: Array<any>,
-        skills: Array<any>
-    },
-    hacks: {
-        bases: Array<any>,
-        io: Array<any>,
-        protocols: Array<any>,
-        modifiers: Array<any>
-    }
+    spells: ISpellCardsData,
+    weapons: IWeaponCardsData,
+    hacks: IHackCardsData
+}
+
+interface ISpellCardsData {
+    bases: Array<any>,
+    targets: Array<any>,
+    modifiers: Array<any>
+}
+
+interface IWeaponCardsData {
+    bases: Array<any>,
+    forms: Array<any>,
+    skills: Array<any>
+}
+
+interface IHackCardsData {
+    bases: Array<any>,
+    io: Array<any>,
+    protocols: Array<any>,
+    modifiers: Array<any>
 }
 
 
@@ -725,6 +731,16 @@ class CharacterSheet extends AbstractSheet {
             console.log(apiCards);
             this.allCards = apiCards;
             this.allButDefaultCards = JSON.parse(JSON.stringify(apiCards));
+            const hackKeys = Object.keys(this.allButDefaultCards!.hacks) as (keyof IHackCardsData)[];
+            const datachipIdList = this.preloadedData.DatachipData.GetDatachipsFromIdList(this.data.knownDatachips).flatMap(e => e.builtinHacks).map(e => e._id)
+            console.log(datachipIdList);
+            this.allButDefaultCards!.hacks = Object.fromEntries(
+                hackKeys.map(key => [
+                    key,
+                    this.allButDefaultCards!.hacks[key].filter(item => !datachipIdList.includes(item._id))
+                ])
+            ) as unknown as IHackCardsData;
+
             if (this.allCards) {
                 this.allCards.spells.targets.push(default_spell_cards[0]);
                 this.allCards.spells.modifiers.push(default_spell_cards[1]);
@@ -891,6 +907,11 @@ class CharacterSheet extends AbstractSheet {
 
     public getCardSlots(): number {
         return 3 + Math.floor(this.getStat("knowledge") * 0.5) + this.getAbilityBonuses("cardSlots");
+    }
+
+    public getMemorySlots(): number {
+        const primaryDatachip  = this.preloadedData.DatachipData.GetDatachipsFromIdList(this.data.knownDatachips)[0]
+        return Math.floor(((this.getStat(primaryDatachip.primaryTechnikStat) * primaryDatachip.primaryTechnikScaling) + (this.getStat(primaryDatachip.secondaryTechnikStat) * primaryDatachip.secondaryTechnikScaling))/5)
     }
 
     public getBaseCardSlots(): number {
