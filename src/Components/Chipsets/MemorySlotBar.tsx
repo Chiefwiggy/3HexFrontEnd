@@ -17,7 +17,7 @@ const MemorySlotBar = ({memorySlotTotal, memorySlotsUsed}: IMemorySlotBarInput) 
         >
             <Typography variant="body2" color={"textSecondary"} textAlign={"center"}>PKG Slots</Typography>
             <Box position="relative" width="10px" height="100%" paddingLeft={"8px"}>
-                <VerticalLinearBar variant={"determinate"} value={(memorySlotsUsed / memorySlotTotal) * 100} color={"secondary"} sxProps={{
+                <VerticalLinearBar variant={"determinate"} value={(memorySlotsUsed / memorySlotTotal) * 100} color={memorySlotsUsed > memorySlotTotal ?  "error" : "secondary"} sxProps={{
                     width: "30px"
                 }}/>
                 <Box
