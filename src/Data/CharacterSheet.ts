@@ -910,6 +910,9 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getMemorySlots(): number {
+        if (this.data.knownDatachips.length == 0) {
+            return 0;
+        }
         const primaryDatachip  = this.preloadedData.DatachipData.GetDatachipsFromIdList(this.data.knownDatachips)[0]
         return Math.floor(((this.getStat(primaryDatachip.primaryTechnikStat) * primaryDatachip.primaryTechnikScaling) + (this.getStat(primaryDatachip.secondaryTechnikStat) * primaryDatachip.secondaryTechnikScaling))/5)
     }
