@@ -18,7 +18,7 @@ import {
 } from "@mui/icons-material";
 import {GetFinalHackData, GetFinalSpellData, GetFinalWeaponData} from "../../Utils/GetFinalSpellData";
 import {ICharacterBaseData} from "../ICharacterData";
-import {getSkillFormat, getStatShorthand, UStat} from "../../Utils/Shorthand";
+import {getAccessShorthand, getSkillFormat, getStatShorthand, UStat} from "../../Utils/Shorthand";
 import {capitalize} from "@mui/material";
 import CharacterSheet from "../CharacterSheet";
 import MinionSheet from "../MinionSheet";
@@ -28,6 +28,7 @@ import {GrTechnology} from "react-icons/gr";
 import React from "react";
 import {GiLaserBurst, GiTechnoHeart} from "react-icons/gi";
 import {MdAccessTime, MdAutoFixOff, MdSaveAlt} from "react-icons/md";
+import {SiPrivateinternetaccess} from "react-icons/si";
 
 class HackCardCalculator extends AbstractCardCalculator {
 
@@ -62,6 +63,13 @@ class HackCardCalculator extends AbstractCardCalculator {
                     val: "Instant",
                     icon: MdAccessTime
                 }
+            ],
+            [
+                "accessLevel",
+                {
+                    val: "N/A",
+                    icon: SiPrivateinternetaccess
+                }
             ]
         ]));
 
@@ -93,6 +101,8 @@ class HackCardCalculator extends AbstractCardCalculator {
                 this.updateVal("duration", `${finalHackData.duration.toString()} Round${finalHackData.duration == 1 ? "" : "s"}`);
             }
             this.updateVal("surgeCost", finalHackData.surge.toString());
+
+            this.updateVal("accessLevel", getAccessShorthand(finalHackData.accessLevel));
         }
 
 

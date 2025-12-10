@@ -1,7 +1,7 @@
 import React from 'react';
 import {Box, capitalize, Paper, Typography} from "@mui/material";
 import {IDatachipData} from "../../Data/ChipsetData";
-import {getHackShorthand, UHackType} from "../../Utils/Shorthand";
+import {getHackShorthand, getStatShorthand, UHackType} from "../../Utils/Shorthand";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
 import HackCardPreviewList from "./HackCardPreviewList";
 
@@ -49,22 +49,24 @@ const DatachipInfo = ({datachip, index}: IDatachipInfoInput) => {
                         <Box>
                             <Typography>From {capitalize(datachip.primaryTechnikStat)}</Typography>
                             <Typography variant="h4" component="span">
-                                {datachip.primaryTechnikScaling * currentSheet.getStat(datachip.primaryTechnikStat)}{" "}
+                                {Math.floor(datachip.primaryTechnikScaling * currentSheet.getStat(datachip.primaryTechnikStat))}{" "}
                                 /{" "}
                                 <span style={{ color: "gray" }}>
-            {Math.floor((datachip.primaryTechnikScaling * currentSheet.getStat(datachip.primaryTechnikStat)) / 5)}
+            {Math.floor((datachip.primaryTechnikScaling * currentSheet.getStat(datachip.primaryTechnikStat)) / 4)}
         </span>
                             </Typography>
+                            <Typography variant={"body2"} color={"grey"}>[{getStatShorthand(datachip.primaryTechnikStat).toUpperCase()} * {datachip.primaryTechnikScaling}]</Typography>
                         </Box>
                         <Box>
                             <Typography>From {capitalize(datachip.secondaryTechnikStat)}</Typography>
                             <Typography variant="h4" component="span">
-                                {datachip.secondaryTechnikScaling * currentSheet.getStat(datachip.secondaryTechnikStat)}{" "}
+                                {Math.floor(datachip.secondaryTechnikScaling * currentSheet.getStat(datachip.secondaryTechnikStat))}{" "}
                                 /{" "}
                                 <span style={{ color: "gray" }}>
-            {Math.floor((datachip.secondaryTechnikScaling * currentSheet.getStat(datachip.secondaryTechnikStat)) / 5)}
+            {Math.floor((datachip.secondaryTechnikScaling * currentSheet.getStat(datachip.secondaryTechnikStat)) / 4)}
         </span>
                             </Typography>
+                            <Typography variant={"body2"} color={"grey"}>[{getStatShorthand(datachip.secondaryTechnikStat).toUpperCase()} * {datachip.secondaryTechnikScaling}]</Typography>
                         </Box>
                     </Box>
                 </Box>

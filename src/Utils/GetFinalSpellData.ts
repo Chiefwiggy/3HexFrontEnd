@@ -50,6 +50,7 @@ export interface ITotalHackStats {
         max: number
     },
     hackSet: number,
+    accessLevel: number,
     isValidChannel: boolean,
     missingChannels: IChannelData[],
 }
@@ -404,6 +405,11 @@ export const GetFinalHackData = (hackBase: IHackBaseCardData, hackIO: IHackIOCar
 
         const missingChannels = getMissingChannels(groups, hackProtocol.protocolChannels);
 
+        const accessLevel = StatChain(
+            hackBase.accessLevel,
+            [hackBase.accessLevelMod, hackIO.accessLevelMod, ...rest.map(e => e?.accessLevelMod)]
+        );
+
 
 
 
@@ -419,6 +425,7 @@ export const GetFinalHackData = (hackBase: IHackBaseCardData, hackIO: IHackIOCar
                 max: maxRangeFinal
             },
             hackSet: finalSet,
+            accessLevel: accessLevel,
             isValidChannel: missingChannels.length === 0,
             missingChannels
         }
@@ -433,6 +440,7 @@ export const GetFinalHackData = (hackBase: IHackBaseCardData, hackIO: IHackIOCar
                 min: 0,
                 max: 0
             },
+            accessLevel: 0,
             hackSet: 0,
             isValidChannel: true,
             missingChannels: []

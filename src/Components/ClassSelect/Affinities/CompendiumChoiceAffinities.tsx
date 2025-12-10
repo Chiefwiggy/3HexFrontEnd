@@ -35,6 +35,7 @@ const CompendiumChoiceAffinities = ({choiceData}: ICompendiumChoiceAffinitiesInp
                                     justifyContent: "center",
                                     alignItems: "center"
                                 }}
+                                key={index}
                             >
                                 <Typography
                                     sx={

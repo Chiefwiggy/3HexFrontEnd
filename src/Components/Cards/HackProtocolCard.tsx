@@ -44,7 +44,7 @@ const HackProtocolCard = ({
             >
                 {cardData.protocolChannels.map((channel, index) => {
                     return (
-                        <ChannelType channelType={channel.channelType} channelStrength={channel.channelStrength} color={"gray"} />
+                        <ChannelType channelType={channel.channelType} channelStrength={channel.channelStrength} color={"gray"} key={index} />
                     )
                 })}
             </Box>

@@ -106,6 +106,7 @@ export const disambiguateCard = (
         if (card.cardType == "hack") {
             switch(card.cardSubtype) {
                 case "base":
+                case "function":
                     return wrapper(
                         <HackBaseCard
                             cardData={card as IHackBaseCardData}

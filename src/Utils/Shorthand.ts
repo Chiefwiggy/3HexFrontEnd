@@ -257,3 +257,19 @@ export function getHackShorthand(input: UHackType) {
             return "utl"
     }
 }
+
+export function getAccessShorthand(input: number): string {
+    let accessString = "N/A"
+    switch(input) {
+        case 1:
+            accessString = "USR";
+            break;
+        case 2:
+            accessString = "ADM";
+            break;
+        case 3:
+            accessString = "ROOT";
+            break;
+    }
+    return accessString;
+}

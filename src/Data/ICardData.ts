@@ -61,7 +61,8 @@ export interface IHackModifierCardData extends ICommonCardData {
     baseHackSetMod?: IDataModifiers,
     hackSetMod?: IDataModifiers,
     channelRequirements?: Array<IChannelData>,
-    overrideSaveType?: string
+    overrideSaveType?: string,
+    accessLevelMod?: IDataModifiers
 }
 
 export interface IHackIOCardData extends IHackModifierCardData {
@@ -80,7 +81,7 @@ export interface IHackBaseCardData extends IHackModifierCardData {
     staminaCost?: number,
     damageType: string,
     damageSubtype: string,
-    functionalName: string,
+    accessLevel: number,
     baseSurge: number
 }
 

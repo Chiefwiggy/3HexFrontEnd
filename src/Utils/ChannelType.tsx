@@ -4,9 +4,10 @@ import {GiCog, GiPlantsAndAnimals} from "react-icons/gi";
 import IconButtonWithTooltip from "../Components/Generic/IconButtonWithTooltip";
 import {ImNeutral} from "react-icons/im";
 import {TbTree} from "react-icons/tb";
-import {SiNginxproxymanager} from "react-icons/si";
+import {SiNginxproxymanager, SiNodemon} from "react-icons/si";
 import {PiBroadcastFill} from "react-icons/pi";
 import BoxWithTooltip from "../Components/Generic/BoxWithTooltip";
+import {MdPersonPin} from "react-icons/md";
 
 interface IChannelTypeInput {
     channelType: string,
@@ -24,11 +25,13 @@ const ChannelType = ({channelType, channelStrength, color = "white"}: IChannelTy
             IconElement = GiPlantsAndAnimals
             break;
         case "biomantle":
-            break
-        case "lattice":
+            IconElement = MdPersonPin
             break;
-        case "lexica":
+        case "network":
             IconElement = PiBroadcastFill
+            break;
+        case "daemon":
+            IconElement = SiNodemon
             break;
     }
     return (

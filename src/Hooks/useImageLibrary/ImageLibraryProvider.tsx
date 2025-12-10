@@ -37,18 +37,20 @@ const ImageLibraryProvider = ({children}: IImageLibraryProvider) => {
     useEffect(() => {
         (async() => {
             let rawData: Array<IImageData> = await API.ImageLibraryAPI.GetLibraryLedger()
-            const imageLibrary: Record<string, IImageData> = rawData.reduce((acc: Record<string, IImageData>, item: IImageData) => {
-                acc[item.imageKey] = {
-                    imageUrl: item.imageUrl,
-                    imageKey: item.imageKey,
-                    altText: item.altText,
-                    owner: item.owner
-                };
-                return acc;
-            }, {} as Record<string, IImageData>);
-            console.log(imageLibrary)
-            setImageLibrary(imageLibrary)
-            setIsImageLibraryLoaded(true);
+            if (rawData.length > 0) {
+                const imageLibrary: Record<string, IImageData> = rawData.reduce((acc: Record<string, IImageData>, item: IImageData) => {
+                    acc[item.imageKey] = {
+                        imageUrl: item.imageUrl,
+                        imageKey: item.imageKey,
+                        altText: item.altText,
+                        owner: item.owner
+                    };
+                    return acc;
+                }, {} as Record<string, IImageData>);
+                console.log(imageLibrary)
+                setImageLibrary(imageLibrary)
+                setIsImageLibraryLoaded(true);
+            }
         })();
     }, []);
 

@@ -221,10 +221,10 @@ class CharacterSheet extends AbstractSheet {
         let baseTechnik = 0;
         if (datachips.length > 0) {
             const pdc = datachips[0];
-            baseTechnik = pdc.baseTechnikCapacity + (pdc.primaryTechnikScaling * this.getStat(pdc.primaryTechnikStat) + (pdc.secondaryTechnikScaling * this.getStat(pdc.secondaryTechnikStat)));
+            baseTechnik = pdc.baseTechnikCapacity + Math.floor((pdc.primaryTechnikScaling * this.getStat(pdc.primaryTechnikStat)) + Math.floor((pdc.secondaryTechnikScaling * this.getStat(pdc.secondaryTechnikStat))));
         }
         console.log(baseTechnik);
-        return baseTechnik + this.getAbilityBonuses("maxTechnik")
+        return Math.floor(baseTechnik + this.getAbilityBonuses("maxTechnik"))
     }
 
     public areAllCardsPrepared = (data: Array<ICommonCardData|null>): boolean => {
@@ -914,7 +914,10 @@ class CharacterSheet extends AbstractSheet {
             return 0;
         }
         const primaryDatachip  = this.preloadedData.DatachipData.GetDatachipsFromIdList(this.data.knownDatachips)[0]
-        return Math.floor(((this.getStat(primaryDatachip.primaryTechnikStat) * primaryDatachip.primaryTechnikScaling) + (this.getStat(primaryDatachip.secondaryTechnikStat) * primaryDatachip.secondaryTechnikScaling))/5)
+        return 1 + Math.floor(
+            Math.floor(this.getStat(primaryDatachip.primaryTechnikStat) * primaryDatachip.primaryTechnikScaling / 4) +
+            Math.floor(this.getStat(primaryDatachip.secondaryTechnikStat) * primaryDatachip.secondaryTechnikScaling / 4)
+        ) + this.getAbilityBonuses("memorySlots") + this.getAbilityBonuses("packageSlots");
     }
 
     public getBaseCardSlots(): number {

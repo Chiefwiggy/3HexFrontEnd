@@ -296,25 +296,22 @@ export const default_hack_cards: Array<IHackIOCardData | IHackBaseCardData | IHa
         "cardName": "On/Off",
         "cardType": "hack",
         "cardSubtype": "function",
-        "functionalName": "togglePowerSimple",
+        "accessLevel": 3,
         "isUltimate": false,
         "basePower": 0,
         "potency": 0,
         "duration": 0,
-        "technikCost": 10,
+        "technikCost": 2,
         "damageType": "none",
         "damageSubtype": "none",
-        "baseSurge": 1,
-        "hackSetMod": {
-            "modifier": -100
-        },
+        "baseSurge": 0,
         "channelRequirements": [{
             "channelType": "machina",
             "channelStrength": 1
         }],
         "effects": [
             {
-                "text": "Toggle the Electrical Power of all targets. -10 : 0 to the Hack Set Mod.",
+                "text": "Toggle the Electrical Power of all targets.",
                 "icon": {
                     "emblem": "info",
                     "text": ""

@@ -11,11 +11,12 @@ import {
     MdOutlineWaterDrop,
     MdPowerOff
 } from "react-icons/md";
-import {getDamageShorthand, getSkillFormat, getStatShorthand, UStat} from "../../Utils/Shorthand";
+import {getAccessShorthand, getDamageShorthand, getSkillFormat, getStatShorthand, UStat} from "../../Utils/Shorthand";
 import {GiHeartShield, GiLaserBurst} from "react-icons/gi";
 import SubtypeDamageIcon from "../SmallComponents/SubtypeDamageIcon";
 import {GrTechnology} from "react-icons/gr";
 import ChannelType from "../../Utils/ChannelType";
+import {SiPrivateinternetaccess} from "react-icons/si";
 
 interface IHackBaseCardInput {
     cardData: IHackBaseCardData;
@@ -57,6 +58,7 @@ const HackBaseCard = ({
                             sx={{
                                 display: "flex",
                             }}
+                            key={index}
                         >
                             {index > 0 ? <Box sx={{
                                 marginRight: "12px"
@@ -85,8 +87,9 @@ const HackBaseCard = ({
                 <NumericIcon val={"x" + cardData.potency} icon={MdFitnessCenter} title={"Potency. Multiply your Might by this value and add that to the spell's Power."} />
                 <NumericIcon val={cardData.technikCost} icon={GrTechnology} title={"Technik Cost"}/>
                 <NumericIcon val={cardData.duration} icon={MdAccessTime} title={"Duration"}/>
-                <Box></Box>
                 <NumericIcon val={cardData.baseSurge ?? 0} icon={GiLaserBurst} iconColor={"#0096ff"} title={"Surge"}/>
+                <NumericIcon val={getAccessShorthand(cardData.accessLevel)} icon={SiPrivateinternetaccess} title={"Access Level"}/>
+
             </Box>
         </GenericCardLayout>
     )
