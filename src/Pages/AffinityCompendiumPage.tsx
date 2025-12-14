@@ -23,7 +23,7 @@ const AffinityCompendiumPage = ({}: IAffinityCompendiumPageInput) => {
 
   const paths: Array<keyof IPathKeys> = ["warrior", "arcanist", "commander", "navigator", "scholar", "hacker"];
   const affinities: Array<keyof IAffinities | "_"> = [
-    "_", "nimble", "infantry", "guardian", "_", "focus", "creation", "alteration", "_", "leadership", "supply", "summoning", "_", "swift", "riding", "adaptation", "_", "rune", "sourcecraft", "research", "_", "machinery",  "abjuration", "biohacking"
+    "_", "nimble", "infantry", "guardian", "_", "focus", "creation", "alteration", "_", "leadership", "supply", "summoning", "_", "swift", "riding", "adaptation", "_", "rune", "sourcecraft", "research", "_", "transmutation",  "abjuration", "infusion"
   ];
 
   useEffect(() => {
@@ -109,9 +109,9 @@ const AffinityCompendiumPage = ({}: IAffinityCompendiumPageInput) => {
           <Tab label={"Sourcecraft"} sx={tabProperties} />
           <Tab label={"Research"} sx={tabProperties} />
           <Tab label={<Typography variant={"h6"}>Hacker</Typography>} sx={tabProperties} />
-          <Tab label={"Machinery"} sx={tabProperties} />
+          <Tab label={"Transmutation"} sx={tabProperties} />
           <Tab label={"Abjuration"} sx={tabProperties} />
-          <Tab label={"Biohacking"} sx={tabProperties} />
+          <Tab label={"Infusion"} sx={tabProperties} />
         </Tabs>
 
       </Box>

@@ -27,9 +27,9 @@ export interface IAbility {
             rune?: number,
             sourcecraft?: number,
             research?: number,
-            machinery?: number,
+            transmutation?: number,
             abjuration?: number,
-            biohacking?: number,
+            infusion?: number,
         },
         path?: {
             arcanist?: number,

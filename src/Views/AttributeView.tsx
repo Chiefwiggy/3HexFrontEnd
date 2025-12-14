@@ -11,6 +11,9 @@ import ActionPointsPanel from "../Components/Sheet/ActionPointsPanel";
 import IconButtonWithTooltip from "../Components/Generic/IconButtonWithTooltip";
 import BoxWithTooltip from "../Components/Generic/BoxWithTooltip";
 import VerticalLinearBar from "../Components/Generic/VerticalLinearBar";
+import NumberSpinner from "../Utils/NumberSpinner";
+import CurrencySpinner from "../Components/StatBox/CurrencySpinner";
+import CurrencyPanel from "../Components/StatBox/CurrencyPanel";
 
 interface IAttributeViewInput {
     pivot: boolean
@@ -44,6 +47,8 @@ const AttributeView = ({pivot}: IAttributeViewInput) => {
     const [progressOrders, setProgressOrders] = useState(99)
     const [currentOrders, setCurrentOrders] = useState(0);
     const [currentMaxOrders, setCurrentMaxOrders] = useState(0);
+
+
 
     const handleRefreshPanel = (open: boolean) => () => {
         setRefreshPanelOpen(open);
@@ -135,7 +140,7 @@ const AttributeView = ({pivot}: IAttributeViewInput) => {
                         <></>
                 }
                 <AttributeBar barName={"Orders"} barColor={"orders"} healFunction={handleHealAndUse(true)} damageFunction={handleDamage}  takeFunction={handleHealAndUse(false)} currentAttr={currentOrders} currentMaxAttr={currentMaxOrders} progress={progressOrders} />
-
+                <CurrencyPanel />
 
                 <Box
                     sx={{
@@ -144,6 +149,7 @@ const AttributeView = ({pivot}: IAttributeViewInput) => {
                         justifyContent: 'center'
                     }}
                 >
+
                     <Box
                         sx={{
                             display: "flex",
@@ -172,7 +178,6 @@ const AttributeView = ({pivot}: IAttributeViewInput) => {
                             color: "lightblue"
                         }} /></IconButtonWithTooltip>
                     </Box>
-
                     <ActionPointsPanel />
                     <SimpleClosableDialog title={"Take a Breather"} buttons={[
                         {

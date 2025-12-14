@@ -216,6 +216,7 @@ const CharacterSheetView = () => {
             >
                 <DefensesView/>
                 <AttributeView pivot={isSmallScreen}/>
+                test
             </Box>
             <br/>
             <Divider/>

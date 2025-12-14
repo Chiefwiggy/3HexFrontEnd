@@ -4,7 +4,7 @@ import {
     ICalculatedWeapon,
     ICharacterBaseData, ICharacterStats, IClassData, IPreparedCard, IPreparedSource,
     ISkillPointObject,
-    UStance, ICalculatedHack
+    UStance, ICalculatedHack, ICurrencyData
 } from "./ICharacterData";
 import {getSkillFormat, UStat} from "../Utils/Shorthand";
 import {StatChain} from "../Utils/GetFinalSpellData";
@@ -618,9 +618,9 @@ class CharacterSheet extends AbstractSheet {
             rune: 0,
             sourcecraft: 0,
             research: 0,
-            machinery: 0,
+            transmutation: 0,
             abjuration: 0,
-            biohacking: 0,
+            infusion: 0,
         }
         this.currentPath = {
             warrior: 0,
@@ -839,9 +839,9 @@ class CharacterSheet extends AbstractSheet {
             rune: 0,
             sourcecraft: 0,
             research: 0,
-            machinery: 0,
+            transmutation: 0,
             abjuration: 0,
-            biohacking: 0,
+            infusion: 0,
         }
         this.data.classes.forEach((val) => {
             Object.entries(val.affinities).forEach(([key, value]) => {
@@ -860,7 +860,7 @@ class CharacterSheet extends AbstractSheet {
             commander: this.currentAffinities.leadership + this.currentAffinities.supply + this.currentAffinities.summoning,
             navigator: this.currentAffinities.swift + this.currentAffinities.riding + this.currentAffinities.adaptation,
             scholar: this.currentAffinities.rune + this.currentAffinities.research + this.currentAffinities.sourcecraft,
-            hacker: this.currentAffinities.abjuration + this.currentAffinities.machinery + this.currentAffinities.biohacking
+            hacker: this.currentAffinities.abjuration + this.currentAffinities.transmutation + this.currentAffinities.infusion
         }
     }
 
@@ -1169,6 +1169,12 @@ class CharacterSheet extends AbstractSheet {
         await this.API.CharacterAPI.UpdateChipset(this.data._id, datachips, packages);
         this.manualCharPing();
         this._hping();
+    }
+
+    public async SaveCharacterCurrency(currencyData: Array<ICurrencyData>) {
+        this.data.currencyValues = currencyData;
+        await this.API.CharacterAPI.UpdateCurrency(this.data._id, currencyData)
+        this.manualCharPing();
     }
 
 

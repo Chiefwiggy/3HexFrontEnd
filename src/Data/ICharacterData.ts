@@ -95,9 +95,17 @@ export interface ICharacterBaseData {
     campaignIds: Array<string>,
     isDead: boolean,
     creatorName: string,
+    currencyValues: Array<ICurrencyData>,
     developmentIds: Array<string>,
     __times_accessed: number,
     _id: string
+}
+
+export interface ICurrencyData {
+    _id?: string,
+    currencyType: string,
+    currencyStore: string,
+    currencyAmount: number
 }
 
 export interface IMinionOwnedData {
@@ -173,9 +181,9 @@ export interface IAffinities {
     rune: number,
     sourcecraft: number,
     research: number,
-    machinery: number,
+    transmutation: number,
     abjuration: number,
-    biohacking: number
+    infusion: number
 }
 
 
@@ -201,9 +209,9 @@ export interface IAffinitiesArray<T> {
     rune: Array<T>,
     sourcecraft: Array<T>,
     research: Array<T>,
-    machinery: Array<T>,
+    transmutation: Array<T>,
     abjuration: Array<T>,
-    biohacking: Array<T>
+    infusion: Array<T>
 }
 
 export interface IPathKeys {

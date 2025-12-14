@@ -9,7 +9,7 @@ import {
     IEnchantmentData,
     IPreparedSource,
     IConsumablePlayerData,
-    ISettingsData, ICalculatedHack
+    ISettingsData, ICalculatedHack, ICurrencyData
 } from "../Data/ICharacterData";
 import Axios, { AxiosRequestConfig } from 'axios'
 import {IBaseArmorData} from "../Data/IArmorData";
@@ -197,6 +197,14 @@ class CharacterConnection {
             knownDatachips: datachips,
             knownPackages: packages,
             currentHack: null
+        }, this._getConfig()).then((resp) => {
+            console.log(resp);
+        })
+    }
+
+    public async UpdateCurrency(charID: string, currency: Array<ICurrencyData>) {
+        await Axios.put(this.GetRouteURL(`update/${charID}`), {
+            currencyValues: currency
         }, this._getConfig()).then((resp) => {
             console.log(resp);
         })

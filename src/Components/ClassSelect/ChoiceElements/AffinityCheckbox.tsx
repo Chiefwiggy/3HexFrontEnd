@@ -32,7 +32,7 @@ const AffinityCheckbox = ({
 
     const [disableNew, setDisableNew] = useState<boolean>(false);
 
-    const allAffinities = ["nimble", "infantry", "guardian", "focus", "creation", "alteration", "leadership", "supply", "summoning", "swift", "riding", "adaptation", "rune", "sourcecraft", "research", "biohacking", "abjuration", "machinery"]
+    const allAffinities = ["nimble", "infantry", "guardian", "focus", "creation", "alteration", "leadership", "supply", "summoning", "swift", "riding", "adaptation", "rune", "sourcecraft", "research", "infusion", "abjuration", "transmutation"]
 
     const [affDropdown, setAffDropdown] = useState<keyof IAffinities | "">("");
 
@@ -45,7 +45,7 @@ const AffinityCheckbox = ({
         commander: ["leadership", "supply", "summoning"],
         navigator: ["swift", "riding", "adaptation"],
         scholar: ["rune", "sourcecraft", "research"],
-        hacker: ["machinery", "abjuration", "biohacking"]
+        hacker: ["transmutation", "abjuration", "infusion"]
     }
 
     const handleChange = (affinity: keyof IAffinities) => (event: React.ChangeEvent<HTMLInputElement>) => {

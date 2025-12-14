@@ -36,8 +36,8 @@ const ClassSelectView = ({}: IClassSelectViewInput) => {
             rune: 0,
             sourcecraft: 0,
             research: 0,
-            machinery: 0,
-            biohacking: 0,
+            transmutation: 0,
+            infusion: 0,
             abjuration: 0
         },
         path: {
