@@ -10,7 +10,8 @@ export interface ISourceData {
     visibility: "all" | "restricted" | "admin",
     onlyTemporary: boolean,
     neverTemporary: boolean,
-    tempAttunementLevel: number
+    tempAttunementLevel: number,
+    campaignIds: Array<string>
 }
 
 

@@ -288,11 +288,13 @@ class CharacterConnection {
         })
     }
 
-    public async CreateCharacter(name: string) {
+    public async CreateCharacter(name: string, campaignId: string, isMainCharacter: boolean) {
         return await Axios.post(this.GetRouteURL(`add`), {
           "characterName": name,
           "characterLevel": 1,
           "classes": [],
+            "campaignIds": [campaignId],
+            "isMainCharacter": isMainCharacter,
           "attributeBars": {
             "health": {
               "current": 0,

@@ -20,24 +20,31 @@ class PLC_SourceData {
         return this.baseSourceData.find(e => e._id == sourceId)
     }
 
-    public GetSourceDataForUser(userPermissions: string[], dataRequested: "all" | "permanent" | "temporary") {
-        let finalList = [];
+    public GetSourceDataForUser(userPermissions: string[], dataRequested: "all" | "permanent" | "temporary", campaignIds: string[] = ["all"]) {
+        let prefinalList = [];
         if (userPermissions.includes("admin") || userPermissions.includes("sources_all")) {
-            finalList = this.baseSourceData
+            prefinalList = this.baseSourceData
         } else {
-            finalList = this.baseSourceData.filter(sd => {
+            prefinalList = this.baseSourceData.filter(sd => {
                 return (sd.visibility === "all" || userPermissions.includes(`source_${sd._id}`));
             })
         }
+
         switch(dataRequested) {
-            case "all":
-                return finalList;
             case "permanent":
-                return finalList.filter(e => !e.onlyTemporary)
+                prefinalList = prefinalList.filter(e => !e.onlyTemporary)
+                break;
             case "temporary":
-                return finalList.filter(e => !e.neverTemporary)
+                prefinalList = prefinalList.filter(e => !e.neverTemporary)
+                break;
         }
 
+        if (!campaignIds.includes("all")) {
+            return prefinalList.filter(source =>
+                source.campaignIds?.some(id => campaignIds.includes(id))
+            );
+        }
+        return prefinalList;
 
     }
 }

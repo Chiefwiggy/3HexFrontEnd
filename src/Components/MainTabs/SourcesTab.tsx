@@ -176,7 +176,7 @@ const SourcesTab = ({}: ISourcesTabInput) => {
                                     <TextField {...params} label={""} placeholder={"Attuned Sources"} />
                                 )
                             }}
-                            options={SourceData.GetSourceDataForUser(userPermissions, "permanent").filter(
+                            options={SourceData.GetSourceDataForUser(userPermissions, "permanent", currentSheet.data.campaignIds).filter(
                                 (option) => !characterTemporarySources.some((temp) => temp._id === option._id)
                             ).sort(SortSourcesByArcanotype(DowntimeData.GetSourcesPerTypeForPlayer(currentSheet)))}
                             value={characterSources}
@@ -218,7 +218,7 @@ const SourcesTab = ({}: ISourcesTabInput) => {
                                     <TextField {...params} label={""} placeholder={"Temporary Sources"}/>
                                 )
                             }}
-                            options={SourceData.GetSourceDataForUser(userPermissions, "temporary").filter(
+                            options={SourceData.GetSourceDataForUser(userPermissions, "temporary", currentSheet.data.campaignIds).filter(
                                 (option) => !characterSources.some((perm) => perm._id === option._id)
                             ).sort(SortSourcesByArcanotype(DowntimeData.GetSourcesPerTypeForPlayer(currentSheet)))}
                             value={characterTemporarySources}
