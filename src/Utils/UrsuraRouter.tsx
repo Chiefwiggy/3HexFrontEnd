@@ -79,7 +79,7 @@ const UrsuraRouter = createBrowserRouter([
                 children: [
                     {
                         path: "",
-                        element: <AdminRoute element={<CreatorPage />}/>
+                        element: <CreatorPage />
                     },
                     {
                         path: "sources",

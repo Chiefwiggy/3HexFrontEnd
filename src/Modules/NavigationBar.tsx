@@ -14,7 +14,7 @@ import {Link} from 'react-router-dom'
 
 const NavigationBar = () => {
 
-    const {loggedIn, LogoutUser} = useUser();
+    const {loggedIn, userPermissions, LogoutUser} = useUser();
 
     const navigate = useNavigate();
 
@@ -54,6 +54,14 @@ const NavigationBar = () => {
                     <Button component={Link} to="/barracks">
                         Barracks
                     </Button>
+                    {
+                        userPermissions.includes("admin") || userPermissions.includes("creator") ?
+                            <Button component={Link} to="/creator">
+                                Creator
+                            </Button>
+                            :
+                            <></>
+                    }
                     <Box sx={{flexGrow: 1}}/>
                     {loggedIn ? (
                         <Button variant="contained" onClick={handleLogout}>Logout</Button>

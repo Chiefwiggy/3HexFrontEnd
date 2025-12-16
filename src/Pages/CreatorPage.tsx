@@ -37,7 +37,7 @@ const CreatorPage = ({}: ICreatorPageInput) => {
             >
                 <CompendiumSelect text={"Cards"} linkTo={"cards"}/>
                 <CompendiumSelect text={"Sources"} linkTo={"sources"} />
-                <CompendiumSelect text={"Armor"} linkTo={"armor"}  disabled={true}/>
+                <CompendiumSelect text={"Requests"} linkTo={"requests"} />
                 <CompendiumSelect text={"Consumables"} linkTo={"consumables"} disabled={true} />
                 <CompendiumSelect text={"Minions"} linkTo={"minions"} disabled={true} />
                 <CompendiumSelect text={"Fatelines"} linkTo={"fatelines"} disabled={true} />
