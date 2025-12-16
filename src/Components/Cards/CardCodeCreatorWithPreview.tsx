@@ -178,7 +178,10 @@ const CardCodeCreatorWithPreview: React.FC = () => {
 
             const { cardType, cardSubtype } = parsedData;
 
+            console.log(cardType, cardSubtype);
+
             let uri = `${cardType}s/${cardSubtype}`;
+
             if (cardType === "commander") {
                 uri = `commander`;
             } else {
@@ -191,9 +194,11 @@ const CardCodeCreatorWithPreview: React.FC = () => {
                     hack_else: `hacks/modifier/else`,
                 };
                 if (`${cardType}_${cardSubtype}` in subtypeMap) {
-                    uri = subtypeMap[cardSubtype];
+                    uri = subtypeMap[`${cardType}_${cardSubtype}`];
                 }
             }
+
+            console.log(uri)
 
 
             if (isLoadedCard) {
