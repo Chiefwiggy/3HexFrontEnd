@@ -29,7 +29,7 @@ class CardConnection {
             return resp.data
         }).catch((e) => {
             console.error(e)
-            return []
+            throw e
         })
     }
 
@@ -38,7 +38,7 @@ class CardConnection {
             return resp.data
         }).catch((e) => {
             console.error(e)
-            return []
+            throw e
         })
     }
 

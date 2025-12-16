@@ -179,8 +179,7 @@ export const templates: Record<string, string> = {
         ]
     }
     `,
-    "Spell - Base": `
-    {
+    "Spell - Base": `{
     "cardName": "[SPELL_NAME]",
     "arcanotype": "esoteric", 
     "cardType": "spell",
@@ -206,11 +205,7 @@ export const templates: Record<string, string> = {
         }
     ],
     "prerequisites": [
-        {
-            "prerequisiteType": "path",
-            "skill": "arcanist",
-            "level": 1
-        }
+
     ]
 }`,
     "Spell - Target": `{

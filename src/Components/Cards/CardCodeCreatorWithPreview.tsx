@@ -19,6 +19,7 @@ import { templates } from "../../Data/CardJSONTemplates";
 import useAPI from "../../Hooks/useAPI/useAPI";
 import SafeWrapper from "../../Utils/SafeWrapper";
 import useUser from "../../Hooks/useUser/useUser";
+import useSnackbar from "../../Hooks/useSnackbar/useSnackbar";
 
 // Type guard with error reporting
 function validateCardData(obj: any): { valid: boolean; missing?: string[] } {
@@ -50,6 +51,7 @@ const CardCodeCreatorWithPreview: React.FC = () => {
 
     const { CardAPI, CardRequestAPI } = useAPI();
     const { userPermissions } = useUser()
+    const { SendToSnackbar } = useSnackbar()
 
     const compendiumProps = {
         isExpanded: true,
@@ -181,39 +183,44 @@ const CardCodeCreatorWithPreview: React.FC = () => {
                 uri = `commander`;
             } else {
                 const subtypeMap: Record<string, string> = {
-                    order: "weapons/skill/order",
-                    summon: "spells/target/summon",
-                    skill: "spells/modifier",
-                    edict: "spells/modifier/edict",
-                    util: `hacks/modifier/util`,
-                    else: `hacks/modifier/else`,
+                    weapon_order: "weapons/skill/order",
+                    spell_summon: "spells/target/summon",
+                    spell_skill: "spells/modifier",
+                    spell_edict: "spells/modifier/edict",
+                    hack_util: `hacks/modifier/util`,
+                    hack_else: `hacks/modifier/else`,
                 };
-                if (cardSubtype in subtypeMap) {
+                if (`${cardType}_${cardSubtype}` in subtypeMap) {
                     uri = subtypeMap[cardSubtype];
                 }
             }
+
 
             if (isLoadedCard) {
                 // Update existing card
                 console.log(uri, parsedData)
                 if (userPermissions.includes("admin")) {
                     await CardAPI.UpdateCard(uri, loadedId, parsedData);
+                    SendToSnackbar(`Update to ${parsedData.cardName} submitted.`, "success")
                 } else {
-                    await CardRequestAPI.MakeRequest(localStorage.getItem("name") ?? "error", "update", uri, JSON.stringify(parsedData))
+                    await CardRequestAPI.MakeRequest(localStorage.getItem("email") ?? "error", "update", uri, JSON.stringify(parsedData))
+                    SendToSnackbar(`Update to ${parsedData.cardName} request submitted.`, "success")
                 }
                 resetToDefaultTemplate();
             } else {
                 if (userPermissions.includes("admin")) {
                     await CardAPI.AddCard(uri, parsedData);
+                    SendToSnackbar(`${parsedData.cardName} added.`, "success")
                 } else {
-                    await CardRequestAPI.MakeRequest(localStorage.getItem("name") ?? "error", "new_card", uri, JSON.stringify(parsedData))
+                    await CardRequestAPI.MakeRequest(localStorage.getItem("email") ?? "error", "new_card", uri, JSON.stringify(parsedData))
+                    SendToSnackbar(`Creation of ${parsedData.cardName} request submitted.`, "success")
                 }
 
                 resetToDefaultTemplate();
             }
         } catch (err) {
             console.error(err);
-            alert("Failed to submit/update card.");
+            SendToSnackbar(`Submission failed. ${err}`, "error")
         }
     };
 
