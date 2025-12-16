@@ -358,7 +358,7 @@ export const templates: Record<string, string> = {
     "Hack - Function": `{
   "cardName": "[HACK NAME]",
   "cardType": "hack",
-  "cardSubtype": "base",
+  "cardSubtype": "function",
   "isUltimate": false,
   "basePower": 40,
   "potency": 2,

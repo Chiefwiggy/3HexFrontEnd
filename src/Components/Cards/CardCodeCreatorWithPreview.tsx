@@ -186,6 +186,7 @@ const CardCodeCreatorWithPreview: React.FC = () => {
                 uri = `commander`;
             } else {
                 const subtypeMap: Record<string, string> = {
+                    hack_function: "hacks/base",
                     weapon_order: "weapons/skill/order",
                     spell_summon: "spells/target/summon",
                     spell_skill: "spells/modifier",
