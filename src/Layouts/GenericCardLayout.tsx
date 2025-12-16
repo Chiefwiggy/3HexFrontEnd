@@ -8,7 +8,7 @@ import {
     CardContent,
     CardHeader,
     Collapse,
-    IconButton,
+    IconButton, Snackbar,
     Typography
 } from "@mui/material";
 import {
@@ -25,6 +25,9 @@ import CardEffect from "../Components/Cards/CardEffect";
 import {CardGetColor} from "../Utils/CardColorUtils";
 import {IPrerequisite} from "../Data/GenericData";
 import {GetPrerequisiteString} from "../Utils/PrerequisiteString";
+import { TbInfoSmall } from "react-icons/tb";
+import {IoInformationCircleOutline} from "react-icons/io5";
+import useSnackbar from "../Hooks/useSnackbar/useSnackbar";
 
 
 
@@ -39,6 +42,7 @@ interface IGenericCardLayoutInput {
     children: ReactNode,
     overrideSubtitle?: string | null,
     showPrerequisites?: boolean,
+    isDraft?: boolean,
     titleExtra?: string,
     bannerOverride?: string | null
 }
@@ -57,7 +61,7 @@ const GenericCardLayout = ({
     canFavorite = true,
     children,
     overrideSubtitle,
-    showPrerequisites=false,
+    showPrerequisites=false, isDraft=false,
     titleExtra = "",
     bannerOverride = null
 }: IGenericCardLayoutInput) => {
@@ -88,7 +92,7 @@ const GenericCardLayout = ({
         if (str != "") {
             setPrereqString(str);
         }
-    }, [])
+    }, [cardData.prerequisites])
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -114,6 +118,13 @@ const GenericCardLayout = ({
         });
     }
 
+    const {SendToSnackbar} = useSnackbar();
+
+    const handleCopyInfo = async() => {
+        await window.navigator.clipboard.writeText(cardData._id)
+        SendToSnackbar(`${cardData._id} copied to clipboard`, "info")
+    }
+
 
 
 
@@ -127,14 +138,19 @@ const GenericCardLayout = ({
                 textAlign: "center",
                 display: 'flex',
                 flexDirection: 'column',
-                borderTop: `4px outset ${ CardGetColor(bannerOverride ? bannerOverride : `${cardData.cardType}.${cardData.cardSubtype}`)}`,
-                borderRight: cardData.isUltimate ? "2px solid gold" : "0px solid black",
-                borderLeft: cardData.isUltimate ? "2px solid gold" : "0px solid black",
+
             }}
         >
-
+            <Box
+                sx={{
+                    borderTop: `4px outset ${ CardGetColor(bannerOverride ? bannerOverride : `${cardData.cardType}.${cardData.cardSubtype}`)}`,
+                    borderRight: cardData.isUltimate ? "2px solid gold" : "0px solid black",
+                    borderLeft: cardData.isUltimate ? "2px solid gold" : "0px solid black",
+                }}
+            >
             <CardHeader
                 title={(cardData.cardName + " " + titleExtra).trim()}
+
                 subheader={
                     <>
                      {cardData.cardType.toUpperCase()} {cardData.cardType == "weapon" && cardData.cardSubtype != "base" ? (
@@ -167,8 +183,23 @@ const GenericCardLayout = ({
                     <></>
             }
 
+            <Box
+                sx={{
+                    '&::before': isDraft ? {
+                        content: '""',
+                        display: 'block',
+                        marginTop: "2px",
+                        height: '16px', // thickness of the caution tape
+                        background: 'repeating-linear-gradient(45deg, yellow 0, yellow 10px, black 10px, black 20px)',
+                    } : {}
+                }}
+            >
 
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
+            </Box>
+
+            <Collapse in={expanded} timeout="auto" unmountOnExit sx={{
+
+            }}>
                 <CardContent>
                     <Box sx={{flexGrow: 1}}>
                         {children}
@@ -190,6 +221,19 @@ const GenericCardLayout = ({
                 </CardContent>
             </Collapse>
             <CardActions disableSpacing sx={{marginTop: 'auto'}}>
+                {
+                    isDraft ?
+                        <></>
+                        :
+                        <IconButton
+                            size={"small"}
+                            aria-label={"use"}
+                            onClick={handleCopyInfo}
+                        >
+                            <IoInformationCircleOutline />
+                        </IconButton>
+                }
+
                 { showAdd ? (
                     isAdd
                         ?
@@ -226,6 +270,7 @@ const GenericCardLayout = ({
 
 
             </CardActions>
+            </Box>
         </Card>
     )
 }

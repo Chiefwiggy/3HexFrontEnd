@@ -10,7 +10,7 @@ interface ISpellModifierCardInput {
     isAdd?: boolean,
     showAdd?: boolean,
     canFavorite?: boolean,
-    showPrerequisites?: boolean
+    showPrerequisites?: boolean, isDraft?: boolean
 }
 
 const SpellModifierCard = ({
@@ -21,11 +21,11 @@ const SpellModifierCard = ({
     isAdd = true,
     showAdd = true,
     canFavorite = true,
-    showPrerequisites=false
+    showPrerequisites=false, isDraft=false
 }: ISpellModifierCardInput) => {
 
     return (
-        <GenericCardLayout cardData={cardData} sendBack={sendBack} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} canFavorite={canFavorite} showPrerequisites={showPrerequisites} showAdd={showAdd}>
+        <GenericCardLayout isDraft={isDraft}  cardData={cardData} sendBack={sendBack} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} canFavorite={canFavorite} showPrerequisites={showPrerequisites} showAdd={showAdd}>
         </GenericCardLayout>
     )
 }

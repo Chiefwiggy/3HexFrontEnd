@@ -36,7 +36,7 @@ interface IWeaponBaseCardInput {
     isAdd?: boolean,
     showAdd?: boolean,
     canFavorite?: boolean,
-    showPrerequisites?: boolean
+    showPrerequisites?: boolean, isDraft?: boolean
 }
 const WeaponBaseCard = ({
     cardData,
@@ -47,7 +47,7 @@ const WeaponBaseCard = ({
     isAdd = true,
     showAdd = true,
     canFavorite = true,
-    showPrerequisites=false
+    showPrerequisites=false, isDraft=false
 }: IWeaponBaseCardInput) => {
 
     const [constructedData, setConstructedData] = useState<IScaledWeaponBaseData>(ConstructFinalWeapon(cardData, enchantmentData ?? {enchantmentLevel: 0, baseId: ""}));
@@ -65,7 +65,7 @@ const WeaponBaseCard = ({
 
 
     return cardData.specialCrit ? (
-        <GenericCardLayout cardData={constructedData} sendBack={handleCustomSendBack} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} showAdd={showAdd} canFavorite={canFavorite} overrideSubtitle={cardData.weaponType.toUpperCase() + " • " + cardData.weaponClass.toUpperCase()} showPrerequisites={showPrerequisites}
+        <GenericCardLayout isDraft={isDraft}  cardData={constructedData} sendBack={handleCustomSendBack} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} showAdd={showAdd} canFavorite={canFavorite} overrideSubtitle={cardData.weaponType.toUpperCase() + " • " + cardData.weaponClass.toUpperCase()} showPrerequisites={showPrerequisites}
                            titleExtra={`+${constructedData.enchantmentData.enchantmentLevel} ${constructedData.enchantmentData.efficientUse ? "2H" : ""}${(constructedData.enchantmentData?.improvements ?? 0) > 0 ? `-S${(constructedData.enchantmentData.improvements ?? 0) > 1 ? "+" : ""}` : ""}`}>
             <Box
                 sx={{

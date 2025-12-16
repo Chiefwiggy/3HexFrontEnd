@@ -9,6 +9,7 @@ import UserProvider from "./Hooks/useUser/UserProvider";
 import APIProvider from "./Hooks/useAPI/APIProvider";
 import PreloadedCharacterProvider from './Hooks/usePreloadedContent/PreloadedContentProvider'
 import ImageLibraryProvider from "./Hooks/useImageLibrary/ImageLibraryProvider";
+import SnackbarProvider from "./Hooks/useSnackbar/SnackbarProvider";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -21,9 +22,11 @@ root.render(
               <PreloadedCharacterProvider>
                   <ImageLibraryProvider>
                       <CharacterProvider>
-                          <EventHistoryProvider>
-                              <RouterProvider router={UrsuraRouter} />
-                          </EventHistoryProvider>
+                          <SnackbarProvider>
+                              <EventHistoryProvider>
+                                  <RouterProvider router={UrsuraRouter} />
+                              </EventHistoryProvider>
+                          </SnackbarProvider>
                       </CharacterProvider>
                   </ImageLibraryProvider>
               </PreloadedCharacterProvider>

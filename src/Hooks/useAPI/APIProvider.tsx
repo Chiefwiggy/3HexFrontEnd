@@ -11,6 +11,7 @@ import ClassConnection from "../../Connections/ClassConnection";
 import MinionConnection from "../../Connections/MinionConnection";
 import PreloadedConnection from "../../Connections/PreloadedConnection";
 import ImageLibraryConnection from "../../Connections/ImageLibraryConnection";
+import CardRequestConnection from "../../Connections/CardRequestConnection";
 
 interface IAPIProviderInput {
     children: any
@@ -25,7 +26,8 @@ export interface IAPIContext {
     ClassAPI: ClassConnection,
     MinionAPI: MinionConnection,
     PreloadedAPI: PreloadedConnection,
-    ImageLibraryAPI: ImageLibraryConnection
+    ImageLibraryAPI: ImageLibraryConnection,
+    CardRequestAPI: CardRequestConnection
 }
 
 const APIProvider = ({children}: IAPIProviderInput) => {
@@ -60,6 +62,8 @@ const APIProvider = ({children}: IAPIProviderInput) => {
 
     const [ImageLibraryAPI, setImageLibraryAPI] = useState<ImageLibraryConnection>(new ImageLibraryConnection(apiURL, GetAPIConfig));
 
+    const [CardRequestAPI, setCardRequestAPI] = useState<CardRequestConnection>(new CardRequestConnection(apiURL, GetAPIConfig));
+
     return (
         <APIContext.Provider value={{
             CharacterAPI,
@@ -71,6 +75,7 @@ const APIProvider = ({children}: IAPIProviderInput) => {
             MinionAPI,
             PreloadedAPI,
             ImageLibraryAPI,
+            CardRequestAPI
         }}>
             {children}
         </APIContext.Provider>

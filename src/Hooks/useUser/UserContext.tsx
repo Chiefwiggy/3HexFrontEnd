@@ -10,6 +10,7 @@ const UserContext = createContext<IUserContext>({
     loggedIn: false,
     userPermissions: [""],
     charactersOwned: [] as Array<ICharacterBaseData>,
+    isReady: false
 } as IUserContext);
 
 export default UserContext;

@@ -4,10 +4,11 @@ import {useNavigate} from "react-router-dom";
 
 interface ICompendiumSelectInput {
     text: string
-    linkTo: string
+    linkTo: string,
+    disabled?: boolean
 }
 
-const CompendiumSelect = ({text, linkTo}: ICompendiumSelectInput) => {
+const CompendiumSelect = ({text, linkTo, disabled=false}: ICompendiumSelectInput) => {
 
     const navigate = useNavigate();
 
@@ -27,7 +28,7 @@ const CompendiumSelect = ({text, linkTo}: ICompendiumSelectInput) => {
         >
             <Typography variant={"h5"}>{text}</Typography>
             <br />
-            <Button variant={"contained"} onClick={handleLinkClick}>Go!</Button>
+            <Button variant={"contained"} onClick={handleLinkClick} disabled={disabled}>Go!</Button>
         </Card>
     )
 }

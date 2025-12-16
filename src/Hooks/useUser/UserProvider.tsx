@@ -11,7 +11,8 @@ export interface IUserContext {
     RemoveCharacterFromUser: (characterId: string) => Promise<void>
     loggedIn: boolean,
     userPermissions: Array<string>,
-    charactersOwned: Array<ICharacterBaseData>
+    charactersOwned: Array<ICharacterBaseData>,
+    isReady: boolean
 }
 
 export interface IUserResponse {
@@ -47,11 +48,13 @@ const UserProvider = ({children}: any) => {
     const [charactersOwnedIds, setCharactersOwnedIds] = useState<Array<string>>([]);
 
     const [charactersOwned, setCharactersOwned] = useState<Array<ICharacterBaseData>>([]);
+    const [isReady, setIsReady] = useState(false);
 
     useEffect(() => {
         if (localStorage.getItem("refresh") && localStorage.getItem("email")) {
             LoginWithToken(localStorage.getItem("email"), localStorage.getItem("refresh")).then(() => {})
         }
+        setIsReady(true);
     }, []);
 
     const LogoutUser = () => {
@@ -130,7 +133,8 @@ const UserProvider = ({children}: any) => {
             RemoveCharacterFromUser,
             loggedIn,
             userPermissions,
-            charactersOwned
+            charactersOwned,
+            isReady
         }}>
             {children}
         </UserContext.Provider>

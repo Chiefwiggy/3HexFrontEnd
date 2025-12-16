@@ -1,4 +1,5 @@
 import Axios, {AxiosRequestConfig} from "axios";
+import {ICommonCardData} from "../Data/ICardData";
 
 
 class CardConnection {
@@ -17,6 +18,24 @@ class CardConnection {
     public async GetCharacterCards(charId: string) {
         return await Axios.get(`${this._cardURL}/getPossible/${charId}`, this._getConfig()).then((resp) => {
             return resp.data;
+        }).catch((e) => {
+            console.error(e)
+            return []
+        })
+    }
+
+    public async AddCard(uri: string, cardData: ICommonCardData) {
+        return await Axios.post(`${this._cardURL}/${uri}/add`, cardData, this._getConfig()).then((resp) => {
+            return resp.data
+        }).catch((e) => {
+            console.error(e)
+            return []
+        })
+    }
+
+    public async UpdateCard(uri: string, cardId: string, cardData: ICommonCardData) {
+        return await Axios.put(`${this._cardURL}/${uri}/update/${cardId}`, cardData, this._getConfig()).then((resp) => {
+            return resp.data
         }).catch((e) => {
             console.error(e)
             return []
@@ -54,6 +73,15 @@ class CardConnection {
 
     public async GetAffinityCards(affinityName: string) {
          return await Axios.get(`${this._cardURL}get/affinity/${affinityName}`, this._getConfig()).then((resp) => {
+            return resp.data
+        }).catch((e) => {
+            console.error(e)
+            return []
+        })
+    }
+
+    public async GetCardById(cardId: string) {
+        return await Axios.get(`${this._cardURL}get/${cardId}`, this._getConfig()).then((resp) => {
             return resp.data
         }).catch((e) => {
             console.error(e)

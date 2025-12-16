@@ -15,7 +15,7 @@ interface IHackIOCardInput {
     isAdd?: boolean,
     showAdd?: boolean,
     canFavorite?: boolean,
-    showPrerequisites?: boolean
+    showPrerequisites?: boolean, isDraft?: boolean
 }
 
 const HackIOCard = ({
@@ -26,12 +26,12 @@ const HackIOCard = ({
     isAdd = true,
     showAdd = true,
     canFavorite = true,
-    showPrerequisites=false
+    showPrerequisites=false, isDraft=false
 }: IHackIOCardInput) => {
 
 
     return (
-        <GenericCardLayout cardData={cardData} sendBack={sendBack} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} canFavorite={canFavorite} showPrerequisites={showPrerequisites} showAdd={showAdd}>
+        <GenericCardLayout isDraft={isDraft}  cardData={cardData} sendBack={sendBack} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} canFavorite={canFavorite} showPrerequisites={showPrerequisites} showAdd={showAdd}>
             <Box
                 sx={{
                     marginTop: "-16px",

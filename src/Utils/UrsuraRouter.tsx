@@ -22,6 +22,12 @@ import MinionLandingPage from "../Pages/MinionLandingPage";
 import ConsumableCompendium from "../Pages/ConsumableCompendium";
 import FatelinesPage from "../Pages/FatelinesPage";
 import CharacterSelectPage from "../Pages/CharacterSelectPage";
+import CreatorPage from "../Pages/CreatorPage";
+import CreateSourcePage from "../Pages/CreateSourcePage";
+import CardCreatorPage from "../Pages/CardCreatorPage";
+import AdminRoute from "./RouteProtection/AdminRoute";
+import RegisteredRoute from "./RouteProtection/RegisteredRoute";
+import CardRequestReviewPage from "../Pages/CardRequestReviewPage";
 
 
 
@@ -69,6 +75,27 @@ const UrsuraRouter = createBrowserRouter([
                 element: <CharacterPage />
             },
             {
+                path: "creator",
+                children: [
+                    {
+                        path: "",
+                        element: <AdminRoute element={<CreatorPage />}/>
+                    },
+                    {
+                        path: "sources",
+                        element: <AdminRoute element={<CreateSourcePage />}/>
+                    },
+                    {
+                        path: "cards",
+                        element: <CardCreatorPage />
+                    },
+                    {
+                        path: "requests",
+                        element: <AdminRoute element={<CardRequestReviewPage />}/>
+                    }
+                ]
+            },
+            {
                 path: "/barracks",
                 children: [
                     {
@@ -95,6 +122,7 @@ const UrsuraRouter = createBrowserRouter([
                         path: "",
                         element: <BarracksPage />
                     },
+
                     {
                         path: "minions",
                         children: [

@@ -8,7 +8,7 @@ import HighlightType from "../Generic/HighlightType";
 
 interface IAbilityItemInput {
     abilityData: IAbility,
-    showPrerequisites?: boolean
+    showPrerequisites?: boolean, isDraft?: boolean
 }
 
 const AbilityItem = ({abilityData, showPrerequisites = false}: IAbilityItemInput) => {

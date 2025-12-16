@@ -34,6 +34,7 @@ export const getStatShorthand = (stat: UStat | "none" | "luck" | "command"): str
         case "luck":
             return "lck";
         case "none":
+        default:
             return "n/a";
     }
 }

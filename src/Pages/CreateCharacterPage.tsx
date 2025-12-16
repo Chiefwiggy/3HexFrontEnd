@@ -82,6 +82,7 @@ const CreateCharacterPage = ({}: ICreateCharacterPageInput) => {
                 >
                     <MenuItem value="principego">Principego</MenuItem>
                     <MenuItem value="elkarand">Elkarand</MenuItem>
+                    <MenuItem value="demo">Demo</MenuItem>
                     <MenuItem value="draft">Draft</MenuItem>
                 </Select>
             </FormControl>
