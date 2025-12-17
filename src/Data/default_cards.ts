@@ -368,6 +368,7 @@ export const default_hack_cards: Array<IHackIOCardData | IHackBaseCardData | IHa
           "prerequisites": [
 
           ],
+        "isSummon": false,
           "isUltimate": false
     }
 ]

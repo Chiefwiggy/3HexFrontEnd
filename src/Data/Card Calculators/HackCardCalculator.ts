@@ -47,7 +47,8 @@ class HackCardCalculator extends AbstractCardCalculator {
                 "surgeCost",
                 {
                     val: "0",
-                    icon: GiLaserBurst
+                    icon: GiLaserBurst,
+                    color: "#0096ff"
                 }
             ],
             [
@@ -123,6 +124,30 @@ class HackCardCalculator extends AbstractCardCalculator {
         return this.missingChannels;
     }
 
+    public getSummonData() {
+        const summonData = (this.getCardOfType("hack.protocol") as IHackProtocolCardData).summonData;
+        if (summonData) {
+            return {
+                pDEF: summonData.pDEF,
+                mDEF: summonData.mDEF,
+                movement: summonData.movement,
+                maxHealth: summonData.maxHealth,
+                simpleName: summonData.simpleName,
+                dodge: summonData.dodge
+            }
+        } else {
+            return {
+                pDEF: 0,
+                mDEF: 0,
+                movement: 0,
+                maxHealth: 0,
+                simpleName: "ERR",
+                dodge: 0,
+            }
+        }
+
+    }
+
     private sanitizeName = (name?: string, keepFirstWord = false) => {
       if (!name) return undefined;
       const upper = name.toUpperCase();
@@ -163,7 +188,7 @@ class HackCardCalculator extends AbstractCardCalculator {
     }
 
     getFinalTopColor() {
-        return 'cornsilk'
+        return '#0fef1f';
     }
 
     public getDamageType(): UDamageType {

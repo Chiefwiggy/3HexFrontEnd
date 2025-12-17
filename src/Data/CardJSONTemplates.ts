@@ -417,8 +417,8 @@ export const templates: Record<string, string> = {
   ],
   "prerequisites": [
     {
-      "prerequisiteType": "affinity",
-      "skill": "machinery",
+      "prerequisiteType": "nodefault",
+      "skill": "nodefault",
       "level": 1
     }
   ]
@@ -474,10 +474,49 @@ export const templates: Record<string, string> = {
       }
     }
   ],
+  "isSummon": false,
   "prerequisites": [
         {
             "prerequisiteType": "nodefault",
             "skill": "nodefault",
+            "level": 1
+        }
+  ],
+  "isUltimate": false
+}`,
+    "Hack - Summon Protocol": `{
+  "cardName": "[HACK PROTOCOL]",
+  "cardType": "hack",
+  "cardSubtype": "protocol",
+  "baseHackSet": 10,
+  "saveType": "mind",
+  "protocolChannels": [
+    {
+        "channelType": "machina",
+        "channelStrength": 1
+    }
+  ],
+  "effects": [
+        {
+      "icon": {
+        "emblem": "info"
+      },
+      "text": "This protocol must create an autonomous summon"
+    }
+  ],
+  "isSummon": true,
+  "summonData": {
+    "pDEF": 0,
+    "mDEF": 20,
+    "movement": 2,
+    "maxHealth": 40,
+    "dodge": 40,
+    "simpleName": "NAME"
+  },
+  "prerequisites": [
+        {
+            "prerequisiteType": "affinity",
+            "skill": "summoning",
             "level": 1
         }
   ],

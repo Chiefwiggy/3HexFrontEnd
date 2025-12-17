@@ -5,8 +5,10 @@ import {IHackModifierCardData, IHackProtocolCardData} from "../../Data/ICardData
 import NumericIcon from "./NumericIcon";
 import {getSkillFormat, getStatShorthand, UStat} from "../../Utils/Shorthand";
 import {AutoFixOffOutlined, SaveAltOutlined} from "@mui/icons-material";
-import {GiTechnoHeart} from "react-icons/gi";
+import {GiBorderedShield, GiMagicShield, GiRun, GiTechnoHeart} from "react-icons/gi";
 import ChannelType from "../../Utils/ChannelType";
+import {FaHeartbeat, FaRunning} from "react-icons/fa";
+import {FaRegClock} from "react-icons/fa6";
 
 interface IHackProtocolCardInput {
     cardData: IHackProtocolCardData;
@@ -48,14 +50,33 @@ const HackProtocolCard = ({
                     )
                 })}
             </Box>
-            <Box
-                sx={{
-                    display: "flex",
-                    justifyContent: "space-around"
-                }}
-            >
-                <NumericIcon val={getStatShorthand(cardData.saveType as UStat | "none" | "luck").toUpperCase() + " " + getSkillFormat(cardData.baseHackSet, false)} icon={GiTechnoHeart} align={"center"} title={"Base Spell Set"}/>
-            </Box>
+            {
+                cardData.isSummon && cardData.summonData ?
+                    <Box
+                        sx={{
+                            display: "grid",
+                            gridTemplateColumns: "1fr 1fr 1fr"
+                        }}
+                    >
+
+                        <NumericIcon fontSize={"16px"} val={cardData.summonData.pDEF} icon={GiBorderedShield} title={`pDEF`} />
+                        <NumericIcon fontSize={"16px"} align="center" val={cardData.summonData.mDEF} icon={GiMagicShield} title={`mDEF`} />
+                        <NumericIcon fontSize={"16px"} align="right" val={cardData.summonData.maxHealth} icon={FaHeartbeat} title={`Max Health`} />
+
+                        <NumericIcon fontSize={"16px"} align="left" val={cardData.summonData.movement} icon={GiRun} title={`Base Movement `}/>
+                        <NumericIcon fontSize={"12px"} val={getStatShorthand(cardData.saveType as UStat | "none" | "luck").toUpperCase() + " " + getSkillFormat(cardData.baseHackSet, false)} icon={GiTechnoHeart} align={"center"} title={"Base Hack Set"}/>
+                        <NumericIcon fontSize={"16px"} align="right" val={`${getSkillFormat(cardData.summonData.dodge, false)}`} icon={FaRunning} title={`dodge`} />
+                    </Box>
+                    :
+                    <Box
+                        sx={{
+                            display: "flex",
+                            justifyContent: "space-around"
+                        }}
+                    >
+                        <NumericIcon val={getStatShorthand(cardData.saveType as UStat | "none" | "luck").toUpperCase() + " " + getSkillFormat(cardData.baseHackSet, false)} icon={GiTechnoHeart} align={"center"} title={"Base Hack Set"}/>
+                    </Box>
+            }
         </GenericCardLayout>
     )
 }

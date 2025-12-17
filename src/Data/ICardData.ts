@@ -93,7 +93,16 @@ export interface IChannelData {
 export interface IHackProtocolCardData extends IHackModifierCardData {
     saveType: string,
     baseHackSet: number
-    protocolChannels: Array<IChannelData>
+    protocolChannels: Array<IChannelData>,
+    isSummon: boolean,
+    summonData?: {
+        pDEF: number,
+        mDEF: number,
+        movement: number,
+        maxHealth: number,
+        dodge: number,
+        simpleName: string
+    }
 }
 
 export interface ICommanderCardData extends ICommonCardData {

@@ -8,6 +8,7 @@ import {SiNginxproxymanager, SiNodemon} from "react-icons/si";
 import {PiBroadcastFill} from "react-icons/pi";
 import BoxWithTooltip from "../Components/Generic/BoxWithTooltip";
 import {MdPersonPin} from "react-icons/md";
+import {RiGhostSmileFill} from "react-icons/ri";
 
 interface IChannelTypeInput {
     channelType: string,
@@ -32,6 +33,9 @@ const ChannelType = ({channelType, channelStrength, color = "white"}: IChannelTy
             break;
         case "daemon":
             IconElement = SiNodemon
+            break;
+        case "eidolon":
+            IconElement = RiGhostSmileFill
             break;
     }
     return (

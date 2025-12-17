@@ -264,8 +264,9 @@ const CardCodeCreatorWithPreview: React.FC = () => {
                     resetToDefaultTemplate();
                 } else {
                     if (userPermissions.includes("admin")) {
-                        await CardAPI.AddCard(uri, parsedData);
-                        SendToSnackbar(`${parsedData.cardName} added.`, "success")
+                        const returnedData = await CardAPI.AddCard(uri, parsedData);
+                        SendToSnackbar(`${parsedData.cardName} added with id: ${returnedData._id} and copied to clipboard.`, "success")
+                        await window.navigator.clipboard.writeText(returnedData._id);
                     } else {
                         await CardRequestAPI.MakeRequest(localStorage.getItem("email") ?? "error", "new_card", uri, JSON.stringify(parsedData), "")
                         SendToSnackbar(`Creation of ${parsedData.cardName} request submitted.`, "success")

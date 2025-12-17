@@ -1,7 +1,7 @@
 import {
     IChannelData,
     ICommonCardData,
-    IEffectData,
+    IEffectData, IHackBaseCardData, IHackProtocolCardData,
     ISpellBaseCardData,
     IWeaponBaseData,
     IWeaponCommonData,
@@ -27,11 +27,13 @@ export interface IRangeData {
 export interface INumericIconData {
     val: string,
     icon: ElementType,
+    color?: string
 }
 
 export interface INumericIconExport {
     val: string,
     icon: ElementType,
+    color?: string,
     key: string
 }
 
@@ -96,8 +98,17 @@ abstract class AbstractCardCalculator {
         return []
     }
 
-    public isSummon() {
-        return this.getCardOfType("spell.summon")?.cardSubtype == "summon" ?? false
+    public isSummon(): boolean {
+        const spellCard = this.getCardOfType("spell.summon");
+        const protocolCard = this.getCardOfType("hack.protocol") as IHackProtocolCardData | null;
+
+        const functionCard = this.getCardOfType("hack.function") as IHackBaseCardData | null
+
+        const isSpellSummon = spellCard?.cardSubtype === "summon";
+        const isProtocolSummon = protocolCard?.isSummon === true;
+        const isFunctionSummon = functionCard?.channelRequirements?.map(e => e.channelType).includes("eidolon") ?? false
+
+        return isSpellSummon || (isProtocolSummon && isFunctionSummon)
     }
 
     public sendCurrentCards(cards: Array<ICommonCardData|null>, char: AbstractSheet) {
@@ -117,7 +128,7 @@ abstract class AbstractCardCalculator {
     protected abstract invokeRecalculateData(char: AbstractSheet): void;
     public abstract getTitle(): string;
     public getAllCardNames(): string {
-        return this.cards.map(e => e ? e.cardName : "").join( " • ");
+        return this.cards.filter(Boolean).map(e => e ? e.cardName : "").join( " • ");
     }
     public abstract getType(): string;
     public abstract getCrit(): {

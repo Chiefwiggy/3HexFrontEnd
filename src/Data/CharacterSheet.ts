@@ -100,7 +100,7 @@ class CharacterSheet extends AbstractSheet {
 
 
 
-    public spellCalculator = new SpellCardCalculator(this.getSpellCalculatorTypes());
+    public  spellCalculator = new SpellCardCalculator(this.getSpellCalculatorTypes());
     public weaponCalculator = new WeaponCardCalculator(this.getWeaponCalculatorTypes());
     public hackCalculator = new HackCardCalculator(this.getHackCalculatorTypes())
 

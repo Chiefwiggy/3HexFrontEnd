@@ -17,6 +17,8 @@ class PLC_DatachipData {
     }
 
     public GetDatachipsFromIdList = (ids: Array<string>) => {
+        console.log("FGONDA")
+        console.log(this.datachips)
         return this.datachips.filter(e => ids.includes(e._id));
     }
 

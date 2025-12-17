@@ -36,9 +36,9 @@ export const CardGetColor = (type: string) => {
             case 'hack.protocol':
                 return '#ff6f0a';
             case 'hack.util':
-                return '#ddce09';
+                return '#f4e99c';
             case 'hack.else':
-                return '#ff0000';
+                return '#ffafaf';
         }
         return 'white'
     }

@@ -22,10 +22,19 @@ import CharacterSheet from "../../Data/CharacterSheet";
 import SubtypeDamageIcon from "../SmallComponents/SubtypeDamageIcon";
 import BoxWithTooltip from "../Generic/BoxWithTooltip";
 import {FaHeartbeat, FaRunning} from "react-icons/fa";
-import {GiArcheryTarget, GiBorderedShield, GiBrokenShield, GiFist, GiMagicShield, GiRun} from "react-icons/gi";
+import {
+    GiArcheryTarget,
+    GiBorderedShield,
+    GiBrokenShield,
+    GiFist,
+    GiLaserBurst,
+    GiMagicShield,
+    GiRun, GiTechnoHeart
+} from "react-icons/gi";
 import {FaRegClock} from "react-icons/fa6";
 import {MdOutlineLooks, MdOutlineSportsMma} from "react-icons/md";
 import ChannelType from "../../Utils/ChannelType";
+import {GrTechnology} from "react-icons/gr";
 
 interface ICalculatedCardInput {
     cardCalculator: AbstractCardCalculator
@@ -157,7 +166,7 @@ const CalculatedCard = ({
                                 >
                                     <Typography
                                         sx={{
-                                            fontSize: "16px",
+                                            fontSize: "12px",
                                             paddingRight: "4px",
                                         }}
                                         variant="body2"
@@ -167,51 +176,95 @@ const CalculatedCard = ({
                                     </Typography>
                                 </Box>
 
-
-                                <BoxWithTooltip
-                                    sx={{
-                                        display: 'flex',
-                                        alignItems: "center"
-                                    }}
-                                    placement={"top"}
-                                    title={cardCalculator.getSummonData().maxHealth === parseInt(cardCalculator.getIconValue("tetherCost")) ? `Max Health/Tether Cost` : `Max Health`}
-                                >
-                                    <Typography sx={{fontSize: "16px", paddingRight: "4px"}}>{cardCalculator.getSummonData().maxHealth}</Typography><FaHeartbeat />
-                                    {
-                                        cardCalculator.getSummonData().maxHealth === parseInt(cardCalculator.getIconValue("tetherCost")) ?
-                                        <WaterDropOutlined /> : <></>
-                                    }
-
-                                </BoxWithTooltip>
-
                                 {
-                                        cardCalculator.getSummonData().maxHealth !== parseInt(cardCalculator.getIconValue("tetherCost"))
-                                            ?
+                                    cardCalculator.getType() == "spell" ?
                                         <BoxWithTooltip
                                             sx={{
                                                 display: 'flex',
                                                 alignItems: "center"
                                             }}
                                             placement={"top"}
-                                            title={`Tether Cost`}
+                                            title={cardCalculator.getSummonData().maxHealth === parseInt(cardCalculator.getIconValue("tetherCost")) ? `Max Health/Tether Cost` : `Max Health`}
                                         >
-                                            <Typography sx={{fontSize: "16px", paddingRight: "4px"}}>{cardCalculator.getIconValue("tetherCost")}</Typography><WaterDropOutlined />
+                                            <Typography sx={{fontSize: "16px", paddingRight: "4px"}}>{cardCalculator.getSummonData().maxHealth}</Typography><FaHeartbeat />
+                                            {
+                                                cardCalculator.getSummonData().maxHealth === parseInt(cardCalculator.getIconValue("tetherCost")) ?
+                                                <WaterDropOutlined /> : <></>
+                                            }
 
                                         </BoxWithTooltip>
+                                        :
+                                        <BoxWithTooltip
+                                            sx={{
+                                                display: 'flex',
+                                                alignItems: "center"
+                                            }}
+                                            placement={"top"}
+                                            title={`Max Health`}
+                                        >
+                                            <Typography sx={{fontSize: "16px", paddingRight: "4px"}}>{cardCalculator.getSummonData().maxHealth}</Typography><FaHeartbeat />
+
+                                        </BoxWithTooltip>
+                                }
+
+                                {
+                                        cardCalculator.getSummonData().maxHealth !== parseInt(cardCalculator.getIconValue("tetherCost"))
+                                            ?
+                                            (cardCalculator.getType() == "spell" ?
+                                                    <BoxWithTooltip
+                                                        sx={{
+                                                            display: 'flex',
+                                                            alignItems: "center"
+                                                        }}
+                                                        placement={"top"}
+                                                        title={`Tether Cost`}
+                                                    >
+                                                        <Typography sx={{fontSize: "16px", paddingRight: "4px"}}>{cardCalculator.getIconValue("tetherCost")}</Typography><WaterDropOutlined />
+
+                                                    </BoxWithTooltip>
+                                                    :
+                                                    <BoxWithTooltip
+                                                        sx={{
+                                                            display: 'flex',
+                                                            alignItems: "center"
+                                                        }}
+                                                        placement={"top"}
+                                                        title={`Technik Cost`}
+                                                    >
+                                                        <Typography sx={{fontSize: "16px", paddingRight: "4px"}}>{cardCalculator.getIconValue("technikCost")}</Typography><GrTechnology />
+
+                                                    </BoxWithTooltip>
+                                            )
+
                                             :
                                             <></>
                                     }
-                                <BoxWithTooltip
-                                    sx={{
-                                        display: 'flex',
-                                        alignItems: "center"
-                                    }}
-                                    placement={"top"}
-                                    title={`Action Cost`}
-                                >
-                                    <Typography sx={{fontSize: "16px", paddingRight: "4px"}}>{cardCalculator.getIconValue("energyCost")}</Typography><ElectricBoltOutlined />
+                                {
+                                    cardCalculator.getType() == "spell" ?
+                                        <BoxWithTooltip
+                                            sx={{
+                                                display: 'flex',
+                                                alignItems: "center"
+                                            }}
+                                            placement={"top"}
+                                            title={`Action Cost`}
+                                        >
+                                            <Typography sx={{fontSize: "16px", paddingRight: "4px"}}>{cardCalculator.getIconValue("energyCost") || 1}</Typography><ElectricBoltOutlined />
 
-                                </BoxWithTooltip>
+                                        </BoxWithTooltip>
+                                        :
+                                        <BoxWithTooltip
+                                            sx={{
+                                                display: 'flex',
+                                                alignItems: "center"
+                                            }}
+                                            placement={"top"}
+                                            title={`Surge Cost`}
+                                        >
+                                            <Typography sx={{fontSize: "16px", paddingRight: "4px"}}>{cardCalculator.getIconValue("surgeCost")}</Typography><GiLaserBurst color={"#0096ff"}/>
+
+                                        </BoxWithTooltip>
+                                }
 
 
 
@@ -221,27 +274,92 @@ const CalculatedCard = ({
                             <Box
                                 sx={{
                                     display: "grid",
-                                    gridTemplateColumns: "repeat(3, 1fr)"
+                                    gridTemplateColumns: "repeat(6, 1fr)"
                                 }}
                             >
-                                <Box sx={{gridColumn: "span 2"}}>
+                                <Box sx={{gridColumn: "span 3"}}>
                                     <NumericIcon val={cardCalculator.getFinalPower()}  icon={GiFist} postText={getDamageShorthand(cardCalculator.getDamageType())} postIcon={<SubtypeDamageIcon damageSubtype={cardCalculator.getDamageSubtype()}  />}/>
+                                </Box >
+                                <Box sx={{gridColumn: "span 3"}}>
+                                    {
+                                        cardCalculator.getType() == "spell" ?
+                                            <NumericIcon fontSize={"16px"} align="right" val={`+${cardCalculator.getIconValue("spellSet")}`} icon={GiArcheryTarget} title={`To Hit`} />
+                                            : <NumericIcon fontSize={"14px"} align="right" val={`${cardCalculator.getIconValue("hackSet")}`} icon={GiTechnoHeart} title={`Save`} />
+                                    }
                                 </Box>
-                                <NumericIcon fontSize={"16px"} align="right" val={`+${cardCalculator.getIconValue("spellSet")}`} icon={GiArcheryTarget} title={`To Hit`} />
+
                                 {/*<>{cardCalculator.getIconValue("spellSet")}</>*/}
 
-                                <NumericIcon fontSize={"16px"} align="left" val={cardCalculator.getSummonData().pDEF} icon={GiBorderedShield} title={`pDEF`} />
-                                <NumericIcon fontSize={"16px"} align="center" val={cardCalculator.getSummonData().mDEF} icon={GiMagicShield} title={`mDEF`} />
-                                <NumericIcon fontSize={"16px"} align="right" val={getSkillFormat(cardCalculator.getSummonData().dodge,false)} icon={FaRunning} title={`Dodge`} />
+                                {/* Row 2 */}
+                                <Box sx={{ gridColumn: "span 2" }}>
+                                    <NumericIcon
+                                        fontSize="16px"
+                                        align="left"
+                                        val={cardCalculator.getSummonData().pDEF}
+                                        icon={GiBorderedShield}
+                                        title="pDEF"
+                                    />
+                                </Box>
 
-                                <NumericIcon fontSize={"16px"} align="left" val={cardCalculator.getSummonData().movement} icon={GiRun} title={`Movement`}/>
-                                <NumericIcon fontSize={"16px"} align="center" val={` ${cardCalculator.getIconValue("duration")}`} icon={FaRegClock} title={`Duration (rounds)`} iconColor={(parseInt(cardCalculator.getIconValue("duration")) > 0) ? "white" : "red"} textColor={(parseInt(cardCalculator.getIconValue("duration")) > 0) ? "white" : "red"}/>
-                                <NumericIcon
-                                    align={"right"}
-                                    fontSize={"16px"}
-                                    val={`${createRangeString(cardCalculator.getFinalRange())}`}
-                                    icon={LooksOutlined}
-                                />
+                                <Box sx={{ gridColumn: "span 2" }}>
+                                    <NumericIcon
+                                        fontSize="16px"
+                                        align="center"
+                                        val={cardCalculator.getSummonData().mDEF}
+                                        icon={GiMagicShield}
+                                        title="mDEF"
+                                    />
+                                </Box>
+
+                                <Box sx={{ gridColumn: "span 2" }}>
+                                    <NumericIcon
+                                        fontSize="16px"
+                                        align="right"
+                                        val={getSkillFormat(cardCalculator.getSummonData().dodge, false)}
+                                        icon={FaRunning}
+                                        title="Dodge"
+                                    />
+                                </Box>
+
+                                {/* Row 3 */}
+                                <Box sx={{ gridColumn: "span 2" }}>
+                                    <NumericIcon
+                                        fontSize="16px"
+                                        align="left"
+                                        val={cardCalculator.getSummonData().movement}
+                                        icon={GiRun}
+                                        title="Movement"
+                                    />
+                                </Box>
+
+                                <Box sx={{ gridColumn: "span 2" }}>
+                                    <NumericIcon
+                                        fontSize="14px"
+                                        align="center"
+                                        val={` ${cardCalculator.getIconValue("duration")}`}
+                                        icon={FaRegClock}
+                                        title="Duration (rounds)"
+                                        iconColor={
+                                            parseInt(cardCalculator.getIconValue("duration")) > 0
+                                                ? "white"
+                                                : "red"
+                                        }
+                                        textColor={
+                                            parseInt(cardCalculator.getIconValue("duration")) > 0
+                                                ? "white"
+                                                : "red"
+                                        }
+                                    />
+                                </Box>
+
+                                <Box sx={{ gridColumn: "span 2" }}>
+                                    <NumericIcon
+                                        align="right"
+                                        fontSize="16px"
+                                        val={createRangeString(cardCalculator.getFinalRange())}
+                                        icon={LooksOutlined}
+                                    />
+                                </Box>
 
 
 
@@ -261,7 +379,7 @@ const CalculatedCard = ({
                             {
                                 cardCalculator.getFinalIcons().map((data) => {
                                     return (
-                                        <NumericIcon val={data.val} icon={data.icon} key={data.key}/>
+                                        <NumericIcon val={data.val} icon={data.icon} key={data.key} iconColor={data.color ?? "white"}/>
                                     )
                                 })
                             }
