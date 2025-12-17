@@ -20,24 +20,52 @@ import useAPI from "../../Hooks/useAPI/useAPI";
 import SafeWrapper from "../../Utils/SafeWrapper";
 import useUser from "../../Hooks/useUser/useUser";
 import useSnackbar from "../../Hooks/useSnackbar/useSnackbar";
+import {IAbility} from "../../Data/IAbilities";
 
-// Type guard with error reporting
 function validateCardData(obj: any): { valid: boolean; missing?: string[] } {
-    const requiredFields: Array<keyof ICommonCardData> = [
+    const commonCardFields: Array<keyof ICommonCardData> = [
         "cardName",
         "cardType",
         "cardSubtype",
         "effects",
         "prerequisites"
     ];
-    const missing = requiredFields.filter((key) => obj[key] === undefined);
-    return { valid: missing.length === 0, missing: missing.length > 0 ? missing : undefined };
+
+    const abilityCardFields = [
+        "abilityName",
+        "description",
+        "showByDefault",
+        "prerequisites"
+    ];
+
+    const missingCommon = commonCardFields.filter(
+        (key) => obj[key] === undefined
+    );
+
+    if (missingCommon.length === 0) {
+        return { valid: true };
+    }
+
+    const missingAbility = abilityCardFields.filter(
+        (key) => obj[key] === undefined
+    );
+
+    if (missingAbility.length === 0) {
+        return { valid: true };
+    }
+
+    // Both schemas failed — return missing from the original schema
+    return {
+        valid: false,
+        missing: missingCommon
+    };
 }
+
 
 const CardCodeCreatorWithPreview: React.FC = () => {
     const [selectedTemplate, setSelectedTemplate] = useState<string>("Commander Card");
     const [jsonInput, setJsonInput] = useState<string>(templates["Commander Card"]);
-    const [parsedData, setParsedData] = useState<ICommonCardData | null>(() => {
+    const [parsedData, setParsedData] = useState<ICommonCardData | IAbility | null>(() => {
         try {
             return JSON.parse(templates["Commander Card"]);
         } catch {
@@ -49,7 +77,7 @@ const CardCodeCreatorWithPreview: React.FC = () => {
     const [loadedId, setLoadedId] = useState<string>("")
     const [errorMessage, setErrorMessage] = useState<string>("");
 
-    const { CardAPI, CardRequestAPI } = useAPI();
+    const { CardAPI, AbilityAPI, CardRequestAPI } = useAPI();
     const { userPermissions } = useUser()
     const { SendToSnackbar } = useSnackbar()
 
@@ -175,55 +203,79 @@ const CardCodeCreatorWithPreview: React.FC = () => {
         }
 
         try {
+            let uri = ""
+            if ("abilityName" in parsedData) {
+                uri="update"
+                if (isLoadedCard) {
+                    // Update existing card
+                    if (userPermissions.includes("admin")) {
+                        await AbilityAPI.UpdateAbility(loadedId, parsedData);
+                        SendToSnackbar(`Update to ${parsedData.abilityName} submitted.`, "success")
+                    } else {
+                        await CardRequestAPI.MakeRequest(localStorage.getItem("email") ?? "error", "update_ability", uri, JSON.stringify(parsedData), loadedId)
+                        SendToSnackbar(`Update to ${parsedData.abilityName} request submitted.`, "success")
+                    }
+                    resetToDefaultTemplate();
+                } else {
+                    if (userPermissions.includes("admin")) {
+                        await AbilityAPI.UpdateAbility(loadedId, parsedData);
+                        SendToSnackbar(`${parsedData.abilityName} added.`, "success")
+                    } else {
+                        await CardRequestAPI.MakeRequest(localStorage.getItem("email") ?? "error", "new_ability", uri, JSON.stringify(parsedData), "")
+                        SendToSnackbar(`Creation of ${parsedData.abilityName} request submitted.`, "success")
+                    }
 
-            const { cardType, cardSubtype } = parsedData;
-
-            console.log(cardType, cardSubtype);
-
-            let uri = `${cardType}s/${cardSubtype}`;
-
-            if (cardType === "commander") {
-                uri = `commander`;
+                    resetToDefaultTemplate();
+                }
             } else {
-                const subtypeMap: Record<string, string> = {
-                    hack_function: "hacks/base",
-                    weapon_order: "weapons/skill/order",
-                    spell_summon: "spells/target/summon",
-                    spell_skill: "spells/modifier",
-                    spell_edict: "spells/modifier/edict",
-                    hack_util: `hacks/modifier/util`,
-                    hack_else: `hacks/modifier/else`,
-                };
-                if (`${cardType}_${cardSubtype}` in subtypeMap) {
-                    uri = subtypeMap[`${cardType}_${cardSubtype}`];
+                const { cardType, cardSubtype} = parsedData;
+
+                console.log(cardType, cardSubtype);
+
+                uri = `${cardType}s/${cardSubtype}`;
+
+                if (cardType === "commander") {
+                    uri = `commander`;
+                } else {
+                    const subtypeMap: Record<string, string> = {
+                        hack_function: "hacks/base",
+                        weapon_order: "weapons/skill/order",
+                        spell_summon: "spells/target/summon",
+                        spell_skill: "spells/modifier",
+                        spell_edict: "spells/modifier/edict",
+                        hack_util: `hacks/modifier/util`,
+                        hack_else: `hacks/modifier/else`,
+                    };
+                    if (`${cardType}_${cardSubtype}` in subtypeMap) {
+                        uri = subtypeMap[`${cardType}_${cardSubtype}`];
+                    }
+                }
+
+                if (isLoadedCard) {
+                    // Update existing card
+                    console.log(uri, parsedData)
+                    if (userPermissions.includes("admin")) {
+                        await CardAPI.UpdateCard(uri, loadedId, parsedData);
+                        SendToSnackbar(`Update to ${parsedData.cardName} submitted.`, "success")
+                    } else {
+                        await CardRequestAPI.MakeRequest(localStorage.getItem("email") ?? "error", "update", uri, JSON.stringify(parsedData), loadedId)
+                        SendToSnackbar(`Update to ${parsedData.cardName} request submitted.`, "success")
+                    }
+                    resetToDefaultTemplate();
+                } else {
+                    if (userPermissions.includes("admin")) {
+                        await CardAPI.AddCard(uri, parsedData);
+                        SendToSnackbar(`${parsedData.cardName} added.`, "success")
+                    } else {
+                        await CardRequestAPI.MakeRequest(localStorage.getItem("email") ?? "error", "new_card", uri, JSON.stringify(parsedData), "")
+                        SendToSnackbar(`Creation of ${parsedData.cardName} request submitted.`, "success")
+                    }
+
+                    resetToDefaultTemplate();
                 }
             }
 
-            console.log(uri)
 
-
-            if (isLoadedCard) {
-                // Update existing card
-                console.log(uri, parsedData)
-                if (userPermissions.includes("admin")) {
-                    await CardAPI.UpdateCard(uri, loadedId, parsedData);
-                    SendToSnackbar(`Update to ${parsedData.cardName} submitted.`, "success")
-                } else {
-                    await CardRequestAPI.MakeRequest(localStorage.getItem("email") ?? "error", "update", uri, JSON.stringify(parsedData))
-                    SendToSnackbar(`Update to ${parsedData.cardName} request submitted.`, "success")
-                }
-                resetToDefaultTemplate();
-            } else {
-                if (userPermissions.includes("admin")) {
-                    await CardAPI.AddCard(uri, parsedData);
-                    SendToSnackbar(`${parsedData.cardName} added.`, "success")
-                } else {
-                    await CardRequestAPI.MakeRequest(localStorage.getItem("email") ?? "error", "new_card", uri, JSON.stringify(parsedData))
-                    SendToSnackbar(`Creation of ${parsedData.cardName} request submitted.`, "success")
-                }
-
-                resetToDefaultTemplate();
-            }
         } catch (err) {
             console.error(err);
             SendToSnackbar(`Submission failed. ${err}`, "error")

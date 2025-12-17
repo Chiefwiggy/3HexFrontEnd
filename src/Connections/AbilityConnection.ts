@@ -1,4 +1,5 @@
 import Axios, {AxiosRequestConfig} from "axios";
+import {IAbility} from "../Data/IAbilities";
 
 
 class AbilityConnection {
@@ -39,6 +40,15 @@ class AbilityConnection {
 
     public async GetAffinityAbilities(affinityName: string) {
         return await Axios.get(`${this._abilityURL}get/affinity/${affinityName}`, this._getConfig()).then((resp) => {
+            return resp.data
+        }).catch((e) => {
+            console.error(e)
+            return []
+        })
+    }
+
+    public async UpdateAbility(id: string, abilityData: IAbility) {
+        return await Axios.put(`${this._abilityURL}update/${id}`, abilityData, this._getConfig()).then((resp) => {
             return resp.data
         }).catch((e) => {
             console.error(e)

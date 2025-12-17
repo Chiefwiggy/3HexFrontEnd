@@ -17,12 +17,13 @@ class CardRequestConnection {
         })
     }
 
-    public async MakeRequest(username: string, request_type: string, update_uri: string, json_to_update: string) {
+    public async MakeRequest(username: string, request_type: string, update_uri: string, json_to_update: string, update_id: string) {
         const finalData = {
             username,
             request_type,
             update_uri,
             json_to_update,
+            update_id,
             status: "pending"
         }
         return await Axios.post(`${this._requestURL}/card_requests/make`, finalData, this._getConfig()).then((resp) => {

@@ -86,9 +86,10 @@ const HackBaseCard = ({
                 <NumericIcon val={cardData.basePower}  title="Base Power" icon={MdOutlineSportsMma} postText={getDamageShorthand(cardData.damageType as UDamageType)} postIcon={<SubtypeDamageIcon damageSubtype={cardData.damageSubtype}/>} />
                 <NumericIcon val={"x" + cardData.potency} icon={MdFitnessCenter} title={"Potency. Multiply your Might by this value and add that to the spell's Power."} />
                 <NumericIcon val={cardData.technikCost} icon={GrTechnology} title={"Technik Cost"}/>
+                <NumericIcon val={getAccessShorthand(cardData.accessLevel)} icon={SiPrivateinternetaccess} title={"Access Level"}/>
                 <NumericIcon val={cardData.duration} icon={MdAccessTime} title={"Duration"}/>
                 <NumericIcon val={cardData.baseSurge ?? 0} icon={GiLaserBurst} iconColor={"#0096ff"} title={"Surge"}/>
-                <NumericIcon val={getAccessShorthand(cardData.accessLevel)} icon={SiPrivateinternetaccess} title={"Access Level"}/>
+
 
             </Box>
         </GenericCardLayout>

@@ -5,13 +5,16 @@ import {ExpandMoreOutlined} from "@mui/icons-material";
 import {ExpandMore} from "../../Elements/ExpandMore";
 import {GetPrerequisiteString} from "../../Utils/PrerequisiteString";
 import HighlightType from "../Generic/HighlightType";
+import {IoInformationCircleOutline} from "react-icons/io5";
+import useSnackbar from "../../Hooks/useSnackbar/useSnackbar";
 
 interface IAbilityItemInput {
     abilityData: IAbility,
-    showPrerequisites?: boolean, isDraft?: boolean
+    showPrerequisites?: boolean,
+    isDraft?: boolean
 }
 
-const AbilityItem = ({abilityData, showPrerequisites = false}: IAbilityItemInput) => {
+const AbilityItem = ({abilityData, showPrerequisites = false, isDraft=false}: IAbilityItemInput) => {
 
     const [prereqString, setPrereqString] = useState<string>("None.")
 
@@ -24,6 +27,13 @@ const AbilityItem = ({abilityData, showPrerequisites = false}: IAbilityItemInput
         }
         setIsOpen(false);
     }, [abilityData]);
+
+    const {SendToSnackbar} = useSnackbar()
+
+    const handleCopyInfo = async() => {
+        await window.navigator.clipboard.writeText(abilityData._id)
+        SendToSnackbar(`${abilityData._id} copied to clipboard`, "info")
+    }
 
 
 
@@ -57,6 +67,19 @@ const AbilityItem = ({abilityData, showPrerequisites = false}: IAbilityItemInput
                             : <></>
                     }
                 </Box>
+                <Box
+                    sx={{
+                        '&::before': isDraft ? {
+                            content: '""',
+                            display: 'block',
+                            marginTop: "2px",
+                            height: '16px', // thickness of the caution tape
+                            background: 'repeating-linear-gradient(45deg, yellow 0, yellow 10px, black 10px, black 20px)',
+                        } : {}
+                    }}
+                >
+
+                </Box>
 
                 <Collapse in={isOpen} timeout={"auto"} unmountOnExit
                     sx={{
@@ -87,6 +110,18 @@ const AbilityItem = ({abilityData, showPrerequisites = false}: IAbilityItemInput
                         display: "flex"
                     }}
                 >
+                    {
+                        isDraft ?
+                            <></>
+                            :
+                            <IconButton
+                                size={"small"}
+                                aria-label={"use"}
+                                onClick={handleCopyInfo}
+                            >
+                                <IoInformationCircleOutline />
+                            </IconButton>
+                    }
                     <ExpandMore
                       expand={isOpen}
                       onClick={() => setIsOpen(!isOpen)}

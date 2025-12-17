@@ -24,13 +24,15 @@ import HackBaseCard from "../Components/Cards/HackBaseCard";
 import HackIOCard from "../Components/Cards/HackIOCard";
 import HackProtocolCard from "../Components/Cards/HackProtocolCard";
 import HackModifierCard from "../Components/Cards/HackModifierCard";
+import {IAbility} from "../Data/IAbilities";
+import AbilityItem from "../Components/Abilities/AbilityItem";
 
 type DisambiguateOptions = {
     wrapper?: (element: JSX.Element, key: string) => JSX.Element;
 };
 
 export const disambiguateCard = (
-    allCards: ICommonCardData[],
+    allCards: Array<ICommonCardData | IAbility>,
     compendiumProps: object,
     options: DisambiguateOptions = {}
 ): JSX.Element[] => {
@@ -38,6 +40,14 @@ export const disambiguateCard = (
 
     return allCards.map((card) => {
         const key = card._id;
+
+        if ("abilityName" in card) {
+            return wrapper(
+                <AbilityItem abilityData={card as IAbility} {...compendiumProps} />,
+                key
+            )
+        }
+
 
         if (card.cardType === "spell") {
             switch (card.cardSubtype) {

@@ -81,7 +81,7 @@ class CardConnection {
     }
 
     public async GetCardById(cardId: string) {
-        return await Axios.get(`${this._cardURL}get/${cardId}`, this._getConfig()).then((resp) => {
+        return await Axios.get(`${this._cardURL}getPlus/${cardId}`, this._getConfig()).then((resp) => {
             return resp.data
         }).catch((e) => {
             console.error(e)

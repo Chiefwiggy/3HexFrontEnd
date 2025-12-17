@@ -32,6 +32,37 @@ export const templates: Record<string, string> = {
   "isUltimate": false,
   "isFavorite": false
 }`,
+    Ability: `{
+    "abilityName": "ABILITY NAME",
+    "isUltimate": false,
+    "description": [
+        "This is the ability Description" 
+    ],
+    "showByDefault": false,
+
+    "bonuses": {
+
+    },
+    "unlocks": {
+
+    },
+      "prerequisites": [
+        {
+            "prerequisiteType": "development",
+            "skill": "all",
+            "level": 1
+        },
+        {
+            "prerequisiteType": "level",
+            "skill": "all",
+            "level": 70
+        }
+    ],
+    "uses": 0,
+    "actionType": "passive",
+    "isPassive": false,
+    "abilityRefreshTime": "passive"
+}`,
 
     "Weapon - Base": `{
     "cardName": "[WEAPON NAME]",
