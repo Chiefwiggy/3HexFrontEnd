@@ -30,15 +30,15 @@ export const CardGetColor = (type: string) => {
             case "condition.debuff":
                 return '#000000';
             case 'hack.function':
-                return '#fbf38c';
+                return '#f3efbf';
             case 'hack.io':
                 return '#633502';
             case 'hack.protocol':
                 return '#ff6f0a';
             case 'hack.util':
-                return '#f4e99c';
+                return '#f3dc43';
             case 'hack.else':
-                return '#ffafaf';
+                return '#cf7878';
         }
         return 'white'
     }

@@ -26,12 +26,13 @@ const HighlightType = ({ text, xval }: IHighlightTypeInput) => {
             return <ConditionTooltip placement={"top"} conditionData={condData} >{condData.conditionName}</ConditionTooltip>
         } else if (tagParts[0] == "damageType") {
             return <SubtypeDamageIcon damageSubtype={tagParts[1]} component={"span"} boxSx={{
-                display: "inline",
+                position: "relative",
+                display: "inline-block",
                 padding: 0,
+                top: 3
             }} size={14}/>
         } else if (tagParts[0] == "color") {
-            return <Typography color={tagParts[1]} component={"span"} fontSize={"0.9rem"}>{tagParts.slice(2).join(".").replace(/'/g, "")}</Typography>
-
+            return <Typography color={tagParts[1]} component={"span"} fontSize={"0.8rem"}>{tagParts.slice(2).join(".").replace(/'/g, "")}</Typography>
         }
 
         return <>{tag}</>

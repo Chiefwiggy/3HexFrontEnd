@@ -10,6 +10,7 @@ import MinionConnection from "../../Connections/MinionConnection";
 import PreloadedConnection from "../../Connections/PreloadedConnection";
 import ImageLibraryConnection from "../../Connections/ImageLibraryConnection";
 import CardRequestConnection from "../../Connections/CardRequestConnection";
+import SourceConnection from "../../Connections/SourceConnection";
 
 export const APIContext = createContext<IAPIContext>({
     CharacterAPI: new CharacterConnection("", () => {
@@ -40,6 +41,9 @@ export const APIContext = createContext<IAPIContext>({
         return {}
     }),
     CardRequestAPI: new CardRequestConnection("", () => {
+        return {}
+    }),
+    SourceAPI: new SourceConnection("", () => {
         return {}
     })
 })

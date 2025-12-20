@@ -14,6 +14,22 @@ export interface ISourceData {
     campaignIds: Array<string>
 }
 
+export interface ISourceDataAPI {
+    sourceName: string,
+    sourceArcanotype: UArcanotype,
+    sourceTier: number,
+    sourceTiers: Array<{
+        layer: number,
+        cardType: string,
+        cardId: string,
+        isSecret?: boolean
+    }>,
+    visibility: "all" | "restricted" | "admin",
+    onlyTemporary: boolean,
+    neverTemporary: boolean,
+    campaignIds: Array<string>
+}
+
 
 
 export const VArcanotype =  ["elemental", "divine", "mystical", "axum", "primal", "eonic", "animus", "esoteric"]
@@ -24,7 +40,6 @@ export interface ITierData {
     layer: number,
     cardType: string,
     cardData: ISpellBaseCardData | ISpellModifierCardData,
-    arcaneRequirement: number,
     isSecret?: boolean
 }
 

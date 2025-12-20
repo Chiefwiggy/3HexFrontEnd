@@ -14,6 +14,8 @@ import {GiLaserBurst, GiPortal, GiSparkSpirit, GiTiedScroll} from "react-icons/g
 import {SiMagic} from "react-icons/si";
 import {GrTechnology} from "react-icons/gr";
 import {MdPowerOff} from "react-icons/md";
+import {IoGitNetworkSharp} from "react-icons/io5";
+import {TbCornerDownRightDouble} from "react-icons/tb";
 
 interface ICardEffectInput {
     effectData: IEffectData,
@@ -121,6 +123,10 @@ const CardEffect = ({effectData, finalPower}: ICardEffectInput) => {
             case 'technik':
                 setEmblem(<Box sx={{paddingLeft: "2px", display: "flex", alignItems: "center"}}><GrTechnology /></Box>)
                 setTintColor("rgba(244,197,29,0.2)");
+                break;
+            case 'choice':
+                setEmblem(<Box sx={{paddingLeft: "2px", display: "flex", alignItems: "center", minHeight: "24px"}}><TbCornerDownRightDouble fontSize={"20px"}/></Box>)
+                setTintColor("rgba(255,255,255,0)")
                 break;
         }
     }
