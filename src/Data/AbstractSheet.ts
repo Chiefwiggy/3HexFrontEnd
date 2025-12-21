@@ -802,14 +802,14 @@ abstract class AbstractSheet {
                 display: "util",
                 component: [HackModifierCard],
                 required: false,
-                count: 1
+                count: this.isUnlocked("unconditional") ? 2 : 1
             },
             {
                 name: ["hack.else"],
                 display: "else",
                 component: [HackModifierCard],
                 required: false,
-                count: 1
+                count: this.isUnlocked("unconditional") ? 0 : 1
             }
         ]
     }
