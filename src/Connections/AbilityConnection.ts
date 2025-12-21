@@ -55,6 +55,15 @@ class AbilityConnection {
             return []
         })
     }
+
+    public async AddAbility(abilityData: IAbility) {
+        return await Axios.post(`${this._abilityURL}add`, abilityData, this._getConfig()).then((resp) => {
+            return resp.data
+        }).catch((e) => {
+            console.error(e)
+            return []
+        })
+    }
 }
 
 export default AbilityConnection;

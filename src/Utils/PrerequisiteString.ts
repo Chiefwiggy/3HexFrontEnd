@@ -21,7 +21,7 @@ const GetPrerequisitePriority = (prerequisite: IPrerequisite) => {
     }
 }
 export const GetPrerequisiteString = (prerequisites: Array<IPrerequisite>) => {
-    const str = prerequisites.sort((a, b) => {
+    const str = prerequisites.filter(e => e.prerequisiteType && e.skill).sort((a, b) => {
         if (a.prerequisiteType == b.prerequisiteType) {
             if (a.level != b.level) {
                 return b.level - a.level

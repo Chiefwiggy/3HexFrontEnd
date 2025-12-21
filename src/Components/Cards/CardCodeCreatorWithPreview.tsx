@@ -218,7 +218,7 @@ const CardCodeCreatorWithPreview: React.FC = () => {
                     resetToDefaultTemplate();
                 } else {
                     if (userPermissions.includes("admin")) {
-                        await AbilityAPI.UpdateAbility(loadedId, parsedData);
+                        await AbilityAPI.AddAbility(parsedData);
                         SendToSnackbar(`${parsedData.abilityName} added.`, "success")
                     } else {
                         await CardRequestAPI.MakeRequest(localStorage.getItem("email") ?? "error", "new_ability", uri, JSON.stringify(parsedData), "")

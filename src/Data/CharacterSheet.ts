@@ -408,7 +408,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getMaxSkillPoints = () => {
-        return this.getStat("knowledge")*5 + this.getStat("skill")*3 + this.getLevel();
+        return this.getStat("knowledge")*5 + this.getStat("skill")*3 + this.getLevel() + (this.currentPath.scholar * 10) + (this.currentAffinities.research * 15) + this.getAbilityBonuses("skillPoints")
     }
 
     public getSkillPointsUsed = () => {
@@ -433,10 +433,11 @@ class CharacterSheet extends AbstractSheet {
 
     public getCap = (skillName: string) => {
         const config = skill_config[skillName.toLowerCase() as keyof ISkillConfig] as ISkillItemConfig;
+        const {isExpert} = this.getSkillData(skillName)
 
         return config.attr.reduce((pv, cv) => {
             return pv + this.getStat(cv as UStat);
-        }, 0) + (Math.floor(this.getLevel() / 60)+1)*10
+        }, 0) + (Math.floor(this.getLevel() / 60)+1)*10 + (isExpert ? this.currentAffinities.research * 5 : 0)
     }
 
 
