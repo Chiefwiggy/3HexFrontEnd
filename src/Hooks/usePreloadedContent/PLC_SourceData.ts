@@ -41,7 +41,7 @@ class PLC_SourceData {
 
         if (!campaignIds.includes("all")) {
             return prefinalList.filter(source =>
-                source.campaignIds?.some(id => campaignIds.includes(id) || id == "nature")
+                source.campaignIds?.some(id => campaignIds.includes(id))
             );
         }
         return prefinalList;
