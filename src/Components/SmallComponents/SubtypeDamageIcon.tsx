@@ -61,7 +61,7 @@ const SubtypeDamageIcon = ({
     component = "div",
     size = 21
 }: ISubtypeDamageIconInput) => {
-    return (
+    return damageSubtype ? (
         <BoxWithTooltip
             sx={{
                 padding: "2px",
@@ -76,7 +76,7 @@ const SubtypeDamageIcon = ({
         >
             {getElementIcon(damageSubtype, size)}
         </BoxWithTooltip>
-    );
+    ) : <></>;
 };
 
 export default SubtypeDamageIcon

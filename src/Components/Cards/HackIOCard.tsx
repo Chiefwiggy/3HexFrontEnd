@@ -43,7 +43,18 @@ const HackIOCard = ({
             >
                 {cardData.channelRequirements?.map((channel, index) => {
                     return (
-                        <ChannelType channelType={channel.channelType} channelStrength={channel.channelStrength} color={"white"} />
+                        <Box
+                            sx={{
+                                display: "flex",
+                            }}
+                            key={index}
+                        >
+                            {index > 0 ? <Box sx={{
+                                marginRight: "12px"
+                            }}>OR</Box> : <></>}
+                            <ChannelType channelType={channel.channelType} channelStrength={channel.channelStrength} color={"white"} />
+                        </Box>
+
                     )
                 })}
             </Box>

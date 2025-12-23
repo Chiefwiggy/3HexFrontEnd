@@ -5,6 +5,7 @@ import BoxWithTooltip from "./BoxWithTooltip";
 import ConditionTooltip from "../Conditions/ConditionTooltip";
 import SubtypeDamageIcon from "../SmallComponents/SubtypeDamageIcon";
 import {GiFlyingDagger} from "react-icons/gi";
+import { TypeColors } from "../../Utils/CardColorUtils";
 
 interface IHighlightTypeInput {
     text: string;
@@ -32,7 +33,7 @@ const HighlightType = ({ text, xval }: IHighlightTypeInput) => {
                 top: 3
             }} size={14}/>
         } else if (tagParts[0] == "color") {
-            return <Typography color={tagParts[1]} component={"span"} fontSize={"0.8rem"}>{tagParts.slice(2).join(".").replace(/'/g, "")}</Typography>
+            return <Typography color={TypeColors(tagParts[1])} component={"span"} fontSize={"0.8rem"}>{tagParts.slice(2).join(".").replace(/'/g, "")}</Typography>
         }
 
         return <>{tag}</>

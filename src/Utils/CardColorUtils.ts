@@ -105,3 +105,14 @@ export const GetConsumableItemTypeColor = (itemType: string) => {
             return "rgba(216,216,216,0.55)"
     }
 }
+
+export const TypeColors = (itemKey: string) => {
+    switch (itemKey) {
+        case "highlight":
+            return "#fcd76f"
+        case "spell":
+            return "#80cbc4"
+        default:
+            return itemKey
+    }
+}
