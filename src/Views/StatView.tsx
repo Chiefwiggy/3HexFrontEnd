@@ -30,6 +30,7 @@ const StatView = ({
 
     const [resistances, setResistances] = useState<Array<string>>([]);
     const [weaknesses, setWeaknesses] = useState<Array<string>>([]);
+    const [immunities, setImmunities] = useState<Array<string>>([]);
 
     const setStatDiff = () => {
         if (currentSheet && statData) {
@@ -64,6 +65,7 @@ const StatView = ({
             const wkrs = currentSheet.getResistancesAndWeaknesses(true)
             setResistances(wkrs.resistances);
             setWeaknesses(wkrs.weaknesses);
+            setImmunities(wkrs.immunities);
         }
     }, [healthPing])
 

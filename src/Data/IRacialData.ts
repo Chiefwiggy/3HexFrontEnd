@@ -5,6 +5,7 @@ export interface ICharacterRacialData {
     raceRoles: Array<string>,
     pointsSpentOn: Array<string>,
     subraceId: string,
+    customVulnerability: string
 }
 
 export interface IRaceData {

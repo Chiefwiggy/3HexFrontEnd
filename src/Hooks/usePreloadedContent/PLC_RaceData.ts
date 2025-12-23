@@ -1,11 +1,15 @@
-import {ICommonCardData} from "../../Data/ICardData";
+import {ICommonCardData, UDamageSubtype, UDamageType} from "../../Data/ICardData";
 import {IAbility} from "../../Data/IAbilities";
 
 export interface ISubraceMetadata {
     subraceName: string,
     subraceId: string,
     subraceDescription: string,
-    cdnImageLink: string
+    cdnImageLink: string,
+    innateResistances: Array<UDamageSubtype>,
+    innateVulnerabilities: Array<UDamageSubtype>,
+    innateImmunities: Array<UDamageSubtype>,
+    subraceRoles: Array<string>
 }
 export interface IRaceMetadata {
     raceName: string,
@@ -134,6 +138,23 @@ class PLC_RaceData {
             })
         }
         return []
+    }
+
+    public GetRaceVulnerabilityAndResistances = (raceId: string, subraceId: string)=> {
+        let raceData = this.raceMetadata.find(e => e.raceId == raceId)
+        let subraceData = raceData?.availableSubraces.find(e => e.subraceId == subraceId)
+        if (subraceData) {
+            return {
+                vulnerabilities: subraceData.innateVulnerabilities,
+                resistances: subraceData.innateResistances,
+                immunities: subraceData.innateImmunities
+            }
+        }
+        return {
+            vulnerabilities: [],
+            resistances: [],
+            immunities: []
+        }
     }
 
 }

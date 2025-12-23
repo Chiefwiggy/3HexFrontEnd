@@ -117,6 +117,7 @@ class CharacterSheet extends AbstractSheet {
 
     private _weaknesses: Array<UDamageSubtype> | null = null;
     private _resistances: Array<UDamageSubtype> | null = null;
+    private _immunities: Array<UDamageSubtype> | null = null
 
 
 
@@ -1023,21 +1024,39 @@ class CharacterSheet extends AbstractSheet {
     public getResistancesAndWeaknesses(force = false) {
         if (force || (this._resistances == null && this._weaknesses == null)) {
 
-            const resistances = VDamageSubtypes.filter(dst => {
+            let resistances = VDamageSubtypes.filter(dst => {
                 return this.isUnlocked(`${dst}Resistance`)
             })
-            const weaknesses = VDamageSubtypes.filter(dst => {
+            let weaknesses = VDamageSubtypes.filter(dst => {
                 return this.isUnlocked(`${dst}Weakness`)
             })
+            let immunities = VDamageSubtypes.filter(dst => {
+                return this.isUnlocked(`${dst}Immunity`)
+            })
+
+            if (this.data.race) {
+                const racial = this.preloadedData.RaceData.GetRaceVulnerabilityAndResistances(this.data.race.raceId, this.data.race.subraceId)
+                resistances = [...resistances, ...racial.resistances];
+                weaknesses = [...weaknesses, ...racial.vulnerabilities, this.data.race.customVulnerability];
+                immunities = [...immunities, ...racial.immunities]
+
+            }
+
+
+
+
 
             const resistancesSet = new Set(resistances);
             const weaknessSet = new Set(weaknesses);
+            const immunitySet = new Set(immunities);
 
-            const preFinalResistances = resistances.filter(item => !weaknessSet.has(item));
-            const preFinalWeakness = weaknesses.filter(item => !resistancesSet.has(item));
+            const preFinalResistances = resistances.filter(item => !weaknessSet.has(item) && !immunitySet.has(item));
+            const preFinalWeakness = weaknesses.filter(item => !resistancesSet.has(item) && !immunitySet.has(item));
+            const preFinalImmunities = immunities;
 
             let finalResistances = preFinalResistances
             let finalWeakness = preFinalWeakness
+            let finalImmunities = preFinalImmunities;
             if (this.isUnlocked("invertResistances") && this.isUnlocked("invertWeaknesses")) {
                 finalWeakness = preFinalResistances
                 finalResistances = preFinalWeakness
@@ -1049,10 +1068,12 @@ class CharacterSheet extends AbstractSheet {
 
             this._resistances = finalResistances;
             this._weaknesses = finalWeakness;
+            this._immunities = immunities;
         }
         return {
             resistances: this._resistances ?? [],
-            weaknesses: this._weaknesses ?? []
+            weaknesses: this._weaknesses ?? [],
+            immunities: this._immunities ?? [],
         }
 
     }
