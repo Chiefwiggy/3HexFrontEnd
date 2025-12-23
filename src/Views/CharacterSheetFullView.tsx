@@ -129,7 +129,13 @@ const CharacterSheetFullView = () => {
                     ||
                     currentSheet.getClassPointsSpent() != currentSheet.getMaxClassPoints()
                 } />
-                <CharacterSheetSidebar title={"Race & Build"} icon={IoMan} panelComponent={RaceSelectView}/>
+                <CharacterSheetSidebar title={"Race & Build"} icon={IoMan} panelComponent={RaceSelectView} badgeCondition={
+                    !(currentSheet.data.race && currentSheet.data.race.subraceId
+                        &&
+                    currentSheet.data.race.pointsSpentOn.length == currentSheet.getRacialAbilityTokens()
+                        &&
+                    currentSheet.data.race.customVulnerability)
+                }/>
                 <CharacterSheetSidebar title={"Event Log"} icon={ChatOutlined} panelComponent={EventLogView} />
                 <CharacterSheetSidebar title={"Settings"} icon={SettingsOutlined} panelComponent={SettingsPanel} />
 

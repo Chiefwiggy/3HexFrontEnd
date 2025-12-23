@@ -4,13 +4,15 @@ import {Alert, Box, Button} from "@mui/material";
 interface ITabSaveBarInput {
     submitSave: () => void,
     submitCancel: () => void,
-    isChanged: boolean
+    isChanged: boolean,
+    canSave?: boolean,
 }
 
 const TabSaveBar = ({
     submitSave,
     submitCancel,
-    isChanged
+    isChanged,
+    canSave = true
 }: ITabSaveBarInput) => {
 
 
@@ -38,7 +40,7 @@ const TabSaveBar = ({
                 transition: 'opacity 1s ease-out',
                 opacity: showStatus ? 1 : 0
             }}> Success! </Alert>
-            <Button onClick={handleSaveData} color={"success"} disabled={!isChanged}> Save </Button>
+            <Button onClick={handleSaveData} color={"success"} disabled={!isChanged || !canSave}> Save </Button>
             <Button onClick={handleCancelSaveData} color={"error"} disabled={!isChanged}> Cancel </Button>
         </Box>
     )

@@ -35,7 +35,12 @@ const UnlockWrapper = ({el, _id, unlockedByDefault, unlockList, updateUnlockList
             {el}
         </Box>
     ) : (
-        <Box>
+        <Box
+            sx={{
+                display: "flex",
+                justifyContent: "center"
+            }}
+        >
             <Box key={_id}
                 sx={{
                     display: "flex",

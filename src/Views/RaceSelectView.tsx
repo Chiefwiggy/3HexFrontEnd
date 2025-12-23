@@ -1,5 +1,5 @@
 import React, {SyntheticEvent, useEffect, useState} from 'react';
-import {Autocomplete, Box, TextField, Typography, Divider} from "@mui/material";
+import {Autocomplete, Box, TextField, Typography, Divider, Chip} from "@mui/material";
 import useCharacter from "../Hooks/useCharacter/useCharacter";
 import usePreloadedContent from "../Hooks/usePreloadedContent/usePreloadedContent";
 import {IRaceMetadata, ISubraceMetadata} from "../Hooks/usePreloadedContent/PLC_RaceData";
@@ -25,6 +25,7 @@ const RaceSelectView = ({}: IRaceSelectViewInput) => {
     const [currentUnlockList, setCurrentUnlockList] = useState<Array<string>>([]);
     const [customVulnerability, setCustomVulnerability] = useState<UDamageSubtype | null>(null);
     const [hasChanged, setHasChanged] = useState(false);
+    const [canSave, setCanSave] = useState(true);
 
     useEffect(() => {
         loadDataFromCurrentSheet();
@@ -75,6 +76,14 @@ const RaceSelectView = ({}: IRaceSelectViewInput) => {
         }
     }
 
+    useEffect(() => {
+        if (currentRace && currentSubrace && customVulnerability) {
+            setCanSave(true);
+        } else {
+            setCanSave(false);
+        }
+    }, [currentRace, currentSubrace, customVulnerability]);
+
     const handleCancel = () => {
         loadDataFromCurrentSheet();
         setHasChanged(false);
@@ -84,6 +93,8 @@ const RaceSelectView = ({}: IRaceSelectViewInput) => {
         setCurrentUnlockList(newUnlockList);
         setHasChanged(true);
     }
+
+
 
     const compendiumProps = {
         isExpanded: false,
@@ -173,7 +184,7 @@ const RaceSelectView = ({}: IRaceSelectViewInput) => {
 
 
                     <Typography sx={{ mt: 2 }} variant="body2" color="text.secondary">
-                        Unlocks Available: {currentSheet.getRacialAbilityTokens() - currentUnlockList.length} / {currentSheet.getRacialAbilityTokens()}
+                        Unlocks Used: {currentUnlockList.length} / {currentSheet.getRacialAbilityTokens()}
                     </Typography>
                 </Box>
 
@@ -222,17 +233,17 @@ const RaceSelectView = ({}: IRaceSelectViewInput) => {
 
             {/* Second row: Save / Cancel buttons */}
             <Box>
-                <TabSaveBar isChanged={hasChanged} submitCancel={handleCancel} submitSave={handleSave} />
+                <TabSaveBar isChanged={hasChanged} submitCancel={handleCancel} submitSave={handleSave} canSave={canSave} />
             </Box>
 
             {/* Third row: Ability Panels */}
-            <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 3 }}>
+            <Box sx={{ display: "grid", gridTemplateColumns: "3fr 3fr 2fr", gap: 3 }}>
                 {/* Race Abilities */}
                 <Box sx={scrollableSx}>
                     <Typography variant="h5" textAlign="center" sx={{ mb: 1 }}>{currentRace ? currentRace.raceName : "Race"} Abilities</Typography>
                     {currentRace && (
                         <>
-                            <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2, mb: 2 }}>
+                            <Box sx={{ display: "grid", gridTemplateColumns: "1fr", gap: 2, mb: 2 }}>
                                 {disambiguateCard([...RaceData.GetBaseRaceCards(currentRace.raceId, 1), ...RaceData.GetRaceRoleCards(currentRace.raceId, 1)], compendiumProps, {
                                     wrapper: (el, key) => <UnlockWrapper el={el} _id={key} unlockedByDefault unlockList={currentUnlockList} updateUnlockList={updateUnlockList}/>
                                 })}
@@ -244,7 +255,7 @@ const RaceSelectView = ({}: IRaceSelectViewInput) => {
                             <Divider sx={{ my: 1 }}/>
 
                             <Typography variant="h6" textAlign="center" sx={{ mb: 1 }}>Unlock Abilities</Typography>
-                            <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2 }}>
+                            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                                 {disambiguateCard([...RaceData.GetBaseRaceCards(currentRace.raceId, 2), ...RaceData.GetRaceRoleCards(currentRace.raceId, 2)], compendiumProps, {
                                     wrapper: (el, key) => <UnlockWrapper el={el} _id={key} unlockedByDefault={false} unlockList={currentUnlockList} updateUnlockList={updateUnlockList}/>
                                 })}
@@ -261,7 +272,7 @@ const RaceSelectView = ({}: IRaceSelectViewInput) => {
                     <Typography variant="h5" textAlign="center" sx={{ mb: 1 }}>{currentSubrace ? currentSubrace.subraceName : "Subrace"} Abilities</Typography>
                     {currentSubrace && (
                         <>
-                            <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2, mb: 2 }}>
+                            <Box sx={{ display: "grid", gridTemplateColumns: "1fr", gap: 2, mb: 2 }}>
                                 {disambiguateCard(RaceData.GetSubraceCards(currentSubrace.subraceId, 1), compendiumProps, {
                                     wrapper: (el, key) => <UnlockWrapper el={el} _id={key} unlockedByDefault unlockList={currentUnlockList} updateUnlockList={updateUnlockList}/>
                                 })}
@@ -273,7 +284,7 @@ const RaceSelectView = ({}: IRaceSelectViewInput) => {
                             <Divider sx={{ my: 1 }}/>
 
                             <Typography variant="h6" textAlign="center" sx={{ mb: 1 }}>Unlock Abilities</Typography>
-                            <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2 }}>
+                            <Box sx={{ display: "grid", gridTemplateColumns: "1fr", gap: 2 }}>
                                 {disambiguateCard(RaceData.GetSubraceCards(currentSubrace.subraceId, 2), compendiumProps, {
                                     wrapper: (el, key) => <UnlockWrapper el={el} _id={key} unlockedByDefault={false} unlockList={currentUnlockList} updateUnlockList={updateUnlockList}/>
                                 })}
@@ -284,6 +295,54 @@ const RaceSelectView = ({}: IRaceSelectViewInput) => {
                         </>
                     )}
                 </Box>
+
+                {/* Racial Overview */}
+                {
+                    currentRace ? (
+                        <Box sx={scrollableSx}>
+                            <Box>
+                                <Typography variant={"h5"}>{currentRace!.raceName} Overview</Typography>
+                                <Typography component="span" variant={"subtitle2"} sx={{pr: 1}}>
+                                    Roles:
+                                </Typography>
+                                {
+                                    currentRace.availableRoles.map((role, id) => {
+                                        return (
+                                            <Chip id={id.toString()} label={role} size={"small"} />
+                                        )
+                                    })
+                                }
+                                <Typography variant={"body2"} sx={{pr: 1}}>
+                                    {currentRace.raceDescription}
+                                </Typography>
+                                {
+                                    currentSubrace ? (
+                                        <Box>
+                                            <Typography variant={"h6"}>{currentSubrace.subraceName} Overview</Typography>
+                                            <Typography component="span" variant={"subtitle2"} sx={{pr: 1}}>
+                                                Additional Roles:
+                                            </Typography>
+                                            {
+                                                currentSubrace.subraceRoles.map((role, id) => {
+                                                    return (
+                                                        <Chip id={id.toString()} label={role} size={"small"} />
+                                                    )
+                                                })
+                                            }
+                                            <Typography variant={"body2"} sx={{pr: 1}}>
+                                                {currentSubrace.subraceDescription}
+                                            </Typography>
+                                        </Box>
+                                    ) :
+                                    <></>
+                                }
+
+
+                            </Box>
+                        </Box>
+                    ) : <></>
+                }
+
             </Box>
         </Box>
     ) : null;
