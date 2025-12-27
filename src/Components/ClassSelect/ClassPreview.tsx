@@ -53,9 +53,9 @@ const ClassPreview = ({classData, isEquipped, canEquip, sendBack, equipData, can
         rune: 0,
         sourcecraft: 0,
         research: 0,
-        transmutation: 0,
-        infusion: 0,
-        abjuration: 0
+        transduction: 0,
+        proxy: 0,
+        daemoncraft: 0
     }) => (event: React.MouseEvent) => {
         setDialogOpen(false);
 

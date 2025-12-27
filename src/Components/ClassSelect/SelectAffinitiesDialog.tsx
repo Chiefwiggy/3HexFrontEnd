@@ -43,9 +43,9 @@ const SelectAffinitiesDialog = ({
             rune: 0,
             sourcecraft: 0,
             research: 0,
-            transmutation: 0,
-            abjuration: 0,
-            infusion: 0,
+            transduction: 0,
+            daemoncraft: 0,
+            proxy: 0,
         })
         }
     }, [open]);
@@ -67,9 +67,9 @@ const SelectAffinitiesDialog = ({
             rune: 0,
             sourcecraft: 0,
             research: 0,
-            transmutation: 0,
-            abjuration: 0,
-            infusion: 0,
+            transduction: 0,
+            daemoncraft: 0,
+            proxy: 0,
         }
     )
 

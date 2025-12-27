@@ -181,9 +181,9 @@ export interface IAffinities {
     rune: number,
     sourcecraft: number,
     research: number,
-    transmutation: number,
-    abjuration: number,
-    infusion: number
+    transduction: number,
+    daemoncraft: number,
+    proxy: number
 }
 
 
@@ -209,9 +209,9 @@ export interface IAffinitiesArray<T> {
     rune: Array<T>,
     sourcecraft: Array<T>,
     research: Array<T>,
-    transmutation: Array<T>,
-    abjuration: Array<T>,
-    infusion: Array<T>
+    transduction: Array<T>,
+    daemoncraft: Array<T>,
+    proxy: Array<T>
 }
 
 export interface IPathKeys {

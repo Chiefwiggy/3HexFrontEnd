@@ -19,9 +19,9 @@ export const GetPathAndAffinitiesFromClassList = (classes: Array<IClassData>, fa
             rune: 0,
             sourcecraft: 0,
             research: 0,
-            transmutation: 0,
-            abjuration: 0,
-            infusion: 0,
+            transduction: 0,
+            daemoncraft: 0,
+            proxy: 0,
         }, ...fate?.affinities ?? {}}
         let currentPath: IPathKeys = {
             warrior: 0,
@@ -51,7 +51,7 @@ export const GetPathAndAffinitiesFromClassList = (classes: Array<IClassData>, fa
             commander: currentAffinities.leadership + currentAffinities.supply + currentAffinities.summoning,
             navigator: currentAffinities.swift + currentAffinities.riding + currentAffinities.adaptation,
             scholar: currentAffinities.rune + currentAffinities.research + currentAffinities.sourcecraft,
-            hacker: currentAffinities.abjuration + currentAffinities.transmutation + currentAffinities.infusion
+            hacker: currentAffinities.daemoncraft + currentAffinities.transduction + currentAffinities.proxy
         }
         return {
             path: currentPath,

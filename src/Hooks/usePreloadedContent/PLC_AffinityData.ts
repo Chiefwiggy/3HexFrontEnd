@@ -27,9 +27,9 @@ class PLC_AffinityData {
             rune: [],
             sourcecraft: [],
             research: [],
-            transmutation: [],
-            abjuration: [],
-            infusion: [],
+            transduction: [],
+            daemoncraft: [],
+            proxy: [],
         };
         this.affinityAbilities =  {
             nimble: [],
@@ -47,9 +47,9 @@ class PLC_AffinityData {
             rune: [],
             sourcecraft: [],
             research: [],
-            transmutation: [],
-            abjuration: [],
-            infusion: [],
+            transduction: [],
+            daemoncraft: [],
+            proxy: [],
         };
     }
 

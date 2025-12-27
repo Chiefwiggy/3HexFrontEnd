@@ -620,9 +620,9 @@ class CharacterSheet extends AbstractSheet {
             rune: 0,
             sourcecraft: 0,
             research: 0,
-            transmutation: 0,
-            abjuration: 0,
-            infusion: 0,
+            transduction: 0,
+            daemoncraft: 0,
+            proxy: 0,
         }
         this.currentPath = {
             warrior: 0,
@@ -841,9 +841,9 @@ class CharacterSheet extends AbstractSheet {
             rune: 0,
             sourcecraft: 0,
             research: 0,
-            transmutation: 0,
-            abjuration: 0,
-            infusion: 0,
+            transduction: 0,
+            daemoncraft: 0,
+            proxy: 0,
         }
         this.data.classes.forEach((val) => {
             Object.entries(val.affinities).forEach(([key, value]) => {
@@ -862,7 +862,7 @@ class CharacterSheet extends AbstractSheet {
             commander: this.currentAffinities.leadership + this.currentAffinities.supply + this.currentAffinities.summoning,
             navigator: this.currentAffinities.swift + this.currentAffinities.riding + this.currentAffinities.adaptation,
             scholar: this.currentAffinities.rune + this.currentAffinities.research + this.currentAffinities.sourcecraft,
-            hacker: this.currentAffinities.abjuration + this.currentAffinities.transmutation + this.currentAffinities.infusion
+            hacker: this.currentAffinities.daemoncraft + this.currentAffinities.transduction + this.currentAffinities.proxy
         }
     }
 

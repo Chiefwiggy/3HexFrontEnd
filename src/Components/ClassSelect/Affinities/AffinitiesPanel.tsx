@@ -35,7 +35,7 @@ const AffinitiesPanel = ({
             <PathLayout affData={affData} path={"commander"} affinities={["leadership", "supply", "summoning"]}/>
             <PathLayout affData={affData} path={"navigator"} affinities={["swift", "riding", "adaptation"]}/>
             <PathLayout affData={affData} path={"scholar"} affinities={["rune", "sourcecraft", "research"]}/>
-            <PathLayout affData={affData} path={"hacker"} affinities={["transmutation", "abjuration", "infusion"]}/>
+            <PathLayout affData={affData} path={"hacker"} affinities={["transduction", "daemoncraft", "proxy"]}/>
 
 
         </Box>
