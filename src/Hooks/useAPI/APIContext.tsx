@@ -11,6 +11,7 @@ import PreloadedConnection from "../../Connections/PreloadedConnection";
 import ImageLibraryConnection from "../../Connections/ImageLibraryConnection";
 import CardRequestConnection from "../../Connections/CardRequestConnection";
 import SourceConnection from "../../Connections/SourceConnection";
+import GadgetConnection from "../../Connections/GadgetConnection";
 
 export const APIContext = createContext<IAPIContext>({
     CharacterAPI: new CharacterConnection("", () => {
@@ -44,6 +45,9 @@ export const APIContext = createContext<IAPIContext>({
         return {}
     }),
     SourceAPI: new SourceConnection("", () => {
+        return {}
+    }),
+    GadgetAPI: new GadgetConnection("", () => {
         return {}
     })
 })

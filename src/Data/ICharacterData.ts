@@ -88,6 +88,7 @@ export interface ICharacterBaseData {
     temporarySources: Array<IPreparedSource>,
     knownDatachips: Array<string>,
     knownPackages: Array<string>,
+    knownGadgets: Array<IGadgetCharacterData>,
     skillPoints: ISkillPointObject,
     minionsOwned: Array<IMinionOwnedData>,
     settings: ISettingsData,
@@ -99,6 +100,11 @@ export interface ICharacterBaseData {
     developmentIds: Array<string>,
     __times_accessed: number,
     _id: string
+}
+
+export interface IGadgetCharacterData {
+    gadgetId: string,
+    isGadgetActive: boolean
 }
 
 export interface ICurrencyData {

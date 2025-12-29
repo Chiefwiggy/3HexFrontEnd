@@ -1,222 +1,345 @@
-import React, {SyntheticEvent, useEffect, useState} from 'react';
+import React, { SyntheticEvent, useEffect, useState } from "react";
 import {
     Alert,
     Autocomplete,
     Box,
-    Button,
-    capitalize,
+    Button, capitalize,
     Checkbox,
-    Chip, LinearProgress,
-    Paper,
+    Chip,
     TextField,
     Typography
 } from "@mui/material";
-import {clone} from "../../Utils/ObjectUtils";
-import {ISourceData} from "../../Data/ISourceData";
+import { CheckBox, CheckBoxOutlineBlank } from "@mui/icons-material";
+
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
 import usePreloadedContent from "../../Hooks/usePreloadedContent/usePreloadedContent";
-import {IDatachipData, IPackageData} from "../../Data/ChipsetData";
-import {CheckBox, CheckBoxOutlineBlank} from "@mui/icons-material";
-import {GetArcanotypeColor} from "../../Utils/CardColorUtils";
 import useUser from "../../Hooks/useUser/useUser";
+
+import { IDatachipData, IPackageData } from "../../Data/ChipsetData";
+import { IGadgetData } from "../../Data/IGadgetData";
+
 import DatachipInfo from "../Chipsets/DatachipInfo";
 import PackageWidget from "../Chipsets/PackageWidget";
-import VerticalLinearBar from "../Generic/VerticalLinearBar";
-import MemorySlotBar from "../Chipsets/MemorySlotBar";
+import PackageSlotBar from "../Chipsets/PackageSlotBar";
+import GadgetCard from "../Gadgets/GadgetCard";
+import {GoPackage} from "react-icons/go";
+import GadgetWrapper from "../Gadgets/GadgetWrapper";
 
-interface IFunctionsTabInput {
+/* ---------- Union type ---------- */
 
+export interface IGadgetDataPlusActive {
+    gadgetData: IGadgetData;
+    isGadgetActive: boolean
 }
 
-const ChipsetTab = ({}: IFunctionsTabInput) => {
+type ChipsetOption =
+    | { type: "package"; data: IPackageData }
+    | { type: "gadget"; data: IGadgetData };
 
-    const {currentSheet} = useCharacter();
+const ChipsetTab = () => {
 
-    const {userPermissions} = useUser();
-
-    const {DatachipData, PackageData} = usePreloadedContent();
-
-    const saveData = async() => {
-        if (currentSheet) {
-            setJustUpdated(true);
-            const newDatachips = characterDatachips.map(datachip => {
-                return datachip._id;
-            })
-            const newPackages = characterPackages.map(pkg => {
-                return pkg._id;
-            })
-            await currentSheet.SaveCharacterChipset(newDatachips, newPackages);
-            await currentSheet.ManualSetAllCards();
-
-        }
-    }
-
-    const cancelSaveData = () => {
-        if (currentSheet && PackageData && DatachipData) {
-            setJustUpdated(true);
-            setCharacterDatachips(DatachipData.GetDatachipsFromIdList(currentSheet.data.knownDatachips))
-            setCharacterPackages(PackageData.GetPackagesFromIdList(currentSheet.data.knownPackages));
-
-        }
-    }
-
-    useEffect(() => {
-        cancelSaveData();
-    }, [])
+    const { currentSheet, isReady } = useCharacter();
+    const { userPermissions } = useUser();
+    const { DatachipData, PackageData, GadgetData } = usePreloadedContent();
 
     const [justUpdated, setJustUpdated] = useState(true);
     const [showStatus, setShowStatus] = useState(false);
 
-    const [characterDatachips, setCharacterDatachips] = useState<Array<IDatachipData>>([]);
-    const [characterPackages, setCharacterPackages] = useState<Array<IPackageData>>([]);
+    const [characterDatachips, setCharacterDatachips] = useState<IDatachipData[]>([]);
+    const [characterPackages, setCharacterPackages] = useState<IPackageData[]>([]);
+    const [characterGadgets, setCharacterGadgets] = useState<Array<IGadgetDataPlusActive>>([]);
 
-    const handleAutocompleteDatachip = (event: SyntheticEvent, value: Array<IDatachipData>) => {
+    const [packageSlots, setPackageSlots] = useState<number>(0);
+
+    useEffect(() => {
+        if (currentSheet) {
+            console.log("NEW SHEETS")
+            setPackageSlots(currentSheet.getPackageSlots(characterDatachips[0]))
+            console.log(`WITH: ${currentSheet.getPackageSlots(characterDatachips[0])}`);
+        }
+
+    }, [isReady, currentSheet, characterDatachips]);
+
+    const isValidGadget = (
+        g: { gadgetData: IGadgetData | undefined; isGadgetActive: boolean }
+    ): g is IGadgetDataPlusActive => g.gadgetData !== undefined;
+
+    /* ---------- Init / Reset ---------- */
+
+    const cancelSaveData = () => {
+        if (!currentSheet) return;
+
+        setJustUpdated(true);
+        setCharacterDatachips(
+            DatachipData.GetDatachipsFromIdList(currentSheet.data.knownDatachips)
+        );
+        setCharacterPackages(
+            PackageData.GetPackagesFromIdList(currentSheet.data.knownPackages)
+        );
+
+        setCharacterGadgets(
+            currentSheet.data.knownGadgets.map(e => {
+                return {
+                    gadgetData: GadgetData.GetGadgetById(e.gadgetId),
+                    isGadgetActive: e.isGadgetActive
+                }
+            }).filter(isValidGadget)
+        );
+    };
+
+    useEffect(() => {
+        cancelSaveData();
+    }, []);
+
+    /* ---------- Save ---------- */
+
+    const saveData = async () => {
+        if (!currentSheet) return;
+
+        setJustUpdated(true);
+
+        await currentSheet.SaveCharacterChipset(
+            characterDatachips.map(dc => dc._id),
+            characterPackages.map(pkg => pkg._id),
+            characterGadgets.map(gad => {
+                return {
+                    gadgetId: gad.gadgetData._id,
+                    isGadgetActive: gad.isGadgetActive,
+                }
+            }),
+        );
+
+        await currentSheet.ManualSetAllCards();
+        await currentSheet.healthPingExecute(true);
+        setShowStatus(true);
+    };
+
+    const toggleGadgetActive = (gadgetId: string) => () => {
+        setCharacterGadgets(prev =>
+            prev.map(g =>
+                g.gadgetData._id === gadgetId
+                    ? { ...g, isGadgetActive: !g.isGadgetActive }
+                    : g
+            )
+
+        );
+        setJustUpdated(false);
+    };
+
+    /* ---------- Datachip Autocomplete ---------- */
+
+    const handleAutocompleteDatachip = (
+        event: SyntheticEvent,
+        value: IDatachipData[]
+    ) => {
         setJustUpdated(false);
         setCharacterDatachips(value);
-    }
+    };
 
-    const handleAutocompletePackages = (event: SyntheticEvent, value: Array<IPackageData>) => {
+    /* ---------- Combined Package + Gadget Autocomplete ---------- */
+
+    const combinedOptions: ChipsetOption[] = [
+        ...PackageData.GetPackageDataForUser(userPermissions).map(pkg => ({
+            type: "package" as const,
+            data: pkg
+        })),
+        ...GadgetData.GetGadgetDataForUser(userPermissions).map(gadget => ({
+            type: "gadget" as const,
+            data: gadget
+        }))
+    ];
+
+    const combinedValue: ChipsetOption[] = [
+        ...characterPackages.map(pkg => ({
+            type: "package" as const,
+            data: pkg
+        })),
+        ...characterGadgets.map(gadget => ({
+            type: "gadget" as const,
+            data: gadget.gadgetData
+        }))
+    ];
+
+    const isPackageOption = (
+        option: ChipsetOption
+    ): option is { type: "package"; data: IPackageData } =>
+        option.type === "package";
+
+    const isGadgetOption = (
+        option: ChipsetOption
+    ): option is { type: "gadget"; data: IGadgetData } =>
+        option.type === "gadget";
+
+    const handleAutocompletePackages = (
+        event: SyntheticEvent,
+        value: ChipsetOption[]
+    ) => {
         setJustUpdated(false);
-        setCharacterPackages(value);
-    }
 
-    return currentSheet ? (
+        setCharacterPackages(
+            value.filter(isPackageOption).map(v => v.data)
+        );
+
+        setCharacterGadgets(prev => {
+            const selectedGadgets = value
+                .filter(isGadgetOption)
+                .map(v => v.data);
+
+            return selectedGadgets.map(gadget => {
+                const existing = prev.find(
+                    g => g.gadgetData._id === gadget._id
+                );
+
+                return existing
+                    ? existing // preserve isGadgetActive
+                    : {
+                        gadgetData: gadget,
+                        isGadgetActive: false
+                    };
+            });
+        });
+    };
+
+    /* ---------- Render ---------- */
+
+    if (!currentSheet) return null;
+
+    return (
         <Box>
+            <Box sx={{ display: "flex", flexDirection: "row-reverse" }}>
+                <Button color="error" onClick={cancelSaveData} disabled={justUpdated}>
+                    Cancel
+                </Button>
+                <Button color="success" onClick={saveData} disabled={justUpdated}>
+                    Save
+                </Button>
+                <Alert
+                    severity="success"
+                    sx={{ transition: "opacity 1s ease-out", opacity: showStatus ? 1 : 0 }}
+                >
+                    Success!
+                </Alert>
+            </Box>
+
             <Box
                 sx={{
-                    display: 'flex',
-                    flexDirection: "row-reverse",
+                    display: "grid",
+                    gridTemplateColumns: "3fr 4fr",
+                    gap: 2
                 }}
             >
+                {/* Datachips */}
+                <Autocomplete
+                    multiple
+                    filterSelectedOptions
+                    value={characterDatachips}
+                    options={DatachipData.GetDatachipDataForUser(userPermissions)}
+                    getOptionLabel={(o) => o.datachipName}
+                    isOptionEqualToValue={(o, v) => o._id === v._id}
+                    onChange={handleAutocompleteDatachip}
+                    renderInput={(params) => (
+                        <TextField {...params} placeholder="Datachips" />
+                    )}
+                />
 
-                <Button onClick={cancelSaveData} color={"error"} disabled={justUpdated}> Cancel </Button>
-                <Button onClick={saveData} color={"success"} disabled={justUpdated}> Save </Button>
-
-                <Alert severity="success" sx={{
-                    transition: 'opacity 1s ease-out',
-                    opacity: showStatus ? 1 : 0
-                }}> Success! </Alert>
+                {/* Packages + Gadgets */}
+                <Autocomplete
+                    multiple
+                    filterSelectedOptions
+                    options={combinedOptions}
+                    value={combinedValue}
+                    onChange={handleAutocompletePackages}
+                    getOptionLabel={(option) =>
+                        option.type === "package"
+                            ? option.data.packageName
+                            : option.data.gadgetName
+                    }
+                    isOptionEqualToValue={(o, v) =>
+                        o.type === v.type && o.data._id === v.data._id
+                    }
+                    renderInput={(params) => (
+                        <TextField {...params} placeholder="Packages & Gadgets" />
+                    )}
+                    renderOption={(props, option, { selected }) => (
+                        <li {...props} key={`${option.type}-${option.data._id}`}>
+                            <Checkbox
+                                icon={<CheckBoxOutlineBlank fontSize="small" />}
+                                checkedIcon={<CheckBox fontSize="small" />}
+                                style={{ marginRight: 8 }}
+                                checked={selected}
+                            />
+                            <Typography sx={{ flexGrow: 1 }}>
+                                {option.type === "package"
+                                    ? option.data.packageName
+                                    : option.data.gadgetName}
+                            </Typography>
+                            <Chip
+                                label={
+                                    capitalize(option.type)
+                                }
+                            />
+                            <Chip
+                                label={
+                                    option.data.packageSlots
+                                }
+                                icon={<GoPackage />}
+                                sx={{
+                                    "& .MuiChip-icon": {
+                                        marginLeft: "6px"
+                                    }
+                                }}
+                            />
+                        </li>
+                    )}
+                    renderTags={(value, getTagProps) =>
+                        value.map((option, index) => (
+                            <Chip
+                                {...getTagProps({ index })}
+                                key={`${option.type}-${option.data._id}`}
+                                label={
+                                    option.type === "package"
+                                        ? option.data.packageName
+                                        : option.data.gadgetName
+                                }
+                            />
+                        ))
+                    }
+                />
             </Box>
-            <Box>
-                <Box
-                    sx={{
-                        display: "grid",
-                        gridTemplateColumns: "3fr 4fr",
-                        gridGap: "20px"
-                    }}
-                >
-                    <Autocomplete
-                        multiple
-                        filterSelectedOptions={true}
-                        onChange={handleAutocompleteDatachip}
-                        renderInput={(params) => {
-                            return (
-                                <TextField {...params} label={""} placeholder={"Datachips"} />
-                            )
-                        }}
-                        options={DatachipData.GetDatachipDataForUser(userPermissions)}
-                        value={characterDatachips}
-                        getOptionLabel={(option) => option.datachipName}
-                        isOptionEqualToValue={(option, value) => option._id == value._id}
-                        renderOption={(props: any, option, {selected}) => {
-                            return (
-                                <li {...props} key={option._id}>
-                                    <Checkbox
-                                        icon={<CheckBoxOutlineBlank fontSize={"small"}/>}
-                                        checkedIcon={<CheckBox fontSize={"small"}/>}
-                                        style={{marginRight: 8}}
-                                        checked={selected}
-                                    />
-                                    <Typography sx={{
-                                        flexGrow: 1
-                                    }}>
-                                        {option.datachipName}
-                                    </Typography>
-                                </li>
-                            );
-                        }}
-                        renderTags={(tagValue, getTagProps) => {
-                            return tagValue.map((option, index) => (
-                                <Chip {...getTagProps({index})} key={option._id} label={option.datachipName}/>
-                            ))
-                        }}
-                    />
-                    <Autocomplete
-                        multiple
-                        filterSelectedOptions={true}
-                        onChange={handleAutocompletePackages}
-                        renderInput={(params) => {
-                            return (
-                                <TextField {...params} label={""} placeholder={"Packages"} />
-                            )
-                        }}
-                        options={PackageData.GetPackageDataForUser(userPermissions)}
-                        value={characterPackages}
-                        getOptionLabel={(option) => option.packageName}
-                        isOptionEqualToValue={(option, value) => option._id == value._id}
-                        renderOption={(props: any, option, {selected}) => {
-                            return (
-                                <li {...props} key={option._id}>
-                                    <Checkbox
-                                        icon={<CheckBoxOutlineBlank fontSize={"small"}/>}
-                                        checkedIcon={<CheckBox fontSize={"small"}/>}
-                                        style={{marginRight: 8}}
-                                        checked={selected}
-                                    />
-                                    <Typography sx={{
-                                        flexGrow: 1
-                                    }}>
-                                        {option.packageName}
-                                    </Typography>
-                                </li>
-                            );
-                        }}
-                        renderTags={(tagValue, getTagProps) => {
-                            return tagValue.map((option, index) => (
-                                <Chip {...getTagProps({index})} key={option._id} label={option.packageName}/>
-                            ))
-                        }}
-                    />
 
+            <Box
+                sx={{
+                    marginTop: 2,
+                    display: "grid",
+                    gridTemplateColumns: "10fr 1fr 14fr",
+                    gap: 2
+                }}
+            >
+                <Box>
+                    {characterDatachips.map((dc, i) => (
+                        <DatachipInfo key={dc._id} datachip={dc} index={i} />
+                    ))}
                 </Box>
-                <Box
-                    sx={{
-                        marginTop: "12px",
-                        display: "grid",
-                        gridTemplateColumns: "10fr 1fr 14fr",
-                        gridGap: "20px"
-                    }}
-                >
-                    <Box
-                        sx={{
-                            display: "flex",
-                            flexDirection: "column"
-                        }}
-                    >
-                        {
-                            characterDatachips.map((option, index) => {
-                                return (
-                                    <DatachipInfo datachip={option} index={index} key={index} />
-                                )
-                            })
-                        }
-                    </Box>
-                    <MemorySlotBar memorySlotTotal={currentSheet.getMemorySlots()} memorySlotsUsed={characterPackages.reduce((pv, cv) => {
-                        return pv + cv.memorySlots
-                    }, 0)}/>
-                    <Box>
-                        {
-                            characterPackages.map((option, index) => {
-                                return (
-                                    <PackageWidget packageData={option} key={index} />
-                                )
-                            })
-                        }
-                    </Box>
+
+                <PackageSlotBar
+                    packageSlotTotal={packageSlots}
+                    packageSlotsUsed={[...characterPackages, ...characterGadgets.map(e => e.gadgetData)].reduce(
+                        (pv, cv) => pv + cv.packageSlots,
+                        0
+                    )}
+                />
+
+                <Box>
+                    {characterPackages.map(pkg => (
+                        <PackageWidget key={pkg._id} packageData={pkg} />
+                    ))}
+                    {characterGadgets.map(gadget => (
+                        <GadgetWrapper gadgetDataPA={gadget} key={gadget.gadgetData._id} toggleGadgetActive={toggleGadgetActive(gadget.gadgetData._id)} />
+                    ))}
                 </Box>
             </Box>
         </Box>
-    ) : <></>
-}
+    );
+};
 
-export default ChipsetTab
+export default ChipsetTab;

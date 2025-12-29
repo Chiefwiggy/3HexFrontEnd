@@ -19,7 +19,7 @@ const PackageWidget = ({packageData}: IPackageWidgetInput) => {
             }}
         >
             <Typography variant="h5" component="div">{packageData.packageName}</Typography>
-            <Typography>Slots Used: {packageData.memorySlots}</Typography>
+            <Typography>Slots Used: {packageData.packageSlots}</Typography>
             <HackCardPreviewList hackList={packageData.builtinHacks} />
         </Paper>
     )

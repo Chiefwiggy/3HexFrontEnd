@@ -114,12 +114,12 @@ const RaceSelectView = ({}: IRaceSelectViewInput) => {
         '&::-webkit-scrollbar': { width: '8px' },
         '&::-webkit-scrollbar-track': { background: 'rgba(255,255,255,0.02)', borderRadius: '4px' },
         '&::-webkit-scrollbar-thumb': { backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: '4px' },
-        scrollbarWidth: 'thin' as 'thin',
+        scrollbarWidth: 'thin',
         scrollbarColor: 'rgba(255,255,255,0.2) rgba(255,255,255,0.02)'
     };
 
     const availableCustomVulnerabilities: UDamageSubtype[] = currentSubrace
-        ? VDamageSubtypes.filter(dt => dt !== "none" && !currentSubrace.innateVulnerabilities?.includes(dt))
+        ? VDamageSubtypes.filter(dt => dt !== "none" && !currentSubrace.innateVulnerabilities?.includes(dt) && !currentSubrace.innateImmunities?.includes(dt))
         : VDamageSubtypes.filter(dt => dt !== "none");
 
     return currentSheet && isLoaded ? (

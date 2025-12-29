@@ -43,6 +43,8 @@ const AttributeView = ({pivot}: IAttributeViewInput) => {
     const [progressTechnik, setProgressTechnik] = useState(99)
     const [currentTechnik, setCurrentTechnik] = useState(0);
     const [currentMaxTechnik, setCurrentMaxTechnik] = useState(0);
+    const [currentLockedTechnik, setCurrentLockedTechnik] = useState(0);
+    const [progressLockedTechnik, setProgressLockedTechnik] = useState(99);
 
     const [progressOrders, setProgressOrders] = useState(99)
     const [currentOrders, setCurrentOrders] = useState(0);
@@ -76,6 +78,8 @@ const AttributeView = ({pivot}: IAttributeViewInput) => {
             setProgressTechnik(Math.min(100, 100 * currentSheet.getBarCurrent("technik") / currentSheet.getMaxBar("technik")));
             setCurrentTechnik(currentSheet.getBarCurrent("technik"));
             setCurrentMaxTechnik(currentSheet.getMaxBar("technik"));
+            setCurrentLockedTechnik(currentSheet.getLockedTechnik());
+            setProgressLockedTechnik(Math.min(100, 100 * currentSheet.getLockedTechnik() / currentSheet.getMaxBar("technik")));
             setProgressOrders(Math.min(100, 100 * currentSheet.getBarCurrent("orders") / currentSheet.getMaxBar("orders")));
             setCurrentOrders(currentSheet.getBarCurrent("orders"));
             setCurrentMaxOrders(currentSheet.getMaxBar("orders"));
@@ -135,7 +139,7 @@ const AttributeView = ({pivot}: IAttributeViewInput) => {
                 }
                 {
                     currentMaxTechnik > 0 ?
-                        <AttributeBar barName={"Technik"} barColor={"technik"} healFunction={handleHealAndUse(true)} damageFunction={handleDamage} takeFunction={handleHealAndUse(false)} currentAttr={currentTechnik} currentMaxAttr={currentMaxTechnik} progress={progressTechnik} />
+                        <AttributeBar barName={"Technik"} barColor={"technik"} healFunction={handleHealAndUse(true)} damageFunction={handleDamage} takeFunction={handleHealAndUse(false)} currentAttr={currentTechnik} currentMaxAttr={currentMaxTechnik} progress={progressTechnik} progressLocked={progressLockedTechnik} currentLocked={currentLockedTechnik}/>
                         :
                         <></>
                 }

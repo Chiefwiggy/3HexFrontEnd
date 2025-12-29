@@ -136,8 +136,38 @@ export const templates: Record<string, string> = {
     "prerequisites": [],
     "effects": [],
     "handedness": 1
-}`
-    ,
+}`,
+    "Gadget": `{
+  "gadgetName": "[GADGET_NAME]",
+  "gadgetActionType": "passive",
+  "gadgetType": "equipment",
+  "packageSlots": 1,
+  "technikCost": 20,
+  "surgeCost": 3,
+  "baseHit": 10,
+  "basePower": 10,
+  "potency": 2.0,
+  "damageType": "magical",
+  "damageSubtype": "shock",
+  "effects": [
+    {
+      "text": "This gadget has this effect",
+      "icon": {
+        "emblem": "info",
+        "text": ""
+      }
+    }
+  ],
+  "prerequisites": [
+    {
+      "prerequisiteType": "attribute",
+      "skill": "knowledge",
+      "level": 10
+    }
+  ],
+  "bonuses": {},
+  "unlocks": {}
+}`,
     "Weapon - Form": `{
         "cardName": "[SKILL_NAME]",
         "cardType": "weapon",

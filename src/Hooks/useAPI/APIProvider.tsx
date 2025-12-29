@@ -13,6 +13,7 @@ import PreloadedConnection from "../../Connections/PreloadedConnection";
 import ImageLibraryConnection from "../../Connections/ImageLibraryConnection";
 import CardRequestConnection from "../../Connections/CardRequestConnection";
 import SourceConnection from "../../Connections/SourceConnection";
+import GadgetConnection from "../../Connections/GadgetConnection";
 
 interface IAPIProviderInput {
     children: any
@@ -29,7 +30,8 @@ export interface IAPIContext {
     PreloadedAPI: PreloadedConnection,
     ImageLibraryAPI: ImageLibraryConnection,
     SourceAPI: SourceConnection,
-    CardRequestAPI: CardRequestConnection
+    CardRequestAPI: CardRequestConnection,
+    GadgetAPI: GadgetConnection,
 }
 
 const APIProvider = ({children}: IAPIProviderInput) => {
@@ -68,6 +70,8 @@ const APIProvider = ({children}: IAPIProviderInput) => {
 
     const [SourceAPI, setSourceAPI] = useState<SourceConnection>(new SourceConnection(apiURL, GetAPIConfig));
 
+    const [GadgetAPI, setGadgetAPI] = useState<GadgetConnection>(new GadgetConnection(apiURL, GetAPIConfig));
+
     return (
         <APIContext.Provider value={{
             CharacterAPI,
@@ -80,7 +84,8 @@ const APIProvider = ({children}: IAPIProviderInput) => {
             PreloadedAPI,
             ImageLibraryAPI,
             CardRequestAPI,
-            SourceAPI
+            SourceAPI,
+            GadgetAPI
         }}>
             {children}
         </APIContext.Provider>

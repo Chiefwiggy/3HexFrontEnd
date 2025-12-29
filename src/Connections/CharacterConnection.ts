@@ -9,7 +9,7 @@ import {
     IEnchantmentData,
     IPreparedSource,
     IConsumablePlayerData,
-    ISettingsData, ICalculatedHack, ICurrencyData
+    ISettingsData, ICalculatedHack, ICurrencyData, IGadgetCharacterData
 } from "../Data/ICharacterData";
 import Axios, { AxiosRequestConfig } from 'axios'
 import {IBaseArmorData} from "../Data/IArmorData";
@@ -192,10 +192,11 @@ class CharacterConnection {
     }
 
 
-    public async UpdateChipset(charID: string, datachips: Array<string>, packages: Array<string>) {
+    public async UpdateChipset(charID: string, datachips: Array<string>, packages: Array<string>, gadgets: Array<IGadgetCharacterData>) {
         await Axios.put(this.GetRouteURL(`update/${charID}`), {
             knownDatachips: datachips,
             knownPackages: packages,
+            knownGadgets: gadgets,
             currentHack: null
         }, this._getConfig()).then((resp) => {
             console.log(resp);

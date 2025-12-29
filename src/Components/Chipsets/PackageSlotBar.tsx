@@ -2,12 +2,12 @@ import React from 'react';
 import {Box, Paper, Typography} from "@mui/material";
 import VerticalLinearBar from "../Generic/VerticalLinearBar";
 
-interface IMemorySlotBarInput {
-    memorySlotTotal: number,
-    memorySlotsUsed: number
+interface IPackageSlotBarInput {
+    packageSlotTotal: number,
+    packageSlotsUsed: number
 }
 
-const MemorySlotBar = ({memorySlotTotal, memorySlotsUsed}: IMemorySlotBarInput) => {
+const PackageSlotBar = ({packageSlotTotal, packageSlotsUsed}: IPackageSlotBarInput) => {
     return (
         <Paper elevation={0}
             sx={{
@@ -17,7 +17,7 @@ const MemorySlotBar = ({memorySlotTotal, memorySlotsUsed}: IMemorySlotBarInput) 
         >
             <Typography variant="body2" color={"textSecondary"} textAlign={"center"}>PKG Slots</Typography>
             <Box position="relative" width="10px" height="100%" paddingLeft={"8px"}>
-                <VerticalLinearBar variant={"determinate"} value={(memorySlotsUsed / memorySlotTotal) * 100} color={memorySlotsUsed > memorySlotTotal ?  "error" : "secondary"} sxProps={{
+                <VerticalLinearBar variant={"determinate"} value={(packageSlotsUsed / packageSlotTotal) * 100} color={packageSlotsUsed > packageSlotTotal ?  "error" : "secondary"} sxProps={{
                     width: "30px"
                 }}/>
                 <Box
@@ -33,7 +33,7 @@ const MemorySlotBar = ({memorySlotTotal, memorySlotsUsed}: IMemorySlotBarInput) 
                         paddingLeft: "8px",
                     }}
                 >
-                    {[...Array(memorySlotTotal+1)].map((_, i) => (
+                    {[...Array(packageSlotTotal+1)].map((_, i) => (
                         <Box
                             key={i}
                             sx={{
@@ -50,4 +50,4 @@ const MemorySlotBar = ({memorySlotTotal, memorySlotsUsed}: IMemorySlotBarInput) 
     )
 }
 
-export default MemorySlotBar
+export default PackageSlotBar

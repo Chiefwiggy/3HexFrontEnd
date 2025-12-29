@@ -6,7 +6,7 @@ import {UStat} from "../Utils/Shorthand";
 export interface IPackageData {
     _id: string,
     packageName: string,
-    memorySlots: number,
+    packageSlots: number,
     builtinHacks: Array<IHackModifierCardData>,
     prerequisites: Array<IPrerequisite>,
     visibility: string

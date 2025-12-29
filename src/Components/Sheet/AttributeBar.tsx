@@ -35,6 +35,8 @@ interface IAttributeBarInput {
     currentAttr: number,
     currentMaxAttr: number,
     progress: number,
+    currentLocked?: number,
+    progressLocked?: number,
     isSmall?: boolean
 }
 
@@ -54,6 +56,8 @@ const AttributeBar = ({
       currentMaxAttr,
       currentAttr,
       progress,
+    currentLocked = 0,
+                          progressLocked = 0,
       isSmall=false
 }: IAttributeBarInput) => {
 
@@ -180,6 +184,29 @@ const AttributeBar = ({
                                 opacity: 0.25
                             }}
                         />
+
+                    </Box>
+                    <Box
+                        sx={{
+                            top: 0,
+                            left: 0,
+                            bottom: 0,
+                            right: 0,
+                            position: 'absolute',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <CircularProgress
+                            value={-progressLocked}
+                            variant="determinate"
+                            size={isSmall ? 50 : 80}
+                            thickness={isSmall ? 5 : 6}
+                            sx={{
+                                color: "red"
+                            }}
+                        />
                     </Box>
                     <CircularProgress
                         value={progress}
@@ -188,6 +215,7 @@ const AttributeBar = ({
                         thickness={isSmall ? 5 : 6}
                         color={barColor}
                     />
+
                     <Box
                         sx={{
                             top: 0,
@@ -293,13 +321,38 @@ const AttributeBar = ({
             >
                 <Typography variant={isSmall ? "body1" : "h6"} component="div">{barName}</Typography>
 
-                <Typography sx={
-                    isSmall ?
+                <Box
+                    component={"span"}
+                    sx={{
+                        display: "flex",
+                        gap: "4px"
+                    }}
+                >
+                    <Typography
+
+                        sx={
+                            isSmall ?
+                                {
+                                    fontSize: "14px"
+                                } : {}
+                        }>
+                        {currentAttr} / {currentMaxAttr - currentLocked}
+                    </Typography>
                     {
-                        fontSize: "14px"
-                    } : {}
-                }>
-                    {currentAttr} / {currentMaxAttr} </Typography>
+                        currentLocked > 0 ?
+                            <Typography
+                                sx={{
+                                    color: "darkgray"
+                                }}
+                            >
+                                ({currentMaxAttr})
+                            </Typography>
+                            :
+                            <></>
+                    }
+
+                </Box>
+
             </Box>
 
             <ChangeBarDataDialog

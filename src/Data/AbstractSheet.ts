@@ -499,6 +499,9 @@ abstract class AbstractSheet {
     public getHackSet(): number {
         return 0;
     }
+    public getGadgetHit(): number {
+        return 0;
+    }
     public isUnlocked(unlockType: string) {
         return false;
     }
@@ -529,6 +532,19 @@ abstract class AbstractSheet {
             case "orders":
                 return this.getMaxOrders();
         }
+    }
+
+    public getLockedBar(bar: AttributeBarType) {
+        switch(bar) {
+            case "technik":
+                return this.getLockedTechnik()
+            default:
+                return 0;
+        }
+    }
+
+    public getLockedTechnik(): number {
+        return 0;
     }
 
     public getBarCurrent(bar: AttributeBarType) {
@@ -599,7 +615,7 @@ abstract class AbstractSheet {
     public healCharacter(bar: AttributeBarType, amount: number, doPing = true) {
         if (amount > 0) {
             console.log(this.getBarCurrent(bar) + amount, this.getMaxBar(bar))
-             this.setCurrentBar(bar, Math.min(this.getBarCurrent(bar) + amount, this.getMaxBar(bar)))
+             this.setCurrentBar(bar, Math.min(this.getBarCurrent(bar) + amount, this.getMaxBar(bar) - this.getLockedBar(bar)))
              if (doPing) {
                  this._hping();
              }

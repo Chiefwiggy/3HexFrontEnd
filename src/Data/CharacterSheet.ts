@@ -4,7 +4,7 @@ import {
     ICalculatedWeapon,
     ICharacterBaseData, ICharacterStats, IClassData, IPreparedCard, IPreparedSource,
     ISkillPointObject,
-    UStance, ICalculatedHack, ICurrencyData
+    UStance, ICalculatedHack, ICurrencyData, IGadgetCharacterData
 } from "./ICharacterData";
 import {getSkillFormat, UStat} from "../Utils/Shorthand";
 import {StatChain} from "../Utils/GetFinalSpellData";
@@ -48,6 +48,7 @@ import {IDowntimePlayerData} from "./IDowntime";
 import {number, string} from "yup";
 import {UArcanotype} from "./ISourceData";
 import HackCardCalculator from "./Card Calculators/HackCardCalculator";
+import {IDatachipData} from "./ChipsetData";
 
 export type AttributeBarType = "tether" | "stamina" | "health" | "technik" | "orders"
 export type DamageType = "physical" | "magical" | "raw" | "resistant"
@@ -119,6 +120,8 @@ class CharacterSheet extends AbstractSheet {
     private _resistances: Array<UDamageSubtype> | null = null;
     private _immunities: Array<UDamageSubtype> | null = null
 
+    private _primaryDatachip: IDatachipData | null | undefined = null
+
 
 
 
@@ -172,6 +175,11 @@ class CharacterSheet extends AbstractSheet {
         return this.commanderCards.filter(e => this.data.preparedCommanderCards.includes(e._id));
     }
 
+    public getPreparedGadgets = () => {
+        const filteredList = this.data.knownGadgets.filter(e => e.isGadgetActive).map(e => e.gadgetId)
+        return this.preloadedData.GadgetData.GetGadgetsFromIdList(filteredList)
+    }
+
     public setDieColor = async(dieColorId: string) => {
         this.data.settings.dieColorId = dieColorId;
         await this.API.CharacterAPI.UpdateSettings(this.data._id, {...this.data.settings, dieColorId})
@@ -217,15 +225,37 @@ class CharacterSheet extends AbstractSheet {
         return 1 + this.getAbilityBonuses("maxOrders") + Math.floor(this.getStat("mind") / 5)
     }
 
+    public getPrimaryDatachip = () => {
+        if (this._primaryDatachip === null) {
+            let dcs = this.preloadedData.DatachipData.GetDatachipsFromIdList(this.data.knownDatachips)
+            if (dcs.length > 0) {
+                this._primaryDatachip = dcs[0]
+            } else {
+                this._primaryDatachip = undefined
+            }
+        }
+        return this._primaryDatachip
+    }
+
     public getMaxTechnik(): number {
-        const datachips = this.preloadedData.DatachipData.GetDatachipsFromIdList(this.data.knownDatachips)
+        const pdc = this.getPrimaryDatachip()
+
         let baseTechnik = 0;
-        if (datachips.length > 0) {
-            const pdc = datachips[0];
+        if (pdc) {
             baseTechnik = pdc.baseTechnikCapacity + Math.floor((pdc.primaryTechnikScaling * this.getStat(pdc.primaryTechnikStat)) + Math.floor((pdc.secondaryTechnikScaling * this.getStat(pdc.secondaryTechnikStat))));
         }
-        console.log(baseTechnik);
-        return Math.floor(baseTechnik + this.getAbilityBonuses("maxTechnik"))
+        const finalTechnik = Math.floor(baseTechnik + this.getAbilityBonuses("maxTechnik"))
+
+        return finalTechnik
+    }
+
+    public getLockedTechnik() {
+        const activeGadgets = this.getPreparedGadgets()
+        const activeReduction = activeGadgets.reduce((pv, cv) => {
+            return pv + cv.technikCost
+        }, 0)
+
+        return activeReduction
     }
 
     public areAllCardsPrepared = (data: Array<ICommonCardData|null>): boolean => {
@@ -277,7 +307,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getAbilityBonuses = (bonusType: string) => {
-        const ab = this.allAbilities.reduce((pv, cv) => {
+        const ab = [...this.allAbilities, ...this.getPreparedGadgets()].reduce((pv, cv) => {
             try {
                 const strSplit = bonusType.split(".");
                 let ability: any = cv.bonuses;
@@ -300,7 +330,7 @@ class CharacterSheet extends AbstractSheet {
     public isUnlocked = (unlockType: string) => {
 
         try {
-            return [...this.allAbilities, ...this.getPreparedCommanderCards()].reduce((pv, cv) => {
+            return [...this.allAbilities, ...this.getPreparedCommanderCards(), ...this.getPreparedGadgets()].reduce((pv, cv) => {
                 if (pv) return pv;
                 const strSplit = unlockType.split(".");
                 let ability: any = cv.unlocks;
@@ -911,15 +941,15 @@ class CharacterSheet extends AbstractSheet {
         return 3 + Math.floor(this.getStat("knowledge") * 0.5) + this.getAbilityBonuses("cardSlots");
     }
 
-    public getMemorySlots(): number {
-        if (this.data.knownDatachips.length == 0) {
-            return 0;
+    public getPackageSlots(primaryDatachip: IDatachipData | undefined): number {
+        if (primaryDatachip) {
+            return 1 + Math.floor(
+                Math.floor(this.getStat(primaryDatachip.primaryTechnikStat) * primaryDatachip.primaryTechnikScaling / 4) +
+                Math.floor(this.getStat(primaryDatachip.secondaryTechnikStat) * primaryDatachip.secondaryTechnikScaling / 4)
+            ) + this.getAbilityBonuses("packageSlots") + this.getAbilityBonuses("packageSlots");
         }
-        const primaryDatachip  = this.preloadedData.DatachipData.GetDatachipsFromIdList(this.data.knownDatachips)[0]
-        return 1 + Math.floor(
-            Math.floor(this.getStat(primaryDatachip.primaryTechnikStat) * primaryDatachip.primaryTechnikScaling / 4) +
-            Math.floor(this.getStat(primaryDatachip.secondaryTechnikStat) * primaryDatachip.secondaryTechnikScaling / 4)
-        ) + this.getAbilityBonuses("memorySlots") + this.getAbilityBonuses("packageSlots");
+        return 0;
+
     }
 
     public getBaseCardSlots(): number {
@@ -1117,7 +1147,19 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getHackSet(): number {
-        return this.getStat("knowledge") * 3 + this.getStat("presence")
+        const pdc = this.getPrimaryDatachip()
+        if (pdc) {
+            return this.getStat(pdc.primaryTechnikStat) * 2 + this.getStat(pdc.secondaryTechnikStat) * 2
+        }
+        return 0;
+    }
+
+    public getGadgetHit(): number {
+        const pdc = this.getPrimaryDatachip()
+        if (pdc) {
+            return this.getStat(pdc.primaryTechnikStat) + this.getStat(pdc.secondaryTechnikStat) + this.getStat("awareness")
+        }
+        return 0;
     }
 
     public getSetStat(): number {
@@ -1184,11 +1226,12 @@ class CharacterSheet extends AbstractSheet {
         this.manualCharPing()
     }
 
-    public async SaveCharacterChipset(datachips: Array<string>, packages: Array<string>) {
+    public async SaveCharacterChipset(datachips: Array<string>, packages: Array<string>, gadgets: Array<IGadgetCharacterData>) {
         this.data.knownDatachips = datachips;
         this.data.knownPackages = packages;
+        this.data.knownGadgets = gadgets
         this.data.currentHack = null
-        await this.API.CharacterAPI.UpdateChipset(this.data._id, datachips, packages);
+        await this.API.CharacterAPI.UpdateChipset(this.data._id, datachips, packages, gadgets);
         this.manualCharPing();
         this._hping();
     }

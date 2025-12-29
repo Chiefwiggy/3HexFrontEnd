@@ -26,24 +26,38 @@ import HackProtocolCard from "../Components/Cards/HackProtocolCard";
 import HackModifierCard from "../Components/Cards/HackModifierCard";
 import {IAbility} from "../Data/IAbilities";
 import AbilityItem from "../Components/Abilities/AbilityItem";
+import {IGadgetData} from "../Data/IGadgetData";
+import GadgetCard from "../Components/Gadgets/GadgetCard";
 
 type DisambiguateOptions = {
     wrapper?: (element: JSX.Element, key: string) => JSX.Element;
 };
 
 export const disambiguateCard = (
-    allCards: Array<ICommonCardData | IAbility>,
+    allCards: Array<ICommonCardData | IAbility | IGadgetData>,
     compendiumProps: object,
     options: DisambiguateOptions = {}
 ): JSX.Element[] => {
     const { wrapper = (el, key) => <Box key={key}>{el}</Box> } = options;
 
     return allCards.map((card) => {
-        const key = card._id;
+        const key =
+            card._id ??
+            ("abilityName" in card && card.abilityName) ??
+            ("gadgetName" in card && card.gadgetName) ??
+            (card as ICommonCardData).cardName ??
+            crypto.randomUUID();
 
         if ("abilityName" in card) {
             return wrapper(
                 <AbilityItem abilityData={card as IAbility} {...compendiumProps} />,
+                key
+            )
+        }
+
+        if ("gadgetName" in card) {
+            return wrapper(
+                <GadgetCard gadgetData={card as IGadgetData} {...compendiumProps} />,
                 key
             )
         }

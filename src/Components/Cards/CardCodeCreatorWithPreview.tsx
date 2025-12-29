@@ -21,6 +21,7 @@ import SafeWrapper from "../../Utils/SafeWrapper";
 import useUser from "../../Hooks/useUser/useUser";
 import useSnackbar from "../../Hooks/useSnackbar/useSnackbar";
 import {IAbility} from "../../Data/IAbilities";
+import {IGadgetData} from "../../Data/IGadgetData";
 
 function validateCardData(obj: any): { valid: boolean; missing?: string[] } {
     const commonCardFields: Array<keyof ICommonCardData> = [
@@ -38,6 +39,14 @@ function validateCardData(obj: any): { valid: boolean; missing?: string[] } {
         "prerequisites"
     ];
 
+    const gadgetCardFields = [
+        "gadgetName",
+        "gadgetActionType",
+        "gadgetType",
+        "technikCost",
+        "surgeCost"
+    ]
+
     const missingCommon = commonCardFields.filter(
         (key) => obj[key] === undefined
     );
@@ -54,6 +63,14 @@ function validateCardData(obj: any): { valid: boolean; missing?: string[] } {
         return { valid: true };
     }
 
+    const missingGadget = gadgetCardFields.filter(
+        (key) => obj[key] === undefined
+    )
+
+    if (missingGadget.length === 0) {
+        return {valid: true}
+    }
+
     // Both schemas failed — return missing from the original schema
     return {
         valid: false,
@@ -65,7 +82,7 @@ function validateCardData(obj: any): { valid: boolean; missing?: string[] } {
 const CardCodeCreatorWithPreview: React.FC = () => {
     const [selectedTemplate, setSelectedTemplate] = useState<string>("Commander Card");
     const [jsonInput, setJsonInput] = useState<string>(templates["Commander Card"]);
-    const [parsedData, setParsedData] = useState<ICommonCardData | IAbility | null>(() => {
+    const [parsedData, setParsedData] = useState<ICommonCardData | IAbility | IGadgetData | null>(() => {
         try {
             return JSON.parse(templates["Commander Card"]);
         } catch {
@@ -77,7 +94,7 @@ const CardCodeCreatorWithPreview: React.FC = () => {
     const [loadedId, setLoadedId] = useState<string>("")
     const [errorMessage, setErrorMessage] = useState<string>("");
 
-    const { CardAPI, AbilityAPI, CardRequestAPI } = useAPI();
+    const { CardAPI, AbilityAPI, GadgetAPI, CardRequestAPI } = useAPI();
     const { userPermissions } = useUser()
     const { SendToSnackbar } = useSnackbar()
 
@@ -205,7 +222,7 @@ const CardCodeCreatorWithPreview: React.FC = () => {
         try {
             let uri = ""
             if ("abilityName" in parsedData) {
-                uri="update"
+                uri = "update"
                 if (isLoadedCard) {
                     // Update existing card
                     if (userPermissions.includes("admin")) {
@@ -227,7 +244,31 @@ const CardCodeCreatorWithPreview: React.FC = () => {
 
                     resetToDefaultTemplate();
                 }
-            } else {
+            } else if ("gadgetName" in parsedData) {
+                uri = "update"
+                if (isLoadedCard) {
+                    // Update existing card
+                    if (userPermissions.includes("admin")) {
+                        await GadgetAPI.UpdateGadget(loadedId, parsedData);
+                        SendToSnackbar(`Update to ${parsedData.gadgetName} submitted.`, "success")
+                    } else {
+                        await CardRequestAPI.MakeRequest(localStorage.getItem("email") ?? "error", "update_gadget", uri, JSON.stringify(parsedData), loadedId)
+                        SendToSnackbar(`Update to ${parsedData.gadgetName} request submitted.`, "success")
+                    }
+                    resetToDefaultTemplate();
+                } else {
+                    if (userPermissions.includes("admin")) {
+                        await GadgetAPI.AddGadget(parsedData);
+                        SendToSnackbar(`${parsedData.gadgetName} added.`, "success")
+                    } else {
+                        await CardRequestAPI.MakeRequest(localStorage.getItem("email") ?? "error", "new_gadget", uri, JSON.stringify(parsedData), "")
+                        SendToSnackbar(`Creation of ${parsedData.gadgetName} request submitted.`, "success")
+                    }
+
+                    resetToDefaultTemplate();
+                }
+            }
+            else {
                 const { cardType, cardSubtype} = parsedData;
 
                 console.log(cardType, cardSubtype);
@@ -301,8 +342,8 @@ const CardCodeCreatorWithPreview: React.FC = () => {
                 <FormControl fullWidth>
                     <InputLabel>Template</InputLabel>
                     <Select value={selectedTemplate} onChange={handleTemplateChange} label="Template">
-                        {Object.keys(templates).map((tpl) => (
-                            <MenuItem key={tpl} value={tpl}>
+                        {Object.keys(templates).map((tpl, index) => (
+                            <MenuItem key={index} value={tpl}>
                                 {tpl}
                             </MenuItem>
                         ))}
