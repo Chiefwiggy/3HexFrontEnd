@@ -818,14 +818,7 @@ abstract class AbstractSheet {
                 display: "util",
                 component: [HackModifierCard],
                 required: false,
-                count: this.isUnlocked("unconditional") ? 2 : 1
-            },
-            {
-                name: ["hack.else"],
-                display: "else",
-                component: [HackModifierCard],
-                required: false,
-                count: this.isUnlocked("unconditional") ? 0 : 1
+                count: 1 + (this.isUnlocked("unconditional") ? 1 : 0) + (this.isUnlocked("utilitarian") ? 1 : 0 )
             }
         ]
     }

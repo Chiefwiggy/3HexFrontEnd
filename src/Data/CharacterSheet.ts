@@ -250,12 +250,29 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getLockedTechnik() {
-        const activeGadgets = this.getPreparedGadgets()
-        const activeReduction = activeGadgets.reduce((pv, cv) => {
-            return pv + cv.technikCost
-        }, 0)
+        const activeGadgets = [...this.getPreparedGadgets()];
 
-        return activeReduction
+        if (activeGadgets.length === 0) return 0;
+
+        let hasGadgeteer = this.isUnlocked("gadgeteer")
+        let maxIndex = 0
+
+        if (hasGadgeteer) {
+            maxIndex = activeGadgets.reduce(
+                (maxIdx, g, i, arr) =>
+                    g.technikCost > arr[maxIdx].technikCost ? i : maxIdx,
+                0
+            );
+        }
+
+        return activeGadgets.reduce((total, gadget, i) => {
+            const cost =
+                i === maxIndex && hasGadgeteer
+                    ? Math.max(gadget.technikCost - 20, 0)
+                    : gadget.technikCost;
+
+            return total + cost;
+        }, 0);
     }
 
     public areAllCardsPrepared = (data: Array<ICommonCardData|null>): boolean => {
@@ -944,9 +961,9 @@ class CharacterSheet extends AbstractSheet {
     public getPackageSlots(primaryDatachip: IDatachipData | undefined): number {
         if (primaryDatachip) {
             return 1 + Math.floor(
-                Math.floor(this.getStat(primaryDatachip.primaryTechnikStat) * primaryDatachip.primaryTechnikScaling / 4) +
-                Math.floor(this.getStat(primaryDatachip.secondaryTechnikStat) * primaryDatachip.secondaryTechnikScaling / 4)
-            ) + this.getAbilityBonuses("packageSlots") + this.getAbilityBonuses("packageSlots");
+                Math.floor(this.getStat(primaryDatachip.primaryTechnikStat) * primaryDatachip.primaryTechnikScaling / 5) +
+                Math.floor(this.getStat(primaryDatachip.secondaryTechnikStat) * primaryDatachip.secondaryTechnikScaling / 5)
+            ) + this.getAbilityBonuses("packageSlots")
         }
         return 0;
 
@@ -1156,10 +1173,14 @@ class CharacterSheet extends AbstractSheet {
 
     public getGadgetHit(): number {
         const pdc = this.getPrimaryDatachip()
+        let finalHit = 0
         if (pdc) {
-            return this.getStat(pdc.primaryTechnikStat) + this.getStat(pdc.secondaryTechnikStat) + this.getStat("awareness")
+            finalHit = this.getStat(pdc.primaryTechnikStat) + this.getStat(pdc.secondaryTechnikStat) + this.getStat("awareness")
         }
-        return 0;
+        if (this.isUnlocked("guidanceSubroutines")) {
+            finalHit += this.getStat("awareness")
+        }
+        return finalHit
     }
 
     public getSetStat(): number {

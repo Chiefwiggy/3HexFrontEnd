@@ -38,7 +38,7 @@ type ChipsetOption =
 
 const ChipsetTab = () => {
 
-    const { currentSheet, isReady } = useCharacter();
+    const { currentSheet, isReady, charPing } = useCharacter();
     const { userPermissions } = useUser();
     const { DatachipData, PackageData, GadgetData } = usePreloadedContent();
 
@@ -58,7 +58,7 @@ const ChipsetTab = () => {
             console.log(`WITH: ${currentSheet.getPackageSlots(characterDatachips[0])}`);
         }
 
-    }, [isReady, currentSheet, characterDatachips]);
+    }, [isReady, currentSheet, characterDatachips, charPing]);
 
     const isValidGadget = (
         g: { gadgetData: IGadgetData | undefined; isGadgetActive: boolean }
@@ -292,17 +292,21 @@ const ChipsetTab = () => {
                         </li>
                     )}
                     renderTags={(value, getTagProps) =>
-                        value.map((option, index) => (
-                            <Chip
-                                {...getTagProps({ index })}
-                                key={`${option.type}-${option.data._id}`}
-                                label={
-                                    option.type === "package"
-                                        ? option.data.packageName
-                                        : option.data.gadgetName
-                                }
-                            />
-                        ))
+                        value.map((option, index) => {
+                            const { key, ...chipProps } = getTagProps({ index });
+
+                            return (
+                                <Chip
+                                    key={key}
+                                    {...chipProps}
+                                    label={
+                                        option.type === "package"
+                                            ? option.data.packageName
+                                            : option.data.gadgetName
+                                    }
+                                />
+                            );
+                        })
                     }
                 />
             </Box>

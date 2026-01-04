@@ -80,7 +80,25 @@ class PLC_RaceData {
             return final_list
         }
         return []
+    }
 
+    public GetSubraceRoleCards(raceId: string, subraceId: string, level: number) {
+        const raceRoles =
+            this.raceMetadata
+                .find(e => e.raceId === raceId)
+                ?.availableSubraces
+                ?.find(e => e.subraceId === subraceId)
+                ?.subraceRoles;
+        if (raceRoles) {
+            let final_list: Array<ICommonCardData > = []
+            raceRoles.forEach(role => {
+                if (this.raceRoleCards[role] && this.raceRoleCards[role].length > 0) {
+                    final_list = [...final_list, ...(this._GetRaceCardsFromArray(role, "race_role", this.raceRoleCards[role], level))]
+                }
+            })
+            return final_list
+        }
+        return []
     }
 
     private _GetRaceCardsFromArray(id: string, label: "race" | "subrace" | "race_role", list: Array<ICommonCardData>, level: number) {
@@ -124,7 +142,25 @@ class PLC_RaceData {
             return final_list
         }
         return []
+    }
 
+    public GetSubraceRoleAbilities = (raceId: string, subraceId: string, level: number) => {
+        const raceRoles =
+            this.raceMetadata
+                .find(e => e.raceId === raceId)
+                ?.availableSubraces
+                ?.find(e => e.subraceId === subraceId)
+                ?.subraceRoles;
+        if (raceRoles) {
+            let final_list: Array<IAbility > = []
+            raceRoles.forEach(role => {
+                if (this.raceRoleAbilities[role] && this.raceRoleAbilities[role].length > 0) {
+                    final_list = [...final_list, ...(this._GetRaceAbilitiesFromArray(role, "race_role", this.raceRoleAbilities[role], level))]
+                }
+            })
+            return final_list
+        }
+        return []
     }
 
     private _GetRaceAbilitiesFromArray(id: string, label: "race" | "subrace" | "race_role", list: Array<IAbility>, level: number) {

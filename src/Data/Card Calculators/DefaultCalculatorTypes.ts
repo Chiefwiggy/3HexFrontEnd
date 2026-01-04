@@ -142,13 +142,6 @@ export const DEFAULT_TECHNIK_CALC_TYPES: Array<ICardBuilderType> = [
         component: [],
         required: false,
         count: 1
-    },
-    {
-        name: ["hack.else"],
-        display: "else",
-        component: [],
-        required: false,
-        count: 1
     }
 ]
 

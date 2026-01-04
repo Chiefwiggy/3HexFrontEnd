@@ -1,6 +1,6 @@
 import React from 'react';
 import {Box, capitalize} from "@mui/material";
-import {GiCog, GiPlantsAndAnimals} from "react-icons/gi";
+import {GiCog, GiFireGem, GiPlantsAndAnimals} from "react-icons/gi";
 import IconButtonWithTooltip from "../Components/Generic/IconButtonWithTooltip";
 import {ImNeutral} from "react-icons/im";
 import {TbTree} from "react-icons/tb";
@@ -25,8 +25,8 @@ const ChannelType = ({channelType, channelStrength, color = "white"}: IChannelTy
         case "eden":
             IconElement = GiPlantsAndAnimals
             break;
-        case "biomantle":
-            IconElement = MdPersonPin
+        case "materia":
+            IconElement =  GiFireGem
             break;
         case "network":
             IconElement = PiBroadcastFill

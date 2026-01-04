@@ -204,6 +204,25 @@ const StatView = ({
                             }
 
                         </Box>
+                        <Typography variant={"subtitle2"}>Immunities</Typography>
+                        <Box
+                            sx={{
+                                height: "23px",
+                                display: "flex"
+                            }}
+                        >
+                            {
+                                immunities.map((imm) => (
+                                    <SubtypeDamageIcon key={imm} damageSubtype={imm as UDamageSubtype}/>
+                                ))
+                            }
+                            {
+                                immunities.length == 0 ?
+                                    <RxValueNone size={21} />
+                                    : <></>
+                            }
+
+                        </Box>
 
 
 

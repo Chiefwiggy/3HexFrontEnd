@@ -270,13 +270,13 @@ const RaceSelectView = ({}: IRaceSelectViewInput) => {
                 {/* Subrace Abilities */}
                 <Box sx={scrollableSx}>
                     <Typography variant="h5" textAlign="center" sx={{ mb: 1 }}>{currentSubrace ? currentSubrace.subraceName : "Subrace"} Abilities</Typography>
-                    {currentSubrace && (
+                    {(currentSubrace && currentRace) && (
                         <>
                             <Box sx={{ display: "grid", gridTemplateColumns: "1fr", gap: 2, mb: 2 }}>
-                                {disambiguateCard(RaceData.GetSubraceCards(currentSubrace.subraceId, 1), compendiumProps, {
+                                {disambiguateCard([...RaceData.GetSubraceCards(currentSubrace.subraceId, 1), ...RaceData.GetSubraceRoleCards(currentRace.raceId, currentSubrace.subraceId, 1)], compendiumProps, {
                                     wrapper: (el, key) => <UnlockWrapper el={el} _id={key} unlockedByDefault unlockList={currentUnlockList} updateUnlockList={updateUnlockList}/>
                                 })}
-                                {RaceData.GetSubraceAbilities(currentSubrace.subraceId, 1).map(ability => (
+                                {[...RaceData.GetSubraceAbilities(currentSubrace.subraceId, 1), ...RaceData.GetSubraceRoleAbilities(currentRace.raceId, currentSubrace.subraceId, 1)].map(ability => (
                                     <UnlockWrapper key={ability._id} el={<AbilityItem abilityData={ability} showPrerequisites={false} />} _id={ability._id} unlockedByDefault unlockList={currentUnlockList} updateUnlockList={updateUnlockList}/>
                                 ))}
                             </Box>
@@ -285,10 +285,10 @@ const RaceSelectView = ({}: IRaceSelectViewInput) => {
 
                             <Typography variant="h6" textAlign="center" sx={{ mb: 1 }}>Unlock Abilities</Typography>
                             <Box sx={{ display: "grid", gridTemplateColumns: "1fr", gap: 2 }}>
-                                {disambiguateCard(RaceData.GetSubraceCards(currentSubrace.subraceId, 2), compendiumProps, {
+                                {disambiguateCard([...RaceData.GetSubraceCards(currentSubrace.subraceId, 2), ...RaceData.GetSubraceRoleCards(currentRace.raceId, currentSubrace.subraceId, 2)], compendiumProps, {
                                     wrapper: (el, key) => <UnlockWrapper el={el} _id={key} unlockedByDefault={false} unlockList={currentUnlockList} updateUnlockList={updateUnlockList}/>
                                 })}
-                                {RaceData.GetSubraceAbilities(currentSubrace.subraceId, 2).map(ability => (
+                                {[...RaceData.GetSubraceAbilities(currentSubrace.subraceId, 2), ...RaceData.GetSubraceRoleAbilities(currentRace.raceId, currentSubrace.subraceId, 2)].map(ability => (
                                     <UnlockWrapper key={ability._id} el={<AbilityItem abilityData={ability} showPrerequisites={false} />} _id={ability._id} unlockedByDefault={false} unlockList={currentUnlockList} updateUnlockList={updateUnlockList}/>
                                 ))}
                             </Box>

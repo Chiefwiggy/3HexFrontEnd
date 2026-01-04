@@ -158,7 +158,7 @@ class HackCardCalculator extends AbstractCardCalculator {
     };
 
     getTitle(): string {
-        const ELSE_NAME = this.sanitizeName(this.getCardOfType("hack.else")?.cardName);
+
         const UTIL_NAME = this.sanitizeName(this.getCardOfType("hack.util")?.cardName);
         const PROTOCOL_NAME = this.sanitizeName(this.getCardOfType("hack.protocol")?.cardName);
         const IO_NAME = this.sanitizeName(this.getCardOfType("hack.io")?.cardName, true);
@@ -169,9 +169,6 @@ class HackCardCalculator extends AbstractCardCalculator {
         let finalName = CORE_NAME;
         if (UTIL_NAME) {
             finalName = UTIL_NAME + "_" + CORE_NAME;
-        }
-        if (ELSE_NAME) {
-            finalName += `_ELSE_${ELSE_NAME}`
         }
         return finalName;
 

@@ -252,8 +252,6 @@ export function getHackShorthand(input: UHackType) {
             return "pcl";
         case "io":
             return "io"
-        case "else":
-            return "el"
         case "util":
             return "utl"
     }
