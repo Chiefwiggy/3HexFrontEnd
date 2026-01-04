@@ -483,7 +483,9 @@ abstract class AbstractSheet {
         return 0;
     }
 
-    public abstract getAbilityBonuses(bonusType: string): number;
+    public getAbilityBonuses(bonusType: string): number {
+        return 0;
+    }
     public abstract getStat(statName: keyof ICharacterStats | UMinionStat | "command"  ): number;
     public getCritStat(): number { return 0; }
     public getHitStat(): number { return 0; }
@@ -766,7 +768,7 @@ abstract class AbstractSheet {
                 required: true,
                 counterRequired: true,
                 counterInvalid: false,
-                count: this.isUnlocked("secondWeaponForm") ? 2 : 1
+                count: 1 + this.getAbilityBonuses("formCards")
             },
 
             {
@@ -776,7 +778,7 @@ abstract class AbstractSheet {
                 required: false,
                 counterRequired: false,
                 counterInvalid: true,
-                count: this.isUnlocked("secondWeaponSkill") ? 2 : 1
+                count: 1 + this.getAbilityBonuses("skillCards")
             },
             {
                 name: ["weapon.order"],
