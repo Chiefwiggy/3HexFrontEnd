@@ -24,6 +24,7 @@ import HackIOCard from "../Components/Cards/HackIOCard";
 import HackModifierCard from "../Components/Cards/HackModifierCard";
 import HackProtocolCard from "../Components/Cards/HackProtocolCard";
 import HackBaseCard from "../Components/Cards/HackBaseCard";
+import WeaponGadgetBaseCard from "../Components/Cards/WeaponGadgetBaseCard";
 
 
 abstract class AbstractSheet {
@@ -488,7 +489,7 @@ abstract class AbstractSheet {
     }
     public abstract getStat(statName: keyof ICharacterStats | UMinionStat | "command"  ): number;
     public getCritStat(): number { return 0; }
-    public getHitStat(): number { return 0; }
+    public getHitStat(specialLogicTags: Array<string>): number { return 0; }
     public abstract getPowerStat(specialLogicTags: Array<string>): number
     public applyRangedModifiers(minRange: number, maxRange: number, attackType: "weapon" | "spell" | "hack") {
         const isRanged = maxRange > 0;
@@ -753,9 +754,9 @@ abstract class AbstractSheet {
     public getWeaponCalculatorTypes = () => {
         return [
             {
-                name: ["weapon.base"],
+                name: ["weapon.base", "weapon.gadget"],
                 display: "base",
-                component: [WeaponBaseCard],
+                component: [WeaponBaseCard, WeaponGadgetBaseCard],
                 required: true,
                 counterRequired: true,
                 counterInvalid: false,

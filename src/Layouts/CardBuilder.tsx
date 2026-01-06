@@ -119,6 +119,7 @@ const CardBuilder = ({
     useEffect(() => {
         (async() => {
             let cards: Array<ICommonCardData> = [...defaultCardList, ...(await GetAllCards())];
+            console.log(cards)
             if (offhandData) {
                 cards = cards.filter(e => {
                     switch(e.cardSubtype) {
@@ -136,8 +137,8 @@ const CardBuilder = ({
                     return true;
                 })
             }
-            const conditions: Array<IConditionCard> = cardTypes[0].name[0].split(".")[0] === "weapon" ?  ConditionData.GetAttackConditions() : ConditionData.GetSpellConditions()
-            setAllCards([...cards, ...conditions].sort(SortCardList));
+            // const conditions: Array<IConditionCard> = cardTypes[0].name[0].split(".")[0] === "weapon" ?  ConditionData.GetAttackConditions() : ConditionData.GetSpellConditions()
+            setAllCards(Array.from(new Map(cards.map(item => [item._id, item])).values()).sort(SortCardList))
         })();
     }, []);
 
@@ -195,127 +196,158 @@ const CardBuilder = ({
         >
             <Box
                 sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    overflowX: "scroll",
-                    scrollbarColor: '#6b6b6b #2b2b2b',
-                    scrollbarWidth: 'thin',
-                    '& > :not(style)': {
-                        m: 1,
-                        width: "16vw",
-                        minHeight: 128,
-                        textAlign: 'center',
-                    },
-                  }}
+                    display: "grid",
+                    gridTemplateColumns: "4fr 1fr",
+                    alignItems: "start",
+                    gridGap: "10px"
+                }}
             >
-                {
-                    (() => {
-                        let runningIndex = 0; // Initialize running index
-                        return cardTypes.map((data) => {
-                            return Array.from({ length: data.count }).map((_, i) => {
-                                const currentIndex = runningIndex++; // Use and increment the running index inline
-                                return (
-                                    <CardSkeleton
-                                        placeholderText={data.display.toUpperCase()}
-                                        CardElement={data.component[data.name.findIndex(e => e.split('.')[1] === cardData[currentIndex]?.cardSubtype ?? 0)]}
-                                        cardData={cardData[currentIndex]} // Access the correct index
-                                        sendBack={sendSetCard(currentIndex)} // Use the correct index
-                                        type={`${data.name[0]}.${cardData[currentIndex]?.cardSubtype}`}
-                                        key={`${data.name[0]}-${i}`}
-                                        index={i} // Pass the correct overall index
-                                    />
-                                );
-                            });
-                        });
-                    })()
-                }
-                {
-                    isComplete ?
-                        <CalculatedCard
-                            cardCalculator={cardCalculator}
-                            depArray={cardData}
-                            owner={owner}
-                        />
-                        :
-                        <Paper elevation={1} sx={{
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        minWidth: 0
+                    }}
+                >
+                    <Box
+                        sx={{
                             display: 'flex',
                             justifyContent: 'center',
-                            alignItems: 'center',
-                            flexDirection: 'column'
-                        }}>
-                            Card is incomplete.
-                        </Paper>
-                }
-            </Box>
-            <Box
-                sx={{
-                    padding: "12px",
-                    display: 'flex',
-                    justifyContent: 'space-around'
-                }}
-            >
-                {
-                    cardTypes.map((type, index) => {
-                        return (
-                            <Button
-                                variant={currentFilter == index ? "contained" : "outlined"}
-                                onClick={handleFilterCards(index)}
-                                key={type.name[0]}
-                            >
-                                {type.display.toUpperCase()}
-                            </Button>
-                        )
-                    })
-                }
-                {
-                    canSave ?
+                            overflowX: "scroll",
+                            scrollbarColor: '#6b6b6b #2b2b2b',
+                            scrollbarWidth: 'thin',
+                            '& > :not(style)': {
+                                m: 1,
+                                width: "16vw",
+                                minHeight: 128,
+                                textAlign: 'center',
+                            },
+                        }}
+                    >
+                        {
+                            ((): any => {
+                                let runningIndex = 0; // Initialize running index
+                                return cardTypes.map((data) => {
+                                    return Array.from({length: data.count}).map((_, i) => {
+                                        const currentIndex = runningIndex++; // Use and increment the running index inline
+                                        return (
+                                            <CardSkeleton
+                                                placeholderText={data.display.toUpperCase()}
+                                                CardElement={data.component[data.name.findIndex(e => e.split('.')[1] === cardData[currentIndex]?.cardSubtype ?? 0)]}
+                                                cardData={cardData[currentIndex]} // Access the correct index
+                                                sendBack={sendSetCard(currentIndex)} // Use the correct index
+                                                type={`${data.name[0]}.${cardData[currentIndex]?.cardSubtype}`}
+                                                key={`${data.name[0]}-${i}`}
+                                                index={i} // Pass the correct overall index
+                                            />
+                                        );
+                                    });
+                                });
+                            })()
+                        }
+
+                    </Box>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            justifyContent: "space-around",
+                            padding: "12px"
+                        }}
+                    >
+                        {
+                            cardTypes.map((type, index) => {
+                                return (
+                                    <Button
+                                        variant={currentFilter == index ? "contained" : "outlined"}
+                                        onClick={handleFilterCards(index)}
+                                        key={type.name[0]}
+                                    >
+                                        {type.display.toUpperCase()}
+                                    </Button>
+                                )
+                            })
+                        }
+                    </Box>
+                    <Box
+                        sx={{
+                            padding: "12px",
+                            display: 'flex',
+                            justifyContent: 'center'
+                        }}
+                    >
+                        <CardBuilderGridList
+                            cardList={currentCards}
+                            cardTypes={cardTypes}
+                            sendBack={sendSetCard}
+                        />
+                    </Box>
+                </Box>
+                <Box
+                    sx={{
+                        maxHeight: "100vh",
+                        overflowY: "auto",
+                        overflowX: "hidden"
+                    }}
+                >
+                    <Box>
+                        {
+                            isComplete ?
+                                <CalculatedCard
+                                    cardCalculator={cardCalculator}
+                                    depArray={cardData}
+                                    owner={owner}
+                                />
+                                :
+                                <Paper elevation={1} sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    flexDirection: 'column'
+                                }}>
+                                    Card is incomplete.
+                                </Paper>
+                        }
+                    </Box>
+                    <Box
+                        sx={{
+                            padding: "12px",
+                            display: 'flex',
+                            justifyContent: 'space-around',
+                            flexDirection: "column",
+                            gap: "12px"
+                        }}
+                    >
+
+                        {
+                            canSave ?
+                                <Button
+                                    variant={"contained"}
+                                    color={"secondary"}
+                                    onClick={handleSaveCard}
+                                    disabled={!isComplete}
+                                >
+                                    Save
+                                </Button>
+                                :
+                                <></>
+                        }
+
                         <Button
                             variant={"contained"}
                             color={"secondary"}
-                            onClick={handleSaveCard}
+                            onClick={handleCreateCard}
                             disabled={!isComplete}
                         >
-                            Save
+                            Equip
                         </Button>
-                        :
-                        <></>
-                }
+                    </Box>
 
-                {
-                    canCounter ?
-                        <Button
-                            variant={"contained"}
-                            color={"secondary"}
-                            onClick={handleCounterCard}
-                            disabled={!isCounterValid}
-                        >
-                            Counter
-                        </Button>
-                        :<></>
-                }
+                </Box>
 
-                <Button
-                    variant={"contained"}
-                    color={"secondary"}
-                    onClick={handleCreateCard}
-                    disabled={!isComplete}
-                >
-                    Equip
-                </Button>
             </Box>
-            <Box
-                sx={{
-                    padding: "12px",
-                    display: 'flex',
-                    justifyContent: 'center'
-                }}
-            >
-                <CardBuilderGridList
-                    cardList={currentCards}
-                    cardTypes={cardTypes}
-                    sendBack={sendSetCard}
-                />
-            </Box>
+
+
+
         </Box>
     )
 }

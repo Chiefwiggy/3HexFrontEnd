@@ -14,7 +14,7 @@ import {
     ICommanderCardData,
     ICommonCardData,
     IConditionCard, IHackBaseCardData, IHackIOCardData, IHackModifierCardData,
-    IHackProtocolCardData,
+    IHackProtocolCardData, IScaledWeaponBaseData,
     ISpellBaseCardData,
     ISpellModifierCardData,
     ISpellTargetCardData,
@@ -28,6 +28,7 @@ import {IAbility} from "../Data/IAbilities";
 import AbilityItem from "../Components/Abilities/AbilityItem";
 import {IGadgetData} from "../Data/IGadgetData";
 import GadgetCard from "../Components/Gadgets/GadgetCard";
+import WeaponGadgetBaseCard from "../Components/Cards/WeaponGadgetBaseCard";
 
 type DisambiguateOptions = {
     wrapper?: (element: JSX.Element, key: string) => JSX.Element;
@@ -110,6 +111,15 @@ export const disambiguateCard = (
                     <WeaponBaseCard
                         cardData={card as IWeaponBaseData}
                         enchantmentData={{ enchantmentLevel: 0, baseId: "" }}
+                        sendBack={() => {}}
+                        {...compendiumProps}
+                    />,
+                    key
+                );
+            } else if (card.cardSubtype === "gadget") {
+                return wrapper(
+                    <WeaponGadgetBaseCard
+                        cardData={card as IScaledWeaponBaseData}
                         sendBack={() => {}}
                         {...compendiumProps}
                     />,

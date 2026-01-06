@@ -4,7 +4,7 @@ import {UArcanotype} from "./ISourceData";
 
 export type USpellTypes = "base" | "target" | "skill" | "edict" | "summon" | null;
 export type UWeaponClass = "light" | "standard" | "heavy"
-export type UWeaponType = "axe" | "blade" | "bomb" | "bow" | "club" | "polearm" | "wand" | "spear" | "unarmed" | "shield"
+export type UWeaponType = "axe" | "blade" | "bomb" | "bow" | "club" | "polearm" | "wand" | "spear" | "unarmed" | "shield" | "gadget"
 export type UCritDie = "-" | "?" | "1" | "2" | "3" | "4" | "5" | "6"
 export interface ISpellBaseCardData extends ISpellModifierCardData {
     arcanotype: UArcanotype,

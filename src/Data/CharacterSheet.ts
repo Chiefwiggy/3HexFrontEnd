@@ -10,7 +10,8 @@ import {getSkillFormat, UStat} from "../Utils/Shorthand";
 import {StatChain} from "../Utils/GetFinalSpellData";
 import {
     ICommanderCardData,
-    ICommonCardData, IHackModifierCardData, IScaledWeaponBaseData,
+    ICommonCardData, IHackBaseCardData, IHackIOCardData, IHackModifierCardData,
+    IHackProtocolCardData, IScaledWeaponBaseData,
     ISpellBaseCardData,
     ISpellModifierCardData,
     ISpellTargetCardData, IWeaponBaseData,
@@ -93,6 +94,7 @@ class CharacterSheet extends AbstractSheet {
 
     public allCards: IAllCardsData | null = null;
     public allButDefaultCards: IAllCardsData | null = null;
+    public freePreparedCards: IAllCardsData | null = null;
     public commanderCards: Array<ICommanderCardData> = [];
     public minionData: Array<MinionSheet> = [];
 
@@ -277,6 +279,8 @@ class CharacterSheet extends AbstractSheet {
 
     public areAllCardsPrepared = (data: Array<ICommonCardData|null>): boolean => {
         console.log(data);
+        console.log("GEPRA")
+        console.log(this.freePreparedCards!.hacks)
         const fullPreparedList = [
             ...this.data.preparedCards.map(e => e.cardId),
             ...this.data.knownWeapons.map(e => e.baseId),
@@ -284,10 +288,15 @@ class CharacterSheet extends AbstractSheet {
             ...default_weapon_cards.map(e => e._id),
             ...default_hack_cards.map(e => e._id),
             ...default_spell_cards.map(e => e._id),
+            ...this.freePreparedCards!.hacks.bases.map(e => e._id),
+            ...this.preloadedData.GadgetData.GetConstructedGadgets(this.data.knownGadgets).map(e => e._id),
             ...this.preloadedData.DatachipData.GetDatachipsFromIdList(this.data.knownDatachips).reduce((pv: Array<string>, datachip) => {
                 return [...pv, ...datachip.builtinHacks.map(e => e._id)]
             }, [])
         ]
+        console.log(...this.preloadedData.DatachipData.GetDatachipsFromIdList(this.data.knownDatachips).reduce((pv: Array<string>, datachip) => {
+            return [...pv, ...datachip.builtinHacks.map(e => e._id)]
+        }, []))
         console.log(fullPreparedList)
         return data.reduce((pv, cv) => {
             if (!pv) return pv;
@@ -780,6 +789,8 @@ class CharacterSheet extends AbstractSheet {
             console.log(apiCards);
             this.allCards = apiCards;
             this.allButDefaultCards = JSON.parse(JSON.stringify(apiCards));
+            this.freePreparedCards =  {spells: {bases: [], modifiers: [], targets: []}, weapons: {bases: [], forms: [], skills: []}, hacks: {bases: [], io: [], modifiers: [], protocols: []}}
+            //removes duplicates from preparation list
             const hackKeys = Object.keys(this.allButDefaultCards!.hacks) as (keyof IHackCardsData)[];
             const datachipIdList = this.preloadedData.DatachipData.GetDatachipsFromIdList(this.data.knownDatachips).flatMap(e => e.builtinHacks).map(e => e._id)
             console.log(datachipIdList);
@@ -790,6 +801,7 @@ class CharacterSheet extends AbstractSheet {
                 ])
             ) as unknown as IHackCardsData;
 
+
             if (this.allCards) {
                 this.allCards.spells.targets.push(default_spell_cards[0]);
                 this.allCards.spells.modifiers.push(default_spell_cards[1]);
@@ -799,7 +811,63 @@ class CharacterSheet extends AbstractSheet {
                 this.allCards.weapons.bases.push(default_weapon_cards[0]);
                 this.allCards.weapons.bases.push(default_weapon_cards[1]);
                 this.allCards.weapons.forms.push(default_weapon_cards[2]);
+                console.log("cathmoira")
+
+                const dataCards = this.preloadedData.DatachipData.GetCardsFromDatachipIdList(this.data.knownDatachips)
+                const packageCards = this.preloadedData.PackageData.GetCardsFromPackageIdList(this.data.knownPackages);
+
+                dataCards.forEach(card => {
+                    console.log("FREEDOM CARD")
+                    console.log(card)
+                    switch(card.cardSubtype) {
+                        case 'base':
+                        case 'function':
+                            this.allCards!.hacks.bases.push(card as IHackBaseCardData);
+                            this.freePreparedCards!.hacks.bases.push(card as IHackBaseCardData);
+                            break;
+                        case 'io':
+                            this.allCards!.hacks.io.push(card as IHackIOCardData);
+                            this.freePreparedCards!.hacks.io.push(card as IHackIOCardData);
+                            break;
+                        case 'protocol':
+                            this.allCards!.hacks.protocols.push(card as IHackProtocolCardData);
+                            this.freePreparedCards!.hacks.protocols.push(card as IHackProtocolCardData);
+                            break;
+                        case 'modifier':
+                            this.allCards!.hacks.modifiers.push(card);
+                            this.freePreparedCards!.hacks.modifiers.push(card);
+                            break;
+                    }
+                })
+
+                console.log(this.freePreparedCards.hacks)
+
+                packageCards.forEach(card => {
+                    console.log(card)
+                    switch(card.cardSubtype) {
+                        case 'base':
+                        case 'function':
+                            this.allButDefaultCards!.hacks.bases.push(card as IHackBaseCardData);
+                            this.allCards!.hacks.bases.push(card as IHackBaseCardData);
+                            break;
+                        case 'io':
+                            this.allButDefaultCards!.hacks.io.push(card as IHackIOCardData);
+                            this.allCards!.hacks.io.push(card as IHackIOCardData);
+                            break;
+                        case 'protocol':
+                            this.allCards!.hacks.protocols.push(card as IHackProtocolCardData);
+                            this.allButDefaultCards!.hacks.protocols.push(card as IHackProtocolCardData);
+                            break;
+                        case 'modifier':
+                            this.allCards!.hacks.modifiers.push(card);
+                            this.allButDefaultCards!.hacks.modifiers.push(card);
+                            break;
+                    }
+                })
+
             }
+            console.log("TORUMUNDA")
+            console.log(this.allCards.hacks.bases.map(e => [e._id, e.cardName]));
             this.commanderCards = [...gotCards.commanderCards, ...default_commander_cards];
         } catch (error) {
             console.error('Error setting all cards:', error);
@@ -823,7 +891,10 @@ class CharacterSheet extends AbstractSheet {
             console.error("minion set error", e);
         }
     }
-    getHitStat(): number {
+    getHitStat(specialLogicTags: Array<string>): number {
+        if (specialLogicTags.includes("gadget")) {
+            return this.getGadgetHit()
+        }
         return this.getStat("awareness")*2 + this.getStat("skill");
     }
 

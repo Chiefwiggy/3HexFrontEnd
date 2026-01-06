@@ -1,4 +1,5 @@
 import {IDatachipData} from "../../Data/ChipsetData";
+import {IHackModifierCardData} from "../../Data/ICardData";
 
 
 class PLC_DatachipData {
@@ -17,9 +18,15 @@ class PLC_DatachipData {
     }
 
     public GetDatachipsFromIdList = (ids: Array<string>) => {
-        console.log("FGONDA")
-        console.log(this.datachips)
         return this.datachips.filter(e => ids.includes(e._id));
+    }
+
+
+    public GetCardsFromDatachipIdList = (ids: Array<string>): Array<IHackModifierCardData> => {
+        const datachips = this.GetDatachipsFromIdList(ids);
+        return datachips.reduce((pv, cv) => {
+            return [...pv, ...cv.builtinHacks]
+        }, [] as Array<IHackModifierCardData>)
     }
 
     public GetDatachipDataForUser(userPermissions: string[]) {

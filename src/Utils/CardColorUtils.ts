@@ -5,6 +5,8 @@ export const CardGetColor = (type: string) => {
         switch(type) {
             case 'weapon.base':
                 return '#1D708C';
+            case 'weapon.gadget':
+                return '#29abd8';
             case 'weapon.form':
                 return '#3BBA20';
             case 'weapon.skill':

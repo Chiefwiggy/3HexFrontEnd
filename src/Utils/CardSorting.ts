@@ -18,6 +18,7 @@ const _AssignValueToSubtype = (subtype: string): number => {
     switch (subtype) {
         case "base":
         case "function":
+        case "gadget":
             return 1;
         case "io":
         case "target":

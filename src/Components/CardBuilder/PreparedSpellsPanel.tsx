@@ -87,7 +87,7 @@ const PreparedSpellsPanel = ({}: IPreparedSpellsPanelInput) => {
                     </CustomTabPanel>
                     <CustomTabPanel index={tabIndex} value={2}>
                         {
-                            currentSpell
+                            currentHack
                                 ?
                                 <PrebuiltHackCardWrapper hackData={currentHack} overrideWidth={28}/>
                                 :

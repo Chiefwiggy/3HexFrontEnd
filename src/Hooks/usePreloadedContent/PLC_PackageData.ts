@@ -1,4 +1,5 @@
 import {IPackageData} from "../../Data/ChipsetData";
+import {IHackModifierCardData} from "../../Data/ICardData";
 
 
 class PLC_PackageData {
@@ -18,6 +19,13 @@ class PLC_PackageData {
 
     public GetPackagesFromIdList = (ids: Array<string>) => {
         return this.packages.filter(e => ids.includes(e._id));
+    }
+
+    public GetCardsFromPackageIdList = (ids: Array<string>) => {
+        const packages = this.GetPackagesFromIdList(ids);
+        return packages.reduce((pv, cv) => {
+            return [...pv, ...cv.builtinHacks]
+        }, [] as Array<IHackModifierCardData>)
     }
 
     public GetPackageDataForUser(userPermissions: string[]) {

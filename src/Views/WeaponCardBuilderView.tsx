@@ -23,7 +23,7 @@ const WeaponCardBuilderView = ({closeSelf, isOffhand = false}: IWeaponCardBuilde
 
     const {CardAPI, CharacterAPI} = useAPI();
     const {currentSheet} = useCharacter();
-    const {WeaponData} = usePreloadedContent();
+    const {WeaponData, GadgetData} = usePreloadedContent();
 
     const [standbyCards, setStandbyCards] = useState<ICalculatedWeapon|null>(null);
 
@@ -39,7 +39,11 @@ const WeaponCardBuilderView = ({closeSelf, isOffhand = false}: IWeaponCardBuilde
 
     const GetAllCards = async(): Promise<Array<ICommonCardData>> => {
         if (currentSheet) {
-            return [...currentSheet.getPreparedWeaponCards(), ...WeaponData.GetCardPreparedStruct(currentSheet.data.knownWeapons)];
+
+            const fn = [...currentSheet.getPreparedWeaponCards(), ...WeaponData.GetCardPreparedStruct(currentSheet.data.knownWeapons), ...GadgetData.GetConstructedGadgets(currentSheet.data.knownGadgets)];
+            console.log("FNL:")
+            console.log(fn)
+            return fn
         }
         return []
     }
@@ -63,7 +67,7 @@ const WeaponCardBuilderView = ({closeSelf, isOffhand = false}: IWeaponCardBuilde
 
     const handleReceiveEquipCards = async(sentCards :Array<ICommonCardData|null>) => {
         const cards: Array<ICommonCardData> = sentCards.filter(c => c !== null && c !== undefined) as ICommonCardData[];
-        const base = cards.find(e => e.cardSubtype == "base");
+        const base = cards.find(e => e.cardSubtype == "base" || e.cardSubtype == "gadget");
         const rest = cards.filter(e => e.cardSubtype != "base");
         if (base && rest && currentSheet) {
             const weaponCalcData: ICalculatedWeapon = {
@@ -98,9 +102,6 @@ const WeaponCardBuilderView = ({closeSelf, isOffhand = false}: IWeaponCardBuilde
             if (customName != "") {
                 standbyCards.customName = customName;
             }
-            console.log("OH BABY")
-            console.log(standbyCards)
-            console.log("--")
             await CharacterAPI.AddPrepWeapon(currentSheet.data._id, standbyCards);
             currentSheet.data.createdWeapons.push(standbyCards);
             if (doEquip) {

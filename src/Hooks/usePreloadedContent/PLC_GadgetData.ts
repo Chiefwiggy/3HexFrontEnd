@@ -1,4 +1,7 @@
 import {IGadgetData} from "../../Data/IGadgetData";
+import {IGadgetCharacterData} from "../../Data/ICharacterData";
+import {IScaledWeaponBaseData} from "../../Data/ICardData";
+import {ConstructFinalGadget} from "../../Utils/ConstructFinalWeapon";
 
 
 class PLC_GadgetData {
@@ -10,6 +13,10 @@ class PLC_GadgetData {
 
     public async Initialize(gd: Array<IGadgetData>) {
         this.gadgetData = gd
+    }
+
+    public GetAllGadgets() {
+        return this.gadgetData
     }
 
     public GetGadgetsFromIdList = (ids: Array<string>) => {
@@ -30,6 +37,23 @@ class PLC_GadgetData {
             })
         }
         return finalList;
+    }
+
+    public GetConstructedGadgets(gadgets: Array<IGadgetCharacterData>): Array<IScaledWeaponBaseData> {
+
+        let finalList: Array<IScaledWeaponBaseData> = []
+
+        gadgets.map(gad => {
+            const currentGadget = this.GetGadgetById(gad.gadgetId);
+            if (currentGadget && currentGadget.gadgetActionType == "active" && currentGadget.baseHit > 0) {
+                finalList = [...finalList, ConstructFinalGadget(currentGadget)];
+            }
+        })
+
+        console.log("FARGO");
+        console.log(finalList);
+
+        return finalList
     }
 
 

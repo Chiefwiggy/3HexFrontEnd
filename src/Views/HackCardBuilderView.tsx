@@ -45,7 +45,7 @@ const HackCardBuilderView = ({closeSelf}: IHackCardBuilderViewInput) => {
         const base = cards.find(e => e.cardSubtype == "function");
         const io = cards.find(e => e.cardSubtype == "io");
         const protocol = cards.find(e => e.cardSubtype == "protocol");
-        const rest = cards.filter(e => e.cardSubtype == "else" || e.cardSubtype == "util");
+        const rest = cards.filter(e => e.cardSubtype == "util");
 
         if (base && io && protocol && rest && currentSheet) {
             const hackCalcData: ICalculatedHack = {
@@ -57,6 +57,8 @@ const HackCardBuilderView = ({closeSelf}: IHackCardBuilderViewInput) => {
             setStandbyCards(hackCalcData);
             setSaveHackDialog(true);
             setStandbyStyle(hackCopy);
+            console.log("HAL")
+            console.log(hackCalcData)
         }
     }
 

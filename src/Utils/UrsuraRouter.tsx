@@ -28,6 +28,8 @@ import CardCreatorPage from "../Pages/CardCreatorPage";
 import AdminRoute from "./RouteProtection/AdminRoute";
 import RegisteredRoute from "./RouteProtection/RegisteredRoute";
 import CardRequestReviewPage from "../Pages/CardRequestReviewPage";
+import DatachipCompendium from "../Pages/DatachipCompendium";
+import GadgetCompendium from "../Pages/GadgetCompendium";
 
 
 
@@ -117,6 +119,14 @@ const UrsuraRouter = createBrowserRouter([
                     {
                         path: "fatelines",
                         element: <FatelinesPage />
+                    },
+                    {
+                        path: "datachips",
+                        element: <DatachipCompendium />
+                    },
+                    {
+                        path: "gadgets",
+                        element: <GadgetCompendium />
                     },
                     {
                         path: "",
