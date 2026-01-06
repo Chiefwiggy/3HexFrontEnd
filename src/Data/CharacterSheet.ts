@@ -790,16 +790,7 @@ class CharacterSheet extends AbstractSheet {
             this.allCards = apiCards;
             this.allButDefaultCards = JSON.parse(JSON.stringify(apiCards));
             this.freePreparedCards =  {spells: {bases: [], modifiers: [], targets: []}, weapons: {bases: [], forms: [], skills: []}, hacks: {bases: [], io: [], modifiers: [], protocols: []}}
-            //removes duplicates from preparation list
-            const hackKeys = Object.keys(this.allButDefaultCards!.hacks) as (keyof IHackCardsData)[];
-            const datachipIdList = this.preloadedData.DatachipData.GetDatachipsFromIdList(this.data.knownDatachips).flatMap(e => e.builtinHacks).map(e => e._id)
-            console.log(datachipIdList);
-            this.allButDefaultCards!.hacks = Object.fromEntries(
-                hackKeys.map(key => [
-                    key,
-                    this.allButDefaultCards!.hacks[key].filter(item => !datachipIdList.includes(item._id))
-                ])
-            ) as unknown as IHackCardsData;
+
 
 
             if (this.allCards) {
@@ -869,6 +860,18 @@ class CharacterSheet extends AbstractSheet {
             console.log("TORUMUNDA")
             console.log(this.allCards.hacks.bases.map(e => [e._id, e.cardName]));
             this.commanderCards = [...gotCards.commanderCards, ...default_commander_cards];
+            //removes duplicates from preparation list
+            const hackKeys = Object.keys(this.allButDefaultCards!.hacks) as (keyof IHackCardsData)[];
+            const datachipIdList = this.preloadedData.DatachipData.GetDatachipsFromIdList(this.data.knownDatachips).flatMap(e => e.builtinHacks).map(e => e._id)
+            console.log(datachipIdList);
+            this.allButDefaultCards!.hacks = Object.fromEntries(
+                hackKeys.map(key => [
+                    key,
+                    this.allButDefaultCards!.hacks[key].filter(item => !datachipIdList.includes(item._id))
+                ])
+            ) as unknown as IHackCardsData;
+            this.allCards.hacks.bases = Array.from(new Map(this.allCards.hacks.bases.map(item => [item._id, item])).values());
+            this.allButDefaultCards!.hacks.bases = Array.from(new Map(this.allButDefaultCards!.hacks.bases.map(item => [item._id, item])).values());
         } catch (error) {
             console.error('Error setting all cards:', error);
         }
