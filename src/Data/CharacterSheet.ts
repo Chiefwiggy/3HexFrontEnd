@@ -802,14 +802,11 @@ class CharacterSheet extends AbstractSheet {
                 this.allCards.weapons.bases.push(default_weapon_cards[0]);
                 this.allCards.weapons.bases.push(default_weapon_cards[1]);
                 this.allCards.weapons.forms.push(default_weapon_cards[2]);
-                console.log("cathmoira")
 
                 const dataCards = this.preloadedData.DatachipData.GetCardsFromDatachipIdList(this.data.knownDatachips)
-                const packageCards = this.preloadedData.PackageData.GetCardsFromPackageIdList(this.data.knownPackages);
+                // const packageCards = this.preloadedData.PackageData.GetCardsFromPackageIdList(this.data.knownPackages);
 
                 dataCards.forEach(card => {
-                    console.log("FREEDOM CARD")
-                    console.log(card)
                     switch(card.cardSubtype) {
                         case 'base':
                         case 'function':
@@ -831,34 +828,30 @@ class CharacterSheet extends AbstractSheet {
                     }
                 })
 
-                console.log(this.freePreparedCards.hacks)
 
-                packageCards.forEach(card => {
-                    console.log(card)
-                    switch(card.cardSubtype) {
-                        case 'base':
-                        case 'function':
-                            this.allButDefaultCards!.hacks.bases.push(card as IHackBaseCardData);
-                            this.allCards!.hacks.bases.push(card as IHackBaseCardData);
-                            break;
-                        case 'io':
-                            this.allButDefaultCards!.hacks.io.push(card as IHackIOCardData);
-                            this.allCards!.hacks.io.push(card as IHackIOCardData);
-                            break;
-                        case 'protocol':
-                            this.allCards!.hacks.protocols.push(card as IHackProtocolCardData);
-                            this.allButDefaultCards!.hacks.protocols.push(card as IHackProtocolCardData);
-                            break;
-                        case 'modifier':
-                            this.allCards!.hacks.modifiers.push(card);
-                            this.allButDefaultCards!.hacks.modifiers.push(card);
-                            break;
-                    }
-                })
+                // packageCards.forEach(card => {
+                //     switch(card.cardSubtype) {
+                //         case 'base':
+                //         case 'function':
+                //             this.allButDefaultCards!.hacks.bases.push(card as IHackBaseCardData);
+                //             this.allCards!.hacks.bases.push(card as IHackBaseCardData);
+                //             break;
+                //         case 'io':
+                //             this.allButDefaultCards!.hacks.io.push(card as IHackIOCardData);
+                //             this.allCards!.hacks.io.push(card as IHackIOCardData);
+                //             break;
+                //         case 'protocol':
+                //             this.allCards!.hacks.protocols.push(card as IHackProtocolCardData);
+                //             this.allButDefaultCards!.hacks.protocols.push(card as IHackProtocolCardData);
+                //             break;
+                //         case 'modifier':
+                //             this.allCards!.hacks.modifiers.push(card);
+                //             this.allButDefaultCards!.hacks.modifiers.push(card);
+                //             break;
+                //     }
+                // })
 
             }
-            console.log("TORUMUNDA")
-            console.log(this.allCards.hacks.bases.map(e => [e._id, e.cardName]));
             this.commanderCards = [...gotCards.commanderCards, ...default_commander_cards];
             //removes duplicates from preparation list
             const hackKeys = Object.keys(this.allButDefaultCards!.hacks) as (keyof IHackCardsData)[];
@@ -1026,6 +1019,8 @@ class CharacterSheet extends AbstractSheet {
     public setOrders(value: number) {
         this.data.attributeBars.orders.current = value;
     }
+
+
 
 
     public getCardSlots(): number {

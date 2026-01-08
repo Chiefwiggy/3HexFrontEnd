@@ -50,9 +50,11 @@ const DatachipInfo = ({datachip, index}: IDatachipInfoInput) => {
                             <Typography>From {capitalize(datachip.primaryTechnikStat)}</Typography>
                             <Typography variant="h4" component="span">
                                 {Math.floor(datachip.primaryTechnikScaling * currentSheet.getStat(datachip.primaryTechnikStat))}{" "}
-                                /{" "}
+                                {" "}
                                 <span style={{ color: "gray" }}>
+                                    (
             {Math.floor((datachip.primaryTechnikScaling * currentSheet.getStat(datachip.primaryTechnikStat)) / 5)}
+                                    )
         </span>
                             </Typography>
                             <Typography variant={"body2"} color={"grey"}>[{getStatShorthand(datachip.primaryTechnikStat).toUpperCase()} * {datachip.primaryTechnikScaling}]</Typography>
@@ -61,9 +63,11 @@ const DatachipInfo = ({datachip, index}: IDatachipInfoInput) => {
                             <Typography>From {capitalize(datachip.secondaryTechnikStat)}</Typography>
                             <Typography variant="h4" component="span">
                                 {Math.floor(datachip.secondaryTechnikScaling * currentSheet.getStat(datachip.secondaryTechnikStat))}{" "}
-                                /{" "}
+                                {" "}
                                 <span style={{ color: "gray" }}>
+                                    (
             {Math.floor((datachip.secondaryTechnikScaling * currentSheet.getStat(datachip.secondaryTechnikStat)) / 5)}
+                                    )
         </span>
                             </Typography>
                             <Typography variant={"body2"} color={"grey"}>[{getStatShorthand(datachip.secondaryTechnikStat).toUpperCase()} * {datachip.secondaryTechnikScaling}]</Typography>

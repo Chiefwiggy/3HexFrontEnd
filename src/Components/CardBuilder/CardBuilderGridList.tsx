@@ -16,7 +16,7 @@ const CardBuilderGridList = ({
 }: ICardBuilderGridListInput) => {
 
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(15);
+    const [rowsPerPage, setRowsPerPage] = useState(12);
 
     const handleChangePage = (
         event: React.MouseEvent<HTMLButtonElement> | null,
@@ -47,7 +47,7 @@ const CardBuilderGridList = ({
                 rowsPerPage={rowsPerPage}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
-                rowsPerPageOptions={[5,10,15,20,25]}
+                rowsPerPageOptions={[4,8,12,16,20,24]}
 
             />
             <Grid container spacing={2} justifyContent={"center"}>
