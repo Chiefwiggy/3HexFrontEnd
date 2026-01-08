@@ -1,5 +1,15 @@
 import React, {useEffect, useState} from 'react'
-import {Box, capitalize, Card, CardContent, CardHeader, Divider, Typography} from "@mui/material";
+import {
+    Box,
+    capitalize,
+    Card,
+    CardActions,
+    CardContent,
+    CardHeader,
+    Divider,
+    IconButton,
+    Typography
+} from "@mui/material";
 import AbstractCardCalculator from "../../Data/Card Calculators/AbstractCardCalculator";
 import CardEffect from "../Cards/CardEffect";
 import {ICommonCardData, IEffectData} from "../../Data/ICardData";
@@ -35,6 +45,9 @@ import {FaRegClock} from "react-icons/fa6";
 import {MdOutlineLooks, MdOutlineSportsMma} from "react-icons/md";
 import ChannelType from "../../Utils/ChannelType";
 import {GrTechnology} from "react-icons/gr";
+import {IoInformationCircleOutline} from "react-icons/io5";
+import {SiFoundryvirtualtabletop} from "react-icons/si";
+import useSnackbar from "../../Hooks/useSnackbar/useSnackbar";
 
 interface ICalculatedCardInput {
     cardCalculator: AbstractCardCalculator
@@ -55,6 +68,7 @@ const CalculatedCard = ({
     const [effectArray, setEffectArray] = useState<Array<IEffectData>>([]);
 
     const { charPing, statPing, cancelPing, isReady} = useCharacter();
+    const {SendToSnackbar} = useSnackbar();
 
     const [cardTitle, setCardTitle] = useState<string>("");
 
@@ -69,6 +83,49 @@ const CalculatedCard = ({
         setValidCard(cardCalculator.isValid() && owner.areAllCardsPrepared(cardCalculator.getCards()))
         setConditionalCard(depArray.filter(e => e?.cardType == "condition").length > 0)
     }, [depArray, charPing, statPing, cancelPing, isReady]);
+
+    const exportToFoundry = async() => {
+        if (cardCalculator.isSummon()) {
+            const summonData = cardCalculator.getSummonData()
+            const finalPower = cardCalculator.getFinalPower()
+            const type = cardCalculator.getType().toLowerCase()
+            const hackString = cardCalculator.getIconValue("hackSet").split(" ")
+            const spellString = cardCalculator.getIconValue("spellSet").split(" ")
+            console.log(spellString)
+            console.log(hackString);
+            const exportObject = {
+                "system.props.name": summonData.simpleName,
+                "system.props.maxHealth": summonData.maxHealth.toString(),
+                "system.props.maxStamina": "0",
+                "system.props.maxTether": "0",
+                "system.props.stamina_refresh": "0",
+                "system.props.tether_refresh": "0",
+                "system.props.basic_damage": type == "spell" ? finalPower.toString() : "0",
+                "system.props.damage_type": cardCalculator.getDamageType(),
+                "system.props.to_hit": type == "spell" ? (spellString[1] + spellString[3]) : "0",
+                "system.props.spell_damage": type == "hack" ? finalPower.toString() : "0",
+                "system.props.spell_damage_type": cardCalculator.getDamageType(),
+                "system.props.spell_save": type == "hack" ? (hackString[1] + hackString[3]) : "0",
+                "system.props.spell_save_type": type == "hack" ? hackString[0] : "N/A",
+                "system.props.effective_range_min": "0",
+                "system.props.effective_range_max": "0",
+                "system.props.pDEF_evade": summonData.pDEF.toString(),
+                "system.props.pDEF_block": "0",
+                "system.props.mDEF_evade": summonData.mDEF.toString(),
+                "system.props.mDEF_block": "0",
+                "system.props.dodge_evade": summonData.dodge.toString(),
+                "system.props.dodge_block": "0",
+                "system.props.current_health": summonData.maxHealth.toString(),
+                "system.props.current_stamina": "0",
+                "system.props.current_tether": "0",
+                "system.props.current_stance": "0",
+                "system.props.isInEditMode": false,
+                "system.props.isSpell": type == "hack"
+            }
+            await navigator.clipboard.writeText(JSON.stringify(exportObject, null, 2))
+            SendToSnackbar("Copied Summon Data to Clipboard", "success")
+        }
+    }
 
     return owner ? (
         <Card
@@ -430,6 +487,21 @@ const CalculatedCard = ({
                     }
                 </Box>
             </CardContent>
+            <CardActions>
+                {
+                    cardCalculator.isSummon() ?
+                        <IconButton
+                            size={"small"}
+                            aria-label={"use"}
+                            onClick={exportToFoundry}
+                        >
+                            <SiFoundryvirtualtabletop />
+                        </IconButton>
+                        :
+                        <></>
+                }
+
+            </CardActions>
         </Card>
     ) : <></>
 }
