@@ -234,7 +234,7 @@ const CalculatedCard = ({
                                 </Box>
 
                                 {
-                                    cardCalculator.getType() == "spell" ?
+                                    cardCalculator.getType().toLowerCase() == "spell" ?
                                         <BoxWithTooltip
                                             sx={{
                                                 display: 'flex',
@@ -267,7 +267,7 @@ const CalculatedCard = ({
                                 {
                                         cardCalculator.getSummonData().maxHealth !== parseInt(cardCalculator.getIconValue("tetherCost"))
                                             ?
-                                            (cardCalculator.getType() == "spell" ?
+                                            (cardCalculator.getType().toLowerCase() == "spell" ?
                                                     <BoxWithTooltip
                                                         sx={{
                                                             display: 'flex',
@@ -297,7 +297,7 @@ const CalculatedCard = ({
                                             <></>
                                     }
                                 {
-                                    cardCalculator.getType() == "spell" ?
+                                    cardCalculator.getType().toLowerCase() == "spell" ?
                                         <BoxWithTooltip
                                             sx={{
                                                 display: 'flex',
@@ -340,7 +340,7 @@ const CalculatedCard = ({
                                 <Box sx={{gridColumn: "span 3"}}>
                                     {
                                         cardCalculator.getType() == "spell" ?
-                                            <NumericIcon fontSize={"16px"} align="right" val={`+${cardCalculator.getIconValue("spellSet")}`} icon={GiArcheryTarget} title={`To Hit`} />
+                                            <NumericIcon fontSize={"16px"} align="right" val={`+${cardCalculator.getIconValue("spellSet").split(" ").slice(1).join()}`} icon={GiArcheryTarget} title={`To Hit`} />
                                             : <NumericIcon fontSize={"14px"} align="right" val={`${cardCalculator.getIconValue("hackSet")}`} icon={GiTechnoHeart} title={`Save`} />
                                     }
                                 </Box>
