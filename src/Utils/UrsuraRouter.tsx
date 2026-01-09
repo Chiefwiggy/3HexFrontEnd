@@ -30,6 +30,7 @@ import RegisteredRoute from "./RouteProtection/RegisteredRoute";
 import CardRequestReviewPage from "../Pages/CardRequestReviewPage";
 import DatachipCompendium from "../Pages/DatachipCompendium";
 import GadgetCompendium from "../Pages/GadgetCompendium";
+import ConditionCompendium from "../Pages/ConditionCompendium";
 
 
 
@@ -129,9 +130,14 @@ const UrsuraRouter = createBrowserRouter([
                         element: <GadgetCompendium />
                     },
                     {
+                        path: "conditions",
+                        element: <ConditionCompendium />
+                    },
+                    {
                         path: "",
                         element: <BarracksPage />
                     },
+
 
                     {
                         path: "minions",

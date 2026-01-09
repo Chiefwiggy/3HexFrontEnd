@@ -17,10 +17,12 @@ import {GiMagicHat, GiMeepleCircle, GiRuneStone, GiStripedSword} from "react-ico
 import {FaMoneyBillWave} from "react-icons/fa6";
 
 interface IStatViewInput {
-    pivot: boolean
+    pivot: boolean,
+    currentLevel: number
 }
 const StatView = ({
-    pivot
+    pivot,
+    currentLevel
 }: IStatViewInput) => {
 
     const {currentSheet , isInEditMode, healthPing, statPing, isReady} = useCharacter();
@@ -87,7 +89,7 @@ const StatView = ({
                     {
                         statData ?
                         Object.entries(statData).map(([name, stats]) => {
-                            return <StatBox stat={name} value={stats} key={name} editMode={isInEditMode} handleStatChange={handleEditStat} />
+                            return <StatBox stat={name} value={stats} key={name} editMode={isInEditMode} handleStatChange={handleEditStat} currentLevel={currentLevel}/>
                         })
                             :
                             <></>
@@ -241,7 +243,7 @@ const StatView = ({
                             justifyContent: "center"
                         }}
                     >
-                        <Typography variant={"body2"} color={statsUsed <= currentSheet.getTotalStatPoints() ? "green" : "red"}>Stat Points: {statsUsed}/{currentSheet.getTotalStatPoints()}</Typography>
+                        <Typography variant={"body2"} color={statsUsed <= currentSheet.getTotalStatPoints(currentLevel) ? "green" : "red"}>Stat Points: {statsUsed}/{currentSheet.getTotalStatPoints(currentLevel)}</Typography>
                     </Box>
                     :
                     <></>

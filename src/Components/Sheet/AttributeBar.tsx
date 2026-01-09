@@ -186,6 +186,15 @@ const AttributeBar = ({
                         />
 
                     </Box>
+
+                    <CircularProgress
+                        value={Math.min(100-progressLocked, progress)}
+                        variant="determinate"
+                        size={isSmall ? 50 : 80}
+                        thickness={isSmall ? 5 : 6}
+                        color={barColor}
+                    />
+
                     <Box
                         sx={{
                             top: 0,
@@ -208,13 +217,6 @@ const AttributeBar = ({
                             }}
                         />
                     </Box>
-                    <CircularProgress
-                        value={progress}
-                        variant="determinate"
-                        size={isSmall ? 50 : 80}
-                        thickness={isSmall ? 5 : 6}
-                        color={barColor}
-                    />
 
                     <Box
                         sx={{

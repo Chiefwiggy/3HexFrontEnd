@@ -29,34 +29,30 @@ import {
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
 import AddSubtractPanel from '../Generic/AddSubtractPanel';
 import {getStatDescription} from "../../Utils/StatDetailsUtil";
+import NumberSpinner from "../../Utils/NumberSpinner";
 
 interface IStatBoxInput {
     stat: string,
     value: IModifiable,
     editMode: boolean,
+    currentLevel: number,
     handleStatChange: (amount: number, stat: string) => () => void
 }
 const StatBox = ({
     stat,
     value,
     editMode,
+    currentLevel,
     handleStatChange
 }: IStatBoxInput) => {
 
     const {currentSheet, charPing} = useCharacter();
 
-    const [statValue, setStatValue] = useState<number>(0);
-    const [statRelativeColor, setStatRelativeColor] = useState("white")
-
     const [open, setOpen] = useState(currentSheet?.data.settings.showAttributeDescriptions ?? false);
     const description = getStatDescription(stat as UStat);
 
-    const [statCap, setStatCap] = useState(currentSheet?.getStatCap ?? 75);
-
-    const [isPopped, setIsPopped] = useState(false);
-    const [popAnchor, setPopAnchor] = useState<HTMLDivElement | null>(null);
-
     const [currentValue, setCurrentValue] = useState(0);
+    const [statCap, setStatCap] = useState(0)
 
 
     useEffect(() => {
@@ -65,46 +61,25 @@ const StatBox = ({
 
     useEffect(() => {
         if (currentSheet) {
-            setStatCap(currentSheet.getStatCap());
+            console.log(currentLevel)
+            setStatCap(Math.floor(currentLevel * 0.2) + 10)
         }
-    }, [charPing]);
+    }, [currentLevel, charPing]);
 
-    const handlePop = (event: React.MouseEvent<HTMLDivElement>) => {
-        if (!editMode) {
-            setPopAnchor(event.currentTarget);
-            setIsPopped(true);
+
+
+    const handleChange = (value: number | null) => {
+        if (value !== null) {
+            setCurrentValue(value);
+            handleStatChange(value, stat.toLowerCase())();
         }
-    }
+    };
 
-    const handleEditStat = (amount: number) => (event: React.MouseEvent) => {
-        setCurrentValue(currentValue => currentValue + amount);
-    }
 
-    const handlePushEdits = () => {
-        handleStatChange(currentValue, stat.toLowerCase())();
-    }
-
-    const handleClosePop = () => {
-        setPopAnchor(null);
-        setIsPopped(false);
-    }
-
-    useEffect(() => {
-        const modded = StatChain(value.value, [value.modifiers]);
-        setStatValue(modded);
-        if (value.value > modded) {
-            setStatRelativeColor("red");
-        } else if (value.value < modded) {
-            setStatRelativeColor("green");
-        } else {
-            setStatRelativeColor("white");
-        }
-    }, [value.value, value.modifiers?.modifier, value.modifiers?.override, value.modifiers?.multiplier]);
 
     return currentSheet ? (
         <Box>
             <Box
-                onClick={handlePop}
                 sx={{
                     display: "flex",
                     flexDirection: "column",
@@ -118,15 +93,14 @@ const StatBox = ({
                 {
                     editMode ?
                         <>
-                            <AddSubtractPanel
-                                handleChange={handleEditStat}
-                                callAfterChange={handlePushEdits}
+                            <NumberSpinner
+                                size={"small"}
+                                min={0}
+                                max={statCap}
                                 value={currentValue}
-                                textVariant={"h6"}
-                                isAtBottom={currentValue < 1}
-                                isAtCap={currentValue >= statCap}
-                                textWidth={30}
+                                onValueChange={handleChange}
                             />
+
                             <Typography variant={"body1"} color={"grey"}>[{getSkillFormat(currentSheet.getSave(stat as UStat))}]</Typography>
                             <Box>
                               <Box display="flex" alignItems="center" onClick={() => setOpen(!open)} sx={{ cursor: 'pointer' }}>
@@ -168,35 +142,12 @@ const StatBox = ({
                         </>
                         :
                         <>
-                            <Typography variant={"h6"} color={statRelativeColor}>{statValue}</Typography>
+                            <Typography variant={"h6"}>{currentValue}</Typography>
                             <Typography variant={"body1"} color={"grey"}>[{getSkillFormat(currentSheet.getSave(stat as UStat))}]</Typography>
                         </>
                 }
 
             </Box>
-            {/*<Popover*/}
-            {/*    open={isPopped}*/}
-            {/*    anchorEl={popAnchor}*/}
-            {/*    onClose={handleClosePop}*/}
-            {/*    anchorOrigin={{*/}
-            {/*        vertical: 'bottom',*/}
-            {/*        horizontal: 'center',*/}
-            {/*      }}*/}
-            {/*      transformOrigin={{*/}
-            {/*        vertical: 'top',*/}
-            {/*        horizontal: 'center',*/}
-            {/*      }}*/}
-            {/*>*/}
-            {/*    <Box*/}
-            {/*        sx={{*/}
-            {/*            padding: '24px',*/}
-            {/*            textAlign: "center"*/}
-            {/*        }}*/}
-            {/*    >*/}
-            {/*        <Typography>Base {capitalize(stat)} [ {value.value} ]  </Typography>*/}
-            {/*        <Typography>{capitalize(stat)} Save [ {getSkillFormat(currentSheet.getSave(stat as UStat))} ]</Typography>*/}
-            {/*    </Box>*/}
-            {/*</Popover>*/}
         </Box>
     ) : <></>
 }

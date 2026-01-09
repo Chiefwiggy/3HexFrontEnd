@@ -24,6 +24,10 @@ class PLC_ConditionData {
         return this.conditionTags;
     }
 
+    public GetConditionTagsByTypeAndTier(type: string, tier: number) {
+        return this.conditionTags.filter(tag => tag.conditionType === type && tag.conditionTier == tier).sort((a,b) => a.conditionName.localeCompare(b.conditionName))
+    }
+
     public GetConditionTagById(id: string): IConditionTag {
         const ret = this.conditionTags.find(e => e.conditionId == id);
         if (ret) {
@@ -34,6 +38,9 @@ class PLC_ConditionData {
                 conditionName: "Unknown",
                 conditionType: "buff",
                 conditionTier: 1,
+                heighteningDescription: "-",
+                heighteningStackCount: -99,
+                inverseConditionId: "",
                 conditionCountdownType: "rounds",
                 description: ["Cannot find condition details... contact Collin"],
                 xVals: []

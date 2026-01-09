@@ -1,4 +1,5 @@
 import {UArcanotype} from "../Data/ISourceData";
+import {IConditionTag} from "../Data/ICardData";
 
 
 export const CardGetColor = (type: string) => {
@@ -114,5 +115,31 @@ export const TypeColors = (itemKey: string) => {
             return "#80cbc4"
         default:
             return itemKey
+    }
+}
+
+export const getConditionBorderColor = (conditionData: IConditionTag) => {
+    if (conditionData.conditionType != "debuff") {
+        switch(conditionData.conditionTier) {
+            case 1:
+                return "#3d6a8e";
+            case 2:
+                return "#30ca1f";
+            case 3:
+                return "#c5b413";
+            default:
+                return "black"
+        }
+    } else {
+        switch(conditionData.conditionTier) {
+            case 1:
+                return "#813c34";
+            case 2:
+                return "#da2e3f";
+            case 3:
+                return "#8b25bf";
+            default:
+                return "black"
+        }
     }
 }

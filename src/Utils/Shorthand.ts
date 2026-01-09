@@ -150,16 +150,12 @@ export const getTierFromName = (tierName: string) => {
     switch (tierName) {
         case 'beginner':
             return 1;
-        case 'intermediate':
-            return 2;
         case 'advanced':
-            return 3;
+            return 2;
         case 'expert':
-            return 4;
+            return 3;
         case 'master':
-            return 5;
-        case 'legend':
-            return 6;
+            return 4;
         default:
             return 0;
     }
@@ -179,6 +175,21 @@ export const getNameFromTier = (tierNo: number) => {
             return "master";
         case 6:
             return "legend";
+        default:
+            return "unknown";
+    }
+}
+
+export const getNameFromClassTier = (tierNo: number) => {
+    switch (tierNo) {
+        case 1:
+            return "beginner";
+        case 2:
+            return "advanced";
+        case 3:
+            return "expert";
+        case 4:
+            return "master";
         default:
             return "unknown";
     }

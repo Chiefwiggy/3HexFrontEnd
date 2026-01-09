@@ -122,8 +122,8 @@ const CharacterSheetFullView = () => {
                 <CharacterSheetSidebar title={"Saved Cards"} icon={GiSave} panelComponent={SavedCardsView} />
                 <CharacterSheetSidebar title={"Prepare Commander Cards"} icon={MilitaryTechOutlined} panelComponent={CommanderCardPrepView} />
                 {/*<CharacterSheetSidebar title={"Prepare Battalion"} icon={Diversity3Outlined} panelComponent={BattalionAssignmentView} />*/}
-                <CharacterSheetSidebar title={"Conditions"} icon={FlareOutlined} panelComponent={ConditionsPanelView} />
-                <CharacterSheetSidebar title={"Backpack"} icon={BackpackOutlined} panelComponent={BackpackView} />
+                {/*<CharacterSheetSidebar title={"Conditions"} icon={FlareOutlined} panelComponent={ConditionsPanelView} />*/}
+                {/*<CharacterSheetSidebar title={"Backpack"} icon={BackpackOutlined} panelComponent={BackpackView} />*/}
                 <CharacterSheetSidebar title={"Classes & Affinities"} icon={EngineeringOutlined} panelComponent={ClassSelectView} badgeCondition={
                     currentSheet.getDevelopmentPoints() != currentSheet.data.developmentIds.length
                     ||
@@ -136,7 +136,7 @@ const CharacterSheetFullView = () => {
                         &&
                     currentSheet.data.race.customVulnerability)
                 }/>
-                <CharacterSheetSidebar title={"Event Log"} icon={ChatOutlined} panelComponent={EventLogView} />
+                {/*<CharacterSheetSidebar title={"Event Log"} icon={ChatOutlined} panelComponent={EventLogView} />*/}
                 <CharacterSheetSidebar title={"Settings"} icon={SettingsOutlined} panelComponent={SettingsPanel} />
 
 

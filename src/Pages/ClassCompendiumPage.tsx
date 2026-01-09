@@ -5,7 +5,7 @@ import {IClassChoiceData, IClassMetaData, IClassServerOutput} from "../Data/ICla
 import CompendiumClassElement from "../Components/Compendium/CompendiumClassElement";
 import {useLocation, useSearchParams} from "react-router-dom";
 import usePreloadedContent from "../Hooks/usePreloadedContent/usePreloadedContent"
-import {getNameFromTier, getTierFromName} from "../Utils/Shorthand";
+import {getNameFromClassTier, getTierFromName} from "../Utils/Shorthand";
 import {Helmet} from "react-helmet";
 
 interface IClassCompendiumPageInput {
@@ -52,7 +52,7 @@ const ClassCompendiumPage = ({}: IClassCompendiumPageInput) => {
             if (className) {
                 const ctier = classData.flatMap(e => e).find(e => e.className.toLowerCase() == className)?.classTier;
                 if (ctier) {
-                    setTier(getNameFromTier(ctier));
+                    setTier(getNameFromClassTier(ctier));
                     const index = classData[ctier-1].sort((a, b) => a.className.localeCompare(b.className)).findIndex(e => e.className.toLowerCase() == className);
                     if (index) {
                         setCurrentTabValue(index);
@@ -95,11 +95,9 @@ const ClassCompendiumPage = ({}: IClassCompendiumPageInput) => {
                                 fullWidth
                             >
                                 <MenuItem value="beginner">Beginner</MenuItem>
-                                <MenuItem value="intermediate">Intermediate</MenuItem>
                                 <MenuItem value="advanced">Advanced</MenuItem>
                                 <MenuItem value="expert">Expert</MenuItem>
                                 <MenuItem value="master">Master</MenuItem>
-                                <MenuItem value="legend">Legend</MenuItem>
                             </Select>
                         </FormControl>
                         <Tabs

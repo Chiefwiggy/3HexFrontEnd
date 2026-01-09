@@ -23,6 +23,7 @@ import {
 import PreparedSpellsPanel from "../Components/CardBuilder/PreparedSpellsPanel";
 import AddSubtractPanel from '../Components/Generic/AddSubtractPanel';
 import {getClassesString} from "../Utils/Shorthand";
+import NumberSpinner from "../Utils/NumberSpinner";
 
 const CharacterSheetView = () => {
     const {
@@ -70,6 +71,7 @@ const CharacterSheetView = () => {
         if (currentSheet) {
             if (doSave) {
                 invokeSave(!savePing);
+                currentSheet.data.characterLevel = currentLevel
                 await currentSheet.SaveCharacterSheet();
             } else {
                 invokeCancel();
@@ -91,20 +93,13 @@ const CharacterSheetView = () => {
         }
     }, [cancelPing]);
 
-    const handleChangeLevel = (delta: number) => (event: React.MouseEvent) => {
-        setCurrentLevel(currentLevel => {
-          return currentLevel + delta;
-        })
-    }
-
-    const handleAfterAllChanges = () => {
-        if (currentSheet) {
+    const handleChangeLevel = (value: number | null) => {
+        if (value != null && currentSheet) {
+            setCurrentLevel(value)
             currentSheet.data.characterLevel = currentLevel
-            setClassesLine(getClassesString(currentSheet.data.classes))
-            currentSheet.manualCharPing()
         }
-    }
 
+    }
     return currentSheet ? (
         <Box>
 
@@ -142,16 +137,17 @@ const CharacterSheetView = () => {
                                         gap: 2
                                     }}
                                 >
-                                    <AddSubtractPanel
-                                        handleChange={handleChangeLevel}
-                                        callAfterChange={handleAfterAllChanges}
+
+                                    <NumberSpinner
+                                        min={0}
+                                        max={200}
+                                        size={"small"}
                                         value={currentLevel}
-                                        isAtCap={currentLevel >= 325}
-                                        isAtBottom={currentLevel <= 1}
-                                        textWidth={220}
-                                        textVariant={"subtitle2"}
-                                        textOverride={`Level ${currentLevel} - ${classesLine}`}
+                                        onValueChange={handleChangeLevel}
+                                        preText={"Level"}
+                                        postText={classesLine}
                                     />
+
                                 </Box>
                                 :
                                 <Typography variant={"subtitle2"}
@@ -177,7 +173,7 @@ const CharacterSheetView = () => {
                                 <IconButton
                                     onClick={handleEditClick(true)}
                                 >
-                                    <Badge invisible={currentSheet.getTotalStatPoints() - currentSheet.getTotalStatPointsUsed() == 0} color={currentSheet.getTotalStatPoints() - currentSheet.getTotalStatPointsUsed() > 0 ? "secondary" : "error"} variant={"dot"} sx={{
+                                    <Badge invisible={currentSheet.getTotalStatPoints(currentLevel) - currentSheet.getTotalStatPointsUsed() == 0} color={currentSheet.getTotalStatPoints(currentLevel) - currentSheet.getTotalStatPointsUsed() > 0 ? "secondary" : "error"} variant={"dot"} sx={{
                                         paddingRight: "5px"
                                     }}>
                                         <ModeEditOutlined sx={{fontSize: 20}}/>
@@ -207,7 +203,7 @@ const CharacterSheetView = () => {
             </Box>
 
 
-            <StatView pivot={isSmallScreen}/>
+            <StatView pivot={isSmallScreen} currentLevel={currentLevel} />
             <Box
                 sx={{
                     display: 'grid',

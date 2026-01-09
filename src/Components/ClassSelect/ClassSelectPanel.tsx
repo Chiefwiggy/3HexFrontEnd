@@ -34,11 +34,9 @@ const TIER_OPTIONS = [
   "fate",
   "development",
   "beginner",
-  "intermediate",
   "advanced",
   "expert",
-  "master",
-  "legend"
+  "master"
 ];
 
 const ClassSelectPanel = ({
@@ -110,9 +108,9 @@ const ClassSelectPanel = ({
     }
 
     const tierNum = getTierFromName(tier);
-    return tier !== "legend"
+    return tier !== "master"
       ? `Unlock Classes at Level ${tierNum * 60 - 60}, Promotions at ${tierNum * 60 - 40} and ${tierNum * 60 - 20}`
-      : `Unlock Class at Level ${(tierNum - 1) * 60}`;
+      : `Unlock Class at Level ${(tierNum - 1) * 60}. Promote that class at ${(tierNum * 60 - 40)}`;
   };
 
 

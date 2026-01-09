@@ -57,8 +57,14 @@ abstract class AbstractSheet {
             (this.getAbilityBonuses("maxHealthScaling")+2)*this.getStat("vitality") + (this.getAbilityBonuses("enduranceMaxHealthScaling")*this.getStat("endurance"))) * (this.getAbilityBonuses("maxHealthMultiplier") || 1));
     }
     public getMaxStamina() {
-        return Math.floor(10 + this.getAbilityBonuses("maxStamina") +
+        let maxStamina = Math.floor(10 + this.getAbilityBonuses("maxStamina") +
             (this.getAbilityBonuses("maxStaminaScaling")+5)*this.getStat("endurance") + this.getAbilityBonuses("mindMaxStaminaScaling") * this.getStat("mind"))
+
+        if (this.isUnlocked("powerDiverter")) {
+            maxStamina += this.getMaxTechnik(true);
+        }
+
+        return maxStamina
     }
     public getMaxTether() {
         if (this.isUnlocked("patronMagic")) {
@@ -67,7 +73,7 @@ abstract class AbstractSheet {
         return this.getAbilityBonuses("maxTether") + (this.getAbilityBonuses("maxTetherScaling")+5)*this.getStat("mind");
     }
 
-    public getMaxTechnik(): number {
+    public getMaxTechnik(ignoreOverride = false): number {
         return 0;
     }
 
@@ -112,9 +118,15 @@ abstract class AbstractSheet {
             }
         }
 
-        return Math.floor(
+        let finalRefresh = Math.floor(
             this.getStat("endurance") * staminaMultiplier
         ) + this.getAbilityBonuses("staminaRefresh")
+
+        if (this.isUnlocked("powerDiverter")) {
+            finalRefresh += this.getStat("knowledge")
+        }
+
+        return finalRefresh
     }
     public getTetherRefresh(): number {
         let tetherMultiplier = 2.0;

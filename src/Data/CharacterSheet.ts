@@ -239,7 +239,10 @@ class CharacterSheet extends AbstractSheet {
         return this._primaryDatachip
     }
 
-    public getMaxTechnik(): number {
+    public getMaxTechnik(ignoreOverride = false): number {
+        if (!ignoreOverride && this.isUnlocked("powerDiverter")) {
+            return 0;
+        }
         const pdc = this.getPrimaryDatachip()
 
         let baseTechnik = 0;
@@ -451,6 +454,12 @@ class CharacterSheet extends AbstractSheet {
         if (specialLogicTags.includes("powerPlusCommanderCardsEquipped")) {
             finalRet += this.commanderCards.length;
         }
+        if (specialLogicTags.includes("addPresence")) {
+            finalRet += this.getStat("presence");
+        }
+        if (specialLogicTags.includes("addAuthority")) {
+            finalRet += this.getStat("authority");
+        }
         return finalRet;
     }
 
@@ -553,12 +562,8 @@ class CharacterSheet extends AbstractSheet {
         return this.isUnlocked("downtimeMaster") ? 8 : (this.isUnlocked("downtimeExpert") ? 6 : 4)
     }
 
-    public getStatCap = () => {
-        return Math.floor(this.getLevel() * 0.2) + 10
-    }
-
-    public getTotalStatPoints = () => {
-        return this.getLevel() + 35 + this.getAbilityBonuses("statPoints")
+    public getTotalStatPoints = (level: number) => {
+        return level + 35 + this.getAbilityBonuses("statPoints")
     }
 
     public getTotalStatPointsUsed = (): number => {
@@ -570,22 +575,6 @@ class CharacterSheet extends AbstractSheet {
         this._sping();
     }
 
-    // public getClassesString = () => {
-    //     const highestTier = this.data.classes.reduce((pv, cv) => {
-    //         if (cv.classTier > pv) {
-    //             return cv.classTier;
-    //         }
-    //         return pv;
-    //     }, 0)
-    //     return this.data.classes.filter(e => e.classTier == highestTier).sort((a,b) => {
-    //         if (a.isPromoted != b.isPromoted) {
-    //             if (a.isPromoted) return -1;
-    //             else return 1;
-    //         } else {
-    //             return a.className.localeCompare(b.className);
-    //         }
-    //     }).map(e => e.isPromoted ? e.className + "+" : e.className).join(" • ")
-    // }
     public getPreparedWeaponCards = () => {
         if (this.allButDefaultCards) {
             const weaponCards: Array<ICommonCardData> = [
@@ -888,10 +877,16 @@ class CharacterSheet extends AbstractSheet {
         }
     }
     getHitStat(specialLogicTags: Array<string>): number {
+        let parryFinal = this.getStat("awareness")*2 + this.getStat("skill");
         if (specialLogicTags.includes("gadget")) {
-            return this.getGadgetHit()
+            parryFinal = this.getGadgetHit()
         }
-        return this.getStat("awareness")*2 + this.getStat("skill");
+
+        if (specialLogicTags.includes("isParry")) {
+            parryFinal += this.getAbilityBonuses("parryBonus")
+        }
+
+        return parryFinal
     }
 
     getCritStat(): number {
@@ -1009,7 +1004,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getTechnik(): number {
-        return this.data.attributeBars.technik.current;
+        return Math.min(this.getMaxTechnik() - this.getLockedTechnik(), this.data.attributeBars.technik.current);
     }
 
     public getOrders(): number {
