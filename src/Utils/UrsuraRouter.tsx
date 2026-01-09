@@ -31,6 +31,7 @@ import CardRequestReviewPage from "../Pages/CardRequestReviewPage";
 import DatachipCompendium from "../Pages/DatachipCompendium";
 import GadgetCompendium from "../Pages/GadgetCompendium";
 import ConditionCompendium from "../Pages/ConditionCompendium";
+import RulesPage from "../Pages/RulesPage";
 
 
 
@@ -76,6 +77,15 @@ const UrsuraRouter = createBrowserRouter([
             {
                 path: "/characters",
                 element: <CharacterPage />
+            },
+            {
+                path: "/rules",
+                children: [
+                    {
+                        path: "",
+                        element: <RulesPage />
+                    }
+                ]
             },
             {
                 path: "creator",

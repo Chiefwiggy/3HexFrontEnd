@@ -118,6 +118,19 @@ export const TypeColors = (itemKey: string) => {
     }
 }
 
+export const GetActionBannerColors = (actionType: "standard" | "interaction" | "free" | "special") => {
+    switch(actionType) {
+        case "standard":
+            return "#275b8e66"
+        case "interaction":
+            return `rgba(52,195,76,0.42)`
+        case "free":
+            return "rgba(202,207,47,0.43)"
+        case "special":
+            return "rgba(119,47,207,0.23)"
+    }
+}
+
 export const getConditionBorderColor = (conditionData: IConditionTag) => {
     if (conditionData.conditionType != "debuff") {
         switch(conditionData.conditionTier) {

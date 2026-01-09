@@ -165,11 +165,11 @@ class HackCardCalculator extends AbstractCardCalculator {
         const FN_NAME = this.sanitizeName(this.getCardOfType("hack.function")?.cardName);
 
 
-        const CORE_NAME = `${PROTOCOL_NAME}_${IO_NAME}_${FN_NAME}`
-        let finalName = CORE_NAME;
+        let finalName = `${IO_NAME}_${PROTOCOL_NAME}`
         if (UTIL_NAME) {
-            finalName = UTIL_NAME + "_" + CORE_NAME;
+            finalName += `_${UTIL_NAME}`
         }
+        finalName += `_${FN_NAME}`
         return finalName;
 
 

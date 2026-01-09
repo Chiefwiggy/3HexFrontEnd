@@ -45,6 +45,9 @@ const NavigationBar = () => {
                             :
                             <></>
                     }
+                    <Button component={Link} to="/rules">
+                        Rules
+                    </Button>
                     <Button component={Link} to="/compendium/classes">
                         Class Guide
                     </Button>
@@ -54,6 +57,7 @@ const NavigationBar = () => {
                     <Button component={Link} to="/barracks">
                         Barracks
                     </Button>
+
                     {
                         userPermissions.includes("admin") || userPermissions.includes("creator") ?
                             <Button component={Link} to="/creator">
