@@ -1,7 +1,14 @@
 import {IConditionTag} from "../Data/ICardData";
+import {actionsContent} from "../Data/ActionData";
 
 
 export class TextUtils {
+
+    public static Actions = class {
+        public static GetActionData() {
+            return actionsContent;
+        }
+    }
 
     public static Conditions = class {
 
