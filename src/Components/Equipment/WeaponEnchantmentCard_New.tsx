@@ -175,7 +175,7 @@ const WeaponEnchantmentCard_New = ({
                             justifyContent: "center"
                         }}
                     >
-                        <Button color={"secondary"} size={"small"} sx={{padding: "4px 0"}} onClick={handleEditEnchantment(1)}>
+                        <Button color={"secondary"} size={"small"} sx={{padding: "4px 0"}} onClick={handleEditEnchantment(1)} disabled={!weaponData.canScale}>
                             <KeyboardArrowUp/>
                         </Button>
                     </Box>
@@ -188,9 +188,10 @@ const WeaponEnchantmentCard_New = ({
                             justifyContent: "center"
                         }}
                     >
-                        <Button color={"secondary"} size={"small"} sx={{padding: "4px 0"}} onClick={handleEditEnchantment(-1)} disabled={weaponMetadata.enchantmentLevel === 0}>
+                        <Button color={"secondary"} size={"small"} sx={{padding: "4px 0"}} onClick={handleEditEnchantment(-1)} disabled={weaponMetadata.enchantmentLevel === 0 || !weaponData.canScale} >
                             <KeyboardArrowDown/>
                         </Button>
+
                     </Box>
                 </Box>
                 <Box

@@ -32,6 +32,7 @@ export const ConstructFinalWeapon = (baseWeaponData: IWeaponBaseData, enchantmen
         thrownRange: {isMelee: baseWeaponData.thrownRange.isMelee, max: ScaleChainNumeric(baseWeaponData.thrownRange.max, improvements), min: ScaleChainNumeric(baseWeaponData.thrownRange.min, improvements)},
         weaponClass: baseWeaponData.weaponClass,
         weaponTags: baseWeaponData.weaponTags,
+        canScale: baseWeaponData.canScale,
         weaponType: baseWeaponData.weaponType,
         handedness: baseWeaponData.handedness,
         isCreatureWeapon: baseWeaponData.isCreatureWeapon
@@ -86,6 +87,7 @@ export const ConstructFinalGadget = (baseGadgetData: IGadgetData): IScaledWeapon
         },
         weaponClass: "standard",
         weaponTags: [""],
+        canScale: false,
         weaponType: "gadget",
         handedness: 1,
         isCreatureWeapon: false,

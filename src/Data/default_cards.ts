@@ -80,10 +80,17 @@ export const default_weapon_cards: Array<IWeaponCommonData | IWeaponBaseData> = 
         cardName: "Fists",
         cardType: "weapon",
         cardSubtype: "base",
-        effects: [],
+        effects: [    {
+            "icon": {
+                "emblem": "default",
+                "symbol": "",
+                "text": ""
+            },
+            "text": "Add half your Skill modifier to the Accuracy of this Attack."
+        }],
         prerequisites: [],
         baseHit: {
-            baseValue: 25,
+            baseValue: 20,
             breakpoints: [],
             breakpointBonuses: []
         },
@@ -169,7 +176,9 @@ export const default_weapon_cards: Array<IWeaponCommonData | IWeaponBaseData> = 
             breakpointBonuses: []
         },
         weaponTags: ["unarmed"],
+        canScale: false,
         handedness: 1.0,
+        "specialLogicTags": ["unscaledSkill"],
         tempEnchantValue: {
             baseId: "___defaultBaseWeapon",
             enchantmentLevel: 0
@@ -180,10 +189,17 @@ export const default_weapon_cards: Array<IWeaponCommonData | IWeaponBaseData> = 
         cardName: "Improvised Weapon",
         cardType: "weapon",
         cardSubtype: "base",
-        effects: [],
+        effects: [    {
+            "icon": {
+                "emblem": "default",
+                "symbol": "",
+                "text": ""
+            },
+            "text": "Add half your Skill modifier to the Accuracy of this Attack."
+        }],
         prerequisites: [],
         baseHit: {
-            baseValue: 10,
+            baseValue: 20,
             breakpoints: [],
             breakpointBonuses: []
         },
@@ -266,12 +282,138 @@ export const default_weapon_cards: Array<IWeaponCommonData | IWeaponBaseData> = 
             breakpointBonuses: []
         },
         weaponTags: ["unarmed"],
+        canScale: false,
         handedness: 1.0,
+        specialLogicTags: ["unscaledSkill"],
         tempEnchantValue: {
             baseId: "___defaultImprovisedWeapon",
             enchantmentLevel: 0
         },
         _id: "___defaultImprovisedWeapon"
+    },
+    {
+        cardName: "Grapple",
+        cardType: "weapon",
+        cardSubtype: "base",
+        effects: [
+            {
+                "icon": {
+                    "emblem": "info",
+                    "symbol": "",
+                    "text": ""
+                },
+                "text": "If this attack hits, initiate a Grapple. If this attack Pinpoints, they have Disadvantage on their Skill Check."
+            },
+            {
+                "icon": {
+                    "emblem": "warning",
+                    "symbol": "",
+                    "text": ""
+                },
+                "text": "This attack can only target one target. The enemy may Counter before you make this Attack."
+            },
+            {
+                "icon": {
+                    "emblem": "default",
+                    "symbol": "",
+                    "text": ""
+                },
+                "text": "Add half your Skill modifier to the Accuracy of this Attack."
+            }
+        ],
+        prerequisites: [],
+        baseHit: {
+            baseValue: 20,
+            breakpoints: [],
+            breakpointBonuses: []
+        },
+        basePower: {
+            baseValue: 0,
+            breakpoints: [],
+            breakpointBonuses: []
+        },
+        potency: {
+            baseValue: 0,
+            breakpoints: [],
+            breakpointBonuses: []
+        },
+        weaponClass: "standard",
+        weaponType: "unarmed",
+        damageType: "none",
+        damageSubtype: "none",
+        baseCrit: {
+            baseValue: 0,
+            breakpoints: [],
+            breakpointBonuses: []
+        },
+        specialCrit:
+            {
+                baseValue: {
+                    d1: "-",
+                    d2: "-",
+                    d3: "-",
+                    d4: "-",
+                    d5: "-",
+                    d6: "-"
+                },
+                breakpoints: [],
+                breakpointBonuses: []
+            },
+        baseRange: {
+            min: {
+                baseValue: 0,
+                breakpoints: [],
+                breakpointBonuses: []
+            },
+            max: {
+                baseValue: 0,
+                breakpoints: [],
+                breakpointBonuses: []
+            },
+            isMelee: true
+        },
+        thrownRange: {
+            min: {
+                baseValue: 0,
+                breakpoints: [],
+                breakpointBonuses: []
+            },
+            max: {
+                baseValue: 0,
+                breakpoints: [],
+                breakpointBonuses: []
+            },
+            isMelee: true
+        },
+        canThrow: {
+            baseValue: false,
+            breakpoints: [],
+            breakpointBonuses: []
+        },
+        skillRequirement: {
+            baseValue: 0,
+            breakpoints: [],
+            breakpointBonuses: []
+        },
+        staminaCost: {
+            baseValue: 0,
+            breakpoints: [],
+            breakpointBonuses: []
+        },
+        tetherCost: {
+            baseValue: 0,
+            breakpoints: [],
+            breakpointBonuses: []
+        },
+        weaponTags: ["unarmed"],
+        canScale: false,
+        handedness: 2.0,
+        specialLogicTags: ["unscaledSkill"],
+        tempEnchantValue: {
+            baseId: "___defaultGrapple",
+            enchantmentLevel: 0
+        },
+        _id: "___defaultGrapple"
     },
     {
         cardName: "Standard Attack",

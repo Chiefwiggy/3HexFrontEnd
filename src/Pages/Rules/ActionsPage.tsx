@@ -15,10 +15,6 @@ interface IActionsPageInput {
 const ActionsPage = ({}: IActionsPageInput) => {
 
 
-
-
-
-
     return (
         <Box
             sx={{

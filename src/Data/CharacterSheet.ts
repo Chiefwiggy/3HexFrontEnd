@@ -877,16 +877,24 @@ class CharacterSheet extends AbstractSheet {
         }
     }
     getHitStat(specialLogicTags: Array<string>): number {
-        let parryFinal = this.getStat("awareness")*2 + this.getStat("skill");
+        let hitFinal = this.getStat("awareness")*2 + this.getStat("skill");
         if (specialLogicTags.includes("gadget")) {
-            parryFinal = this.getGadgetHit()
+            hitFinal = this.getGadgetHit()
         }
 
         if (specialLogicTags.includes("isParry")) {
-            parryFinal += this.getAbilityBonuses("parryBonus")
+            hitFinal += this.getAbilityBonuses("parryBonus")
         }
 
-        return parryFinal
+        if (specialLogicTags.includes("unscaledSkill")) {
+            hitFinal += Math.floor( 0.5 * this.getStat("skill"))
+        }
+
+        if (specialLogicTags.includes("unscaledSkillFull")) {
+            hitFinal += this.getStat("skill")
+        }
+
+        return hitFinal
     }
 
     getCritStat(): number {

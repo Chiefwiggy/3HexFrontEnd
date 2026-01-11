@@ -66,7 +66,7 @@ const WeaponBaseCard = ({
 
     return cardData.specialCrit ? (
         <GenericCardLayout isDraft={isDraft}  cardData={constructedData} sendBack={handleCustomSendBack} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} showAdd={showAdd} canFavorite={canFavorite} overrideSubtitle={cardData.weaponType.toUpperCase() + " • " + cardData.weaponClass.toUpperCase()} showPrerequisites={showPrerequisites}
-                           titleExtra={`+${constructedData.enchantmentData.enchantmentLevel} ${constructedData.enchantmentData.efficientUse ? "2H" : ""}${(constructedData.enchantmentData?.improvements ?? 0) > 0 ? `-S${(constructedData.enchantmentData.improvements ?? 0) > 1 ? "+" : ""}` : ""}`}>
+                           titleExtra={cardData.canScale ? `+${constructedData.enchantmentData.enchantmentLevel} ${constructedData.enchantmentData.efficientUse ? "2H" : ""}${(constructedData.enchantmentData?.improvements ?? 0) > 0 ? `-S${(constructedData.enchantmentData.improvements ?? 0) > 1 ? "+" : ""}` : ""}`: (constructedData.enchantmentData?.improvements ?? 0) > 0 ? "- Honed" : ""}>
             <Box
                 sx={{
                     display: "grid",

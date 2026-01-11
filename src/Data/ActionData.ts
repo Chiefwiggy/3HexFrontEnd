@@ -212,5 +212,39 @@ export const actionsContent: Array<IActionContent> = [
             "If for example, you have 3 Quick Slots, you can produce an Ether as if its been on your person the entire time, and reduce your Quick Slots to 2."
         ]
     },
+    {
+        actionName: "Initiate a Grapple",
+        actionType: "special",
+        actionCategory: "grappling",
+        description: [
+            "To initiate a Grapple, use a card such as the default card Grapple which allows you to take the Initiate a Grapple action against a single creature no more than 1 size larger than you. On a hit, roll using your Might Save modifier, which sets your Grapple DC.",
+            "Your target then must make their own Might Save. On a failed save, the target becomes [[condition.grappled]].",
+            "When you are grapple a target, you must move into their space, and move their token to the center of the Hex. While grappling the target, you no longer exert Zone of Control over your Edges, and you and the target both enter Exposed Stance unless otherwise specified.",
+            "Finally, when attempting to move while grappling a target, you move only at Partial Effectiveness. Every Hex moved, however, allows the grappled target to try to Escape as a Free Action.",
+            "The grappled target can use an Action to Attempt to escape, allowing them to reattempt their check against your previously set Grapple DC, allowing them to make EITHER a Might Save, an Agility Save, OR a Skill Save to attempt to escape. If they beat your Grapple DC, the grapple ends and they enter the nearest unoccupied space.",
+            "The grapple also ends if you run out of Stamina.",
+            "While you have a target grappled, your Actions become more limited. You cannot take Actions which require both hands. If you take an Action which requires one hand, such as Cast a Hack, Cast a Spell, Attack (with a one-handed or versatile weapon against a target who is not the grappled target), then your opponent can attempt to Escape with Disadvantage."
+        ]
+    },
+    {
+        actionName: "Join a Grapple",
+        actionType: "standard",
+        actionCategory: "grappling",
+        description: [
+            "You can attempt to participate in an existing grapple.",
+            "If you are attempting to aid the grappler, increase the Grapple DC by your Might (for example, if you have a Might of 12, then increase the Grapple DC by +1 : 2.)",
+            "If you are attempting to aid the [[condition.grappled]], you can try to pry one of the grapplers off. Both you and the [[condition.grappled]] creature may roll an Escape Save with Advantage 1. If either of you succeed, remove one of the opposed grapplers, ending the grapple if there are no grapplers which remain."
+        ]
+    },
+    {
+        actionName: "Pin",
+        actionType: "standard",
+        actionCategory: "grappling",
+        description: [
+            "If you have a creature [[condition.grappled]], you can use an Action to attempt to pin them to a wall or the ground. The grappled creature may attempt to Escape as a Free Action. On a failed save, the target becomes [[condition.pinned]]. You can choose whether or not the cover the mouth of the pinned creature. As part of this pin, the creature becomes Disarmed. Unarmed attacks you make against a pinned target automatically Pinpoint.",
+            "If you choose to release the pin, the grapple ends as well. If your opponent escapes your pin, then they remain grappled by you, but get an opportunity to Escape immediately.",
+            "You have all of the drawbacks of grappling a target still while pinning a target unless otherwise specified."
+        ]
+    },
 
 ]

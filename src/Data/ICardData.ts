@@ -234,7 +234,8 @@ export interface IScaledWeaponBaseData extends IWeaponCommonData {
     staminaCost: number,
     skillRequirement: number
     enchantmentData: IEnchantmentData
-    weaponTags: Array<string>
+    weaponTags: Array<string>,
+    canScale: boolean
 }
 
 export interface IWeaponBaseData extends IWeaponCommonData {
@@ -271,7 +272,8 @@ export interface IWeaponBaseData extends IWeaponCommonData {
     staminaCost: IScalingData<number>,
     skillRequirement: IScalingData<number>
     weaponTags: Array<string>
-    tempEnchantValue?: IEnchantmentData
+    tempEnchantValue?: IEnchantmentData,
+    canScale: boolean
 }
 
 export interface IEffectData {
