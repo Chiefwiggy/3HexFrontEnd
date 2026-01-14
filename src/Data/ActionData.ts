@@ -76,8 +76,8 @@ export const actionsContent: Array<IActionContent> = [
         actionType: "special",
         actionCategory: "movement",
         description: ["You are able to move a number of hexes equal to your Movement Speed. If you take another Standard Action in between a Step, your Step ends and you cannot use the remainder of the movement from that Step.",
-            " When leaving a hex which is considered [[condition.rough_terrain]], you must spend that number of Hexes of movement to move out of it.",
-            "You can spend a single Step to remove 2 steps of [[condition.hobbled]] instead of moving. You can also spend a single Step to remove 1 Stack of [[condition.prone]].",
+            "When leaving a hex which is considered [[condition.rough_terrain]], you must spend that number of Hexes of movement to move out of it. However, you can always leave [[condition.rough_terrain]] with a single Step unless an effect states otherwise.",
+            "You can spend 2 Movement to remove 1 Stack from [[condition.prone]].",
             "Certain type of locomotion require more finesse than simple walking. These may include things like Climbing, Leaping, Flying, etc.",
             "By default, you are Partially Effective at Climbing and Leaping (with a running start). You are Ineffective at Leaping (without a running start) and Flying.",
             "There are four tiers of movement Effectiveness: Very Effective, Effective, Partially Effective, and Ineffective.",
@@ -90,8 +90,10 @@ export const actionsContent: Array<IActionContent> = [
         actionName: "Dash",
         actionType: "standard",
         actionCategory: "movement",
-        description: ["You grant yourself two Steps which are lost at the end of your turn. You can always leave [[condition.rough_terrain]] with a single Dash Action.",
-            "You can spend a Dash Action to remove 1 Stack of [[condition.immobilized]]"]
+        description: [
+            "You grant yourself one Step which is lost at the end of your turn.",
+            "Taking the Dash Action can also be used to remove 1 Stack of [[condition.lightweight]] or [[condition.heavyweight]]."
+        ]
     },
     {
         actionName: "Rally",

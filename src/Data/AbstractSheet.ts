@@ -235,7 +235,7 @@ abstract class AbstractSheet {
         if (this.currentArmor && this.currentArmor.armorClass == "heavy" && !this.isUnlocked("heavyArmorSprinter")) {
             armorBonus = 0
         }
-        return 1 + armorBonus + this.getAbilityBonuses("stepSpeed");
+        return 2 + armorBonus + this.getAbilityBonuses("stepSpeed");
     }
 
     public getMaxGlyphs(): number {
