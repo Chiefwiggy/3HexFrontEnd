@@ -69,7 +69,7 @@ class PLC_DowntimeData {
             if (aData) {
                 return [arcanotype, (aData.proficiency*2)-1 + currentSheet.getAbilityBonuses(`${arcanotype}Sources`)]
             } else {
-                return [arcanotype, currentSheet.getAbilityBonuses(`attune${arcanotype}`)]
+                return [arcanotype, currentSheet.getAbilityBonuses(`${arcanotype}Sources`)]
             }
         })
     }
