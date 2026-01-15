@@ -10,7 +10,7 @@ import {
 } from "@mui/icons-material";
 import HighlightType from "../Generic/HighlightType";
 import {FaArrowRightArrowLeft, FaMoneyBillWave} from "react-icons/fa6";
-import {GiLaserBurst, GiPortal, GiSparkSpirit, GiTiedScroll} from "react-icons/gi";
+import {GiGems, GiLaserBurst, GiPortal, GiSparkSpirit, GiTiedScroll} from "react-icons/gi";
 import {SiMagic} from "react-icons/si";
 import {GrTechnology} from "react-icons/gr";
 import {MdPowerOff} from "react-icons/md";
@@ -115,6 +115,10 @@ const CardEffect = ({effectData, finalPower}: ICardEffectInput) => {
             case 'rift_object':
                 setEmblem(<Box sx={{paddingLeft: "2px", display: "flex", alignItems: "center"}}><GiPortal /></Box>)
                 setTintColor("rgba(42,52,255,0.2)");
+                break;
+            case 'material':
+                setEmblem(<Box sx={{paddingLeft: "2px", display: "flex", alignItems: "center"}}><GiGems /></Box>)
+                setTintColor("rgba(50,19,188,0.18)");
                 break;
             case 'else':
                 setEmblem(<Box sx={{paddingLeft: "2px", display: "flex", alignItems: "center"}}><FaArrowRightArrowLeft /></Box>)
