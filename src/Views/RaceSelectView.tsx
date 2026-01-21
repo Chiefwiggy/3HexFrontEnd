@@ -48,6 +48,7 @@ const RaceSelectView = ({}: IRaceSelectViewInput) => {
         setCurrentSubrace(null);
         setCustomVulnerability(null);
         setHasChanged(true);
+        setCurrentUnlockList([]);
     }
 
     const handleSubraceAutocomplete = (event: SyntheticEvent<any>, value: ISubraceMetadata | null) => {
@@ -237,7 +238,7 @@ const RaceSelectView = ({}: IRaceSelectViewInput) => {
             </Box>
 
             {/* Third row: Ability Panels */}
-            <Box sx={{ display: "grid", gridTemplateColumns: "3fr 3fr 2fr", gap: 3 }}>
+            <Box sx={{ display: "grid", gridTemplateColumns: "3fr 3fr 5fr", gap: 3 }}>
                 {/* Race Abilities */}
                 <Box sx={scrollableSx}>
                     <Typography variant="h5" textAlign="center" sx={{ mb: 1 }}>{currentRace ? currentRace.raceName : "Race"} Abilities</Typography>
@@ -302,9 +303,11 @@ const RaceSelectView = ({}: IRaceSelectViewInput) => {
                         <Box sx={scrollableSx}>
                             <Box>
                                 <Typography variant={"h5"}>{currentRace!.raceName} Overview</Typography>
+
                                 <Typography component="span" variant={"subtitle2"} sx={{pr: 1}}>
                                     Roles:
                                 </Typography>
+
                                 {
                                     currentRace.availableRoles.map((role, id) => {
                                         return (
@@ -313,6 +316,21 @@ const RaceSelectView = ({}: IRaceSelectViewInput) => {
                                     })
                                 }
                                 <Typography variant={"body2"} sx={{pr: 1}}>
+                                    {
+                                        currentSubrace &&
+                                        <Box
+                                            component="img"
+                                            sx={{
+                                                height: 200,
+                                                float: "right",
+                                                ml: 2,
+                                                mb: 1,
+                                                borderRadius: 1
+                                            }}
+                                            alt="The house from the offer."
+                                            src={currentSubrace?.cdnImageLink}
+                                        />
+                                    }
                                     {currentRace.raceDescription}
                                 </Typography>
                                 {

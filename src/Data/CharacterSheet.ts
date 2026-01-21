@@ -1264,7 +1264,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getRacialAbilityTokens = () => {
-        return 1 + this.getAbilityBonuses("racialAbilityTokens")
+        return 1 + this.getAbilityBonuses("racialAbilityToken")
     }
 
     public getDevelopmentPoints = () => {
