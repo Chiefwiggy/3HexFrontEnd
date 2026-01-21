@@ -50,7 +50,7 @@ const CardBuilderGridList = ({
                 rowsPerPageOptions={[4,8,12,16,20,24]}
 
             />
-            <Grid container spacing={2} justifyContent={"center"}>
+            <Grid container spacing={2} justifyContent={"center"} bgcolor={"#23232366"} p={2} m={2} borderRadius={6} >
                 {
                     cardList.slice(page*rowsPerPage,rowsPerPage+(rowsPerPage*page)).map((card: ICommonCardData) => {
                         const typeIndex = cardTypes.findIndex((type) => type.name.map(e => e.split(".")[1]).includes(card.cardSubtype));

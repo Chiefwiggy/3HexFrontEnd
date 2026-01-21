@@ -44,6 +44,8 @@ import SubtypeDamageIcon from '../Components/SmallComponents/SubtypeDamageIcon';
 import BattalionAssignmentView from "./BattalionAssignmentView";
 import {MdMemory} from "react-icons/md";
 import HackCardBuilderView from "./HackCardBuilderView";
+import {SiFoundryvirtualtabletop} from "react-icons/si";
+import FoundryButton from "../Components/Icons/FoundryButton";
 
 const CharacterSheetFullView = () => {
 
@@ -117,7 +119,7 @@ const CharacterSheetFullView = () => {
                 <CharacterSheetSidebar title={"Prepare Cards"} icon={ViewCarouselOutlined} panelComponent={CardPreparationView} />
                 <CharacterSheetSidebar title={"Create Spells"} icon={AutoFixHighOutlined} panelComponent={SpellCardBuilderView} />
                 <CharacterSheetSidebar title={"Create Attacks"} icon={GiAxeSword} panelComponent={WeaponCardBuilderView} />
-                <CharacterSheetSidebar title={"Create Offhand Attacks"} icon={GiDaggers} panelComponent={WeaponCardBuilderView}  doShow={currentSheet.canDualWield()} isOffhand={true}/>
+                {/*<CharacterSheetSidebar title={"Create Offhand Attacks"} icon={GiDaggers} panelComponent={WeaponCardBuilderView}  doShow={currentSheet.canDualWield()} isOffhand={true}/>*/}
                 <CharacterSheetSidebar title={"Create Hacks"} icon={MdMemory} panelComponent={HackCardBuilderView} />
                 <CharacterSheetSidebar title={"Saved Cards"} icon={GiSave} panelComponent={SavedCardsView} />
                 <CharacterSheetSidebar title={"Prepare Commander Cards"} icon={MilitaryTechOutlined} panelComponent={CommanderCardPrepView} />
@@ -138,6 +140,7 @@ const CharacterSheetFullView = () => {
                 }/>
                 {/*<CharacterSheetSidebar title={"Event Log"} icon={ChatOutlined} panelComponent={EventLogView} />*/}
                 <CharacterSheetSidebar title={"Settings"} icon={SettingsOutlined} panelComponent={SettingsPanel} />
+                <FoundryButton />
 
 
 

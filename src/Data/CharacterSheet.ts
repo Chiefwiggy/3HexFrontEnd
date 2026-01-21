@@ -452,7 +452,7 @@ class CharacterSheet extends AbstractSheet {
     public getBonusWeaponPower(specialLogicTags: Array<string>): number {
         let finalRet = 0;
         if (specialLogicTags.includes("powerPlusCommanderCardsEquipped")) {
-            finalRet += this.commanderCards.length;
+            finalRet += this.getPreparedCommanderCards().length;
         }
         if (specialLogicTags.includes("addPresence")) {
             finalRet += this.getStat("presence");

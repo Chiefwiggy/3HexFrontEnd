@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Box, Button, Grid, Paper} from "@mui/material";
+import {Box, Button, Drawer, Grid, IconButton, Paper} from "@mui/material";
 import {ICommonCardData, IConditionCard, IWeaponBaseData, IWeaponCommonData} from "../Data/ICardData";
 import useCharacter from "../Hooks/useCharacter/useCharacter";
 import {SortCardList} from "../Utils/CardSorting";
@@ -14,6 +14,10 @@ import usePreloadedContent from "../Hooks/usePreloadedContent/usePreloadedConten
 import CharacterSheet from "../Data/CharacterSheet";
 import MinionSheet from "../Data/MinionSheet";
 import AbstractSheet from "../Data/AbstractSheet";
+import RollDiceView from "../Views/RollDiceView";
+import {ExpandMoreOutlined} from "@mui/icons-material";
+import {ExpandMore} from "../Elements/ExpandMore";
+import {FaDice} from "react-icons/fa6";
 
 
 
@@ -62,6 +66,9 @@ const CardBuilder = ({
     const { CharacterAPI } = useAPI();
 
     const { ConditionData } = usePreloadedContent();
+
+    const [drawerOpen, setDrawerOpen] = useState(false);
+
 
     const sendSetCard = (cardIndex: number) => (data: ICardSendbackData) => {
         const newState = [...cardData];
@@ -344,6 +351,41 @@ const CardBuilder = ({
 
                 </Box>
 
+            </Box>
+            <Box>
+                {/* Toggle button */}
+                <Box
+                    sx={{
+                        position: "fixed",
+                        bottom: 0,
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        zIndex: 1300, // Ensure it's above other content
+                        mb: 1
+                    }}
+                >
+                    <IconButton onClick={() => setDrawerOpen(!drawerOpen)}>
+                        {drawerOpen ? <FaDice /> : <FaDice />}
+                    </IconButton>
+                </Box>
+
+                {/* Bottom drawer */}
+                <Drawer
+                    anchor="bottom"
+                    open={drawerOpen}
+                    onClose={() => setDrawerOpen(false)}
+                    variant="persistent" // stays open until manually closed
+                    PaperProps={{
+                        sx: {
+                            height: "40vh", // adjust height as needed
+                            borderTopLeftRadius: 8,
+                            borderTopRightRadius: 8,
+                            overflow: "hidden"
+                        }
+                    }}
+                >
+                    <RollDiceView />
+                </Drawer>
             </Box>
 
 
