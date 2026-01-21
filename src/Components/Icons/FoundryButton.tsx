@@ -32,6 +32,7 @@ const FoundryButton = ({}: IFoundryButtonInput) => {
                 "system.props.maxHealth": currentSheet.getMaxHealth().toString(),
                 "system.props.maxStamina": currentSheet.getMaxStamina().toString(),
                 "system.props.maxTether": currentSheet.getMaxTether().toString(),
+                "system.props.maxOrders": currentSheet.getMaxOrders().toString(),
                 "system.props.maxTechnik_pre": currentSheet.getMaxTechnik().toString(),
                 "system.props.stamina_refresh": currentSheet.getStaminaRefresh().toString(),
                 "system.props.tether_refresh": currentSheet.getTetherRefresh().toString(),
