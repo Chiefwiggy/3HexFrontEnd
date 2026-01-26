@@ -41,7 +41,7 @@ const FoundryButton = ({}: IFoundryButtonInput) => {
                 "system.props.pDEF_block": currentSheet.getBlockPDEF().toString(),
                 "system.props.mDEF_evade": currentSheet.getEvadeMDEF().toString(),
                 "system.props.mDEF_block": currentSheet.getBlockMDEF().toString(),
-                "system.props.dodge_evade": currentSheet.getEvadePDEF().toString(),
+                "system.props.dodge_evade": currentSheet.getEvadeDodge().toString(),
                 "system.props.dodge_block": currentSheet.getBlockDodge().toString(),
                 "system.props.technik_reduction": currentSheet.getLockedTechnik().toString(),
                 "system.props.maxExpertiseDice": currentSheet.getExpertiseDice().toString(),
