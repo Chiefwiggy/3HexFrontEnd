@@ -54,7 +54,7 @@ const HomePage = () => {
                 <Box
                     sx={{
                         display: "grid",
-                        gridTemplateColumns: "1fr 1fr",
+                        gridTemplateColumns: "2fr 3fr",
                         height: "50vh",
                         gap: 2
                     }}
@@ -71,26 +71,7 @@ const HomePage = () => {
                         <Typography variant="h3" gutterBottom>
                             Welcome to 3Hex
                         </Typography>
-                        <Typography variant="body1" paragraph>
-                            A revolutionary tabletop RPG designed for players who crave tactical depth and endless customization. In 3Hex, every move counts. Whether you’re casting spells, launching attacks, or even hacking the system, your abilities are represented by powerful cards, giving you full control over how you approach each encounter.
-                        </Typography>
-                        <Typography variant="h5" gutterBottom>
-                            Forge Your Own Path
-                        </Typography>
-                        <Typography variant="body1" paragraph>
-                            At the heart of 3Hex is a unique class system where your character is a fusion of two distinct classes. This dual-class system opens up limitless possibilities for building a character that’s truly your own. Want to excel in a specialized role or create a versatile jack-of-all-trades? The choice is yours.
-                        </Typography>
 
-                        <Typography variant="h5" gutterBottom>
-                            Master the Game
-                        </Typography>
-                        <Typography variant="body1" paragraph>
-                            As you advance, you'll unlock higher-tier classes, gain access to even more powerful cards, and incrementally increase your attributes. Customize your character’s abilities to fit a specific niche or keep them flexible for any challenge. With each level-up, you’ll unlock new passives and devastating abilities, making every session fresh and exciting.
-                        </Typography>
-
-                        <Typography variant="h5" gutterBottom>
-                            Are You Ready to Dominate the Table?
-                        </Typography>
                         {
                             loggedIn ?
                                 <Typography variant="body1" paragraph>
