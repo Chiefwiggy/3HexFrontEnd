@@ -43,7 +43,6 @@ export interface ITotalHackStats {
     technikCost: number,
     moneyCost: number,
     totalPower: number,
-    duration: number,
     surge: number,
     range: {
         min: number,
@@ -418,7 +417,6 @@ export const GetFinalHackData = (hackBase: IHackBaseCardData, hackIO: IHackIOCar
             technikCost: technikCost,
             moneyCost: StatChain(0, [hackBase.moneyCostMod, hackIO.moneyCostMod, hackProtocol.moneyCostMod, ...rest.map(e => e?.moneyCostMod)]),
             totalPower: finalPower,
-            duration: StatChain(hackBase.duration, [hackBase.durationMod, hackIO.durationMod, hackProtocol.durationMod, ...rest.map(e => e?.durationMod)]),
             surge: finalSurge,
             range: {
                 min: minRangeFinal,
@@ -434,7 +432,6 @@ export const GetFinalHackData = (hackBase: IHackBaseCardData, hackIO: IHackIOCar
             technikCost: 0,
             moneyCost: 0,
             totalPower: 0,
-            duration: 0,
             surge: 0,
             range: {
                 min: 0,

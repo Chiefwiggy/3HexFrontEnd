@@ -15,6 +15,7 @@ export interface IPackageData {
 export interface IDatachipData {
     _id: string,
     datachipName: string,
+    chipTier: number,
     baseTechnikCapacity: number,
     primaryTechnikScaling: number,
     secondaryTechnikScaling: number,

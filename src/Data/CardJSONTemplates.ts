@@ -216,7 +216,7 @@ export const templates: Record<string, string> = {
         ]
     }
     `,
-    "Weapon Order": `{
+    "Weapon - Order": `{
         "cardName": "[ORDER_NAME]",
         "cardType": "weapon",
         "cardSubtype": "order",
@@ -225,18 +225,17 @@ export const templates: Record<string, string> = {
             {
                 "text": "This Order does something.",
                 "icon": {
-                    "emblem": "info",
-                    "text": ""
+                    "emblem": "order",
+                    "text": "1"
                 }
             }
         ],
         "prerequisites": [
             {
-                "prerequisiteType": "attribute",
-                "skill": "might",
-                "level": 10
+                "prerequisiteType": "nodefault",
+                "skill": "nodefault",
+                "level": 1
             }
-            
         ]
     }
     `,
@@ -423,7 +422,6 @@ export const templates: Record<string, string> = {
   "isUltimate": false,
   "basePower": 40,
   "potency": 2,
-  "duration": 0,
   "technikCost": 10,
   "damageType": "none",
   "damageSubtype": "none",
@@ -577,27 +575,6 @@ export const templates: Record<string, string> = {
         }
   ],
   "isUltimate": true
-}`,
-    "Hack - Else": `{
-  "cardName": "[HACK ELSE NAME]",
-  "cardType": "hack",
-  "cardSubtype": "else",
-  "effects": [
-    {
-      "text": "This hack does this on a failure.",
-      "icon": {
-        "emblem": "else"
-      }
-    }
-  ],
-  "prerequisites": [
-        {
-            "prerequisiteType": "nodefault",
-            "skill": "nodefault",
-            "level": 1
-        }
-  ],
-  "isUltimate": false
 }`
 
 };

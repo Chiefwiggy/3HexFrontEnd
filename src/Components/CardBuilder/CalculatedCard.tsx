@@ -389,25 +389,31 @@ const CalculatedCard = ({
                                     />
                                 </Box>
 
-                                <Box sx={{ gridColumn: "span 2" }}>
-                                    <NumericIcon
-                                        fontSize="14px"
-                                        align="center"
-                                        val={` ${cardCalculator.getIconValue("duration")}`}
-                                        icon={FaRegClock}
-                                        title="Duration (rounds)"
-                                        iconColor={
-                                            parseInt(cardCalculator.getIconValue("duration")) > 0
-                                                ? "white"
-                                                : "red"
-                                        }
-                                        textColor={
-                                            parseInt(cardCalculator.getIconValue("duration")) > 0
-                                                ? "white"
-                                                : "red"
-                                        }
-                                    />
-                                </Box>
+                                {
+                                    cardCalculator.getType() == "spell" ?
+                                        (<Box sx={{ gridColumn: "span 2" }}>
+                                            <NumericIcon
+                                                fontSize="14px"
+                                                align="center"
+                                                val={` ${cardCalculator.getIconValue("duration")}`}
+                                                icon={FaRegClock}
+                                                title="Duration (rounds)"
+                                                iconColor={
+                                                    parseInt(cardCalculator.getIconValue("duration")) > 0
+                                                        ? "white"
+                                                        : "red"
+                                                }
+                                                textColor={
+                                                    parseInt(cardCalculator.getIconValue("duration")) > 0
+                                                        ? "white"
+                                                        : "red"
+                                                }
+                                            />
+                                        </Box>
+                                        )
+                                        :
+                                        <Box sx={{ gridColumn: "span 2" }}></Box>
+                                }
 
                                 <Box sx={{ gridColumn: "span 2" }}>
                                     <NumericIcon

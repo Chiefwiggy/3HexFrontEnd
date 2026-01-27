@@ -1,6 +1,6 @@
 import React from 'react';
 import {Box, Button, IconButton, Paper} from "@mui/material";
-import {ICalculatedSpell, ICalculatedWeapon} from "../../Data/ICharacterData";
+import {ICalculatedHack, ICalculatedSpell, ICalculatedWeapon} from "../../Data/ICharacterData";
 import PrebuiltWeaponCardWrapper from "./PrebuiltWeaponCardWrapper";
 import PrebuiltSpellCardWrapper from "./PrebuiltSpellCardWrapper";
 import IconButtonWithTooltip from "../Generic/IconButtonWithTooltip";
@@ -8,10 +8,11 @@ import {SaveOutlined} from "@mui/icons-material";
 import {MdMoveDown, MdOutlineDeleteForever} from "react-icons/md";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
 import useAPI from "../../Hooks/useAPI/useAPI";
+import PrebuiltHackCardWrapper from "./PrebuiltHackCardWrapper";
 
 interface ISaveCardMenuPrebuiltWrapperInput {
-    cardData: ICalculatedWeapon | ICalculatedSpell
-    cardType: "spell" | "weapon",
+    cardData: ICalculatedWeapon | ICalculatedSpell | ICalculatedHack
+    cardType: "spell" | "weapon" | "hack",
     closeSelf: (event: React.MouseEvent) => void
 }
 
@@ -28,16 +29,14 @@ const SaveCardMenuPrebuiltWrapper = ({cardData, cardType, closeSelf}: ISaveCardM
                 const weaponData = cardData as ICalculatedWeapon;
                 await CharacterAPI.SetPrepWeapon(currentSheet.data._id, weaponData);
                     currentSheet.setCurrentWeapon(weaponData);
-                // if (isOffhand) {
-                //     await CharacterAPI.SetOffhandPrepWeapon(currentSheet.data._id, weaponData);
-                //     currentSheet.setOffhandWeapon(weaponData);
-                // } else {
-                //
-                // }
-            } else {
+            } else if (cardType == "spell") {
                 const spellData = cardData as ICalculatedSpell;
                 await CharacterAPI.SetPrepSpell(currentSheet.data._id, spellData);
                 currentSheet.setCurrentSpell(spellData);
+            } else if (cardType == "hack") {
+                const hackData = cardData as ICalculatedHack;
+                await CharacterAPI.SetPrepHack(currentSheet.data._id, hackData);
+                currentSheet.setCurrentHack(hackData);
             }
             closeSelf(event)
         }
@@ -55,7 +54,7 @@ const SaveCardMenuPrebuiltWrapper = ({cardData, cardType, closeSelf}: ISaveCardM
 
                 currentSheet.data.createdWeapons = newArray;
 
-            } else {
+            } else if (cardType === "spell") {
                 const spellData = cardData as ICalculatedSpell;
                 const newArray = currentSheet.data.createdSpells.filter(item =>
                     item.spellBaseId !== spellData.spellBaseId ||
@@ -63,6 +62,15 @@ const SaveCardMenuPrebuiltWrapper = ({cardData, cardType, closeSelf}: ISaveCardM
                     !item.spellSkillsIds.every((id, index) => id === spellData.spellSkillsIds[index]))
 
                 currentSheet.data.createdSpells = newArray;
+            } else {
+                const hackData = cardData as ICalculatedHack;
+                const newArray = currentSheet.data.createdHacks.filter(item =>
+                    item.hackFunctionId !== hackData.hackFunctionId ||
+                    item.hackIOId !== hackData.hackIOId ||
+                    item.hackProtocolId !== hackData.hackProtocolId ||
+                    !item.hackCardsIds.every((id, index) => id === hackData.hackCardsIds[index])
+                )
+                currentSheet.data.createdHacks = newArray;
             }
 
             currentSheet.manualCharPing()
@@ -78,7 +86,13 @@ const SaveCardMenuPrebuiltWrapper = ({cardData, cardType, closeSelf}: ISaveCardM
                 cardType === "weapon" ?
                     <PrebuiltWeaponCardWrapper weaponData={cardData as ICalculatedWeapon} overrideWidth={19}/>
                     :
-                    <PrebuiltSpellCardWrapper spellData={cardData as ICalculatedSpell} overrideWidth={19}/>
+                    (
+                        cardType === "spell" ?
+                            <PrebuiltSpellCardWrapper spellData={cardData as ICalculatedSpell} overrideWidth={19}/>
+                            :
+                            <PrebuiltHackCardWrapper hackData={cardData as ICalculatedHack} overrideWidth={19} />
+                    )
+
             }
             </Box>
             <Paper elevation={3} sx={{

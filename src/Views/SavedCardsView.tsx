@@ -62,6 +62,11 @@ const SavedCardsView = ({closeSelf}: ISavedCardsViewInput) => {
                             <SaveCardMenuPrebuiltWrapper closeSelf={closeSelf} cardData={cs} cardType={"spell"} key={cs.spellBaseId+cs.spellTargetId+cs.spellSkillsIds.flatMap(e => e)+Math.random().toString()}/>
                         ))
                     }
+                    {
+                        currentSheet.data.createdHacks.map(cs => (
+                            <SaveCardMenuPrebuiltWrapper closeSelf={closeSelf} cardData={cs} cardType={"hack"} key={cs.hackFunctionId+cs.hackIOId+cs.hackProtocolId+cs.hackCardsIds.flatMap(e => e)+Math.random().toString()}/>
+                        ))
+                    }
                 </Box>
             </Box>
 

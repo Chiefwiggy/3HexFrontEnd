@@ -2,6 +2,7 @@ import React from 'react';
 import {Box, List, ListItem, Typography} from "@mui/material";
 import {ISourceData} from "../../Data/ISourceData";
 import useUser from "../../Hooks/useUser/useUser";
+import {CardGetColor} from "../../Utils/CardColorUtils";
 
 interface ISourceListInput {
     sourceData: ISourceData,
@@ -34,6 +35,13 @@ const SourceList = ({sourceData, handleSetIndex, currentIndex}: ISourceListInput
                                 }}
                                 onClick={handleSetIndex(index)}
                             >
+                                <Box
+                                    sx={{
+                                        width: "4px",
+                                        height: "18px",
+                                        backgroundColor: CardGetColor(`${tier.cardData.cardType}.${tier.cardData.cardSubtype}`),
+                                    }}
+                                ></Box>
                                 <Typography sx={{
                                     textAlign: "right",
                                     width: "100%"

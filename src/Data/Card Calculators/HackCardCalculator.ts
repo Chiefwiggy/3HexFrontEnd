@@ -59,13 +59,6 @@ class HackCardCalculator extends AbstractCardCalculator {
                 }
             ],
             [
-                "duration",
-                {
-                    val: "Instant",
-                    icon: MdAccessTime
-                }
-            ],
-            [
                 "accessLevel",
                 {
                     val: "N/A",
@@ -98,9 +91,6 @@ class HackCardCalculator extends AbstractCardCalculator {
                 this.updateVal("hackSet", saveType + " " + spellSet);
             }
 
-            if (finalHackData.duration > 0) {
-                this.updateVal("duration", `${finalHackData.duration.toString()} Round${finalHackData.duration == 1 ? "" : "s"}`);
-            }
             this.updateVal("surgeCost", finalHackData.surge.toString());
 
             this.updateVal("accessLevel", getAccessShorthand(finalHackData.accessLevel));
