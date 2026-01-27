@@ -49,7 +49,7 @@ const NavigationBar = () => {
                         Rules
                     </Button>
                     <Button component={Link} to="/compendium/classes">
-                        Class Guide
+                        Archetypes
                     </Button>
                     <Button component={Link} to="/compendium/affinities">
                         Affinities

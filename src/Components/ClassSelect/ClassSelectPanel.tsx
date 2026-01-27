@@ -109,8 +109,8 @@ const ClassSelectPanel = ({
 
     const tierNum = getTierFromName(tier);
     return tier !== "master"
-      ? `Unlock Classes at Level ${tierNum * 60 - 60}, Promotions at ${tierNum * 60 - 40} and ${tierNum * 60 - 20}`
-      : `Unlock Class at Level ${(tierNum - 1) * 60}. Promote that class at ${(tierNum * 60 - 40)}`;
+      ? `Unlock Archetypes at Level ${tierNum * 60 - 60}, Promotions at ${tierNum * 60 - 40} and ${tierNum * 60 - 20}`
+      : `Unlock Archetype at Level ${(tierNum - 1) * 60}. Promote that Archetype at ${(tierNum * 60 - 40)}`;
   };
 
 
@@ -167,7 +167,7 @@ const ClassSelectPanel = ({
 
         <Box display="flex" flexDirection="column" alignItems="center">
           <Typography variant="h4">
-            {capitalize(tier)} {tier !== "fate" && tier !== "development" ? "Classes" : "Talents"}
+            {capitalize(tier)} {tier !== "fate" && tier !== "development" ? "Archetypes" : "Talents"}
           </Typography>
           <Typography variant="subtitle2">{renderTierInfo()}</Typography>
         </Box>

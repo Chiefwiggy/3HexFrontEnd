@@ -176,7 +176,7 @@ abstract class AbstractSheet {
     }
 
     public getPresenceMDEFMultiplier(): number {
-        return this.isUnlocked("hexcladWard") ? 1 : 0.5
+        return this.isUnlocked("hexcladWard") ? 1.5 : 1
     }
     public getBlockMDEF(): number {
         let blockArmorBonus = this.getArmorMDEF("blocking");

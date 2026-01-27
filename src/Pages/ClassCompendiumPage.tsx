@@ -66,7 +66,7 @@ const ClassCompendiumPage = ({}: IClassCompendiumPageInput) => {
         <Box>
             <Helmet>
                 <meta charSet={"utf-8"} />
-                <title>Class Guide - Ursura</title>
+                <title>Archetypes - Ursura</title>
             </Helmet>
             <Box
                 sx={{

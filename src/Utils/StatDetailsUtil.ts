@@ -56,7 +56,7 @@ export const getStatDescription = (stat: UStat) => {
                 "Presence is the stat which affects how difficult it is to avoid your magic, how skilled you are with magical weapons and shields, and your proficiency with magical consumables, and slightly affects your mDEF.",
                 "Magical Weapon & Shield Requirements",
                 "Spell Set Save += 0 : 3",
-                "mDEF += 0.5"
+                "mDEF += 1"
             ]
         case "authority":
             return [
