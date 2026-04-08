@@ -252,7 +252,7 @@ export interface IAffinitiesArray<T> {
 export interface IPathKeys {
     warrior: number,
     arcanist: number,
-    general: number,
+    captain: number,
     navigator: number,
     scholar: number,
     summoner: number,
@@ -263,7 +263,7 @@ export interface IPathKeys {
 export interface IPathArray<T> {
     warrior: Array<T>,
     arcanist: Array<T>,
-    general: Array<T>,
+    captain: Array<T>,
     navigator: Array<T>,
     scholar: Array<T>,
     summoner: Array<T>,
@@ -274,7 +274,7 @@ export interface IPathArray<T> {
 export interface IPathKeysPlusAny {
     warrior: number,
     arcanist: number,
-    general: number,
+    captain: number,
     navigator: number,
     scholar: number,
     summoner: number,

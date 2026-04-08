@@ -13,7 +13,7 @@ class PLC_PathData {
         this.pathCards = {
             warrior: [],
             arcanist: [],
-            general: [],
+            captain: [],
             navigator: [],
             scholar: [],
             summoner: [],
@@ -23,7 +23,7 @@ class PLC_PathData {
         this.pathAbilities = {
             warrior: [],
             arcanist: [],
-            general: [],
+            captain: [],
             navigator: [],
             scholar: [],
             summoner: [],

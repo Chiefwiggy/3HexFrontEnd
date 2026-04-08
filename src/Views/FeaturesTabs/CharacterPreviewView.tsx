@@ -226,7 +226,7 @@ const CharacterPreviewView = ({affData, classData, devData, fatelines, fatelineU
             >
                 <AffinityCardSmall path={"warrior"} affinities={["finesse", "infantry", "guardian"]} affData={affData}/>
                 <AffinityCardSmall path={"arcanist"} affinities={["evocation", "creation", "alteration"]} affData={affData}/>
-                <AffinityCardSmall path={"general"} affinities={["command", "supply", "mentorship"]} affData={affData}/>
+                <AffinityCardSmall path={"captain"} affinities={["command", "supply", "mentorship"]} affData={affData}/>
                 <AffinityCardSmall path={"navigator"} affinities={["swift", "riding", "adaptation"]} affData={affData}/>
                 <AffinityCardSmall path={"scholar"} affinities={["rune", "sourcecraft", "research"]} affData={affData}/>
                 <AffinityCardSmall path={"summoner"} affinities={["animancy", "conjuration", "orchestration"]} affData={affData} />

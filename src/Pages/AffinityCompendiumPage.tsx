@@ -21,7 +21,7 @@ const AffinityCompendiumPage = ({}: IAffinityCompendiumPageInput) => {
     (searchParams.get("path") ?? searchParams.get("affinity") ?? "warrior") as keyof IPathKeys | keyof IAffinities | "_"
   );
 
-  const paths: Array<keyof IPathKeys> = ["warrior", "arcanist", "general", "navigator", "scholar", "summoner", "cipher", "engineer"];
+  const paths: Array<keyof IPathKeys> = ["warrior", "arcanist", "captain", "navigator", "scholar", "summoner", "cipher", "engineer"];
   const affinities: Array<keyof IAffinities | "_"> = [
     "_", "finesse", "infantry", "guardian", "_", "evocation", "creation", "alteration", "_", "command", "supply", "mentorship", "_", "swift", "riding", "adaptation", "_", "rune", "sourcecraft", "research", "_", "animancy", "conjuration", "orchestration", "_", "proxy", "firewall", "virus", "_", "transduction", "machinery", "crafting"
   ];

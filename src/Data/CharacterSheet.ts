@@ -734,7 +734,7 @@ class CharacterSheet extends AbstractSheet {
         this.currentPath = {
             warrior: 0,
             arcanist: 0,
-            general: 0,
+            captain: 0,
             navigator: 0,
             scholar: 0,
             summoner: 0,
@@ -1017,7 +1017,7 @@ class CharacterSheet extends AbstractSheet {
         this.currentPath = {
             warrior: this.currentAffinities.finesse + this.currentAffinities.infantry + this.currentAffinities.guardian,
             arcanist: this.currentAffinities.evocation + this.currentAffinities.creation + this.currentAffinities.alteration,
-            general: this.currentAffinities.command + this.currentAffinities.supply + this.currentAffinities.mentorship,
+            captain: this.currentAffinities.command + this.currentAffinities.supply + this.currentAffinities.mentorship,
             navigator: this.currentAffinities.swift + this.currentAffinities.riding + this.currentAffinities.adaptation,
             scholar: this.currentAffinities.rune + this.currentAffinities.research + this.currentAffinities.sourcecraft,
             summoner: this.currentAffinities.animancy + this.currentAffinities.conjuration + this.currentAffinities.orchestration,

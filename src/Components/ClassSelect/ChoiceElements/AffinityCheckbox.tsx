@@ -42,7 +42,7 @@ const AffinityCheckbox = ({
     const affDataHardCode = {
         warrior: ["finesse", "infantry", "guardian"],
         arcanist: ["evocation", "creation", "alteration"],
-        general: ["command", "supply", "mentorship"],
+        captain: ["command", "supply", "mentorship"],
         navigator: ["swift", "riding", "adaptation"],
         scholar: ["rune", "sourcecraft", "research"],
         summoner: ["animancy", "conjuration", "orchestration"],

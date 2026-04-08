@@ -40,7 +40,7 @@ export const GetPathFromAffinity = (affinity: keyof IAffinities): keyof IPathKey
         case "command":
         case "mentorship":
         case "supply":
-            return "general"
+            return "captain"
         case "swift":
         case "riding":
         case "adaptation":
@@ -97,7 +97,7 @@ export const AFFINITY_PATH_CONST = () => {
         path: {
             warrior: 0,
             arcanist: 0,
-            general: 0,
+            captain: 0,
             navigator: 0,
             scholar: 0,
             summoner: 0,
