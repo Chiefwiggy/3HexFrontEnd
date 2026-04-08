@@ -1,6 +1,7 @@
 import {IDataModifiers, IPrerequisite} from "./GenericData";
 import {IAffinities, IEnchantmentData, IPathKeys} from "./ICharacterData";
 import {UArcanotype} from "./ISourceData";
+import {IAbility} from "./IAbilities";
 
 export type USpellTypes = "base" | "target" | "skill" | "edict" | "summon" | null;
 export type UWeaponClass = "light" | "standard" | "heavy"
@@ -192,6 +193,8 @@ export interface IWeaponCommonData extends ICommonCardData {
     weaponDamageTypeOverride?: UDamageType,
     weaponDamageSubtypeOverride?: UDamageSubtype
 }
+
+export type IFeature = IAbility | ICommanderCardData
 
 export interface IScalingData<T> {
     baseValue: T,

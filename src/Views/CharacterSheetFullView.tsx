@@ -27,7 +27,6 @@ import CardBuilder from "../Layouts/CardBuilder";
 import WeaponCardBuilderView from "./WeaponCardBuilderView";
 import SpellCardBuilderView from "./SpellCardBuilderView";
 import {useNavigate} from "react-router-dom";
-import ClassSelectView from './ClassSelectView'
 import CommanderCardPrepView from "./CommanderCardPrepView";
 import IconButtonWithTooltip from "../Components/Generic/IconButtonWithTooltip";
 import ConditionsPanelView from "./ConditionsPanelView";
@@ -128,15 +127,17 @@ const CharacterSheetFullView = () => {
                 {/*<CharacterSheetSidebar title={"Prepare Battalion"} icon={Diversity3Outlined} panelComponent={BattalionAssignmentView} />*/}
                 {/*<CharacterSheetSidebar title={"Conditions"} icon={FlareOutlined} panelComponent={ConditionsPanelView} />*/}
                 {/*<CharacterSheetSidebar title={"Backpack"} icon={BackpackOutlined} panelComponent={BackpackView} />*/}
-                <CharacterSheetSidebar title={"Archetypes & Affinities"} icon={GrHostMaintenance} panelComponent={ClassSelectView} badgeCondition={
-                    currentSheet.getDevelopmentPoints() != currentSheet.data.developmentIds.length
-                    ||
-                    currentSheet.getClassPointsSpent() != currentSheet.getMaxClassPoints()
-                } />
+                {/*<CharacterSheetSidebar title={"Archetypes & Affinities"} icon={GrHostMaintenance} panelComponent={ClassSelectView} badgeCondition={*/}
+                {/*    currentSheet.getDevelopmentPoints() != currentSheet.data.developmentIds.length*/}
+                {/*    ||*/}
+                {/*    currentSheet.getClassPointsSpent() != currentSheet.getMaxClassPoints()*/}
+                {/*} />*/}
                 <CharacterSheetSidebar title={"Features"} icon={EngineeringOutlined} panelComponent={FeaturesView} badgeCondition={
                     currentSheet.getDevelopmentPoints() != currentSheet.data.developmentIds.length
                     ||
                     currentSheet.getClassPointsSpent() != currentSheet.getMaxClassPoints()
+                    ||
+                    currentSheet.getMaxAffinityPoints() != currentSheet.getAffinityPoints()
                 } />
                 <CharacterSheetSidebar title={"Race & Build"} icon={IoMan} panelComponent={RaceSelectView} badgeCondition={
                     !(currentSheet.data.race && currentSheet.data.race.subraceId

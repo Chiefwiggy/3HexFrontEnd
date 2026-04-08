@@ -3,17 +3,21 @@ import {Box, capitalize, Divider, Tab, Tabs, Typography} from "@mui/material";
 import {IAffinities, IAffinitiesAndPath, IPathKeys} from "../../Data/ICharacterData";
 import BannerTitle from "../../Components/Generic/BannerTitle";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
-import {AffinityAction} from "../../Utils/AffinityReducer";
+import {AffinityAction, GetPathFromAffinity} from "../../Utils/AffinityReducer";
 import usePreloadedContent from "../../Hooks/usePreloadedContent/usePreloadedContent";
 import AffinitySelectorPanel from "../../Components/Sheet/AffinitySelectorPanel";
+import {IFeatureIncrementor} from "../../Utils/Reducers/FeatureIncrementorReducer";
+import {IAbility} from "../../Data/IAbilities";
+import {ICommonCardData, IFeature} from "../../Data/ICardData";
 
 interface IAffinitiesFeatureTabViewInput {
     affData: IAffinitiesAndPath,
     affinityDispatch: React.Dispatch<AffinityAction>,
-    featuresAreReady: boolean
+    featuresAreReady: boolean,
+    callback: (features: Array<IFeature>, isAdd: boolean) => void
 }
 
-const AffinitiesFeatureTabView = ({affData, affinityDispatch, featuresAreReady}: IAffinitiesFeatureTabViewInput) => {
+const AffinitiesFeatureTabView = ({affData, affinityDispatch, featuresAreReady, callback}: IAffinitiesFeatureTabViewInput) => {
 
     const {currentSheet} = useCharacter()
 
@@ -22,10 +26,13 @@ const AffinitiesFeatureTabView = ({affData, affinityDispatch, featuresAreReady}:
     const [currentAffinityOrPath, setCurrentAffinityOrPath] = useState<keyof IAffinities | keyof IPathKeys>("warrior")
     const [currentAffinityOrPathValue, setCurrentAffinityOrPathValue] = useState<number>(0);
     const [isPath, setIsPath] = useState(true);
+    const [offPathValue, setOffPathValue] = useState<number>(0);
 
-    const invokeDispatch = (newValue: number) => {
+    const invokeDispatch = (newValue: number, features: Array<IFeature>, isAdd: boolean) => {
+        callback(features, isAdd)
         affinityDispatch({type: "setOne", affinity: currentAffinityOrPath as keyof IAffinities, value: newValue})
         setCurrentAffinityOrPathValue(newValue)
+
     }
 
     useEffect(() => {
@@ -49,10 +56,16 @@ const AffinitiesFeatureTabView = ({affData, affinityDispatch, featuresAreReady}:
         if (newValue == 0){
             setCurrentAffinityOrPath(Object.keys(affData.path)[tabIndex] as  keyof IPathKeys)
             setCurrentAffinityOrPathValue(Object.values(affData.path)[tabIndex])
+            setOffPathValue(0)
             setIsPath(true)
         } else {
-            setCurrentAffinityOrPath(Object.keys(affData.affinities)[tabIndex*3+(newValue-1)] as keyof IAffinities)
-            setCurrentAffinityOrPathValue(Object.values(affData.affinities)[tabIndex*3+(newValue-1)])
+            const aff = Object.keys(affData.affinities)[tabIndex*3+(newValue-1)] as keyof IAffinities
+            const val = Object.values(affData.affinities)[tabIndex*3+(newValue-1)]
+            const offPath = affData.path[GetPathFromAffinity(aff)] - val
+            setCurrentAffinityOrPath(aff)
+            setCurrentAffinityOrPathValue(val)
+            setOffPathValue(offPath)
+            console.log("OFF PATH: " + offPath )
             setIsPath(false)
         }
     }
@@ -122,7 +135,7 @@ const AffinitiesFeatureTabView = ({affData, affinityDispatch, featuresAreReady}:
                 </Box>
             </Box>
             <Box>
-                <AffinitySelectorPanel affinityOrPathId={currentAffinityOrPath} affValue={currentAffinityOrPathValue} callback={invokeDispatch} isPath={isPath}/>
+                <AffinitySelectorPanel affinityOrPathId={currentAffinityOrPath} affValue={currentAffinityOrPathValue} callback={invokeDispatch} isPath={isPath} offPathVal={offPathValue}/>
             </Box>
         </Box>
     ) : <></>

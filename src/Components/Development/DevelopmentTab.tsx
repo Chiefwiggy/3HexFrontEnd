@@ -12,10 +12,11 @@ import {FaCircle, FaRegCircle} from "react-icons/fa";
 import {clone} from "../../Utils/ObjectUtils";
 import {ICommonCardData} from "../../Data/ICardData";
 import {LevelKey} from "../../Hooks/usePreloadedContent/PLC_DevelopmentData";
+import {FeatureIncrementorAction} from "../../Utils/Reducers/FeatureIncrementorReducer";
 
 interface IMasteryTabInput {
     currentUnlockList: Array<string>,
-    updateUnlockList: (newUnlockList: Array<string>) => void
+    updateUnlockList: (feature: ICommonCardData | IAbility) => (newUnlockList: Array<string>) => void
 }
 
 const DevelopmentTab = ({currentUnlockList, updateUnlockList}: IMasteryTabInput) => {
@@ -34,15 +35,6 @@ const DevelopmentTab = ({currentUnlockList, updateUnlockList}: IMasteryTabInput)
         generateMaskArray(levelList)
 
     }, [currentUnlockList]);
-
-    const compendiumProps = {
-        isExpanded: false,
-        canToggleExpand: true,
-        canFavorite: false,
-        isAdd: true,
-        showAdd: false,
-        showPrerequisites: true
-    }
 
     const isFeatureDisabled = (ability: IAbility | ICommonCardData): boolean => {
         if (currentSheet) {
@@ -103,10 +95,20 @@ const DevelopmentTab = ({currentUnlockList, updateUnlockList}: IMasteryTabInput)
     }
 
     const [allDevelopmentFeatures, setDevelopmentFeatures] = useState<Record<LevelKey, Array<ICommonCardData|IAbility>>>()
+    const [currentDevelopmentFeatures, setCurrentDevelopmentFeatures] = useState<Array<ICommonCardData|IAbility>>([])
 
     useEffect(() => {
         setDevelopmentFeatures(DevelopmentData.GetDevelopmentFeaturesByLevel())
     }, [isLoaded])
+
+    useEffect(() => {
+        if (allDevelopmentFeatures) {
+            setCurrentDevelopmentFeatures(Object.values(allDevelopmentFeatures)
+                .flatMap(arr => arr)
+                .filter(e => currentUnlockList.includes(e._id)))
+        }
+
+    }, [allDevelopmentFeatures]);
 
     const compendiumPropsTemplate = {
         isExpanded: true,
@@ -207,9 +209,7 @@ const DevelopmentTab = ({currentUnlockList, updateUnlockList}: IMasteryTabInput)
                         >
                             {
                                 disambiguateCard(
-                                    Object.values(allDevelopmentFeatures)
-                                        .flatMap(arr => arr)
-                                        .filter(e => currentUnlockList.includes(e._id)),
+                                    currentDevelopmentFeatures,
                                     {
                                         isExpanded: true,
                                         canToggleExpand: false,
@@ -220,7 +220,7 @@ const DevelopmentTab = ({currentUnlockList, updateUnlockList}: IMasteryTabInput)
                                     }
                                 ).map((card, index) => {
                                     if (card) {
-                                        return <UnlockWrapper el={card} _id={currentUnlockList[index]} unlockedByDefault={false} unlockList={currentUnlockList} updateUnlockList={updateUnlockList} key={index}/>
+                                        return <UnlockWrapper el={card} _id={currentUnlockList[index]} unlockedByDefault={false} unlockList={currentUnlockList} updateUnlockList={updateUnlockList(currentDevelopmentFeatures[index])} key={index}/>
                                     }
                                 })
                             }
@@ -268,7 +268,7 @@ const DevelopmentTab = ({currentUnlockList, updateUnlockList}: IMasteryTabInput)
 
                                                     disambiguateCard(elems, {...compendiumPropsTemplate}).map((card, index) => {
                                                         if (card) {
-                                                            return <UnlockWrapper el={card} _id={elems[index]._id} unlockedByDefault={false} unlockList={currentUnlockList} updateUnlockList={updateUnlockList} key={index}/>
+                                                            return <UnlockWrapper el={card} _id={elems[index]._id} unlockedByDefault={false} unlockList={currentUnlockList} updateUnlockList={updateUnlockList(elems[index])} key={index} isDisabled={isFeatureDisabled(elems[index])}/>
                                                         }
                                                     })
                                                 }

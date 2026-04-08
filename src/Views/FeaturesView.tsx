@@ -1,6 +1,5 @@
 import React, {Reducer, useEffect, useReducer, useState} from 'react';
 import {Box, Paper, Tab, Tabs, Typography} from "@mui/material";
-import ClassSelectPanel from "../Components/ClassSelect/ClassSelectPanel";
 import AffinitiesPanel from "../Components/ClassSelect/Affinities/AffinitiesPanel";
 import CustomTabPanel from "../Utils/CustomTabPanel";
 import AffinitiesFeatureTabView from "./FeaturesTabs/AffinitiesFeatureTabView";
@@ -15,10 +14,16 @@ import {StandardStringReducer, StringAction} from "../Utils/StringReducer";
 import {AFFINITY_PATH_CONST, AffinityAction, AffinityReducer} from "../Utils/AffinityReducer";
 import RaceFeatureTabView from "./FeaturesTabs/RaceFeatureTabView";
 import DevelopmentTab from "../Components/Development/DevelopmentTab";
-import {UDamageSubtype} from "../Data/ICardData";
+import {ICommonCardData, IFeature, UDamageSubtype} from "../Data/ICardData";
 import useCharacter from "../Hooks/useCharacter/useCharacter";
 import useSnackbar from "../Hooks/useSnackbar/useSnackbar";
 import {MiscUnlockAction, MiscUnlockReducer} from "../Utils/MiscUnlockReducer";
+import {
+    FeatureIncrementorAction, featureIncrementorHelper,
+    FeatureIncrementorReducer,
+    IFeatureIncrementor
+} from "../Utils/Reducers/FeatureIncrementorReducer";
+import {IAbility} from "../Data/IAbilities";
 
 interface IArchetypesAndAffinitiesViewInput {
     closeSelf: (event: React.MouseEvent) => void
@@ -43,6 +48,13 @@ const FeaturesView = ({closeSelf}: IArchetypesAndAffinitiesViewInput) => {
 
     const [otherUnlocks, dispatchOtherUnlocks] = useReducer<Reducer<Array<IMiscUnlockData>, MiscUnlockAction>>(MiscUnlockReducer, [])
 
+    const [featureIncrementors, dispatchFeatureIncrementor] = useReducer<Reducer<IFeatureIncrementor, FeatureIncrementorAction>>(FeatureIncrementorReducer, {
+        affinity: 0,
+        weapon_specialization: 0,
+        favored_terrain: 0,
+        fateline_abilities: 0
+    })
+
 
 
 
@@ -62,6 +74,15 @@ const FeaturesView = ({closeSelf}: IArchetypesAndAffinitiesViewInput) => {
             fateDispatch({type: "set", strs: currentSheet.data.fatelineIds})
             setFatelineUnlocks({type: "set", strs: currentSheet.data.fatelineUnlockIds})
             dispatchOtherUnlocks({type: "set_all", data: currentSheet.data.miscUnlockTags})
+            dispatchFeatureIncrementor({
+                type: "setAll",
+                vals: {
+                    affinity: currentSheet.getAbilityBonuses("affinityPoints"),
+                    weapon_specialization: currentSheet.getAbilityBonuses("weaponSpecializations"),
+                    favored_terrain: currentSheet.getAbilityBonuses("favoriteTerrains"),
+                    fateline_abilities: currentSheet.getAbilityBonuses("fatelineUnlocks"),
+                }
+            })
             setFeaturesAreReady(true)
             setIsStateChanged(false)
         }
@@ -93,6 +114,15 @@ const FeaturesView = ({closeSelf}: IArchetypesAndAffinitiesViewInput) => {
             fateDispatch({type: "set", strs: currentSheet.data.fatelineIds})
             setFatelineUnlocks({type: "set", strs: currentSheet.data.fatelineUnlockIds})
             dispatchOtherUnlocks({type: "set_all", data: currentSheet.data.miscUnlockTags})
+            dispatchFeatureIncrementor({
+                type: "setAll",
+                vals: {
+                    affinity: currentSheet.getAbilityBonuses("affinityPoints"),
+                    weapon_specialization: currentSheet.getAbilityBonuses("weaponSpecializations"),
+                    favored_terrain: currentSheet.getAbilityBonuses("favoriteTerrains"),
+                    fateline_abilities: currentSheet.getAbilityBonuses("fatelineUnlocks")
+                }
+            })
             setFeaturesAreReady(true)
         }
 
@@ -108,9 +138,22 @@ const FeaturesView = ({closeSelf}: IArchetypesAndAffinitiesViewInput) => {
         setTabIndex(newValue);
     };
 
-    const handleSelectDevelopment = (newDevList: Array<string>) => {
+    const handleSelectDevelopment  = (feature: ICommonCardData | IAbility) => (newDevList: Array<string>) => {
+        featureIncrementorHelper(dispatchFeatureIncrementor, featureIncrementors, feature, myDev.length < newDevList.length);
         setMyDev({type: "set", strs: newDevList })
     }
+
+    const handleIncomingAbilities = (features: Array<IFeature>, isAdd: boolean) => {
+        console.log(features)
+        features.forEach(feature => {
+            featureIncrementorHelper(dispatchFeatureIncrementor, featureIncrementors, feature, isAdd)
+        })
+
+    }
+
+    useEffect(() => {
+        console.log(featureIncrementors)
+    }, [featureIncrementors]);
 
     return (
         <Box
@@ -164,7 +207,7 @@ const FeaturesView = ({closeSelf}: IArchetypesAndAffinitiesViewInput) => {
                         <ArchetypesFeatureTabView myClasses={myClasses} classDispatch={classDispatch} />
                     </CustomTabPanel>
                     <CustomTabPanel index={tabIndex} value={1}>
-                        <AffinitiesFeatureTabView affData={affData} affinityDispatch={affinityDispatch} featuresAreReady={featuresAreReady} />
+                        <AffinitiesFeatureTabView affData={affData} affinityDispatch={affinityDispatch} featuresAreReady={featuresAreReady} callback={handleIncomingAbilities} />
                     </CustomTabPanel>
                     <CustomTabPanel index={tabIndex} value={2}>
                         <RaceFeatureTabView />
@@ -181,7 +224,7 @@ const FeaturesView = ({closeSelf}: IArchetypesAndAffinitiesViewInput) => {
                 </Box>
             </Box>
             { /* --- Character Overview ---*/ }
-            <CharacterPreviewView affData={affData} classData={myClasses} invokeCancel={handleCancel} invokeSave={handleSave} isStateChanged={isStateChanged} devData={myDev} fatelines={myFates} fatelineUnlocks={fatelineUnlocks} otherUnlocks={otherUnlocks} />
+            <CharacterPreviewView affData={affData} classData={myClasses} invokeCancel={handleCancel} invokeSave={handleSave} isStateChanged={isStateChanged} devData={myDev} fatelines={myFates} fatelineUnlocks={fatelineUnlocks} otherUnlocks={otherUnlocks} featureIncrementors={featureIncrementors} />
         </Box>
     )
 }

@@ -10,6 +10,7 @@ import usePreloadedContent from "../../Hooks/usePreloadedContent/usePreloadedCon
 import {IClassServerOutput} from "../../Data/IClassMetaData";
 import FatelineIcon from "../../Components/Fatelines/FatelineIcon";
 import FatelineEmblem from "../../Components/Fatelines/FatelineEmblem";
+import {IFeatureIncrementor} from "../../Utils/Reducers/FeatureIncrementorReducer";
 
 interface ICharacterPreviewViewInput {
     affData: IAffinitiesAndPath;
@@ -20,10 +21,11 @@ interface ICharacterPreviewViewInput {
     otherUnlocks: Array<IMiscUnlockData>
     invokeSave: (event: React.MouseEvent) => void,
     invokeCancel: (event: React.MouseEvent) => void
-    isStateChanged: boolean
+    isStateChanged: boolean,
+    featureIncrementors: IFeatureIncrementor
 }
 
-const CharacterPreviewView = ({affData, classData, devData, fatelines, fatelineUnlocks, otherUnlocks, invokeSave, invokeCancel, isStateChanged}: ICharacterPreviewViewInput) => {
+const CharacterPreviewView = ({affData, classData, devData, fatelines, fatelineUnlocks, otherUnlocks, invokeSave, invokeCancel, isStateChanged, featureIncrementors}: ICharacterPreviewViewInput) => {
 
     const [maxAffPts, setMaxAffPts] = useState<number>(0);
     const [currentAffPts, setCurrentAffPts] = useState<number>(0);
@@ -40,14 +42,21 @@ const CharacterPreviewView = ({affData, classData, devData, fatelines, fatelineU
 
     useEffect(() => {
         if (currentSheet) {
-            setMaxAffPts(currentSheet.getAffinityPoints(classData));
+            setMaxAffPts(currentSheet.getMaxAffinityPoints(classData, false) + featureIncrementors.affinity);
             setCurrentAffPts(Object.values(affData.path).reduce((sum, value) => sum + value, 0))
             setPlayerLevel(currentSheet.getLevel());
-            setMaxFatelineAbilities(currentSheet.getMaxFatelineUnlocks())
-            setMaxWeaponSpecializations(currentSheet.getMaxWeaponSpecializations())
-            setMaxFavoredTerrain(currentSheet.getMaxFavoredTerrain())
+            let fatelineUnlocks = 1 + featureIncrementors.fateline_abilities
+            let weaponUnlocks = featureIncrementors.weapon_specialization;
+            let favoredTerrainUnlocks = featureIncrementors.favored_terrain;
+            setMaxFatelineAbilities(fatelineUnlocks);
+            setMaxWeaponSpecializations(weaponUnlocks)
+            setMaxFavoredTerrain(favoredTerrainUnlocks)
         }
-    }, [affData, currentSheet!.data.characterLevel, classData]);
+    }, [affData, currentSheet!.data.characterLevel, classData, featureIncrementors]);
+
+    const setIncrementorUnlocks = () => {
+
+    }
 
     useEffect(() => {
         setSortedClassData(ClassData.getAllClassNamesByTierFiltered(classData))

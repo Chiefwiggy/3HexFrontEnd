@@ -558,13 +558,22 @@ class CharacterSheet extends AbstractSheet {
         return this.data.characterLevel;
     }
 
-    public getAffinityPoints = (classDataOverride: Array<string>) => {
+    public getMaxAffinityPoints = (classDataOverride: Array<string> | null = null, useAbilityBonus = true) => {
         const lvl = this.getLevel();
         const ptsPer20 = Math.floor(lvl / 20)
         const ptsPer60 = Math.floor(lvl / 60) * 3;
         const bonusPtsPer20After60 = lvl >= 80 ? Math.floor(lvl / 20) - 4 : 0
-        const bonusAffinityPoints = classDataOverride.filter(cd => cd.endsWith("_promoted")).length
-        return 4 + ptsPer20 + ptsPer60 + bonusPtsPer20After60 + bonusAffinityPoints + this.getAbilityBonuses("affinityPoints")
+        let bonusAffinityPoints = 0;
+        if (classDataOverride != null) {
+            bonusAffinityPoints = classDataOverride.filter(cd => cd.endsWith("_promoted")).length
+        } else {
+            bonusAffinityPoints = this.data.classList.filter(cd => cd.endsWith("_promoted")).length
+        }
+        return 4 + ptsPer20 + ptsPer60 + bonusPtsPer20After60 + bonusAffinityPoints + (useAbilityBonus ? this.getAbilityBonuses("affinityPoints") : 0)
+    }
+
+    public getAffinityPoints = () => {
+        return Object.values(this.currentPath).reduce((sum, value) => sum + value, 0)
     }
 
     public getMaxFatelineUnlocks = () => {
@@ -1309,9 +1318,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getClassPointsSpent = () => {
-        return this.data.classes.reduce((pv, cv) => {
-            return pv + 1 + (cv.isPromoted ? 1 : 0)
-        }, 0)
+        return this.data.classList.length
     }
 
     public getMaxClassPoints = () => {

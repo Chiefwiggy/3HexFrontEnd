@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Box, Button, capitalize, Typography} from "@mui/material";
 import {IAffinities, IPathKeys} from "../../Data/ICharacterData";
 import usePreloadedContent from "../../Hooks/usePreloadedContent/usePreloadedContent";
-import {ICommonCardData} from "../../Data/ICardData";
+import {ICommonCardData, IFeature} from "../../Data/ICardData";
 import {IAbility} from "../../Data/IAbilities";
 import {getNameFromClassTier} from "../../Utils/Shorthand";
 import BoxWithTooltip from "../Generic/BoxWithTooltip";
@@ -11,22 +11,26 @@ import NumberSpinner from "../Generic/NumberSpinner";
 import NumberSpinnerDisplay from "../Generic/NumberSpinnerDisplay";
 import {disambiguateCard} from "../../Utils/DisambiguateCardType";
 import {GetPathFromAffinity} from "../../Utils/AffinityReducer";
+import {IFeatureIncrementor} from "../../Utils/Reducers/FeatureIncrementorReducer";
 
 interface IAffinitySelectorPanelInput {
     affinityOrPathId: keyof IAffinities | keyof IPathKeys
     affValue: number,
-    callback: (value: number) => void,
+    callback: (value: number, features: Array<IFeature>, isAdd: boolean) => void,
     isPath: boolean,
+    offPathVal?: number,
     isCompendium?: boolean
 }
 
-const AffinitySelectorPanel = ({affinityOrPathId, affValue, callback, isPath, isCompendium=false}: IAffinitySelectorPanelInput) => {
+const AffinitySelectorPanel = ({affinityOrPathId, affValue, callback, isPath, offPathVal = 0, isCompendium=false}: IAffinitySelectorPanelInput) => {
 
     const {AffinityData, PathData, isLoaded} = usePreloadedContent()
 
     const [allCards, setAllCards] = useState<Map<number, Array<ICommonCardData>>>();
 
     const [allAbilities, setAllAbilities] = useState<Map<number, Array<IAbility>>>();
+
+    const [offPathAbilities, setOffPathAbilities] = useState<Map<number, Array<IAbility>>>();
 
     const [levelArray, setLevelArray] = useState<Array<number>>([]);
 
@@ -50,17 +54,24 @@ const AffinitySelectorPanel = ({affinityOrPathId, affValue, callback, isPath, is
             setAllAbilities(PathData.getPathAbilitiesByLevel(affinityOrPathId as keyof IPathKeys));
             setLevelArray(PathData.getLevelArray(affinityOrPathId as keyof IPathKeys));
             setParentPath("none")
+            setOffPathAbilities(new Map())
         } else {
             setAllCards(AffinityData.getAffinityCardsByLevel(affinityOrPathId as keyof IAffinities));
             setAllAbilities(AffinityData.getAffinityAbilitiesByLevel(affinityOrPathId as keyof IAffinities));
             setLevelArray(AffinityData.getLevelArray(affinityOrPathId as keyof IAffinities));
             setParentPath(GetPathFromAffinity(affinityOrPathId as keyof IAffinities));
+            setOffPathAbilities(PathData.getPathAbilitiesByLevel(GetPathFromAffinity(affinityOrPathId as keyof IAffinities)))
         }
     }, [affinityOrPathId, isLoaded]);
 
     const handleChangeLevel = (value: number | null) => {
         if (value !== null) {
-            callback(value);
+            if (affValue < value) {
+                callback(value, [...(allAbilities?.get(value) ?? []), ...(offPathAbilities?.get(value+offPathVal) ?? [])], true);
+            } else {
+                callback(value, [...(allAbilities?.get(value+1) ?? []), ...(offPathAbilities?.get(value+offPathVal+1) ?? [])], false);
+            }
+
         }
     }
 
