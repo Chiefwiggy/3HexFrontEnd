@@ -40,12 +40,7 @@ const CharacterPreviewView = ({affData, classData, devData, fatelines, fatelineU
 
     useEffect(() => {
         if (currentSheet) {
-            const lvl = currentSheet.getLevel();
-            const ptsPer20 = Math.floor(lvl / 20)
-            const ptsPer60 = Math.floor(lvl / 60) * 3;
-            const bonusPtsPer20After60 = lvl >= 80 ? Math.floor(lvl / 20) - 4 : 0
-            const bonusAffinityPoints = classData.filter(cd => cd.endsWith("_promoted")).length
-            setMaxAffPts(4 + ptsPer20 + ptsPer60 + bonusPtsPer20After60 + bonusAffinityPoints);
+            setMaxAffPts(currentSheet.getAffinityPoints(classData));
             setCurrentAffPts(Object.values(affData.path).reduce((sum, value) => sum + value, 0))
             setPlayerLevel(currentSheet.getLevel());
             setMaxFatelineAbilities(currentSheet.getMaxFatelineUnlocks())

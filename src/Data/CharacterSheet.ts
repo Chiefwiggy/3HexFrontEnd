@@ -558,6 +558,15 @@ class CharacterSheet extends AbstractSheet {
         return this.data.characterLevel;
     }
 
+    public getAffinityPoints = (classDataOverride: Array<string>) => {
+        const lvl = this.getLevel();
+        const ptsPer20 = Math.floor(lvl / 20)
+        const ptsPer60 = Math.floor(lvl / 60) * 3;
+        const bonusPtsPer20After60 = lvl >= 80 ? Math.floor(lvl / 20) - 4 : 0
+        const bonusAffinityPoints = classDataOverride.filter(cd => cd.endsWith("_promoted")).length
+        return 4 + ptsPer20 + ptsPer60 + bonusPtsPer20After60 + bonusAffinityPoints + this.getAbilityBonuses("affinityPoints")
+    }
+
     public getMaxFatelineUnlocks = () => {
         return 1 + this.getAbilityBonuses("fatelineUnlocks")
     }
