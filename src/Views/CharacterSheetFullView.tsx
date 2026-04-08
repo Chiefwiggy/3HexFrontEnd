@@ -46,6 +46,8 @@ import {MdMemory} from "react-icons/md";
 import HackCardBuilderView from "./HackCardBuilderView";
 import {SiFoundryvirtualtabletop} from "react-icons/si";
 import FoundryButton from "../Components/Icons/FoundryButton";
+import FeaturesView from "./FeaturesView";
+import {GrHostMaintenance} from "react-icons/gr";
 
 const CharacterSheetFullView = () => {
 
@@ -126,7 +128,12 @@ const CharacterSheetFullView = () => {
                 {/*<CharacterSheetSidebar title={"Prepare Battalion"} icon={Diversity3Outlined} panelComponent={BattalionAssignmentView} />*/}
                 {/*<CharacterSheetSidebar title={"Conditions"} icon={FlareOutlined} panelComponent={ConditionsPanelView} />*/}
                 {/*<CharacterSheetSidebar title={"Backpack"} icon={BackpackOutlined} panelComponent={BackpackView} />*/}
-                <CharacterSheetSidebar title={"Archetypes & Affinities"} icon={EngineeringOutlined} panelComponent={ClassSelectView} badgeCondition={
+                <CharacterSheetSidebar title={"Archetypes & Affinities"} icon={GrHostMaintenance} panelComponent={ClassSelectView} badgeCondition={
+                    currentSheet.getDevelopmentPoints() != currentSheet.data.developmentIds.length
+                    ||
+                    currentSheet.getClassPointsSpent() != currentSheet.getMaxClassPoints()
+                } />
+                <CharacterSheetSidebar title={"Features"} icon={EngineeringOutlined} panelComponent={FeaturesView} badgeCondition={
                     currentSheet.getDevelopmentPoints() != currentSheet.data.developmentIds.length
                     ||
                     currentSheet.getClassPointsSpent() != currentSheet.getMaxClassPoints()

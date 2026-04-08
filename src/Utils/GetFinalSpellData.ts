@@ -203,13 +203,13 @@ export const GetFinalWeaponData = (weaponBase: IScaledWeaponBaseData, allCards: 
     let specialLogicTags = [...weaponBase.specialLogicTags ?? [], ...allCards.flatMap(e => e?.specialLogicTags ?? [])];
     let finalBasePower = StatChain(weaponBase.basePower, allCards.map(c => c?.basePowerMod));
     let finalPotencyPower = Math.floor(StatChain(weaponBase.potency, allCards.map(c => c?.potencyMod), false) * char.getPowerStat(specialLogicTags));
-    const finalPower = StatChain(finalBasePower + finalPotencyPower + char.getBonusWeaponPower(specialLogicTags), [...allCards.map(c => c?.powerMod), {modifier: char.getAbilityBonuses("weaponDamage")}]);
+    const finalPower = StatChain(finalBasePower + finalPotencyPower + char.getBonusWeaponPower(specialLogicTags, weaponBase.weaponType), [...allCards.map(c => c?.powerMod), {modifier: char.getAbilityBonuses("weaponDamage")}]);
     const minRange = StatChain(weaponBase.baseRange.min, allCards.map(c => c?.minRangeMod));
     const maxRange = StatChain(weaponBase.baseRange.max, allCards.map(c => c?.maxRangeMod));
     const minRangePreFinal = StatChain(minRange, allCards.map(c => c?.fullRangeMod));
     const maxRangePreFinal = StatChain(maxRange, allCards.map(c => c?.fullRangeMod));
 
-    const [minRangeFinal, maxRangeFinal] = char.applyRangedModifiers(minRangePreFinal, maxRangePreFinal, "weapon");
+    const [minRangeFinal, maxRangeFinal] = char.applyRangedModifiers(minRangePreFinal, maxRangePreFinal, "weapon", weaponBase.weaponType);
 
     const minThrownRange = StatChain(weaponBase.thrownRange.min, allCards.map(c => c?.minRangeMod));
     const maxThrownRange = StatChain(weaponBase.thrownRange.max, allCards.map(c => c?.maxRangeMod));
@@ -221,11 +221,11 @@ export const GetFinalWeaponData = (weaponBase: IScaledWeaponBaseData, allCards: 
     const isThrownMelee = weaponBase.thrownRange.isMelee
 
     const finalBaseCrit = StatChain(weaponBase.baseCrit, allCards.map(c => c?.baseCritMod));
-    const finalCrit = StatChain(char.getCritStat() + finalBaseCrit + char.getCritBonus(), allCards.map(c => c?.critMod));
+    const finalCrit = StatChain(char.getCritStat() + finalBaseCrit + char.getCritBonus(weaponBase.weaponType), allCards.map(c => c?.critMod));
 
     const finalBaseHit = StatChain(weaponBase.baseHit, allCards.map(c => c?.baseHitMod));
 
-    const finalHitMod = StatChain(finalBaseHit + char.getHitStat(specialLogicTags) + char.getCritBonus(), allCards.map(c => c?.hitMod));
+    const finalHitMod = StatChain(finalBaseHit + char.getHitStat(specialLogicTags) + char.getHitBonus(weaponBase.weaponType), allCards.map(c => c?.hitMod));
 
     let finalDamageType: UDamageType = weaponBase.damageType;
     let finalDamageSubtype = weaponBase.damageSubtype;

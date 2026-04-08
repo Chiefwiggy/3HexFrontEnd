@@ -28,6 +28,9 @@ import {GetPrerequisiteString} from "../Utils/PrerequisiteString";
 import { TbInfoSmall } from "react-icons/tb";
 import {IoInformationCircleOutline} from "react-icons/io5";
 import useSnackbar from "../Hooks/useSnackbar/useSnackbar";
+import useCharacter from "../Hooks/useCharacter/useCharacter";
+import {IAllCardsData} from "../Data/CharacterSheet";
+import {UStat} from "../Utils/Shorthand";
 
 
 
@@ -42,6 +45,7 @@ interface IGenericCardLayoutInput {
     children: ReactNode,
     overrideSubtitle?: string | null,
     showPrerequisites?: boolean,
+    meetsPrerequisites?: boolean,
     isDraft?: boolean,
     titleExtra?: string,
     bannerOverride?: string | null
@@ -61,7 +65,7 @@ const GenericCardLayout = ({
     canFavorite = true,
     children,
     overrideSubtitle,
-    showPrerequisites=false, isDraft=false,
+    showPrerequisites=false, isDraft=false, meetsPrerequisites=false,
     titleExtra = "",
     bannerOverride = null
 }: IGenericCardLayoutInput) => {
@@ -69,6 +73,9 @@ const GenericCardLayout = ({
     const [expanded, setExpanded] = useState(isExpanded)
     const [isFavorite, setIsFavorite] = useState(cardData.isFavorite);
     const [prereqString, setPrereqString] = useState("None");
+    const [meetsPrereq, setMeetsPrereq] = useState<boolean>(false);
+
+    const {currentSheet} = useCharacter()
 
     const getPrereqPriority = (prereq: IPrerequisite) => {
         switch (prereq.prerequisiteType) {
@@ -91,6 +98,14 @@ const GenericCardLayout = ({
         const str= GetPrerequisiteString(cardData.prerequisites);
         if (str != "") {
             setPrereqString(str);
+        }
+        if (currentSheet ) {
+            setMeetsPrereq(cardData.prerequisites.reduce((pv, cv) => {
+                if (cv.prerequisiteType == "attribute") {
+                    return pv && currentSheet.getStat(cv.skill as UStat) >= cv.level
+                }
+                return pv
+            }, true))
         }
     }, [cardData.prerequisites])
 
@@ -172,7 +187,7 @@ const GenericCardLayout = ({
                         <Typography
                             variant={"body2"}
                             sx={{
-                                color: "darkgray",
+                                color: meetsPrerequisites ? (meetsPrereq ? "green" : "darkred") : "darkgray",
                                 fontSize: "12px"
                             }}
                         >

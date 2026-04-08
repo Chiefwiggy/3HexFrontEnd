@@ -13,19 +13,17 @@ import {
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
 import usePreloadedContent from "../../Hooks/usePreloadedContent/usePreloadedContent";
 import { IClassMetaData } from "../../Data/IClassMetaData";
-import ClassPreview from "./ClassPreview";
-import { IClassData } from "../../Data/ICharacterData";
+import { IClassData_deprecated } from "../../Data/ICharacterData";
 import { getNameFromTier, getTierFromName } from "../../Utils/Shorthand";
-import FatelinePreview from '../Fatelines/FatelinePreview';
 import { IFatelineData } from "../../Data/IFatelineData";
 import DevelopmentTab from "../Development/DevelopmentTab";
 
 
 interface IClassSelectPanelInput {
-  myClasses: IClassData[];
+  myClasses: IClassData_deprecated[];
   myFate: IFatelineData | undefined;
   myDev: Array<string>,
-  sendBack: (doPick: boolean, classData: IClassData) => void;
+  sendBack: (doPick: boolean, classData: IClassData_deprecated) => void;
   sendBackFate: (doPick: boolean, fateData: IFatelineData) => void;
   sendBackDev: (newList: Array<string>) => void
 }
@@ -118,27 +116,29 @@ const ClassSelectPanel = ({
     if (tier === "development") return <DevelopmentTab currentUnlockList={myDev} updateUnlockList={sendBackDev} />;
     if (tier === "fate") {
       return FatelineData.GetAllFatelineData().map(fd => (
-        <FatelinePreview
-          key={fd.fatelineId}
-          fateData={fd}
-          isEquipped={myFate?.fatelineId === fd.fatelineId}
-          canEquip={!myFate}
-          equipData={myFate}
-          sendBack={sendBackFate}
-        />
+          <></>
+        // <FatelinePreview
+        //   key={fd.fatelineId}
+        //   fateData={fd}
+        //   isEquipped={myFate?.fatelineId === fd.fatelineId}
+        //   canEquip={!myFate}
+        //   equipData={myFate}
+        //   sendBack={sendBackFate}
+        // />
       ));
     }
 
     return allClassData.map(cd => (
-      <ClassPreview
-        key={cd._id}
-        classData={cd}
-        isEquipped={hasClass(cd.className)}
-        canEquip={canEquip}
-        canPromote={canPromote}
-        sendBack={sendBack}
-        equipData={hasClass(cd.className) ? getMyClass(cd.className) : undefined}
-      />
+        <></>
+      // <ClassPreview
+      //   key={cd._id}
+      //   classData={cd}
+      //   isEquipped={hasClass(cd.className)}
+      //   canEquip={canEquip}
+      //   canPromote={canPromote}
+      //   sendBack={sendBack}
+      //   equipData={hasClass(cd.className) ? getMyClass(cd.className) : undefined}
+      // />
     ));
   };
 

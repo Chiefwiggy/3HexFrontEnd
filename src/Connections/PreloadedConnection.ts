@@ -66,6 +66,10 @@ export interface IPreloadedDataStruct {
     },
     datachips: Array<IDatachipData>,
     packages: Array<IPackageData>,
+    otherSpecializations: {
+        abilities: Record<string, Array<IAbility>>,
+        cards: Record<string, Array<ICommonCardData>>,
+    }
     gadgetData: Array<IGadgetData>
 }
 class PreloadedConnection {

@@ -1,6 +1,10 @@
 import {ICommonCardData} from "../../Data/ICardData";
 import {IAbility} from "../../Data/IAbilities";
 
+export type LevelKey =
+    | "level0" | "level10" | "level30" | "level50"
+    | "level70" | "level90" | "level110"
+    | "level130" | "level150" | "level170" | "level190"
 
 class PLC_DevelopmentData {
     private developmentCards: Record<string, Array<ICommonCardData>>
@@ -49,6 +53,35 @@ class PLC_DevelopmentData {
             }
         }
         return undefined;
+    }
+
+    public GetDevelopmentFeaturesByLevel() {
+        const elems = [...this.GetDevelopmentCards(), ...this.GetDevelopmentAbilities()]
+
+
+        const levelObject: Record<LevelKey, Array<ICommonCardData|IAbility>> = {
+            level0: [],
+            level10: [],
+            level30: [],
+            level50: [],
+            level70: [],
+            level90: [],
+            level110: [],
+            level130: [],
+            level150: [],
+            level170: [],
+            level190: []
+        }
+
+        for (const elem of elems) {
+            const prereq = elem.prerequisites.find(p => p.prerequisiteType === "level")
+            const level = prereq ? prereq.level : 0
+
+            const key = `level${level}` as LevelKey
+            levelObject[key].push(elem)
+        }
+
+        return levelObject
     }
 }
 

@@ -22,8 +22,9 @@ import {
 } from "@mui/icons-material";
 import PreparedSpellsPanel from "../Components/CardBuilder/PreparedSpellsPanel";
 import AddSubtractPanel from '../Components/Generic/AddSubtractPanel';
-import {getClassesString} from "../Utils/Shorthand";
-import NumberSpinner from "../Utils/NumberSpinner";
+import {getClassesString, getClassesString_new} from "../Utils/Shorthand";
+import DoubleNumberSpinner from "../Components/Generic/DoubleNumberSpinner";
+import usePreloadedContent from "../Hooks/usePreloadedContent/usePreloadedContent";
 
 const CharacterSheetView = () => {
     const {
@@ -37,9 +38,17 @@ const CharacterSheetView = () => {
         invokeCancel
     } = useCharacter();
 
+    const {ClassData} = usePreloadedContent()
+
     const isSmallScreen = true;
 
-    const [classesLine, setClassesLine] = useState(currentSheet ? getClassesString(currentSheet.data.classes) : "")
+    const [classesLine, setClassesLine] = useState(currentSheet ? getClassesString_new(ClassData, currentSheet.data.classList) : "")
+
+    useEffect(() => {
+        if (currentSheet) {
+            setClassesLine(getClassesString_new(ClassData, currentSheet.data.classList))
+        }
+    }, [charPing]);
 
 
     const handleEditClick = (doEdit: boolean) => (event: React.MouseEvent) => {
@@ -72,7 +81,7 @@ const CharacterSheetView = () => {
             if (doSave) {
                 invokeSave(!savePing);
                 currentSheet.data.characterLevel = currentLevel
-                await currentSheet.SaveCharacterSheet();
+                await currentSheet.SaveCharacterSheetv2();
             } else {
                 invokeCancel();
             }
@@ -98,7 +107,6 @@ const CharacterSheetView = () => {
             setCurrentLevel(value)
             currentSheet.data.characterLevel = currentLevel
         }
-
     }
     return currentSheet ? (
         <Box>
@@ -138,7 +146,7 @@ const CharacterSheetView = () => {
                                     }}
                                 >
 
-                                    <NumberSpinner
+                                    <DoubleNumberSpinner
                                         min={0}
                                         max={200}
                                         size={"small"}

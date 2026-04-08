@@ -7,18 +7,15 @@ export interface IFatelineFullData {
     fatelineName: string,
     fatelineId: string,
     fatelineNumber: number,
-    upright: {
-        fatelineDescription: [string],
-        affinityChoices: IClassChoiceData,
-        cards: Array<ICommonCardData>,
-        abilities: Array<IAbility>
-    },
-    reversed: {
-        fatelineDescription: [string],
-        affinityChoices: IClassChoiceData,
-        cards: Array<ICommonCardData>,
-        abilities: Array<IAbility>
-    }
+    upright: IFatelineSidedData,
+    reversed: IFatelineSidedData
+}
+
+export interface IFatelineSidedData {
+    fatelineDescription: [string],
+    affinityChoices: IClassChoiceData,
+    cards: Array<ICommonCardData>,
+    abilities: Array<IAbility>
 }
 
 export interface IFatelineData {

@@ -21,9 +21,9 @@ const AffinityCompendiumPage = ({}: IAffinityCompendiumPageInput) => {
     (searchParams.get("path") ?? searchParams.get("affinity") ?? "warrior") as keyof IPathKeys | keyof IAffinities | "_"
   );
 
-  const paths: Array<keyof IPathKeys> = ["warrior", "arcanist", "commander", "navigator", "scholar", "hacker"];
+  const paths: Array<keyof IPathKeys> = ["warrior", "arcanist", "general", "navigator", "scholar", "summoner", "cipher", "engineer"];
   const affinities: Array<keyof IAffinities | "_"> = [
-    "_", "nimble", "infantry", "guardian", "_", "focus", "creation", "alteration", "_", "leadership", "supply", "summoning", "_", "swift", "riding", "adaptation", "_", "rune", "sourcecraft", "research", "_", "transduction",  "daemoncraft", "proxy"
+    "_", "finesse", "infantry", "guardian", "_", "evocation", "creation", "alteration", "_", "command", "supply", "mentorship", "_", "swift", "riding", "adaptation", "_", "rune", "sourcecraft", "research", "_", "animancy", "conjuration", "orchestration", "_", "proxy", "firewall", "virus", "_", "transduction", "machinery", "crafting"
   ];
 
   useEffect(() => {
@@ -88,30 +88,30 @@ const AffinityCompendiumPage = ({}: IAffinityCompendiumPageInput) => {
           value={currentTabValue}
           onChange={handleTabChange}
         >
-          <Tab label={<Typography variant={"h6"}>Warrior</Typography>} sx={tabProperties} />
-          <Tab label={"Nimble"} sx={tabProperties} />
-          <Tab label={"Infantry"} sx={tabProperties} />
-          <Tab label={"Guardian"} sx={tabProperties} />
-          <Tab label={<Typography variant={"h6"}>Arcanist</Typography>} sx={tabProperties} />
-          <Tab label={"Focus"} sx={tabProperties} />
-          <Tab label={"Creation"} sx={tabProperties} />
-          <Tab label={"Alteration"} sx={tabProperties} />
-          <Tab label={<Typography variant={"h6"}>Commander</Typography>} sx={tabProperties} />
-          <Tab label={"Leadership"} sx={tabProperties} />
-          <Tab label={"Supply"} sx={tabProperties} />
-          <Tab label={"Summoning"} sx={tabProperties} />
-          <Tab label={<Typography variant={"h6"}>Navigator</Typography>} sx={tabProperties} />
-          <Tab label={"Swift"} sx={tabProperties} />
-          <Tab label={"Riding"} sx={tabProperties} />
-          <Tab label={"Adaptation"} sx={tabProperties} />
-          <Tab label={<Typography variant={"h6"}>Scholar</Typography>} sx={tabProperties} />
-          <Tab label={"Rune"} sx={tabProperties} />
-          <Tab label={"Sourcecraft"} sx={tabProperties} />
-          <Tab label={"Research"} sx={tabProperties} />
-          <Tab label={<Typography variant={"h6"}>Hacker</Typography>} sx={tabProperties} />
-          <Tab label={"Transduction"} sx={tabProperties} />
-          <Tab label={"Daemoncraft"} sx={tabProperties} />
-          <Tab label={"Proxy"} sx={tabProperties} />
+          {/*<Tab label={<Typography variant={"h6"}>Warrior</Typography>} sx={tabProperties} />*/}
+          {/*<Tab label={"Nimble"} sx={tabProperties} />*/}
+          {/*<Tab label={"Infantry"} sx={tabProperties} />*/}
+          {/*<Tab label={"Guardian"} sx={tabProperties} />*/}
+          {/*<Tab label={<Typography variant={"h6"}>Arcanist</Typography>} sx={tabProperties} />*/}
+          {/*<Tab label={"Focus"} sx={tabProperties} />*/}
+          {/*<Tab label={"Creation"} sx={tabProperties} />*/}
+          {/*<Tab label={"Alteration"} sx={tabProperties} />*/}
+          {/*<Tab label={<Typography variant={"h6"}>Commander</Typography>} sx={tabProperties} />*/}
+          {/*<Tab label={"Leadership"} sx={tabProperties} />*/}
+          {/*<Tab label={"Supply"} sx={tabProperties} />*/}
+          {/*<Tab label={"Summoning"} sx={tabProperties} />*/}
+          {/*<Tab label={<Typography variant={"h6"}>Navigator</Typography>} sx={tabProperties} />*/}
+          {/*<Tab label={"Swift"} sx={tabProperties} />*/}
+          {/*<Tab label={"Riding"} sx={tabProperties} />*/}
+          {/*<Tab label={"Adaptation"} sx={tabProperties} />*/}
+          {/*<Tab label={<Typography variant={"h6"}>Scholar</Typography>} sx={tabProperties} />*/}
+          {/*<Tab label={"Rune"} sx={tabProperties} />*/}
+          {/*<Tab label={"Sourcecraft"} sx={tabProperties} />*/}
+          {/*<Tab label={"Research"} sx={tabProperties} />*/}
+          {/*<Tab label={<Typography variant={"h6"}>Hacker</Typography>} sx={tabProperties} />*/}
+          {/*<Tab label={"Transduction"} sx={tabProperties} />*/}
+          {/*<Tab label={"Daemoncraft"} sx={tabProperties} />*/}
+          {/*<Tab label={"Proxy"} sx={tabProperties} />*/}
         </Tabs>
 
       </Box>

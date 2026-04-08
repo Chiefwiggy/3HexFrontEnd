@@ -10,7 +10,7 @@ interface ISpellTargetCardInput {
     isAdd?: boolean,
     showAdd?: boolean,
     canFavorite?: boolean,
-    showPrerequisites?: boolean, isDraft?: boolean
+    showPrerequisites?: boolean, isDraft?: boolean, meetsPrerequisites?: boolean
 }
 
 const SpellTargetCard = ({
@@ -21,11 +21,11 @@ const SpellTargetCard = ({
     isAdd = true,
     showAdd = true,
     canFavorite = true,
-    showPrerequisites=false, isDraft=false
+    showPrerequisites=false, isDraft=false, meetsPrerequisites=false
 }: ISpellTargetCardInput) => {
 
     return (
-        <GenericCardLayout isDraft={isDraft}  cardData={cardData} sendBack={sendBack} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} canFavorite={canFavorite} showPrerequisites={showPrerequisites} showAdd={showAdd}>
+        <GenericCardLayout isDraft={isDraft}  cardData={cardData} sendBack={sendBack} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} canFavorite={canFavorite} meetsPrerequisites={meetsPrerequisites} showPrerequisites={showPrerequisites} showAdd={showAdd}>
         </GenericCardLayout>
     )
 }

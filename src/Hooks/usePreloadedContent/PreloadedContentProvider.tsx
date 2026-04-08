@@ -24,6 +24,7 @@ import PLC_DevelopmentData from "./PLC_DevelopmentData";
 import PLC_DatachipData from "./PLC_DatachipData";
 import PLC_PackageData from "./PLC_PackageData";
 import PLC_GadgetData from "./PLC_GadgetData";
+import PLC_OtherSpecializationData from "./PLC_OtherSpecializationData";
 
 interface IPreloadedContentProviderInput {
     children: any
@@ -49,6 +50,7 @@ export interface IPreloadedContentContextInput {
     DatachipData: PLC_DatachipData,
     PackageData: PLC_PackageData,
     GadgetData: PLC_GadgetData,
+    OtherSpecializationData: PLC_OtherSpecializationData,
     isLoaded: boolean
 }
 const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) => {
@@ -91,6 +93,8 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
 
     const [GadgetData, setGadgetData] = useState(new PLC_GadgetData());
 
+    const [OtherSpecializationData, setOtherSpecializationData] = useState(new PLC_OtherSpecializationData())
+
     const [isLoaded, setIsLoaded] = useState(false);
 
 
@@ -115,6 +119,8 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
             let data = await API.PreloadedAPI.GetPreloadedData(myCacheFinalMetadata);
 
             const classData = await API.ClassAPI.GetAllClasses();
+
+            console.log(data)
 
 
             if (data && myCacheFinal) {
@@ -203,6 +209,12 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
                 if (data.gadgetData.length == 0) {
                     data.gadgetData = myCacheFinal.gadgetData;
                 }
+                if (Object.keys(data.otherSpecializations.abilities).length == 0) {
+                    data.otherSpecializations.abilities = myCacheFinal.otherSpecializations.abilities;
+                }
+                if (Object.keys(data.otherSpecializations.cards).length == 0) {
+                    data.otherSpecializations.cards = myCacheFinal.otherSpecializations.cards;
+                }
             }
 
 
@@ -226,6 +238,7 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
             await PackageData.Initialize(data.packages)
             await DatachipData.Initialize(data.datachips)
             await GadgetData.Initialize(data.gadgetData)
+            await OtherSpecializationData.Initialize(data.otherSpecializations.cards, data.otherSpecializations.abilities)
 
             console.log(data.updatedCache)
             localStorage.setItem("cache_metadata", JSON.stringify(data.updatedCache))
@@ -256,6 +269,7 @@ const PreloadedContentProvider = ({children}: IPreloadedContentProviderInput) =>
                 DatachipData,
                 PackageData,
                 GadgetData,
+                OtherSpecializationData,
                 isLoaded
             }}
         >

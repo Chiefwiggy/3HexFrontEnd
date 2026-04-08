@@ -1,5 +1,5 @@
 import {IDataModifiers, IPrerequisite} from "./GenericData";
-import {IAffinities, IEnchantmentData} from "./ICharacterData";
+import {IAffinities, IEnchantmentData, IPathKeys} from "./ICharacterData";
 import {UArcanotype} from "./ISourceData";
 
 export type USpellTypes = "base" | "target" | "skill" | "edict" | "summon" | null;
@@ -312,8 +312,9 @@ export interface IConditionTag {
 
 
 
-export type UPrerequisiteType = "attribute" | "affinity" | "class" | "path" | "nodefault" | "race" | "fateline" | "secret" | "subrace" | "race_role" | "minion_role" | "level" | "development"
+export type UPrerequisiteType = "attribute" | "affinity" | "class" | "path" | "nodefault" | "race" | "fateline" | "secret" | "subrace" | "race_role" | "minion_role" | "level" | "development" | "misc" | "misc_category"
 export type UCharacterStat = "might" | "agility" | "skill" | "awareness" | "vitality" | "knowledge" | "mind" | "presence" | "authority" | "endurance"
 export type UAffinity = `${keyof IAffinities}`
+export type UPath = `${keyof IPathKeys}`
 
 

@@ -72,7 +72,7 @@ const WeaponEnchantmentCard_New = ({
                                     <Typography fontSize={14} component={"span"} color={"grey"} sx={{paddingLeft: "4px"}}>{currentSheet.getHandedness(weaponData.weaponClass, weaponData.handedness, weaponMetadata.enchantmentLevel)}</Typography>
                                 </Typography>
 
-                                <Typography fontSize={14} color={"grey"} textAlign={"center"}>{weaponData.isCreatureWeapon ? "Commander" : (weaponData.damageType == "magical" ? "Arcanist" : "Warrior")} {weaponMetadata.enchantmentLevel} • {weaponData.damageType == "magical" ? "Presence" : "Skill"} {ScaleChainNumeric(weaponData.skillRequirement, weaponMetadata.enchantmentLevel)}</Typography>
+                                <Typography fontSize={14} color={"grey"} textAlign={"center"}>{weaponData.isCreatureWeapon ? "Commander" : (weaponData.damageType == "magical" ? "Arcanist" : "Warrior")} {weaponMetadata.enchantmentLevel} • {weaponData.damageType == "magical" ? "Presence" : "Skill"} {ScaleChainNumeric(weaponData.skillRequirement, weaponMetadata.enchantmentLevel) + currentSheet.getSkillRequirementReduction(weaponData.weaponType)}</Typography>
                             </Box>
                             <Box
                                 sx={{
@@ -130,7 +130,7 @@ const WeaponEnchantmentCard_New = ({
                                             <GiSwordHilt size={24}/>
                                             )
                                     }
-                                    <Typography>{ScaleChainNumeric(weaponData.skillRequirement, weaponMetadata.enchantmentLevel)}</Typography>
+                                    <Typography>{ScaleChainNumeric(weaponData.skillRequirement, weaponMetadata.enchantmentLevel)+ currentSheet.getSkillRequirementReduction(weaponData.weaponType)}</Typography>
 
                                 </Box>
                             </BoxWithTooltip>
@@ -205,7 +205,7 @@ const WeaponEnchantmentCard_New = ({
                 >
                     {
                         isDetailedPage ?
-                            <IconButtonWithTooltip title={"More Details"} placement={"top"} onClick={() => {
+                            <IconButtonWithTooltip title={"Fewer Details"} placement={"top"} onClick={() => {
                                 setDetailedPage(false)
                             }}>
                                 <PiKeyReturn size={24}/>

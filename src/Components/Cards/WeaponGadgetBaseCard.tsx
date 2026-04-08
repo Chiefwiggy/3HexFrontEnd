@@ -19,6 +19,7 @@ import {createRangeString} from "../../Utils/helper_functions";
 import {SportsHandballOutlined} from "@mui/icons-material";
 import CritNumberBox from "../SmallComponents/CritNumberBox";
 import {IGadgetData} from "../../Data/IGadgetData";
+import DieIcon from "../Generic/DieIcon";
 
 interface IWeaponGadgetBaseCardInput {
     cardData: IScaledWeaponBaseData,
@@ -28,7 +29,7 @@ interface IWeaponGadgetBaseCardInput {
     isAdd?: boolean,
     showAdd?: boolean,
     canFavorite?: boolean,
-    showPrerequisites?: boolean, isDraft?: boolean
+    showPrerequisites?: boolean, isDraft?: boolean, meetsPrerequisites?: boolean
 }
 
 const WeaponGadgetBaseCard = ({    cardData,
@@ -38,7 +39,7 @@ const WeaponGadgetBaseCard = ({    cardData,
   isAdd = true,
   showAdd = true,
   canFavorite = true,
-  showPrerequisites=false, isDraft=false
+  showPrerequisites=false, isDraft=false, meetsPrerequisites=false
 }: IWeaponGadgetBaseCardInput) => {
 
 
@@ -50,7 +51,7 @@ const WeaponGadgetBaseCard = ({    cardData,
     }
 
     return cardData && cardData.specialCrit ? (
-        <GenericCardLayout isDraft={isDraft}  cardData={cardData} sendBack={handleCustomSendBack} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} showAdd={showAdd} canFavorite={canFavorite} overrideSubtitle={cardData.weaponType.toUpperCase() + " • " + cardData.weaponClass.toUpperCase()} showPrerequisites={showPrerequisites}>
+        <GenericCardLayout isDraft={isDraft}  cardData={cardData} sendBack={handleCustomSendBack} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} showAdd={showAdd} canFavorite={canFavorite} meetsPrerequisites={meetsPrerequisites} overrideSubtitle={cardData.weaponType.toUpperCase() + " • " + cardData.weaponClass.toUpperCase()} showPrerequisites={showPrerequisites}>
             <Box
                 sx={{
                     display: "grid",
@@ -68,20 +69,12 @@ const WeaponGadgetBaseCard = ({    cardData,
                 <NumericIcon val={cardData.baseCrit} icon={MdCrisisAlert} />
                 <NumericIcon val={getHandedness(cardData.handedness)} icon={MdAccessibilityNew} />
             </Box>
-            <Box
-                sx={{
-                    display: 'flex',
-                    justifyContent: "space-around",
-                    marginTop: '8px'
-                }}
-            >
-                <CritNumberBox value={cardData.specialCrit.d1}/>
-                <CritNumberBox value={cardData.specialCrit.d2}/>
-                <CritNumberBox value={cardData.specialCrit.d3}/>
-                <CritNumberBox value={cardData.specialCrit.d4}/>
-                <CritNumberBox value={cardData.specialCrit.d5}/>
-                <CritNumberBox value={cardData.specialCrit.d6}/>
-            </Box>
+            {
+                Object.values(cardData.specialCrit).filter(e => e != '-').map(die => {
+                    return (
+                        <DieIcon value={die} size={50} mode={"dark"} />
+                    )})
+            }
 
         </GenericCardLayout>
     ) : <>{JSON.stringify(cardData, null, 2)}</>

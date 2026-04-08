@@ -11,7 +11,7 @@ import ActionPointsPanel from "../Components/Sheet/ActionPointsPanel";
 import IconButtonWithTooltip from "../Components/Generic/IconButtonWithTooltip";
 import BoxWithTooltip from "../Components/Generic/BoxWithTooltip";
 import VerticalLinearBar from "../Components/Generic/VerticalLinearBar";
-import NumberSpinner from "../Utils/NumberSpinner";
+import DoubleNumberSpinner from "../Components/Generic/DoubleNumberSpinner";
 import CurrencySpinner from "../Components/StatBox/CurrencySpinner";
 import CurrencyPanel from "../Components/StatBox/CurrencyPanel";
 

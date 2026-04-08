@@ -18,7 +18,7 @@ interface IHackProtocolCardInput {
     isAdd?: boolean,
     showAdd?: boolean,
     canFavorite?: boolean,
-    showPrerequisites?: boolean, isDraft?: boolean
+    showPrerequisites?: boolean, isDraft?: boolean, meetsPrerequisites?: boolean
 }
 
 const HackProtocolCard = ({
@@ -29,12 +29,12 @@ const HackProtocolCard = ({
     isAdd = true,
     showAdd = true,
     canFavorite = true,
-    showPrerequisites=false, isDraft=false
+    showPrerequisites=false, isDraft=false, meetsPrerequisites=false
 }: IHackProtocolCardInput) => {
 
 
     return (
-        <GenericCardLayout isDraft={isDraft}  cardData={cardData} sendBack={sendBack} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} canFavorite={canFavorite} showPrerequisites={showPrerequisites} showAdd={showAdd}>
+        <GenericCardLayout isDraft={isDraft}  cardData={cardData} sendBack={sendBack} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} canFavorite={canFavorite} meetsPrerequisites={meetsPrerequisites} showPrerequisites={showPrerequisites} showAdd={showAdd}>
             <Box
                 sx={{
                     marginTop: "-16px",

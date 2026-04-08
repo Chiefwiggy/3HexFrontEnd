@@ -11,6 +11,7 @@ import {IAbility} from "../../Data/IAbilities";
 import {FaCircle, FaRegCircle} from "react-icons/fa";
 import {clone} from "../../Utils/ObjectUtils";
 import {ICommonCardData} from "../../Data/ICardData";
+import {LevelKey} from "../../Hooks/usePreloadedContent/PLC_DevelopmentData";
 
 interface IMasteryTabInput {
     currentUnlockList: Array<string>,
@@ -101,24 +102,39 @@ const DevelopmentTab = ({currentUnlockList, updateUnlockList}: IMasteryTabInput)
 
     }
 
+    const [allDevelopmentFeatures, setDevelopmentFeatures] = useState<Record<LevelKey, Array<ICommonCardData|IAbility>>>()
+
+    useEffect(() => {
+        setDevelopmentFeatures(DevelopmentData.GetDevelopmentFeaturesByLevel())
+    }, [isLoaded])
+
+    const compendiumPropsTemplate = {
+        isExpanded: true,
+        canToggleExpand: false,
+        canFavorite: false,
+        isAdd: false,
+        showAdd: true,
+        showPrerequisites: false,
+    }
 
     return currentSheet ? (
         <Box
             sx={{
-                width: "80vw"
+                display: "grid",
+                gridTemplateColumns: "1fr 19fr",
+                height: "calc(100dvh - 188px)"
             }}
         >
             <Box>
-                <Typography variant={"h6"}>Development Point Slots</Typography>
+                <Typography variant={"h6"}>Slots</Typography>
                 <Box
                     sx={{
                         display: "flex",
+                        flexDirection: "column",
                         gap: "10px",
-                        padding: "12px"
+                        pr: "12px"
                     }}
                 >
-
-
                 {
                   generateCurrentArray().map((lvl, index) => {
                     return (
@@ -133,9 +149,9 @@ const DevelopmentTab = ({currentUnlockList, updateUnlockList}: IMasteryTabInput)
                       >
                         {
                             maskArray[index] ?
-                                <FaCircle size={50} color="secondary" />
+                                <FaCircle size={50} color="#234567" />
                                 :
-                                <FaRegCircle size={50} color="secondary" />
+                                <FaRegCircle size={50} color="#123456" />
                         }
                         <Typography
                           sx={{
@@ -143,7 +159,7 @@ const DevelopmentTab = ({currentUnlockList, updateUnlockList}: IMasteryTabInput)
                             top: "50%",
                             left: "50%",
                             transform: "translate(-50%, -50%)",
-                            color: maskArray[index] ? "black" : "white",
+                            color: maskArray[index] ? "white" : "#316eaa",
                             fontWeight: "bold"
                           }}
                         >
@@ -156,76 +172,157 @@ const DevelopmentTab = ({currentUnlockList, updateUnlockList}: IMasteryTabInput)
                 </Box>
 
             </Box>
-            <Box
-                sx={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat( auto-fill , max(314px, 19vw))",
-                    gridGap: "10px",
-                    width: "100%",
-                    maxHeight: "78vh",
-                    overflowY: "auto",
-                    scrollbarColor: "#6b6b6b #2b2b2b",
-                    scrollbarWidth: "thin"
-                  }}
-            >
-                {/*{*/}
-                {/*    disambiguateCard(DevelopmentData.GetDevelopmentCards(), compendiumProps, {*/}
-                {/*        wrapper: (el, key) => <UnlockWrapper el={el} _id={key} unlockedByDefault={false} unlockList={currentUnlockList} updateUnlockList={updateUnlockList}/>*/}
-                {/*    })*/}
-                {/*}*/}
-                {/*{DevelopmentData.GetDevelopmentAbilities().sort((a,b) => {*/}
-                {/*    const aLevel = a.prerequisites.find(e => e.prerequisiteType === "level")?.level ?? 0*/}
-                {/*    const bLevel = b.prerequisites.find(e => e.prerequisiteType === "level")?.level ?? 0*/}
-                {/*    if (aLevel != bLevel) {*/}
-                {/*        return aLevel - bLevel*/}
-                {/*    } else {*/}
-                {/*        return a.abilityName.localeCompare(b.abilityName)*/}
-                {/*    }*/}
-                {/*}).map(ability => {*/}
-                {/*    return <UnlockWrapper key={ability._id} el={<AbilityItem abilityData={ability} showPrerequisites={true} />} _id={ability._id} unlockedByDefault={false} isDisabled={isAbilityDisabled(ability)} unlockList={currentUnlockList} updateUnlockList={updateUnlockList}/>*/}
-                {/*})}*/}
-                {[
-                    // Cards
-                    ...DevelopmentData.GetDevelopmentCards().map(card => ({
-                        _id: card._id,
-                        level: card.prerequisites?.find(e => e.prerequisiteType === "level")?.level ?? 0,
-                        name: card.cardName ?? "",
-                        el: disambiguateCard([card], compendiumProps, {
-                            wrapper: (el, key) => (
-                                <UnlockWrapper
-                                    el={el}
-                                    _id={card._id}
-                                    key={card._id}
-                                    unlockedByDefault={false}
-                                    isDisabled={isFeatureDisabled(card)}
-                                    unlockList={currentUnlockList}
-                                    updateUnlockList={updateUnlockList}
-                                />
-                            )
-                        })
-                    })),
-                    // Abilities
-                    ...DevelopmentData.GetDevelopmentAbilities().map(ability => ({
-                        _id: ability._id,
-                        level: ability.prerequisites?.find(e => e.prerequisiteType === "level")?.level ?? 0,
-                        name: ability.abilityName ?? "",
-                        el: (
-                            <UnlockWrapper
-                                key={ability._id}
-                                el={<AbilityItem abilityData={ability} showPrerequisites={true} />}
-                                _id={ability._id}
-                                unlockedByDefault={false}
-                                isDisabled={isFeatureDisabled(ability)}
-                                unlockList={currentUnlockList}
-                                updateUnlockList={updateUnlockList}
-                            />
-                        )
-                    }))
-                ]
-                .sort((a, b) => a.level - b.level || a.name.localeCompare(b.name))
-                .map(item => item.el)}
+            {
+                allDevelopmentFeatures ?
+                    <Box
+                        sx={{
+                            overflowY: "auto",
+                            scrollbarColor: '#6b6b6b #2b2b2b',
+                            scrollbarWidth: 'thin'
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                width: "100%",
+                                backgroundColor: "#12345678",
+                                borderRadius: 1,
+                                margin: "6px",
+                                ml: 0,
+                                padding: "8px",
+                                display: "flex",
+                                justifyContent: "space-between"
+                            }}
+                        >
+                            <Box>
+                                <Typography variant="h6" component="span">Unlocked</Typography>
+                            </Box>
+                        </Box>
+                        <Box
+                            sx={{
+                                display: 'grid',
+                                gridTemplateColumns: "repeat( auto-fill , max(314px, 19vw))",
+                                gridGap: "10px",
+                                my: 2,
+                            }}
+                        >
+                            {
+                                disambiguateCard(
+                                    Object.values(allDevelopmentFeatures)
+                                        .flatMap(arr => arr)
+                                        .filter(e => currentUnlockList.includes(e._id)),
+                                    {
+                                        isExpanded: true,
+                                        canToggleExpand: false,
+                                        canFavorite: false,
+                                        isAdd: false,
+                                        showAdd: false,
+                                        showPrerequisites: true
+                                    }
+                                ).map((card, index) => {
+                                    if (card) {
+                                        return <UnlockWrapper el={card} _id={currentUnlockList[index]} unlockedByDefault={false} unlockList={currentUnlockList} updateUnlockList={updateUnlockList} key={index}/>
+                                    }
+                                })
+                            }
+                        </Box>
 
-            </Box>
+                        {
+                            Object.entries(allDevelopmentFeatures).map(([key, elems]) => {
+                                const lvl = key.replace("level", "")
+                                return (
+                                    <Box key={key}>
+                                        <Box>
+                                            <Box
+                                                sx={{
+                                                    width: "100%",
+                                                    backgroundColor: currentSheet.getLevel() >= parseInt(lvl) ? "#12345678" : "rgba(86,18,42,0.47)",
+                                                    borderRadius: 1,
+                                                    margin: "6px",
+                                                    ml: 0,
+                                                    padding: "8px",
+                                                    display: "flex",
+                                                    justifyContent: "space-between"
+                                                }}
+                                            >
+                                                <Box>
+                                                    {
+                                                        lvl == "0" ?
+                                                            <Typography variant="h6" component="span">Background</Typography>
+                                                            :
+                                                            <Typography variant="h6" component="span">Level {lvl}</Typography>
+                                                    }
+                                                </Box>
+                                                {/*<Box>*/}
+                                                {/*    test*/}
+                                                {/*</Box>*/}
+                                            </Box>
+                                            <Box
+                                                sx={{
+                                                    display: 'grid',
+                                                    gridTemplateColumns: "repeat( auto-fill , max(314px, 19vw))",
+                                                    gridGap: "10px",
+                                                    my: 2,
+                                                }}
+                                            >
+                                                {
+
+                                                    disambiguateCard(elems, {...compendiumPropsTemplate}).map((card, index) => {
+                                                        if (card) {
+                                                            return <UnlockWrapper el={card} _id={elems[index]._id} unlockedByDefault={false} unlockList={currentUnlockList} updateUnlockList={updateUnlockList} key={index}/>
+                                                        }
+                                                    })
+                                                }
+                                            </Box>
+                                        </Box>
+                                    </Box>
+                                )
+                            })
+                        }
+
+                        {/*{[*/}
+                        {/*    // Cards*/}
+                        {/*    ...DevelopmentData.GetDevelopmentCards().map(card => ({*/}
+                        {/*        _id: card._id,*/}
+                        {/*        level: card.prerequisites?.find(e => e.prerequisiteType === "level")?.level ?? 0,*/}
+                        {/*        name: card.cardName ?? "",*/}
+                        {/*        el: disambiguateCard([card], compendiumProps, {*/}
+                        {/*            wrapper: (el, key) => (*/}
+                        {/*                <UnlockWrapper*/}
+                        {/*                    el={el}*/}
+                        {/*                    _id={card._id}*/}
+                        {/*                    key={card._id}*/}
+                        {/*                    unlockedByDefault={false}*/}
+                        {/*                    isDisabled={isFeatureDisabled(card)}*/}
+                        {/*                    unlockList={currentUnlockList}*/}
+                        {/*                    updateUnlockList={updateUnlockList}*/}
+                        {/*                />*/}
+                        {/*            )*/}
+                        {/*        })*/}
+                        {/*    })),*/}
+                        {/*    // Abilities*/}
+                        {/*    ...DevelopmentData.GetDevelopmentAbilities().map(ability => ({*/}
+                        {/*        _id: ability._id,*/}
+                        {/*        level: ability.prerequisites?.find(e => e.prerequisiteType === "level")?.level ?? 0,*/}
+                        {/*        name: ability.abilityName ?? "",*/}
+                        {/*        el: (*/}
+                        {/*            <UnlockWrapper*/}
+                        {/*                key={ability._id}*/}
+                        {/*                el={<AbilityItem abilityData={ability} showPrerequisites={true} />}*/}
+                        {/*                _id={ability._id}*/}
+                        {/*                unlockedByDefault={false}*/}
+                        {/*                isDisabled={isFeatureDisabled(ability)}*/}
+                        {/*                unlockList={currentUnlockList}*/}
+                        {/*                updateUnlockList={updateUnlockList}*/}
+                        {/*            />*/}
+                        {/*        )*/}
+                        {/*    }))*/}
+                        {/*]*/}
+                        {/*.sort((a, b) => a.level - b.level || a.name.localeCompare(b.name))*/}
+                        {/*.map(item => item.el)}*/}
+
+                    </Box>
+                    : <></>
+            }
         </Box>
     ) : <></>
 }

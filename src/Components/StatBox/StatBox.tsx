@@ -29,7 +29,7 @@ import {
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
 import AddSubtractPanel from '../Generic/AddSubtractPanel';
 import {getStatDescription} from "../../Utils/StatDetailsUtil";
-import NumberSpinner from "../../Utils/NumberSpinner";
+import DoubleNumberSpinner from "../Generic/DoubleNumberSpinner";
 
 interface IStatBoxInput {
     stat: string,
@@ -93,7 +93,7 @@ const StatBox = ({
                 {
                     editMode ?
                         <>
-                            <NumberSpinner
+                            <DoubleNumberSpinner
                                 size={"small"}
                                 min={0}
                                 max={statCap}

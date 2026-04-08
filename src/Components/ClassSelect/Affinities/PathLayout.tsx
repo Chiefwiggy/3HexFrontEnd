@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Box, capitalize, Typography} from "@mui/material";
 import useCharacter from "../../../Hooks/useCharacter/useCharacter";
-import {IAffinities, IAffinitiesAndPath, IPathKeys, IClassData} from "../../../Data/ICharacterData";
+import {IAffinities, IAffinitiesAndPath, IPathKeys, IClassData_deprecated} from "../../../Data/ICharacterData";
 import {IFatelineData} from "../../../Data/IFatelineData";
 import {GetPathAndAffinitiesFromClassList} from "../../../Utils/CalculateAffinities";
 

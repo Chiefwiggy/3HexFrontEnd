@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import AbstractCardCalculator from "../../Data/Card Calculators/AbstractCardCalculator";
 import CardEffect from "../Cards/CardEffect";
-import {ICommonCardData, IEffectData} from "../../Data/ICardData";
+import {ICommonCardData, IEffectData, UCritDie} from "../../Data/ICardData";
 import {
     ElectricBoltOutlined,
     FlareOutlined,
@@ -48,6 +48,7 @@ import {GrTechnology} from "react-icons/gr";
 import {IoInformationCircleOutline} from "react-icons/io5";
 import {SiFoundryvirtualtabletop} from "react-icons/si";
 import useSnackbar from "../../Hooks/useSnackbar/useSnackbar";
+import DieIcon from "../Generic/DieIcon";
 
 interface ICalculatedCardInput {
     cardCalculator: AbstractCardCalculator
@@ -74,6 +75,8 @@ const CalculatedCard = ({
 
     const [validCard, setValidCard] = useState<boolean>(true);
 
+    const [critData, setCritData] = useState<Array<UCritDie>>([])
+
     const [conditionalCard, setConditionalCard] = useState(false);
 
     useEffect(() => {
@@ -82,6 +85,11 @@ const CalculatedCard = ({
         setEffectArray(cardCalculator.getEffectList());
         setValidCard(cardCalculator.isValid() && owner.areAllCardsPrepared(cardCalculator.getCards()))
         setConditionalCard(depArray.filter(e => e?.cardType == "condition").length > 0)
+        const crit = cardCalculator.getCrit()
+        if (crit) {
+            setCritData(Object.values(crit).filter(e => e != '-'))
+        }
+
     }, [depArray, charPing, statPing, cancelPing, isReady]);
 
     const exportToFoundry = async() => {
@@ -127,6 +135,7 @@ const CalculatedCard = ({
         }
     }
 
+    // @ts-ignore
     return owner ? (
         <Card
             sx={{
@@ -453,20 +462,18 @@ const CalculatedCard = ({
                 }
 
                 {
-                    cardCalculator.getCrit() ?
+                    critData ?
                         <Box
                             sx={{
-                                display: 'flex',
-                                justifyContent: "space-around",
-                                marginTop: '8px'
+                                mt: 1
                             }}
                         >
-                            <CritNumberBox value={cardCalculator.getCrit()?.d1 ?? ""}/>
-                            <CritNumberBox value={cardCalculator.getCrit()?.d2 ?? ""}/>
-                            <CritNumberBox value={cardCalculator.getCrit()?.d3 ?? ""}/>
-                            <CritNumberBox value={cardCalculator.getCrit()?.d4 ?? ""}/>
-                            <CritNumberBox value={cardCalculator.getCrit()?.d5 ?? ""}/>
-                            <CritNumberBox value={cardCalculator.getCrit()?.d6 ?? ""}/>
+                            {
+                                critData.map(die => {
+                                    return (
+                                        <DieIcon value={die} size={50} mode={"dark"} />
+                                    )})
+                            }
                         </Box>
                         :
                         <></>

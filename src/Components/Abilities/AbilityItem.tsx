@@ -7,25 +7,40 @@ import {GetPrerequisiteString} from "../../Utils/PrerequisiteString";
 import HighlightType from "../Generic/HighlightType";
 import {IoInformationCircleOutline} from "react-icons/io5";
 import useSnackbar from "../../Hooks/useSnackbar/useSnackbar";
+import {UStat} from "../../Utils/Shorthand";
+import useCharacter from "../../Hooks/useCharacter/useCharacter";
 
 interface IAbilityItemInput {
     abilityData: IAbility,
     showPrerequisites?: boolean,
-    isDraft?: boolean
+    meetsPrerequisites?: boolean,
+    isDraft?: boolean,
+    isExpanded?: boolean,
+    canToggleExpand?: boolean,
 }
 
-const AbilityItem = ({abilityData, showPrerequisites = false, isDraft=false}: IAbilityItemInput) => {
+const AbilityItem = ({abilityData, showPrerequisites = false, isDraft=false, meetsPrerequisites=false, isExpanded=false, canToggleExpand=true}: IAbilityItemInput) => {
 
+
+    const {currentSheet} = useCharacter()
     const [prereqString, setPrereqString] = useState<string>("None.")
 
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(isExpanded);
+    const [meetsPrereq, setMeetsPrereq] = useState<boolean>(false);
 
     useEffect(() => {
         const str = GetPrerequisiteString(abilityData.prerequisites);
         if (str != "") {
             setPrereqString(str);
         }
-        setIsOpen(false);
+        if (currentSheet ) {
+            setMeetsPrereq(abilityData.prerequisites.reduce((pv, cv) => {
+                if (cv.prerequisiteType == "attribute") {
+                    return pv && currentSheet.getStat(cv.skill as UStat) >= cv.level
+                }
+                return pv
+            }, true))
+        }
     }, [abilityData]);
 
     const {SendToSnackbar} = useSnackbar()
@@ -58,7 +73,7 @@ const AbilityItem = ({abilityData, showPrerequisites = false, isDraft=false}: IA
                             <Typography
                                 variant={"body2"}
                                 sx={{
-                                    color: "darkgray",
+                                    color: meetsPrerequisites ? (meetsPrereq ? "green" : "darkred") : "darkgray",
                                     fontSize: "12px"
                                 }}
                             >
@@ -122,14 +137,20 @@ const AbilityItem = ({abilityData, showPrerequisites = false, isDraft=false}: IA
                                 <IoInformationCircleOutline />
                             </IconButton>
                     }
-                    <ExpandMore
-                      expand={isOpen}
-                      onClick={() => setIsOpen(!isOpen)}
-                      aria-expanded={isOpen}
-                      aria-label="show more"
-                    >
-                        <ExpandMoreOutlined />
-                    </ExpandMore>
+                    {
+                        canToggleExpand ?
+                            <ExpandMore
+                                expand={isOpen}
+                                onClick={() => setIsOpen(!isOpen)}
+                                aria-expanded={isOpen}
+                                aria-label="show more"
+                            >
+                                <ExpandMoreOutlined />
+                            </ExpandMore>
+                            :
+                            <></>
+                    }
+
                 </Box>
 
             </Paper>

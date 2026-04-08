@@ -26,6 +26,8 @@ import {
     MdLooks,
     MdOutlineSportsMma
 } from "react-icons/md";
+import DiceExplanationCard from "../Rules/DiceExplanationCard";
+import DieIcon from "../Generic/DieIcon";
 
 interface IWeaponBaseCardInput {
     cardData: IWeaponBaseData,
@@ -36,7 +38,7 @@ interface IWeaponBaseCardInput {
     isAdd?: boolean,
     showAdd?: boolean,
     canFavorite?: boolean,
-    showPrerequisites?: boolean, isDraft?: boolean
+    showPrerequisites?: boolean, isDraft?: boolean, meetsPrerequisites?: boolean
 }
 const WeaponBaseCard = ({
     cardData,
@@ -47,7 +49,7 @@ const WeaponBaseCard = ({
     isAdd = true,
     showAdd = true,
     canFavorite = true,
-    showPrerequisites=false, isDraft=false
+    showPrerequisites=false, isDraft=false, meetsPrerequisites=false
 }: IWeaponBaseCardInput) => {
 
     const [constructedData, setConstructedData] = useState<IScaledWeaponBaseData>(ConstructFinalWeapon(cardData, enchantmentData ?? {enchantmentLevel: 0, baseId: ""}));
@@ -65,7 +67,7 @@ const WeaponBaseCard = ({
 
 
     return cardData.specialCrit ? (
-        <GenericCardLayout isDraft={isDraft}  cardData={constructedData} sendBack={handleCustomSendBack} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} showAdd={showAdd} canFavorite={canFavorite} overrideSubtitle={cardData.weaponType.toUpperCase() + " • " + cardData.weaponClass.toUpperCase()} showPrerequisites={showPrerequisites}
+        <GenericCardLayout isDraft={isDraft}  cardData={constructedData} sendBack={handleCustomSendBack} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} showAdd={showAdd} canFavorite={canFavorite} meetsPrerequisites={meetsPrerequisites} overrideSubtitle={cardData.weaponType.toUpperCase() + " • " + cardData.weaponClass.toUpperCase()} showPrerequisites={showPrerequisites}
                            titleExtra={cardData.canScale ? `+${constructedData.enchantmentData.enchantmentLevel} ${constructedData.enchantmentData.efficientUse ? "2H" : ""}${(constructedData.enchantmentData?.improvements ?? 0) > 0 ? `-S${(constructedData.enchantmentData.improvements ?? 0) > 1 ? "+" : ""}` : ""}`: (constructedData.enchantmentData?.improvements ?? 0) > 0 ? "- Honed" : ""}>
             <Box
                 sx={{
@@ -90,20 +92,12 @@ const WeaponBaseCard = ({
 
                 }
             </Box>
-            <Box
-                sx={{
-                    display: 'flex',
-                    justifyContent: "space-around",
-                    marginTop: '8px'
-                }}
-            >
-                <CritNumberBox value={constructedData.specialCrit.d1}/>
-                <CritNumberBox value={constructedData.specialCrit.d2}/>
-                <CritNumberBox value={constructedData.specialCrit.d3}/>
-                <CritNumberBox value={constructedData.specialCrit.d4}/>
-                <CritNumberBox value={constructedData.specialCrit.d5}/>
-                <CritNumberBox value={constructedData.specialCrit.d6}/>
-            </Box>
+            {
+                Object.values(constructedData.specialCrit).filter(e => e != '-').map(die => {
+                    return (
+                        <DieIcon value={die} size={50} mode={"dark"} />
+                )})
+            }
 
         </GenericCardLayout>
     ) : <>{JSON.stringify(cardData, null, 2)}</>

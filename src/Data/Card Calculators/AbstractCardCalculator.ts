@@ -108,7 +108,7 @@ abstract class AbstractCardCalculator {
         const isProtocolSummon = protocolCard?.isSummon === true;
         const isFunctionSummon = functionCard?.channelRequirements?.map(e => e.channelType).includes("eidolon") ?? false
 
-        return isSpellSummon || (isProtocolSummon && isFunctionSummon)
+        return isSpellSummon || (isProtocolSummon)
     }
 
     public sendCurrentCards(cards: Array<ICommonCardData|null>, char: AbstractSheet) {

@@ -14,6 +14,7 @@ import ImageLibraryConnection from "../../Connections/ImageLibraryConnection";
 import CardRequestConnection from "../../Connections/CardRequestConnection";
 import SourceConnection from "../../Connections/SourceConnection";
 import GadgetConnection from "../../Connections/GadgetConnection";
+import ChipsetConnection from "../../Connections/ChipsetConnection";
 
 interface IAPIProviderInput {
     children: any
@@ -32,6 +33,7 @@ export interface IAPIContext {
     SourceAPI: SourceConnection,
     CardRequestAPI: CardRequestConnection,
     GadgetAPI: GadgetConnection,
+    ChipsetAPI: ChipsetConnection,
 }
 
 const APIProvider = ({children}: IAPIProviderInput) => {
@@ -72,6 +74,8 @@ const APIProvider = ({children}: IAPIProviderInput) => {
 
     const [GadgetAPI, setGadgetAPI] = useState<GadgetConnection>(new GadgetConnection(apiURL, GetAPIConfig));
 
+    const [ChipsetAPI, setChipsetAPI] = useState<ChipsetConnection>(new ChipsetConnection(apiURL, GetAPIConfig));
+
     return (
         <APIContext.Provider value={{
             CharacterAPI,
@@ -85,7 +89,8 @@ const APIProvider = ({children}: IAPIProviderInput) => {
             ImageLibraryAPI,
             CardRequestAPI,
             SourceAPI,
-            GadgetAPI
+            GadgetAPI,
+            ChipsetAPI
         }}>
             {children}
         </APIContext.Provider>

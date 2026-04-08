@@ -19,7 +19,7 @@ const UnlockWrapper = ({el, _id, unlockedByDefault, unlockList, updateUnlockList
 
     useEffect(() => {
         setIsCurrentlyUnlocked(unlockList.includes(_id))
-    }, [unlockList]);
+    }, [unlockList, _id]);
 
     const setToUnlocked = () => {
         updateUnlockList([...unlockList, _id])
@@ -63,8 +63,6 @@ const UnlockWrapper = ({el, _id, unlockedByDefault, unlockList, updateUnlockList
                             )
                     }
                 </IconButtonWithTooltip>
-
-
             </Box>
         </Box>
     )

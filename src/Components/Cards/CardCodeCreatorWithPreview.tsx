@@ -100,7 +100,7 @@ const CardCodeCreatorWithPreview: React.FC = () => {
 
     const compendiumProps = {
         isExpanded: true,
-        canToggleExpand: true,
+        canToggleExpand: false,
         canFavorite: false,
         isAdd: true,
         showAdd: false,

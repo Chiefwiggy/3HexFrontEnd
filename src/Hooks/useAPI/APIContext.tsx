@@ -12,6 +12,7 @@ import ImageLibraryConnection from "../../Connections/ImageLibraryConnection";
 import CardRequestConnection from "../../Connections/CardRequestConnection";
 import SourceConnection from "../../Connections/SourceConnection";
 import GadgetConnection from "../../Connections/GadgetConnection";
+import ChipsetConnection from "../../Connections/ChipsetConnection";
 
 export const APIContext = createContext<IAPIContext>({
     CharacterAPI: new CharacterConnection("", () => {
@@ -48,6 +49,9 @@ export const APIContext = createContext<IAPIContext>({
         return {}
     }),
     GadgetAPI: new GadgetConnection("", () => {
+        return {}
+    }),
+    ChipsetAPI: new ChipsetConnection("", () => {
         return {}
     })
 })

@@ -41,11 +41,21 @@ export interface ISettingsData {
     showAttributeDescriptions: boolean
 }
 
+export interface IMiscUnlockData {
+    categoryId: string,
+    unlockIds: Array<string>
+}
+
 export interface ICharacterBaseData {
     characterName: string,
     characterLevel: number,
     isMainCharacter: boolean,
-    classes: Array<IClassData>,
+    classList: Array<string>,
+    affinities: IAffinities
+    fatelineIds: Array<string>,
+    fatelineUnlockIds: Array<string>,
+    miscUnlockTags: Array<IMiscUnlockData>,
+    classes: Array<IClassData_deprecated>,
     attributeBars: IAttributeBars,
     downtimeData: Array<IDowntimePlayerData>,
     fateline: IFatelineData|undefined,
@@ -163,7 +173,7 @@ export interface IAttributeBar {
     scaling: IModifiable
 }
 
-export interface IClassData {
+export interface IClassData_deprecated {
     className: string,
     affinities: IAffinities,
     classExpertises: Array<string>,
@@ -171,25 +181,38 @@ export interface IClassData {
     isPromoted: boolean
 }
 
+export interface IClassData {
+    className: string,
+    classExpertises: Array<string>,
+    classTier: number,
+    isPromoted: boolean
+}
+
 export interface IAffinities {
-    nimble: number,
+    finesse: number,
     infantry: number,
     guardian: number,
-    focus: number,
+    evocation: number,
     creation: number,
     alteration: number,
-    leadership: number,
+    command: number,
     supply: number,
-    summoning: number,
+    mentorship: number,
     swift: number,
     riding: number,
     adaptation: number,
     rune: number,
     sourcecraft: number,
     research: number,
+    animancy: number,
+    conjuration: number,
+    orchestration: number,
+    proxy: number,
+    firewall: number,
+    virus: number,
     transduction: number,
-    daemoncraft: number,
-    proxy: number
+    machinery: number,
+    crafting: number
 }
 
 
@@ -200,51 +223,63 @@ export interface IAffinitiesAndPath {
 }
 
 export interface IAffinitiesArray<T> {
-    nimble: Array<T>,
+    finesse: Array<T>,
     infantry: Array<T>,
     guardian: Array<T>,
-    focus: Array<T>,
+    evocation: Array<T>,
     creation: Array<T>,
     alteration: Array<T>,
-    leadership: Array<T>,
+    command: Array<T>,
     supply: Array<T>,
-    summoning: Array<T>,
+    mentorship: Array<T>,
     swift: Array<T>,
     riding: Array<T>,
     adaptation: Array<T>,
     rune: Array<T>,
     sourcecraft: Array<T>,
     research: Array<T>,
+    animancy: Array<T>,
+    conjuration: Array<T>,
+    orchestration: Array<T>,
+    proxy: Array<T>,
+    firewall: Array<T>,
+    virus: Array<T>,
     transduction: Array<T>,
-    daemoncraft: Array<T>,
-    proxy: Array<T>
+    machinery: Array<T>,
+    crafting: Array<T>
 }
 
 export interface IPathKeys {
     warrior: number,
     arcanist: number,
-    commander: number,
+    general: number,
     navigator: number,
     scholar: number,
-    hacker: number
+    summoner: number,
+    cipher: number,
+    engineer: number
 }
 
 export interface IPathArray<T> {
     warrior: Array<T>,
     arcanist: Array<T>,
-    commander: Array<T>,
+    general: Array<T>,
     navigator: Array<T>,
     scholar: Array<T>,
-    hacker: Array<T>
+    summoner: Array<T>,
+    cipher: Array<T>,
+    engineer: Array<T>
 }
 
 export interface IPathKeysPlusAny {
     warrior: number,
     arcanist: number,
-    commander: number,
+    general: number,
     navigator: number,
     scholar: number,
-    hacker: number
+    summoner: number,
+    cipher: number,
+    engineer: number,
     any: number
 }
 

@@ -35,12 +35,12 @@ const CreatorPage = ({}: ICreatorPageInput) => {
                     margin: 4
                 }}
             >
-                <CompendiumSelect text={"Cards"} linkTo={"cards"}/>
+                <CompendiumSelect text={"Cards & Gadgets"} linkTo={"cards"}/>
                 <CompendiumSelect text={"Sources"} linkTo={"sources"} />
-                <CompendiumSelect text={"Requests"} linkTo={"requests"} />
-                <CompendiumSelect text={"Consumables"} linkTo={"consumables"} disabled={true} />
+                <CompendiumSelect text={"Datachips & Packages"} linkTo={"chipsets"} disabled={false} />
                 <CompendiumSelect text={"Minions"} linkTo={"minions"} disabled={true} />
                 <CompendiumSelect text={"Fatelines"} linkTo={"fatelines"} disabled={true} />
+                <CompendiumSelect text={"Requests"} linkTo={"requests"} />
             </Box>
         </Box>
     )

@@ -2,7 +2,7 @@ import {AttributeBarType, DamageType} from "./CharacterSheet";
 import React, {SetStateAction} from "react";
 import {IAttributeBar, ICharacterBaseData, ICharacterStats, UStance} from "./ICharacterData";
 import {IAPIContext} from "../Hooks/useAPI/APIProvider";
-import {ICommonCardData, UDamageType} from "./ICardData";
+import {ICommonCardData, UDamageType, UWeaponType} from "./ICardData";
 import {IDefenseBreakdown} from "./IDefenses";
 import {ICardBuilderType} from "../Layouts/CardBuilder";
 import SpellBaseCard from "../Components/Cards/SpellBaseCard";
@@ -53,8 +53,14 @@ abstract class AbstractSheet {
 
 
     public getMaxHealth(): number {
-        return Math.floor((4 + this.getAbilityBonuses("maxHealth") +
+        let maxHealth = Math.floor((4 + this.getAbilityBonuses("maxHealth") +
             (this.getAbilityBonuses("maxHealthScaling")+2)*this.getStat("vitality") + (this.getAbilityBonuses("enduranceMaxHealthScaling")*this.getStat("endurance"))) * (this.getAbilityBonuses("maxHealthMultiplier") || 1));
+
+        if (this.isUnlocked("technikalHardening")) {
+            maxHealth += this.getMaxTechnik(true)
+        }
+
+        return maxHealth
     }
     public getMaxStamina() {
         let maxStamina = Math.floor(10 + this.getAbilityBonuses("maxStamina") +
@@ -67,6 +73,10 @@ abstract class AbstractSheet {
         return maxStamina
     }
     public getMaxTether() {
+        if (this.isUnlocked("orderFocused")) {
+            return 0
+        }
+
         if (this.isUnlocked("patronMagic")) {
             return this.getAbilityBonuses("maxTether") + (this.getAbilityBonuses("maxTetherScaling"))*this.getStat("mind") + (3*this.getStat("authority")) + (3*this.getStat("presence"));
         }
@@ -489,25 +499,25 @@ abstract class AbstractSheet {
         return ret;
     }
 
-    public getHitBonus() {
+    public getHitBonus(weaponType: UWeaponType) {
         return 0;
     }
-    public getCritBonus() {
+    public getCritBonus(weaponType: UWeaponType) {
         return 0;
     }
 
     public getAbilityBonuses(bonusType: string): number {
         return 0;
     }
-    public abstract getStat(statName: keyof ICharacterStats | UMinionStat | "command"  ): number;
+    public abstract getStat(statName: keyof ICharacterStats | UMinionStat | "command" | "none" ): number;
     public getCritStat(): number { return 0; }
     public getHitStat(specialLogicTags: Array<string>): number { return 0; }
     public abstract getPowerStat(specialLogicTags: Array<string>): number
-    public applyRangedModifiers(minRange: number, maxRange: number, attackType: "weapon" | "spell" | "hack") {
+    public applyRangedModifiers(minRange: number, maxRange: number, attackType: "weapon" | "spell" | "hack", weaponType: UWeaponType | "none" = "none") {
         const isRanged = maxRange > 0;
         const rangeTag = isRanged ? "ranged" : "melee"
-        const newMaxRange = maxRange + this.getAbilityBonuses(`${rangeTag}${capitalize(attackType)}MaxRangeMod`) + this.getAbilityBonuses(`${attackType}MaxRangeMod`)
-        const newMinRange = minRange + this.getAbilityBonuses(`${rangeTag}${capitalize(attackType)}MinRangeMod`) + this.getAbilityBonuses(`${attackType}MinRangeMod`)
+        const newMaxRange = maxRange + this.getAbilityBonuses(`${rangeTag}${capitalize(attackType)}MaxRangeMod`) + this.getAbilityBonuses(`${attackType}MaxRangeMod`) + this.getAbilityBonuses(`${weaponType}MaxRangeMod`)
+        const newMinRange = minRange + this.getAbilityBonuses(`${rangeTag}${capitalize(attackType)}MinRangeMod`) + this.getAbilityBonuses(`${attackType}MinRangeMod`) + this.getAbilityBonuses(`${weaponType}MinRangeMod`)
         return [newMinRange, newMaxRange];
     }
     public abstract getSpellSet(): number
@@ -852,7 +862,7 @@ abstract class AbstractSheet {
         return 0;
     }
 
-    public getBonusWeaponPower(specialLogicTags: Array<string>) {
+    public getBonusWeaponPower(specialLogicTags: Array<string>, weaponType: UWeaponType) {
         return 0;
     }
 

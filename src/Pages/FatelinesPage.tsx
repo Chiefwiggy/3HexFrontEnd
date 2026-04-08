@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Box, Tab, Tabs} from "@mui/material";
 import usePreloadedContent from "../Hooks/usePreloadedContent/usePreloadedContent";
-import FatelineTab from '../Components/Fatelines/FatelineTab';
+import FatelineTab_deprecated from '../Components/Fatelines/FatelineTab_deprecated';
 import {IFatelineFullData} from "../Data/IFatelineData";
 import {useSearchParams} from "react-router-dom";
 import {Helmet} from "react-helmet";
@@ -85,7 +85,7 @@ const FatelinesPage = ({
             <Box>
                 {
                     currentFateline ?
-                        <FatelineTab fateline={currentFateline} />
+                        <FatelineTab_deprecated fateline={currentFateline} />
                         :
                         <></>
                 }

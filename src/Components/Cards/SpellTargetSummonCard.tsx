@@ -28,7 +28,7 @@ interface ISpellTargetSummonCardInput {
     isAdd?: boolean,
     showAdd?: boolean,
     canFavorite?: boolean,
-    showPrerequisites?: boolean, isDraft?: boolean
+    showPrerequisites?: boolean, isDraft?: boolean, meetsPrerequisites?: boolean
 }
 
 const SpellTargetSummonCard = ({
@@ -39,12 +39,12 @@ const SpellTargetSummonCard = ({
     isAdd = true,
     showAdd = true,
     canFavorite = true,
-    showPrerequisites=false, isDraft=false
+    showPrerequisites=false, isDraft=false, meetsPrerequisites=false
 }: ISpellTargetSummonCardInput) => {
 
 
     return cardData.summonData ? (
-        <GenericCardLayout isDraft={isDraft}  cardData={cardData} sendBack={sendBack} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} canFavorite={canFavorite} showPrerequisites={showPrerequisites} showAdd={showAdd}>
+        <GenericCardLayout isDraft={isDraft}  cardData={cardData} sendBack={sendBack} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} canFavorite={canFavorite} meetsPrerequisites={meetsPrerequisites} showPrerequisites={showPrerequisites} showAdd={showAdd}>
             <Box>
                 <Box
                     aria-description={"header"}

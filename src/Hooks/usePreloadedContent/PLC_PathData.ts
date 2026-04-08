@@ -13,18 +13,22 @@ class PLC_PathData {
         this.pathCards = {
             warrior: [],
             arcanist: [],
-            commander: [],
+            general: [],
             navigator: [],
             scholar: [],
-            hacker: []
+            summoner: [],
+            cipher: [],
+            engineer: []
         }
         this.pathAbilities = {
             warrior: [],
             arcanist: [],
-            commander: [],
+            general: [],
             navigator: [],
             scholar: [],
-            hacker: []
+            summoner: [],
+            cipher: [],
+            engineer: []
         }
     }
 
@@ -87,7 +91,7 @@ class PLC_PathData {
 
     }
 
-    public getPathCardsByLevel(pathName: keyof IPathArray<ICommonCardData>) {
+    public getPathCardsByLevel(pathName: keyof IPathArray<ICommonCardData> | keyof IPathKeys): Map<number, Array<ICommonCardData>> {
         const list = this.getPathCards(pathName);
         const map = new Map<number, Array<ICommonCardData>>
 

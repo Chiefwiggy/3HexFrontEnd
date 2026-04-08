@@ -50,13 +50,16 @@ const WeaponCardBuilderView = ({closeSelf, isOffhand = false}: IWeaponCardBuilde
 
     const handleReceiveSaveCards = async(sentCards: Array<ICommonCardData|null>, spellCopy: React.ReactNode) => {
         const cards: Array<ICommonCardData> = sentCards.filter(c => c !== null && c !== undefined) as ICommonCardData[];
-        const base = cards.find(e => e.cardSubtype == "base") as IWeaponBaseData
-        const rest = cards.filter(e => e.cardSubtype != "base");
+        const base = cards.find(e => e.cardSubtype == "base" || e.cardSubtype == "gadget") as IWeaponBaseData
+        const rest = cards.filter(e => e.cardSubtype != "base" && e.cardSubtype != "gadget");
         console.log(base)
         console.log(rest)
         if (base && rest && currentSheet) {
             const weaponCalcData: ICalculatedWeapon = {
-                weaponBaseData: base.tempEnchantValue ?? (base as unknown as IScaledWeaponBaseData).enchantmentData,
+                weaponBaseData: {
+                    baseId: base._id,
+                    enchantmentLevel: base.tempEnchantValue?.enchantmentLevel ?? (base as unknown as IScaledWeaponBaseData).enchantmentData.enchantmentLevel
+                },
                 weaponCardsIds: rest.map(e => e._id)
             };
             setStandbyCards(weaponCalcData);
@@ -68,7 +71,8 @@ const WeaponCardBuilderView = ({closeSelf, isOffhand = false}: IWeaponCardBuilde
     const handleReceiveEquipCards = async(sentCards :Array<ICommonCardData|null>) => {
         const cards: Array<ICommonCardData> = sentCards.filter(c => c !== null && c !== undefined) as ICommonCardData[];
         const base = cards.find(e => e.cardSubtype == "base" || e.cardSubtype == "gadget");
-        const rest = cards.filter(e => e.cardSubtype != "base");
+        const rest = cards.filter(e => e.cardSubtype != "base" && e.cardSubtype != "gadget");
+        console.log("RAKE")
         if (base && rest && currentSheet) {
             const weaponCalcData: ICalculatedWeapon = {
                 // weaponBaseId: base._id,

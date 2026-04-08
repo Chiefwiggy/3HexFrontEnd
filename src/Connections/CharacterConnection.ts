@@ -9,7 +9,7 @@ import {
     IEnchantmentData,
     IPreparedSource,
     IConsumablePlayerData,
-    ISettingsData, ICalculatedHack, ICurrencyData, IGadgetCharacterData
+    ISettingsData, ICalculatedHack, ICurrencyData, IGadgetCharacterData, IAffinities
 } from "../Data/ICharacterData";
 import Axios, { AxiosRequestConfig } from 'axios'
 import {IBaseArmorData} from "../Data/IArmorData";
@@ -165,6 +165,11 @@ class CharacterConnection {
         await Axios.put(this.GetRouteURL(`update/${charID}`), {
             characterStats: newData.characterStats,
             skillPoints: newData.skillPoints,
+            classList: newData.classList,
+            affinities: newData.affinities,
+            fatelineIds: newData.fatelineIds,
+            fatelineUnlockIds: newData.fatelineUnlockIds,
+            miscUnlockTags: newData.miscUnlockTags,
             classes: newData.classes,
             fateline: newData.fateline,
             characterLevel: newData.characterLevel,

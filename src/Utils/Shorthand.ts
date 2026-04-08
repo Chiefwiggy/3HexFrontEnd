@@ -1,9 +1,11 @@
 import {UDamageType, UWeaponClass} from "../Data/ICardData";
 import AbstractSheet from "../Data/AbstractSheet";
-import {ICharacterBaseData, IClassData} from "../Data/ICharacterData";
+import {ICharacterBaseData, IClassData_deprecated} from "../Data/ICharacterData";
 import {UArmorClass} from "../Data/IArmorData";
 import {IMinionData, IMinionTemplateData} from "../Data/IMinionData";
 import CharacterSheet from "../Data/CharacterSheet";
+import PLC_ClassData from "../Hooks/usePreloadedContent/PLC_ClassData";
+import {capitalize} from "@mui/material";
 
 
 export type UStat = "might" | "agility" | "skill" | "awareness" | "vitality" | "knowledge" | "mind" | "presence" | "authority" | "endurance"
@@ -120,7 +122,7 @@ export const getWeaponAffinityRequirement = (weaponClass: UWeaponClass, enchantm
     }
 
     if (isCreature) {
-        retVal += `Commander ${enchantmentLevelMod}`
+        retVal += `General ${enchantmentLevelMod}`
     } else if (damageType == "magical") {
         retVal += `Arcanist ${enchantmentLevelMod}`
     } else {
@@ -157,7 +159,7 @@ export const getTierFromName = (tierName: string) => {
         case 'master':
             return 4;
         default:
-            return 0;
+            return 1;
     }
 }
 
@@ -236,7 +238,7 @@ export function romanize(num: number) {
     return roman;
 }
 
-export function getClassesString(classes: Array<IClassData>) {
+export function getClassesString(classes: Array<IClassData_deprecated>) {
         const highestTier = classes.reduce((pv, cv) => {
             if (cv.classTier > pv) {
                 return cv.classTier;
@@ -253,7 +255,58 @@ export function getClassesString(classes: Array<IClassData>) {
         }).map(e => e.isPromoted ? e.className + "+" : e.className).join(" • ")
 }
 
-export type UHackType = "function" | "protocol" | "io" | "else" | "util"
+
+export function getClassesString_new(ClassData: PLC_ClassData, classes: Array<string>) {
+    const names = ClassData.getAllClassNamesByTierFiltered(classes);
+    if (names.tier4.length > 0) {
+        return getClassesStringHelper(names.tier4)
+    } else if (names.tier3.length > 0) {
+        return getClassesStringHelper(names.tier3)
+    } else if (names.tier2.length > 0) {
+        return getClassesStringHelper(names.tier2)
+    } else if (names.tier1.length > 0) {
+        return getClassesStringHelper(names.tier1)
+    } else {
+        return "Unclassed"
+    }
+}
+
+export function getClassesStringHelper(names: Array<string>) {
+    // 1. Transform suffixes and capitalize
+    const transformed = names.map(name => {
+        const cleanName = name.endsWith("_promoted")
+            ? name.replace("_promoted", "+")
+            : name;
+        return cleanName.charAt(0).toUpperCase() + cleanName.slice(1);
+    });
+
+    // 2. Remove duplicates (e.g., if Rogue and Rogue+ both exist, we need to filter)
+    // We prioritize the string with '+' if two strings have the same base name
+    const uniqueNames = Array.from(new Set(transformed)).filter((name, index, self) => {
+        if (!name.endsWith("+")) {
+            // If current is "Rogue", but "Rogue+" exists in the array, discard "Rogue"
+            return !self.includes(name + "+");
+        }
+        return true;
+    });
+
+    // 3. Sort and Join
+    return uniqueNames
+        .sort((a, b) => {
+            const aIsPromoted = a.endsWith("+");
+            const bIsPromoted = b.endsWith("+");
+
+            // Priority 1: Promoted classes first
+            if (aIsPromoted && !bIsPromoted) return -1;
+            if (!aIsPromoted && bIsPromoted) return 1;
+
+            // Priority 2: Alphabetical
+            return a.localeCompare(b);
+        })
+        .join(" • ");
+}
+
+export type UHackType = "function" | "protocol" | "io" | "util"
 
 export function getHackShorthand(input: UHackType) {
     switch(input) {
@@ -282,4 +335,37 @@ export function getAccessShorthand(input: number): string {
             break;
     }
     return accessString;
+}
+
+export function getFatelineNameFromId(fatelineId: string) {
+    switch (fatelineId) {
+        case 'fool':
+        case 'magician':
+        case 'empress':
+        case 'emperor':
+        case 'hierophant':
+        case 'lovers':
+        case 'chariot':
+        case 'hermit':
+        case 'devil':
+        case 'tower':
+        case 'star':
+        case 'moon':
+        case 'sun':
+        case 'world':
+        case 'automaton':
+            return `The ${capitalize(fatelineId)}`;
+        case 'strength':
+        case 'fortune':
+        case 'justice':
+        case 'death':
+        case 'temperance':
+        case 'judgement':
+            return capitalize(fatelineId)
+        case 'high_priestess':
+        case 'hanged_man':
+            return `The ${capitalize(fatelineId.split("_").join(" "))}`;
+        default:
+            return 'None'
+    }
 }

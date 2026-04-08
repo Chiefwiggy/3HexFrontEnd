@@ -13,7 +13,8 @@ interface ICardListScrollableInput {
     isAdd?: boolean,
     canFavorite?: boolean,
     gridTemplate?: string
-    skeletonMax?: number
+    skeletonMax?: number,
+    meetsPrerequisites?: boolean
 }
 
 const CardListScrollable = ({
@@ -25,7 +26,8 @@ const CardListScrollable = ({
     isAdd = true,
     canFavorite = true,
     gridTemplate = "repeat(2, 1fr)",
-    skeletonMax = 10
+    skeletonMax = 10,
+    meetsPrerequisites = false
 }: ICardListScrollableInput) => {
 
 
@@ -56,7 +58,7 @@ const CardListScrollable = ({
                     maxHeight: '764px'
                 }}
             >
-                <CardList cardList={cardList} onClickButton={onClickButton} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} canFavorite={canFavorite}/>
+                <CardList cardList={cardList} onClickButton={onClickButton} isExpanded={isExpanded} canToggleExpand={canToggleExpand} isAdd={isAdd} canFavorite={canFavorite} meetsPrerequisites={meetsPrerequisites}/>
                 {
                     Array.from({length: skeletonMax - cardList.length}, (_, index) => {
                        return <Skeleton variant="rounded" width={"16vw"} height={"132px"} sx={{minWidth: "264px"}} key={index}/>

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Box, capitalize} from "@mui/material";
-import NumberSpinner from "../../Utils/NumberSpinner";
+import DoubleNumberSpinner from "../Generic/DoubleNumberSpinner";
 import useCharacter from "../../Hooks/useCharacter/useCharacter";
 import {ICurrencyData} from "../../Data/ICharacterData";
 
@@ -27,7 +27,7 @@ const CurrencySpinner = ({currencyData, onChange}: ICurrencySpinnerInput) => {
 
     return (
         <Box>
-            <NumberSpinner
+            <DoubleNumberSpinner
                 label={capitalize(currencyData.currencyStore) + " - " + capitalize(currencyData.currencyType)}
                 min={0}
                 size={"small"}

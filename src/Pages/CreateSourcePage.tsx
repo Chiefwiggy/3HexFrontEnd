@@ -171,7 +171,7 @@ const CreateSourcePage = () => {
             sx={{
                 display: "grid",
                 gridTemplateColumns: "2fr 1fr",
-                height: "100vh",
+                height: "calc(100vh - 64px)",
                 overflow: "hidden"
             }}
         >

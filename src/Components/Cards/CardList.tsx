@@ -36,6 +36,7 @@ interface ICardListInput {
     canToggleExpand?: boolean,
     isAdd?: boolean,
     canFavorite?: boolean,
+    meetsPrerequisites?: boolean
 }
 
 const CardList = ({
@@ -44,7 +45,8 @@ const CardList = ({
   isExpanded = false,
   canToggleExpand = true,
   isAdd = true,
-  canFavorite = true
+  canFavorite = true,
+    meetsPrerequisites = false
 }: ICardListInput) => {
 
 
@@ -59,7 +61,7 @@ const CardList = ({
                                     <Grid item key={val.cardName}>
                                         <SpellBaseCard cardData={val as ISpellBaseCardData} sendBack={onClickButton}
                                                        isExpanded={isExpanded} canToggleExpand={canToggleExpand}
-                                                       isAdd={isAdd} canFavorite={canFavorite}/>
+                                                       isAdd={isAdd} canFavorite={canFavorite} meetsPrerequisites={meetsPrerequisites}/>
                                     </Grid>
                                 )
                             case 'target':
@@ -67,7 +69,7 @@ const CardList = ({
                                     <Grid item key={val.cardName}>
                                         <SpellTargetCard cardData={val as ISpellTargetCardData} sendBack={onClickButton}
                                                          isExpanded={isExpanded} canToggleExpand={canToggleExpand}
-                                                         isAdd={isAdd} canFavorite={canFavorite}/>
+                                                         isAdd={isAdd} canFavorite={canFavorite} meetsPrerequisites={meetsPrerequisites}/>
                                     </Grid>
                                 )
                             case 'summon':
@@ -75,7 +77,7 @@ const CardList = ({
                                     <Grid item key={val.cardName}>
                                         <SpellTargetSummonCard cardData={val as ISpellTargetCardData} sendBack={onClickButton}
                                                          isExpanded={isExpanded} canToggleExpand={canToggleExpand}
-                                                         isAdd={isAdd} canFavorite={canFavorite}/>
+                                                         isAdd={isAdd} canFavorite={canFavorite} meetsPrerequisites={meetsPrerequisites}/>
                                     </Grid>
                                 )
                             case 'skill':
@@ -85,7 +87,7 @@ const CardList = ({
                                         <SpellModifierCard cardData={val as ISpellModifierCardData}
                                                            sendBack={onClickButton}
                                                            isExpanded={isExpanded} canToggleExpand={canToggleExpand}
-                                                           isAdd={isAdd} canFavorite={canFavorite}/>
+                                                           isAdd={isAdd} canFavorite={canFavorite} meetsPrerequisites={meetsPrerequisites}/>
                                     </Grid>
                                 )
 
@@ -98,7 +100,7 @@ const CardList = ({
                                     <Grid item key={val.cardName}>
                                         <WeaponBaseCard cardData={val as IWeaponBaseData} enchantmentData={(val as IWeaponBaseData).tempEnchantValue ?? {enchantmentLevel: 0, baseId: ""}} sendBack={onClickButton}
                                                         isExpanded={isExpanded} canToggleExpand={canToggleExpand}
-                                                        isAdd={isAdd} canFavorite={canFavorite}/>
+                                                        isAdd={isAdd} canFavorite={canFavorite} meetsPrerequisites={meetsPrerequisites}/>
                                     </Grid>
                                 )
                             default:
@@ -106,7 +108,7 @@ const CardList = ({
                                     <Grid item key={val.cardName}>
                                         <WeaponModCard cardData={val as IWeaponCommonData} sendBack={onClickButton}
                                                        isExpanded={isExpanded} canToggleExpand={canToggleExpand}
-                                                       isAdd={isAdd} canFavorite={canFavorite}/>
+                                                       isAdd={isAdd} canFavorite={canFavorite} meetsPrerequisites={meetsPrerequisites}/>
                                     </Grid>
                                 )
 
@@ -119,7 +121,7 @@ const CardList = ({
                                     <Grid item key={val.cardName}>
                                         <HackBaseCard cardData={val as IHackBaseCardData} sendBack={onClickButton}
                                                        isExpanded={isExpanded} canToggleExpand={canToggleExpand}
-                                                       isAdd={isAdd} canFavorite={canFavorite}/>
+                                                       isAdd={isAdd} canFavorite={canFavorite} meetsPrerequisites={meetsPrerequisites}/>
                                     </Grid>
                                 )
                             case 'io':
@@ -127,7 +129,7 @@ const CardList = ({
                                     <Grid item key={val.cardName}>
                                         <HackIOCard cardData={val as IHackIOCardData} sendBack={onClickButton}
                                                        isExpanded={isExpanded} canToggleExpand={canToggleExpand}
-                                                       isAdd={isAdd} canFavorite={canFavorite}/>
+                                                       isAdd={isAdd} canFavorite={canFavorite} meetsPrerequisites={meetsPrerequisites}/>
                                     </Grid>
                                 )
                             case 'protocol':
@@ -135,7 +137,7 @@ const CardList = ({
                                     <Grid item key={val.cardName}>
                                         <HackProtocolCard cardData={val as IHackProtocolCardData} sendBack={onClickButton}
                                                        isExpanded={isExpanded} canToggleExpand={canToggleExpand}
-                                                       isAdd={isAdd} canFavorite={canFavorite}/>
+                                                       isAdd={isAdd} canFavorite={canFavorite} meetsPrerequisites={meetsPrerequisites}/>
                                     </Grid>
                                 )
                             default:
@@ -143,7 +145,7 @@ const CardList = ({
                                     <Grid item key={val.cardName}>
                                         <HackModifierCard cardData={val as IHackModifierCardData} sendBack={onClickButton}
                                                        isExpanded={isExpanded} canToggleExpand={canToggleExpand}
-                                                       isAdd={isAdd} canFavorite={canFavorite}/>
+                                                       isAdd={isAdd} canFavorite={canFavorite} meetsPrerequisites={meetsPrerequisites}/>
                                     </Grid>
                                 )
                         }
@@ -153,7 +155,7 @@ const CardList = ({
                                 <CommanderCard cardData={val as ICommanderCardData}
                                                    sendBack={onClickButton}
                                                    isExpanded={isExpanded} canToggleExpand={canToggleExpand}
-                                                   isAdd={isAdd} canFavorite={canFavorite}/>
+                                                   isAdd={isAdd} canFavorite={canFavorite} meetsPrerequisites={meetsPrerequisites}/>
                             </Grid>
                         )
                     }

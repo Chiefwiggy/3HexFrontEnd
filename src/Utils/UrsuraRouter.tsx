@@ -32,6 +32,7 @@ import DatachipCompendium from "../Pages/DatachipCompendium";
 import GadgetCompendium from "../Pages/GadgetCompendium";
 import ConditionCompendium from "../Pages/ConditionCompendium";
 import RulesPage from "../Pages/RulesPage";
+import CreateChipsetPage from "../Pages/CreateChipsetPage";
 
 
 
@@ -105,6 +106,10 @@ const UrsuraRouter = createBrowserRouter([
                     {
                         path: "requests",
                         element: <AdminRoute element={<CardRequestReviewPage />}/>
+                    },
+                    {
+                        path: "chipsets",
+                        element: <AdminRoute element={<CreateChipsetPage />}/>
                     }
                 ]
             },

@@ -48,7 +48,7 @@ export const getStatDescription = (stat: UStat) => {
                 "Mind is the stat which primarily affects your access to greater reserves of magic, both Tether and Orders, and slightly affects your mDEF.",
                 "Tether += 5",
                 "Tether Refresh += [1 * Armor Modifier]",
-                "Every 5 Mind = 1 Order Charge",
+                "Every 4 Mind = 1 Order Charge",
                 "mDEF += 0.5"
             ]
         case "presence":

@@ -10,7 +10,7 @@ interface IFatelineDetailsInput {
     reversed: boolean
 }
 
-const FatelineDetails = ({fateline, reversed}: IFatelineDetailsInput) => {
+const FatelineDetails_deprecated = ({fateline, reversed}: IFatelineDetailsInput) => {
 
     const [fatelineData, setFatelineData] = useState(fateline.upright);
 
@@ -79,4 +79,4 @@ const FatelineDetails = ({fateline, reversed}: IFatelineDetailsInput) => {
     )
 }
 
-export default FatelineDetails
+export default FatelineDetails_deprecated

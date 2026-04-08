@@ -2,7 +2,7 @@ import {
     IAffinities, IPathKeys,
     ICalculatedSpell,
     ICalculatedWeapon,
-    ICharacterBaseData, ICharacterStats, IClassData, IPreparedCard, IPreparedSource,
+    ICharacterBaseData, ICharacterStats, IClassData_deprecated, IPreparedCard, IPreparedSource,
     ISkillPointObject,
     UStance, ICalculatedHack, ICurrencyData, IGadgetCharacterData
 } from "./ICharacterData";
@@ -16,7 +16,7 @@ import {
     ISpellModifierCardData,
     ISpellTargetCardData, IWeaponBaseData,
     UAffinity,
-    UCharacterStat, UDamageSubtype, UDamageType, UWeaponClass, VDamageSubtypes
+    UCharacterStat, UDamageSubtype, UDamageType, UWeaponClass, UWeaponType, VDamageSubtypes
 } from "./ICardData";
 import {IAPIContext} from "../Hooks/useAPI/APIProvider";
 import {IArmor, IShield} from "./IArmorData";
@@ -56,7 +56,7 @@ export type DamageType = "physical" | "magical" | "raw" | "resistant"
 
 
 
-interface IAllCardsData {
+export interface IAllCardsData {
     spells: ISpellCardsData,
     weapons: IWeaponCardsData,
     hacks: IHackCardsData
@@ -97,6 +97,7 @@ class CharacterSheet extends AbstractSheet {
     public freePreparedCards: IAllCardsData | null = null;
     public commanderCards: Array<ICommanderCardData> = [];
     public minionData: Array<MinionSheet> = [];
+    public allCardsIDList: Array<string>
 
     private baseExpertiseDice = 1;
     private expertiseDiceValues: Record<string, number> = {};
@@ -188,12 +189,24 @@ class CharacterSheet extends AbstractSheet {
         this.manualCharPing()
     }
 
-    public getHitBonus(): number {
-        return this.data.bonuses?.critBonus ?? 0;
+    public getHitBonus(weaponType: UWeaponType): number {
+        let hitFinal = 0
+
+        hitFinal += this.getAbilityBonuses(`${weaponType}Hit`)
+
+        return hitFinal
     }
 
-    public getCritBonus(): number {
-        return this.data.bonuses?.hitBonus ?? 0;
+    public getCritBonus(weaponType: UWeaponType): number {
+        let critFinal = 0
+
+        critFinal += this.getAbilityBonuses(`${weaponType}Crit`)
+
+        return critFinal
+    }
+
+    public getSkillRequirementReduction(weaponType: UWeaponType): number {
+        return this.getAbilityBonuses("weaponSkillRequirements") + this.getAbilityBonuses(`${weaponType}SkillRequirements`)
     }
 
     public getCumulativeCommanderCard = (): ICommanderCardData => {
@@ -224,7 +237,10 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getMaxOrders(): number {
-        return 1 + this.getAbilityBonuses("maxOrders") + Math.floor(this.getStat("mind") / 5)
+        if (this.isUnlocked("orderFocused")) {
+            return 1 + this.getAbilityBonuses("maxOrders") + Math.floor(this.getStat("mind") / 2)
+        }
+        return 1 + this.getAbilityBonuses("maxOrders") + Math.floor(this.getStat("mind") / 4)
     }
 
     public getPrimaryDatachip = () => {
@@ -240,7 +256,7 @@ class CharacterSheet extends AbstractSheet {
     }
 
     public getMaxTechnik(ignoreOverride = false): number {
-        if (!ignoreOverride && this.isUnlocked("powerDiverter")) {
+        if (!ignoreOverride && (this.isUnlocked("powerDiverter") || this.isUnlocked("technikalHardening"))) {
             return 0;
         }
         const pdc = this.getPrimaryDatachip()
@@ -449,8 +465,11 @@ class CharacterSheet extends AbstractSheet {
         return finalRet;
     }
 
-    public getBonusWeaponPower(specialLogicTags: Array<string>): number {
+    public getBonusWeaponPower(specialLogicTags: Array<string>, weaponType: UWeaponType): number {
         let finalRet = 0;
+
+        finalRet += this.getAbilityBonuses(`${weaponType}Power`)
+
         if (specialLogicTags.includes("powerPlusCommanderCardsEquipped")) {
             finalRet += this.getPreparedCommanderCards().length;
         }
@@ -537,6 +556,24 @@ class CharacterSheet extends AbstractSheet {
 
     public getLevel = () => {
         return this.data.characterLevel;
+    }
+
+    public getMaxFatelineUnlocks = () => {
+        return 1 + this.getAbilityBonuses("fatelineUnlocks")
+    }
+
+    public getMaxWeaponSpecializations = () => {
+        if (this.currentPath.warrior >= 2) {
+            return 1 + this.getAbilityBonuses("weaponSpecializations");
+        }
+        return 0;
+    }
+
+    public getMaxFavoredTerrain = () => {
+        if (this.currentPath.navigator >= 2) {
+            return 1;
+        }
+        return 0;
     }
 
     public getDowntimeRanks = () => {
@@ -643,6 +680,7 @@ class CharacterSheet extends AbstractSheet {
 
     constructor(charData: ICharacterBaseData, api: IAPIContext, sendReady: React.Dispatch<React.SetStateAction<boolean>>, ping: React.Dispatch<React.SetStateAction<boolean>>, hping: React.Dispatch<React.SetStateAction<boolean>>, sping: React.Dispatch<SetStateAction<boolean>>, preloadedData: IPreloadedContentContextInput) {
         super(api, ping, hping, sping);
+        this.allCardsIDList = [];
         this.sendReadyFn = sendReady;
         sendReady(false);
         this.data = charData;
@@ -650,32 +688,40 @@ class CharacterSheet extends AbstractSheet {
         this.API = api;
         this.currentAttack = null;
         this.currentAffinities = {
-            nimble: 0,
+            finesse: 0,
             infantry: 0,
             guardian: 0,
-            focus: 0,
+            evocation: 0,
             creation: 0,
             alteration: 0,
-            leadership: 0,
+            command: 0,
             supply: 0,
-            summoning: 0,
+            mentorship: 0,
             swift: 0,
             riding: 0,
             adaptation: 0,
             rune: 0,
             sourcecraft: 0,
             research: 0,
-            transduction: 0,
-            daemoncraft: 0,
+            animancy: 0,
+            conjuration: 0,
+            orchestration: 0,
             proxy: 0,
+            firewall: 0,
+            virus: 0,
+            transduction: 0,
+            machinery: 0,
+            crafting: 0
         }
         this.currentPath = {
             warrior: 0,
             arcanist: 0,
-            commander: 0,
+            general: 0,
             navigator: 0,
             scholar: 0,
-            hacker: 0
+            summoner: 0,
+            cipher: 0,
+            engineer: 0
         }
         this._setAffinities()
         this.preloadedData = preloadedData;
@@ -854,6 +900,12 @@ class CharacterSheet extends AbstractSheet {
             ) as unknown as IHackCardsData;
             this.allCards.hacks.bases = Array.from(new Map(this.allCards.hacks.bases.map(item => [item._id, item])).values());
             this.allButDefaultCards!.hacks.bases = Array.from(new Map(this.allButDefaultCards!.hacks.bases.map(item => [item._id, item])).values());
+
+            this.allCardsIDList = Object.values(this.allCards)
+                .flatMap(category =>
+                    Object.values(category).flat() as ICommonCardData[]
+                )
+                .map(e => e._id);
         } catch (error) {
             console.error('Error setting all cards:', error);
         }
@@ -942,44 +994,18 @@ class CharacterSheet extends AbstractSheet {
     }
 
     private _setAffinities() {
-        this.currentAffinities = {
-            nimble: 0,
-            infantry: 0,
-            guardian: 0,
-            focus: 0,
-            creation: 0,
-            alteration: 0,
-            leadership: 0,
-            supply: 0,
-            summoning: 0,
-            swift: 0,
-            riding: 0,
-            adaptation: 0,
-            rune: 0,
-            sourcecraft: 0,
-            research: 0,
-            transduction: 0,
-            daemoncraft: 0,
-            proxy: 0,
-        }
-        this.data.classes.forEach((val) => {
-            Object.entries(val.affinities).forEach(([key, value]) => {
-                this.currentAffinities[key as keyof IAffinities] += value;
-            })
-        })
-        if (this.data.fateline) {
-            Object.entries(this.data.fateline.affinities).forEach(([key, value]) => {
-                this.currentAffinities[key as keyof IAffinities] += value;
-            })
-        }
+        this.currentAffinities = this.data.affinities
 
         this.currentPath = {
-            warrior: this.currentAffinities.nimble + this.currentAffinities.infantry + this.currentAffinities.guardian,
-            arcanist: this.currentAffinities.focus + this.currentAffinities.creation + this.currentAffinities.alteration,
-            commander: this.currentAffinities.leadership + this.currentAffinities.supply + this.currentAffinities.summoning,
+            warrior: this.currentAffinities.finesse + this.currentAffinities.infantry + this.currentAffinities.guardian,
+            arcanist: this.currentAffinities.evocation + this.currentAffinities.creation + this.currentAffinities.alteration,
+            general: this.currentAffinities.command + this.currentAffinities.supply + this.currentAffinities.mentorship,
             navigator: this.currentAffinities.swift + this.currentAffinities.riding + this.currentAffinities.adaptation,
             scholar: this.currentAffinities.rune + this.currentAffinities.research + this.currentAffinities.sourcecraft,
-            hacker: this.currentAffinities.daemoncraft + this.currentAffinities.transduction + this.currentAffinities.proxy
+            summoner: this.currentAffinities.animancy + this.currentAffinities.conjuration + this.currentAffinities.orchestration,
+            cipher: this.currentAffinities.proxy + this.currentAffinities.firewall + this.currentAffinities.virus,
+            engineer: this.currentAffinities.transduction + this.currentAffinities.machinery + this.currentAffinities.crafting
+
         }
     }
 
@@ -1087,11 +1113,11 @@ class CharacterSheet extends AbstractSheet {
 
     public getWeaponClassAffinity(weaponClass: UWeaponClass, damageType: UDamageType) {
         if (damageType == "magical") {
-            return this.currentAffinities.focus;
+            return this.currentAffinities.evocation;
         }
         switch (weaponClass){
             case "light":
-                return this.currentAffinities.nimble;
+                return this.currentAffinities.finesse;
             case "standard":
                 return this.currentAffinities.infantry;
             case "heavy":
@@ -1201,7 +1227,9 @@ class CharacterSheet extends AbstractSheet {
         return 3 + this.getAbilityBonuses("actionPoints");
     }
 
-    public getStat(stat: UStat): number {
+    public getStat(stat: UStat | "none"): number {
+        if (stat == "none")
+            return 0
         return StatChain(this.data.characterStats[stat].value, [this.data.characterStats[stat].modifiers])
     }
 
@@ -1305,6 +1333,16 @@ class CharacterSheet extends AbstractSheet {
         console.log(this.data);
         await this.API.CharacterAPI.UpdateCharacter(this.data._id, this.data);
         this.sendReadyFn(false);
+        await this.initializeAsync();
+        this._setAffinities()
+        this.setExpertiseDice()
+        this._ping();
+    }
+
+    public async SaveCharacterSheetv2() {
+        this.dataBackup = JSON.parse(JSON.stringify(this.data));
+        await this.API.CharacterAPI.UpdateCharacter(this.data._id, this.data);
+        // this.sendReadyFn(false);
         await this.initializeAsync();
         this._setAffinities()
         this.setExpertiseDice()

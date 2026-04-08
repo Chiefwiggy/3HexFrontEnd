@@ -49,6 +49,11 @@ export const GetPrerequisiteString = (prerequisites: Array<IPrerequisite>) => {
                 return `Racial Mastery`
             }
         }
+        else if (prereq.prerequisiteType === "misc_category") {
+            return `${prereq.skill.split("_").map(e => capitalize(e)).join(" ")} Tier ${prereq.level}`
+        } else if (prereq.prerequisiteType === "misc") {
+            return null
+        }
         return `${capitalize(prereq.skill)} ${prereq.level}`
     }).filter(e => e !== null).join(", ");
     return str;

@@ -7,34 +7,41 @@ import {BsQuestionSquare, BsQuestionSquareFill} from "react-icons/bs";
 
 interface IDieIconInput extends IconBaseProps{
     value: UCritDie
+    mode?: "dark" | "light"
 }
 
-const DieIcon = ({value, ...iconProps}: IDieIconInput) => {
+const DieIcon = ({value, mode="dark", ...iconProps}: IDieIconInput) => {
 
     const {size, style, ...otherProps} = iconProps;
 
-    const diceStyle = {
-        margin: `${typeof size == "number" ? size / 14 : 0}px ${typeof size == "number" ? size / 40 : 0}px`,
-        // margin: "3px 1px",
+    const nstyle = {
+        color: "white",
         ...style
     }
+
+    const s_diceStyle = {
+        margin: `${typeof size == "number" ? size / 14 : 0}px ${typeof size == "number" ? size / 40 : 0}px`,
+        ...nstyle
+    }
+    const renderIcon = (Icon: React.ElementType, iconSize = size, iconStyle = nstyle) => (
+        <Box sx={{}} component={"span"}>
+            <Icon {...otherProps} size={iconSize} style={iconStyle} />
+        </Box>
+    );
+
     switch (value) {
-        case "1":
-            return <FaDiceOne {...otherProps} size={size}  style={style}/>
-        case "2":
-            return <FaDiceTwo {...otherProps} size={size} style={style}/>
-        case "3":
-            return <FaDiceThree {...otherProps} size={size} style={style}/>
-        case "4":
-            return <FaDiceFour {...otherProps} size={size} style={style}/>
-        case "5":
-            return <FaDiceFive {...otherProps} size={size} style={style}/>
-        case "6":
-            return <FaDiceSix {...otherProps} size={size} style={style}/>
-        case "-":
-            return <FaSquare {...otherProps} size={size} style={style}/>
-        case "?":
-            return <BsQuestionSquareFill {...otherProps} size={typeof size == "number" ? size * 0.88 : size} style={diceStyle}/>
+        case "1": return renderIcon(FaDiceOne);
+        case "2": return renderIcon(FaDiceTwo);
+        case "3": return renderIcon(FaDiceThree);
+        case "4": return renderIcon(FaDiceFour);
+        case "5": return renderIcon(FaDiceFive);
+        case "6": return renderIcon(FaDiceSix);
+        case "-": return renderIcon(FaSquare);
+        case "?": return renderIcon(
+            BsQuestionSquareFill,
+            typeof size === "number" ? size * 0.88 : size,
+            s_diceStyle
+        );
     }
 }
 

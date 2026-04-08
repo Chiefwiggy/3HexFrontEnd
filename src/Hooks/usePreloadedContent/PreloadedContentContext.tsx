@@ -20,7 +20,7 @@ import PLC_DevelopmentData from "./PLC_DevelopmentData";
 import PLC_DatachipData from "./PLC_DatachipData";
 import PLC_PackageData from "./PLC_PackageData";
 import PLC_GadgetData from "./PLC_GadgetData";
-
+import PLC_OtherSpecializationData from "./PLC_OtherSpecializationData"
 
 
 const PreloadedContentContext =     createContext<IPreloadedContentContextInput>({
@@ -42,8 +42,8 @@ const PreloadedContentContext =     createContext<IPreloadedContentContextInput>
         DevelopmentData: new PLC_DevelopmentData(),
         DatachipData: new PLC_DatachipData(),
         PackageData: new PLC_PackageData(),
+        OtherSpecializationData: new PLC_OtherSpecializationData(),
         GadgetData: new PLC_GadgetData(),
-
         isLoaded: false
     }
 );

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Box, capitalize, Card, Collapse, Divider, IconButton, ListItem, Paper, Typography} from "@mui/material";
 import {IDatachipData} from "../../Data/ChipsetData";
 import SourceList from "../Sources/SourceList";
@@ -25,15 +25,16 @@ import {getHackShorthand, UHackType} from "../../Utils/Shorthand";
 import {CardGetColor} from "../../Utils/CardColorUtils";
 
 interface IDatachipDetailedViewInput {
-    datachipData: IDatachipData
+    datachipData: IDatachipData,
+    startExpanded?: boolean
 }
 
-const DatachipDetailedView = ({datachipData}: IDatachipDetailedViewInput) => {
+const DatachipDetailedView = ({datachipData, startExpanded = false}: IDatachipDetailedViewInput) => {
 
 
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const [isExpanded, setIsExpanded] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(startExpanded);
 
     const handleExpandClick = () => {
         setIsExpanded(!isExpanded);
@@ -45,6 +46,7 @@ const DatachipDetailedView = ({datachipData}: IDatachipDetailedViewInput) => {
     }
 
     const renderCard = (cardData: IHackModifierCardData) => {
+
         const compendiumProps = {canToggleExpand: false, showAdd: false, isExpanded: true}
         switch (cardData.cardSubtype) {
             case "function":
@@ -116,7 +118,6 @@ const DatachipDetailedView = ({datachipData}: IDatachipDetailedViewInput) => {
                         {datachipData.builtinHacks.map(((hack, index) => {
                             return (
                                 <ListItem
-
                                     key={hack._id}
                                     sx={{
                                         px: 2,
@@ -157,7 +158,10 @@ const DatachipDetailedView = ({datachipData}: IDatachipDetailedViewInput) => {
                             }}
                         >
                             {
+                                datachipData.builtinHacks.length > 0 ?
                                 renderCard(datachipData.builtinHacks[currentIndex])
+                                    :
+                                    <></>
                             }
 
                         </Box>

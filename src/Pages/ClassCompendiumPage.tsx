@@ -7,6 +7,7 @@ import {useLocation, useSearchParams} from "react-router-dom";
 import usePreloadedContent from "../Hooks/usePreloadedContent/usePreloadedContent"
 import {getNameFromClassTier, getTierFromName} from "../Utils/Shorthand";
 import {Helmet} from "react-helmet";
+import ArchetypesFeatureTabView from "../Views/FeaturesTabs/ArchetypesFeatureTabView";
 
 interface IClassCompendiumPageInput {
 
@@ -63,76 +64,13 @@ const ClassCompendiumPage = ({}: IClassCompendiumPageInput) => {
     }, [classData, searchParams]);
 
     return classData.length > 0 ?  (
-        <Box>
-            <Helmet>
-                <meta charSet={"utf-8"} />
-                <title>Archetypes - Ursura</title>
-            </Helmet>
-            <Box
-                sx={{
-                    display: "grid",
-                    gridTemplateColumns: "1fr 9fr",
-                }}
-            >
-                <Box>
-                    <Box
-                        sx={{
-                            padding: 1,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: "center",
-                            alignItems: "flex-end"
-                        }}
-                    >
-                        <FormControl fullWidth variant="outlined" sx={{width: "140px"}}>
-                            <InputLabel id="tier-select-label">Tier</InputLabel>
-                            <Select
-                                labelId="tier-select-label"
-                                id="tier-select"
-                                value={tier}
-                                onChange={handleChange}
-                                label="Tier"
-                                fullWidth
-                            >
-                                <MenuItem value="beginner">Beginner</MenuItem>
-                                <MenuItem value="advanced">Advanced</MenuItem>
-                                <MenuItem value="expert">Expert</MenuItem>
-                                <MenuItem value="master">Master</MenuItem>
-                            </Select>
-                        </FormControl>
-                        <Tabs
-                            orientation="vertical"
-                            variant={"scrollable"}
-                            value={currentTabValue}
-                            onChange={handleTabChange}
-                            aria-label="Vertical tabs example"
-                            sx={{
-                                height: "calc(100vh - 160px)"
-                            }}
-                        >
-                            {
-                                classData[getTierFromName(tier)-1].sort((a, b) => a.className.localeCompare(b.className)).map(datum => {
-                                    return (
-                                        <Tab
-                                            label={datum.className}
-                                            key={datum.className}
-                                        />
-                                    )
-                                })
-                            }
-                        </Tabs>
-                    </Box>
-                </Box>
-
-                <Box
-                    sx={{
-                        padding: "12px"
-                    }}
-                >
-                    <CompendiumClassElement data={classData[getTierFromName(tier)-1][currentTabValue]}/>
-                </Box>
-
-            </Box>
+        <Box
+            sx={{
+                padding: "12px"
+            }}
+        >
+            {/*<CompendiumClassElement data={classData[getTierFromName(tier)-1][currentTabValue]}/>*/}
+            <ArchetypesFeatureTabView isCompendium={true} myClasses={[]} classDispatch={null} />
         </Box>
 
     ) : <></>

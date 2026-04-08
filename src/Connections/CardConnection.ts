@@ -98,6 +98,15 @@ class CardConnection {
         })
     }
 
+    public async GetDatachipCards() {
+        return await Axios.get(`${this._cardURL}get/datachipCards`, this._getConfig()).then((resp) => {
+            return resp.data
+        }).catch((e) => {
+            console.error(e)
+            return []
+        })
+    }
+
     public async GetPathCards(pathName: string) {
          return await Axios.get(`${this._cardURL}get/path/${pathName}`, this._getConfig()).then((resp) => {
             return resp.data

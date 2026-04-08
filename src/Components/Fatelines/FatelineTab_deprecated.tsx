@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import {Box, Divider, Tab, Tabs, Typography} from "@mui/material";
 import {IFatelineFullData} from "../../Data/IFatelineData";
-import FatelineDetails from "./FatelineDetails";
+import FatelineDetails_deprecated from "./FatelineDetails_deprecated";
 
 interface IFatelineTabInput {
     fateline: IFatelineFullData
 }
 
-const FatelineTab = ({fateline}: IFatelineTabInput) => {
+const FatelineTab_deprecated = ({fateline}: IFatelineTabInput) => {
 
     const [currentTabIndex, setCurrentTabIndex] = useState(1);
 
@@ -30,9 +30,9 @@ const FatelineTab = ({fateline}: IFatelineTabInput) => {
                 <Tab label={"Upright"} value={1}/>
                 <Tab label={"Reversed"} value={-1} />
             </Tabs>
-            <FatelineDetails fateline={fateline} reversed={currentTabIndex === -1} />
+            <FatelineDetails_deprecated fateline={fateline} reversed={currentTabIndex === -1} />
         </Box>
     )
 }
 
-export default FatelineTab
+export default FatelineTab_deprecated
