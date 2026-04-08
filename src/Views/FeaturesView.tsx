@@ -158,7 +158,7 @@ const FeaturesView = ({closeSelf}: IArchetypesAndAffinitiesViewInput) => {
     return (
         <Box
             sx={{
-                width: "90vw",
+                width: "95vw",
                 backgroundColor: "#121212",
                 py: 2,
                 px: 2,

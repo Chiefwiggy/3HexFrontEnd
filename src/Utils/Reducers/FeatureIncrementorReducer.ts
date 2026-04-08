@@ -54,7 +54,7 @@ export const featureIncrementorHelper = (dispatchFeatureIncrementor: React.Dispa
     if (!isAdd) {
         modVal = -1
     }
-    if ("abilityName" in feature) {
+    if ("abilityName" in feature && feature.bonuses) {
         if ("affinityPoints" in feature.bonuses) {
             const bonuses = feature.bonuses as {affinityPoints: number};
             dispatchFeatureIncrementor({type: "affinity", val: featureIncrementors.affinity + (modVal*bonuses.affinityPoints)})
