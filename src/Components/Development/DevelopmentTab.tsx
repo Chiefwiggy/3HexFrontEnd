@@ -199,32 +199,32 @@ const DevelopmentTab = ({currentUnlockList, updateUnlockList}: IMasteryTabInput)
                                 <Typography variant="h6" component="span">Unlocked</Typography>
                             </Box>
                         </Box>
-                        <Box
-                            sx={{
-                                display: 'grid',
-                                gridTemplateColumns: "repeat( auto-fill , max(314px, 19vw))",
-                                gridGap: "10px",
-                                my: 2,
-                            }}
-                        >
-                            {
-                                disambiguateCard(
-                                    currentDevelopmentFeatures,
-                                    {
-                                        isExpanded: true,
-                                        canToggleExpand: false,
-                                        canFavorite: false,
-                                        isAdd: false,
-                                        showAdd: false,
-                                        showPrerequisites: true
-                                    }
-                                ).map((card, index) => {
-                                    if (card) {
-                                        return <UnlockWrapper el={card} _id={currentUnlockList[index]} unlockedByDefault={false} unlockList={currentUnlockList} updateUnlockList={updateUnlockList(currentDevelopmentFeatures[index])} key={index}/>
-                                    }
-                                })
-                            }
-                        </Box>
+                        {/*<Box*/}
+                        {/*    sx={{*/}
+                        {/*        display: 'grid',*/}
+                        {/*        gridTemplateColumns: "repeat( auto-fill , max(314px, 19vw))",*/}
+                        {/*        gridGap: "10px",*/}
+                        {/*        my: 2,*/}
+                        {/*    }}*/}
+                        {/*>*/}
+                        {/*    {*/}
+                        {/*        disambiguateCard(*/}
+                        {/*            currentDevelopmentFeatures,*/}
+                        {/*            {*/}
+                        {/*                isExpanded: true,*/}
+                        {/*                canToggleExpand: false,*/}
+                        {/*                canFavorite: false,*/}
+                        {/*                isAdd: false,*/}
+                        {/*                showAdd: false,*/}
+                        {/*                showPrerequisites: true*/}
+                        {/*            }*/}
+                        {/*        ).map((card, index) => {*/}
+                        {/*            if (card) {*/}
+                        {/*                return <UnlockWrapper el={card} _id={currentUnlockList[index]} unlockedByDefault={false} unlockList={currentUnlockList} updateUnlockList={updateUnlockList(currentDevelopmentFeatures[index])} key={index}/>*/}
+                        {/*            }*/}
+                        {/*        })*/}
+                        {/*    }*/}
+                        {/*</Box>*/}
 
                         {
                             Object.entries(allDevelopmentFeatures).map(([key, elems]) => {

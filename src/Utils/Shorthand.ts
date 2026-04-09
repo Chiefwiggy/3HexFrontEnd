@@ -122,9 +122,7 @@ export const getWeaponAffinityRequirement = (weaponClass: UWeaponClass, enchantm
     }
 
     if (isCreature) {
-        retVal += `General ${enchantmentLevelMod}`
-    } else if (damageType == "magical") {
-        retVal += `Arcanist ${enchantmentLevelMod}`
+        retVal += `Captain ${enchantmentLevelMod}`
     } else {
         retVal += `Warrior ${enchantmentLevelMod}`
         // switch (weaponClass) {
